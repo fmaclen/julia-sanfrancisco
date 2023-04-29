@@ -1,0 +1,57 @@
+section.scene {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  aspect-ratio: 1/2;
+}
+
+div.scene__details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-block: 32px;
+  padding-inline: 32px;
+  background-image: linear-gradient(var(--color-neutral-900), transparent)
+}
+
+nav.scene__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-block: 32px;
+  padding-inline: 32px;
+  margin-top: auto;
+  background-image: linear-gradient(transparent, var(--color-neutral-900));
+}
+
+img.scene__img {
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  aspect-ratio: 1/2;
+  z-index: -1;
+}
+
+button.scene__button {
+  padding-inline: 16px;
+  padding-block: 16px;
+  border-radius: 8px;
+  font-size: 16px;
+  text-align: left;
+  border: unset;
+  cursor: pointer;
+  background-color: var(--color-neutral-800);
+  color: var(--color-neutral-100);
+  font-family: 'Mona Sans';
+}
+
+h1.h1 {
+  margin-block: unset;
+}
+
+h3.h3 {
+  margin-block: unset;
+}
