@@ -1,0 +1,762 @@
+*******************************************************************************
+Where in the World is Carmen Sandiego? for Sega Master System FAQ
+
+by BHodges
+
+Version  1.1
+Created  11/26/09
+Updated  11/30/09
+
+This document Copyright 2009 by Brian Hodges.  It may not be placed on any
+web site or otherwise distributed publicly without advance written permission. 
+
+Use of this guide on any other web site or as a part of any public display is 
+strictly prohibited, and a violation of copyright.
+
+All trademarks and copyrights contained in this document are owned by their
+respective trademark and copyright holders.
+
+*******************************************************************************
+Table of Contents
+
+I.     Introduction
+II.    Getting Started
+III.   Controls
+IV.    Solving Cases
+         A.  Gathering Clues
+         B.  Time
+         C.  V.I.L.E. Henchmen
+         D.  Obtaining a Warrant
+         E.  Apprehending the Suspect
+         F.  Victory/Defeat
+         G.  Ranks
+         H.  General Strategies
+V.     Cities
+VI.    Dossiers
+VII.   Loot
+VIII.  Game Review
+IX.    Version History
+X.     Contact Information
+
+*******************************************************************************
+I.     Introduction
+
+This is a FAQ for the Sega Master System game Where in the World is Carmen
+Sandiego?.  It contains information on how to play and a mini-review.
+
+*******************************************************************************
+II.    Getting Started
+
+Press the 2 button on the Title Screen to bring up the Rank Selection Screen.
+Move the control pad Up/Down to choose a Rank (i.e. difficulty level) and press
+button 2 to start playing.  For more information on Ranks, see the Ranks 
+section in part IV.
+
+*******************************************************************************
+III.   Controls
+
+Control Pad       Move Character/Navigate Menus
+Button 1          Run/Speed Up Text and Animations
+Button 2          Enter Building/Select Menu Item
+
+*******************************************************************************
+IV.    Solving Cases
+
+-------------------------------------------------------------------------------
+A.  Gathering Clues
+
+Every city has five points of interest: an airport, three buildings, and a
+phone booth.  The airport is used to book flights, the phone booth to obtain a
+warrant, and the buildings are where you gather clues.
+
+There are two types of clues: those about your suspect's whereabouts and those
+about the suspect.  These help you identify the next city you need to fly to
+as well as how to fill out the warrant.
+
+The clues given are based on the particular building such as banks telling you 
+about currencies and libraries about culture.  Use them to figure out where to
+go next (see the cities section for a list of clues about each city).
+
+-------------------------------------------------------------------------------
+B.  Time
+
+You begin each case at 07:00 Monday morning and have until 17:00 Sunday
+afternoon to apprehend your suspect.  Here is a list of activities that consume
+time and how much you lose for each one:
+
+-  Entering a building (1 hr for 1st, 2 for 2nd, 3 for 3rd)
+-  Applying for a warrant (3 hrs)
+-  Getting hit by a knife (2 hrs 1st time, 2 more each additional time)
+-  Getting shot (4 hrs 1st time, 4 more each additional)
+-  Sleeping (9 hrs every night)
+-  Flying (variable based on distance)
+
+-------------------------------------------------------------------------------
+C.  V.I.L.E. Henchmen
+
+As you follow your suspect from city to city, you will encounter V.I.L.E
+henchmen.  When they appear on screen, the text screen at the bottom will
+turn brown and a musical note will play.  Henchmen will throw a single knife
+at you, duck or jump to avoid it.
+
+-------------------------------------------------------------------------------
+D.  Obtaining a Warrant
+
+In order to arrest the suspect, you'll need a proper warrant.  As you gather
+clues, sometimes the witnesses will mention things about the suspect.  Some
+are straightforward ("She had brown hair.") while others require a small amount
+of thought ("He was carrying a helmet." means that he rides a motorcycle).
+
+To apply for a warrant, you just enter the phone booth located at the far left
+of any city and fill out the data that you know.  You will usually need to
+know two details other than gender to narrow down the suspects.  There is a 
+lot of overlap (especially with the female suspects) so be sure that you have
+enough information.
+
+After filling out the information, select Continue to apply for the warrant
+(application takes three hours off your clock).  You'll then either be given
+a warrant or a list of suspects that match your search (meaning you need more
+information to narrow it down).
+
+-------------------------------------------------------------------------------
+E.  Apprehending the Suspect
+
+You'll know you've found your suspect when upon entering buildings you are
+given warnings instead of clues.  The suspect will make him/herself known once
+you have entered a building or two (if they stay hidden, try walking all the
+way to the left then start walking to the right).  When walking through the
+city it is VERY important to stay at the TOP of the screen!
+
+Once the suspect appears, you need to keep him/her occupied until the cops
+arrive to make the arrest.  Unfortunately, they are all packing heat while you
+are totally unarmed!  When the suspect appears, head down to the BOTTOM of the
+screen to avoid getting shot.  The suspect will then head down to the bottom
+with you and fire again, you need to move to the TOP and then JUMP over the
+bullet.  You need to time this just right, if you jump too soon you'll land on
+the bullet and be laid up for several hours!  Keep doing this until the cops
+show up and take the suspect into custody.
+
+-------------------------------------------------------------------------------
+F.  Victory/Defeat
+
+You successfully solve a case by apprehending the suspect within the allotted
+time.  You lose if you apprehend a suspect WITHOUT a proper warrant or if you
+fail to apprehend the suspect before 17:00 on Sunday.
+
+-------------------------------------------------------------------------------
+G.  Ranks
+
+The five ranks are:
+
+Rookie (1 case, 5 cities)
+Sleuth (3 cases, 5 cities)
+Private Eye (4 cases, 6 cities)
+Investigator (5 cases, 6 cities) 
+Ace Detective (10 cases, 7/8 cities)
+
+The higher the rank the more difficult the game becomes.  In the higher ranks
+the clues become less helpful and require a little more thought and you have
+to chase your suspect through more cities.
+
+-------------------------------------------------------------------------------
+H.  General Strategies
+
+-  Banks and Embassies usually give the best clues (flag and currency).
+
+-  In the higher ranks, you will NOT have enough time to visit all three
+   buildings in every city.
+
+-  Entering the airport does NOT use any time so make a note of which
+   destinations are listed BEFORE searching for clues.
+
+-  ALWAYS travel at the TOP of the screen, this makes avoiding projectiles much
+   easier.
+
+-  Carmen Sandiego will ALWAYS be the final suspect(case #10 of Ace Detective).
+   It's important to know this because a lot of the female suspects have
+   characteristics that overlap with Carmen's, so when obtaining a warrant,
+   if she appears with another suspect you can safely eliminate her (unless it 
+   IS the final mission).
+
+-  Just in case you missed it, you can hold down button 1 to speed up text and
+   animations to make the game move along quicker.
+
+-  If a certain clue has you stumped, try Wikipedia (www.wikipedia.org).
+
+*******************************************************************************
+V.     Cities
+
+This is a partial list of clues that I gathered while playing:
+
+...............................................................................
+City:        Athens
+Flag:        Blue and White
+Currency:    Drachmas
+Geography:   ???
+Landmarks:   Aegean Sea, Pindus Mountains
+Industries:  Figs, Olives
+Animals:     ???
+People:      Plato, Spartans
+Languages:   Greek
+Art:         ???
+Religion:    ???
+Leader:      Prime Minister
+Misc:        Hellenic Republic, Neighbors Yugoslavia
+...............................................................................
+City:        Baghdad
+Flag:        Red, White, and Black
+Currency:    Dinars
+Geography:   Desert
+Landmarks:   Syrian Desert, Euphrates River, Tigris River
+Industries:  Oil
+Animals:     Arabian Gazelles
+People:      Sumerian
+Languages:   ???
+Art:         ???
+Religion:    ???
+Leader:      ???
+Misc:        Mesopotamia
+...............................................................................
+City:        Bamako
+Flag:        Green, Yellow, and Red
+Currency:    Francs
+Geography:   ???
+Landmarks:   Niger River, Sahara
+Industries:  Millet, Rice
+Animals:     ???
+People:      Tuaregs
+Languages:   ???
+Art:         ???
+Religion:    ???
+Leader:      President
+Misc:        Timbuktu
+...............................................................................
+City:        Bangkok
+Flag:        Red, White, and Blue
+Currency:    Bahts
+Geography:   ???
+Landmarks:   ???
+Industries:  ??? 
+Animals:     ???
+People:      ???
+Languages:   ???
+Art:         ???
+Religion:    Buddhism
+Leader:      ???
+Misc:        Ancient Siam
+...............................................................................
+City:        Budapest
+Flag:        Red, White, and Green
+Currency:    Forints
+Geography:   ???
+Landmarks:   Alpold Plains, Danube River
+Industries:  Grapes
+Animals:     ???
+People:      Croation, Gypsies
+Languages:   ???
+Art:         Magyar Art
+Religion:    ???
+Leader:      ???
+Misc:        Neighbors Austria
+...............................................................................
+City:        Buenos Aires
+Flag:        Sun Flag
+Currency:    Australs
+Geography:   ???
+Landmarks:   Parana River, Tierra del Fuego
+Industries:  Cattle
+Animals:     ???
+People:      Gauchos
+Languages:   ???
+Art:         ???
+Religion:    ???
+Leader:      President
+Misc:        Former Spanish Colony
+...............................................................................
+City:        Cairo
+Flag:        ???
+Currency:    Pounds
+Geography:   ???
+Landmarks:   Pharoahs Tomb, Sinai Desert
+Industries:  Limestone
+Animals:     ???
+People:      Nubian
+Languages:   ???
+Art:         ???
+Religion:    ???
+Leader:      ???
+Misc:        Ancient Alexandria
+...............................................................................
+City:        Colombo
+Flag:        Golden Lion
+Currency:    Rupees
+Geography:   ???
+Landmarks:   Gulf of Mannar
+Industries:  Citronella
+Animals:     ???
+People:      ???
+Languages:   ???
+Art:         Veddah Artifacts
+Religion:    ???
+Leader:      ???
+Misc:        Ancient Taprobane
+...............................................................................
+City:        Istanbul
+Flag:        Crescent and Star
+Currency:    Lira
+Geography:   ???
+Landmarks:   Black Sea, Mount Arafat
+Industries:  ???
+Animals:     ???
+People:      Hittites
+Languages:   ???
+Art:         ???
+Religion:    ???
+Leader:      President
+Misc:        Byzantine Empire, Constantinople
+...............................................................................
+City:        Kathmandu
+Flag:        Double Triangle
+Currency:    Rupees
+Geography:   Mountains
+Landmarks:   Baruntse, Himalayas
+Industries:  ???
+Animals:     ???
+People:      Gurkhas
+Languages:   ???
+Art:         ???
+Religion:    Hindu
+Leader:      ???
+Misc:        ???
+...............................................................................
+City:        Kigali
+Flag:        Red, Yellow, and Green
+Currency:    Francs
+Geography:   Volcanoes
+Landmarks:   ???
+Industries:  Tin
+Animals:     Black Mamba, Gorilla
+People:      Pygmies, Tutsi
+Languages:   ???
+Art:         ???
+Religion:    ???
+Leader:      ???
+Misc:        ???
+...............................................................................
+City:        Lima
+Flag:        Red and White
+Currency:    Sols
+Geography:   ???
+Landmarks:   Mount Huascaran
+Industries:  ???
+Animals:     ???
+People:      ???
+Languages:   ???
+Art:         Aymara Art
+Religion:    ???
+Leader:      ???
+Misc:        ???
+...............................................................................
+City:        London
+Flag:        Red, White, and Blue
+Currency:    Pounds
+Geography:   ???
+Landmarks:   Big Ben, Loch Ness, Thames
+Industries:  ???
+Animals:     ???
+People:      Celts, Druids, Saxons
+Languages:   ???
+Art:         ???
+Religion:    ???
+Leader:      Prime Minister
+Misc:        ???
+...............................................................................
+City:        Mexico City
+Flag:        Green, White, and Red
+Currency:    ???
+Geography:   ???
+Landmarks:   Mount Popocatepetl, Sierra Madre
+Industries:  ???
+Animals:     Gila Monster
+People:      Aztecs, Mayas, Toltecs
+Languages:   ???
+Art:         Yucatecan Jewelry
+Religion:    ???
+Leader:      ???
+Misc:        ???
+...............................................................................
+City:        Montreal
+Flag:        Maple Leaf Flag
+Currency:    ???
+Geography:   ???
+Landmarks:   Gaspe Peninsula, Lake Mistassini, Montgomery Falls, Prince Edward
+             Island, Yukon
+Industries:  ???
+Animals:     Moose
+People:      ???
+Languages:   French
+Art:         ???
+Religion:    ???
+Leader:      ???
+Misc:        Former French Colony
+...............................................................................
+City:        Moroni
+Flag:        Green and White
+Currency:    Francs
+Geography:   Island, Volcanoes
+Landmarks:   Mount Karthala
+Industries:  Perfume
+Animals:     Anjouan Scops Owl
+People:      ???
+Languages:   ???
+Art:         ???
+Religion:    ???
+Leader:      ???
+Misc:        ???
+...............................................................................
+City:        Moscow
+Flag:        Red
+Currency:    Rubles
+Geography:   ???
+Landmarks:   Lake Ladoga, Ural Mountains
+Industries:  ???
+Animals:     ???
+People:      Ivan the Terrible
+Languages:   Russian, Uralian
+Art:         ???
+Religion:    ???
+Leader:      ???
+Misc:        Moldavia, Largest Country in the World
+...............................................................................
+City:        New Delhi
+Flag:        Red, White, and Green
+Currency:    Rupees
+Geography:   ???
+Landmarks:   ???
+Industries:  ???
+Animals:     Saw-Scaled Viper
+People:      ???
+Languages:   ???
+Art:         ???
+Religion:    Sikh
+Leader:      Prime Minister
+Misc:        ???
+...............................................................................
+City:        New York
+Flag:        Red, White, and Blue
+Currency:    Dollars
+Geography:   ???
+Landmarks:   Grant's Tomb, Hudson River, United Nations, World Trade Center
+Industries:  Fashion, Stock Exchange
+Animals:     ???
+People:      Henry Hudson
+Languages:   ???
+Art:         ???
+Religion:    ???
+Leader:      ???
+Misc:        Subways
+...............................................................................
+City:        Oslo
+Flag:        Red and Blue Cross
+Currency:    ???
+Geography:   ???
+Landmarks:   Barents Sea
+Industries:  Hydroelectricity
+Animals:     ???
+People:      Vikings
+Languages:   ???
+Art:         ???
+Religion:    ???
+Leader:      King
+Misc:        Nordic Skiing
+...............................................................................
+City:        Paris
+Flag:        Red, White, and Blue
+Currency:    Francs
+Geography:   ???
+Landmarks:   Sienne
+Industries:  Fashion
+Animals:     ???
+People:      ???
+Languages:   ???
+Art:         ???
+Religion:    ???
+Leader:      ???
+Misc:        ???
+...............................................................................
+City:        Peking
+Flag:        Red Flag
+Currency:    Yuans
+Geography:   ???
+Landmarks:   Forbidden City, Yellow Sea
+Industries:  ???
+Animals:     Giant Panda
+People:      ???
+Languages:   ???
+Art:         ???
+Religion:    ???
+Leader:      ???
+Misc:        Shang Dynasty, Wuchang Uprising
+...............................................................................
+City:        Port Moresby
+Flag:        Yellow, Red, and Black
+Currency:    Kinas
+Geography:   Volcanoes
+Landmarks:   Mount Karkar, Mount Manam
+Industries:  Gold
+Animals:     ???
+People:      Taipans
+Languages:   ???
+Art:         ???
+Religion:    ???
+Leader:      Prime Minister
+Misc:        New Ireland
+...............................................................................
+City:        Reykjavik
+Flag:        Red and Blue
+Currency:    Kronur
+Geography:   Hot Springs, Volcanoes
+Landmarks:   ???
+Industries:  Fish
+Animals:     ???
+People:      ???
+Languages:   ???
+Art:         ???
+Religion:    ???
+Leader:      ???
+Misc:        Island Nation
+...............................................................................
+City:        Rio de Janeiro
+Flag:        Green, Blue, and Yellow
+Currency:    Cruzeiros
+Geography:   ???
+Landmarks:   Amazon River
+Industries:  Coffee, Diamonds, Titanium
+Animals:     Bushmaster, Golden Parakeet, Indigo Macaw, Thin-Spined Porcupine
+People:      ???
+Languages:   Portuguese
+Art:         ???
+Religion:    ???
+Leader:      President
+Misc:        ???
+...............................................................................
+City:        Rome
+Flag:        Green, White, and Red
+Currency:    Lira
+Geography:   ???
+Landmarks:   Colosseum, The Forum, Mount Etna, Tyrrhenian Sea
+Industries:  Textiles
+Animals:     ???
+People:      Etruscans
+Languages:   Italian
+Art:         Renaissance Painting
+Religion:    ???
+Leader:      President
+Misc:        ???
+...............................................................................
+City:        San Marino
+Flag:        Blue and White
+Currency:    ???
+Geography:   ???
+Landmarks:   Mount Titano
+Industries:  Ceramics, Postage Stamps
+Animals:     ???
+People:      ???
+Languages:   Italian
+Art:         ???
+Religion:    ???
+Leader:      ???
+Misc:        Serene Republic, Oldest State in Europe, Neighbors Italy
+...............................................................................
+City:        Singapore
+Flag:        Red and White
+Currency:    ???
+Geography:   ???
+Landmarks:   Raffles Hotel, South China Sea, Straits of Malacca
+Industries:  Rubber
+Animals:     Stonefish
+People:      ???
+Languages:   ???
+Art:         Malayan Art
+Religion:    ???
+Leader:      ???
+Misc:        Former British Colony
+...............................................................................
+City:        Sydney
+Flag:        Red, White, and Blue
+Currency:    ???
+Geography:   ???
+Landmarks:   Great Sandy Desert, Opera House, Outback
+Industries:  Wool
+Animals:     Koala Bear, Tiger Snake, Wallaby, Wombat
+People:      Aborigines, Captain Cook
+Languages:   ???
+Art:         ???
+Religion:    ???
+Leader:      ???
+Misc:        ???
+...............................................................................
+City:        Tokyo
+Flag:        Red and White
+Currency:    Yen
+Geography:   ???
+Landmarks:   Mount Fuji
+Industries:  Automobiles
+Animals:     ???
+People:      Shoguns
+Languages:   ???
+Art:         ???
+Religion:    Shinto
+Leader:      ???
+Misc:        ???
+
+*******************************************************************************
+VI.    Dossiers
+
+...............................................................................
+Name:     Nick Brunch
+Sex:      Male
+Hobby:    Mountain Climbing
+Hair:     Black
+Feature:  Ring
+Auto:     Motorcyle
+...............................................................................
+Name:     Len Bulk
+Sex:      Male
+Hobby:    Mountain Climbing
+Hair:     Red
+Feature:  Tattoo 
+Auto:     Convertible
+...............................................................................
+Name:     Ihor Ihorovitch
+Sex:      Male
+Hobby:    Croquet
+Hair:     Blond
+Feature:  Tattoo
+Auto:     Limousine
+...............................................................................
+Name:     Fast Eddie B.
+Sex:      Male
+Hobby:    Croquet
+Hair:     Black
+Feature:  Jewelry
+Auto:     Convertible
+...............................................................................
+Name:     Scar Graynolt
+Sex:      Male
+Hobby:    Croquet
+Hair:     Red
+Feature:  Ring
+Auto:     Limousine
+...............................................................................
+Name:     Merey Laroc
+Sex:      Female
+Hobby:    Mountain Climbing
+Hair:     Brown
+Feature:  Jewelry
+Auto:     Limousine
+...............................................................................
+Name:     Lady Agatha
+Sex:      Female
+Hobby:    Tennis
+Hair:     Red
+Feature:  Ring
+Auto:     Convertible
+...............................................................................
+Name:     Katherine Drib
+Sex:      Female
+Hobby:    Mountain Climbing
+Hair:     Brown
+Feature:  Tattoo
+Auto:     Motorcycle
+...............................................................................
+Name:     Dazzle Annie
+Sex:      Female
+Hobby:    Tennis
+Hair:     Blond
+Feature:  Tattoo
+Auto:     Limo
+...............................................................................
+Name:     Carmen Sandiego
+Sex:      Female
+Hobby:    Tennis
+Hair:     Brown
+Feature:  Jewelry
+Auto:     Convertible
+
+*******************************************************************************
+VII.   Loot
+
+Here is a partial list of the items that Carmen and her gang steal:
+
+-  1,000 Year Old Egg (Peking)
+-  Babylonian Tablet (Baghdad)
+-  Boar's Tusk (Port Moresby)
+-  Chandelier from the Opera House (Sydney)
+-  Constantine's Jeweled Cross (Istanbul)
+-  Crown Jewels (London)
+-  Flying Carpet (Baghdad)
+-  Golden Buddha (Bangkok)
+-  Incan Gold Mask (Lima)
+-  Islamic Manuscript (Bamako)
+-  Ivan the Terrible's Crown (Moscow)
+-  King Tut's Mask (Cairo)
+-  Mask of Montezuma (Mexico City)
+-  Mask of Priam (Athens)
+-  Merlion the Golden Lion (Singapore)
+-  Painting from the Kremlin (Moscow)
+-  Pope's Ring (Rome)
+-  Rare Mali Empire Pottery (Bamako)
+-  Rare Tea Plant (Colombo)
+-  Royal Quartz Collection (Kathmandu)
+-  Sernedip Ruby (Colombo)
+-  Silver LLama (Lima)
+-  Solid Gold Bola (Buenos Aires)
+-  Stanley Cup (Montreal)
+-  Stuffed Parrot (Rio de Janeiro)
+-  The Rockettes (New York)
+-  Viking Helmet (Oslo)
+-  Watusi King's Headdress (Kigali)
+
+*******************************************************************************
+VIII.  Game Review
+
+Where in the World is Carmen Sandiego? is one of the original educational video
+games.  The goal is to hunt down Carmen and her gang of thieves while learning
+world geography in the process.
+
+The Sega Master System port is faithful to the original in nearly every aspect
+and I highly recommend that SMS owners give it a try.
+
+Pros
+
++  Captures the spirit of the PC original.
++  Fun and educational!
+
+Cons
+
+-  No save feature.
+-  The "gunfights" feel a little out of place.
+
+*******************************************************************************
+IX.    Version History
+
+1.0   11/26/09   Completed FAQ.
+
+1.1   11/30/09   Fixed missing item in Table of Contents.  Added additional
+                 information to Cities and Loot sections.
+
+*******************************************************************************
+X.     Contact Information
+
+You can contact me at Bhodges080@aol.com
+
+I would appreciate hearing what you thought of this guide and any thoughts
+you have for improving it.  Be sure to let me know if I have missed anything.
+
+*******************************************************************************
+
+
+
+End
+Restore Page
