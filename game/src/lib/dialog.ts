@@ -15,7 +15,7 @@ const flagColors = ARGENTINA.flag
 const leader = ARGENTINA.leader
 
 const city = ARGENTINA.city
-const toDo = ARGENTINA.do[0]
+const toDo = ARGENTINA.toDo[0]
 const see = ARGENTINA.see[0]
 const trade = ARGENTINA.trade[0]
 const study = ARGENTINA.study[0]
