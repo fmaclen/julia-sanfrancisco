@@ -24,8 +24,8 @@
 	}
 
 	main.main {
-    display: flex;
-    justify-content: center;
-    height: 100vh;
+		width: 100%;
+		max-width: 640px;
+		margin-inline: auto;
 	}
 </style>

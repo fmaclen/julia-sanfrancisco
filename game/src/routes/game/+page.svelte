@@ -114,7 +114,6 @@
 	}
 </script>
 
-<div class="wrapper">
 	<!-- Debug controls -->
 	<button on:click={() => (currentRoundIndex -= 1)} disabled={currentRoundIndex === 0}
 		>Prev round</button
@@ -157,11 +156,7 @@
 			</li>
 		{/each}
 	</ul>
-</div>
 
-<style lang="scss">
-	.wrapper {
-		max-width: 640px;
-		margin-inline: auto;
-	}
-</style>
+	<hr />
+
+	<a href="/">Abandon game</a>

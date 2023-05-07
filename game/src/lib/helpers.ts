@@ -128,3 +128,8 @@ export interface Game {
   suspect: Suspect;
   rounds: Round[];
 }
+
+export interface Player {
+  name: string;
+  score: number;
+}

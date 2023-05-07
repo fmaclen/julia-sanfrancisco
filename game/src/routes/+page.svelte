@@ -1,24 +1,5 @@
-<script lang="ts">
-	import { BRIEFING, LOCATION_CLUES } from "../lib/dialog";
-</script>
+<h1>Julia Sanfrancisco</h1>
 
-<div class="wrapper">
-	<h1>Julia Sanfrancisco</h1>
-	
-	<h2>Briefing</h2>
-	{#each BRIEFING as briefing}
-		<p>{briefing}</p>
-	{/each}
-	
-	<h2>Location clue</h2>
-	{#each LOCATION_CLUES as locationClue}
-		<p>{locationClue}</p>
-	{/each}
-</div>
+<hr />
 
-<style lang="scss">
-	.wrapper {
-		max-width: 640px;
-		margin-inline: auto;
-	}
-</style>
+<a href="/player">New game</a>
