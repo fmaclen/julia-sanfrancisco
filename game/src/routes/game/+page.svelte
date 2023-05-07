@@ -8,8 +8,8 @@
 	import { SUSPECTS } from '$lib/suspects';
 	import { format } from 'date-fns';
 
-	const startingLocation: Atlas = getRandomAtlas();
 	const atlases = [ARGENTINA, CHINA, GREECE, NORWAY, USA];
+	const startingLocation: Atlas = getRandomAtlas();
 
 	function getStartTime() {
 		const monday = new Date();
@@ -51,6 +51,21 @@
 			const destinations: Set<Atlas> = new Set();
 			if (previousRoundAtlas) destinations.add(previousRoundAtlas);
 			if (nextRoundAtlas) destinations.add(nextRoundAtlas);
+
+			//////////////////////////////////////////////////////////////////////////
+			//////////////////////////////////////////////////////////////////////////
+			//////////////////////////////////////////////////////////////////////////
+			
+			// FIXME: these need to be dynamic
+			destinations.add(ARGENTINA);
+			destinations.add(CHINA);
+			destinations.add(NORWAY);
+			destinations.add(USA);
+			destinations.add(GREECE);
+			
+			//////////////////////////////////////////////////////////////////////////
+			//////////////////////////////////////////////////////////////////////////
+			//////////////////////////////////////////////////////////////////////////
 
 			rounds.push({
 				atlas: roundAtlas,
