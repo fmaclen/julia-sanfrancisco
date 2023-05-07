@@ -9,6 +9,7 @@
 	import { format } from 'date-fns';
 
 	const startingLocation: Atlas = getRandomAtlas();
+	const atlases = [ARGENTINA, CHINA, GREECE, NORWAY, USA];
 
 	function getStartTime() {
 		const monday = new Date();
@@ -18,9 +19,8 @@
 	}
 
 	function getRandomAtlas(): Atlas {
-		const atlases = [ARGENTINA, CHINA, GREECE, NORWAY, USA];
 		const atlas = getRandomValue(atlases);
-		atlases.splice(atlases.indexOf(atlas), 1);
+		atlases.splice(atlases.indexOf(atlas), 1); // Remove the atlas from the list so it can't be used again
 		return atlas;
 	}
 
@@ -45,12 +45,12 @@
 		}
 
 		for (const roundAtlas of roundAtlases) {
-			const previousRound: Atlas = roundAtlases[roundAtlases.indexOf(roundAtlas) - 1];
-			const nextRound: Atlas = roundAtlases[roundAtlases.indexOf(roundAtlas) + 1];
+			const previousRoundAtlas: Atlas = roundAtlases[roundAtlases.indexOf(roundAtlas) - 1];
+			const nextRoundAtlas: Atlas = roundAtlases[roundAtlases.indexOf(roundAtlas) + 1];
 
 			const destinations: Set<Atlas> = new Set();
-			if (previousRound) destinations.add(previousRound);
-			if (nextRound) destinations.add(nextRound);
+			if (previousRoundAtlas) destinations.add(previousRoundAtlas);
+			if (nextRoundAtlas) destinations.add(nextRoundAtlas);
 
 			rounds.push({
 				atlas: roundAtlas,
@@ -58,7 +58,7 @@
 					{
 						place: Place.AIRPORT,
 						witness: Witness.PILOT,
-						clue: `Yup, saw them leave on a plane with a ${nextRound?.city} flag on the tail.`
+						clue: `Yup, saw them leave on a plane with a ${nextRoundAtlas?.city} flag on the tail.`
 					}
 				],
 				destinations
@@ -105,15 +105,15 @@
 
 	function travelTo(destination: Atlas) {
 		const { rounds } = game;
-		const isPreviousRound =
+		const isPreviousRoundAtlas =
 			currentRoundIndex !== 0 && rounds[currentRoundIndex - 1].atlas === destination;
 		const isCurrentRound = rounds[currentRoundIndex].atlas === destination;
-		const isNextRound = rounds[currentRoundIndex + 1].atlas === destination;
-		const isDecoyRound = !isCurrentRound && !isPreviousRound && !isNextRound;
+		const isNextRoundAtlas = rounds[currentRoundIndex + 1].atlas === destination;
+		const isDecoyRound = !isCurrentRound && !isPreviousRoundAtlas && !isNextRoundAtlas;
 
 		if (isCurrentRound) currentRound = rounds[currentRoundIndex];
-		if (isPreviousRound) currentRoundIndex -= 1;
-		if (isNextRound) currentRoundIndex += 1;
+		if (isPreviousRoundAtlas) currentRoundIndex -= 1;
+		if (isNextRoundAtlas) currentRoundIndex += 1;
 		if (isDecoyRound) setDecoyRound(destination);
 	}
 </script>
