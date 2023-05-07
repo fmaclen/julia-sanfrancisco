@@ -119,7 +119,7 @@ export interface Scene {
 export interface Round {
   atlas: Atlas;
   scenes: Scene[];
-  destinations: Atlas[];
+  destinations: Set<Atlas>;
 }
 
 export interface Game {

@@ -1,82 +1,84 @@
 <script lang="ts">
-	import { ARGENTINA } from '$lib/atlas/argentina';
-	import { CHINA } from '$lib/atlas/china';
-	import { GREECE } from '$lib/atlas/greece';
-	import { NORWAY } from '$lib/atlas/norway';
-	import { USA } from '$lib/atlas/usa';
-	import { Witness, type Game, Place, type Atlas } from '$lib/helpers';
+	import { ARGENTINA } from '$lib/atlases/argentina';
+	import { CHINA } from '$lib/atlases/china';
+	import { GREECE } from '$lib/atlases/greece';
+	import { NORWAY } from '$lib/atlases/norway';
+	import { USA } from '$lib/atlases/usa';
+	import { Witness, type Game, Place, type Atlas, type Suspect, type Round } from '$lib/helpers';
+	import { SUSPECTS } from '$lib/suspects';
 	import { format } from 'date-fns';
 
+	const startingLocation: Atlas = getRandomAtlas();
+
+	function getStartTime() {
+		const monday = new Date();
+		monday.setUTCHours(9, 0, 0, 0); // Set time to 9:00 am
+		monday.setUTCDate(monday.getUTCDate() - ((monday.getUTCDay() + 6) % 7)); // Set to the previous Monday
+		return monday;
+	}
+
+	function getRandomAtlas(): Atlas {
+		const atlases = [ARGENTINA, CHINA, GREECE, NORWAY, USA];
+		const atlas = getRandomValue(atlases);
+		atlases.splice(atlases.indexOf(atlas), 1);
+		return atlas;
+	}
+
+	function getRandomStolenItem(): string {
+		return getRandomValue(startingLocation.stolen);
+	}
+
+	function getRandomSuspect(): Suspect {
+		return getRandomValue(SUSPECTS);
+	}
+
+	function getRounds(): Round[] {
+		const rounds: Round[] = [];
+		const NUMBER_OF_ROUNDS = 4;
+		const roundAtlases: Atlas[] = [];
+
+		// Set the first round
+		roundAtlases.push(startingLocation);
+
+		for (let i = 0; i < NUMBER_OF_ROUNDS; i++) {
+			roundAtlases.push(getRandomAtlas());
+		}
+
+		for (const roundAtlas of roundAtlases) {
+			const previousRound: Atlas = roundAtlases[roundAtlases.indexOf(roundAtlas) - 1];
+			const nextRound: Atlas = roundAtlases[roundAtlases.indexOf(roundAtlas) + 1];
+
+			const destinations: Set<Atlas> = new Set();
+			if (previousRound) destinations.add(previousRound);
+			if (nextRound) destinations.add(nextRound);
+
+			rounds.push({
+				atlas: roundAtlas,
+				scenes: [
+					{
+						place: Place.AIRPORT,
+						witness: Witness.PILOT,
+						clue: `Yup, saw them leave on a plane with a ${nextRound?.city} flag on the tail.`
+					}
+				],
+				destinations
+			});
+		}
+
+		return rounds;
+	}
+
+	function getRandomValue<T>(array: T[]): T {
+		return array[Math.floor(Math.random() * array.length)];
+	}
+
+	////////////////////////////////////////////////////////////
+
 	const game: Game = {
-		currentTime: new Date(),
-		stolenTreasure: ARGENTINA.stolen[0],
-		suspect: {
-			name: 'Julia Sanfrancisco',
-			hobby: 'mountain climbing',
-			hair: 'brown',
-			feature: 'mole on her left cheek',
-			vehicle: 'convertible',
-			sex: 'female',
-			subjectPronoun: 'she',
-			possesivePronoun: 'her'
-		},
-		rounds: [
-			{
-				atlas: ARGENTINA,
-				scenes: [
-					{
-						place: Place.AIRPORT,
-						witness: Witness.PILOT,
-						clue: 'She was in a hurry to catch a plane with a red and white flag on the tail.'
-					}
-				],
-				destinations: [CHINA, USA, GREECE, NORWAY]
-			},
-			{
-				atlas: CHINA,
-				scenes: [
-					{
-						place: Place.AIRPORT,
-						witness: Witness.PILOT,
-						clue: 'She was in a hurry to catch a plane with a red, white and blue flag on the tail.'
-					}
-				],
-				destinations: [USA, GREECE, NORWAY, ARGENTINA]
-			},
-			{
-				atlas: USA,
-				scenes: [
-					{
-						place: Place.AIRPORT,
-						witness: Witness.PILOT,
-						clue: 'She was in a hurry to catch a plane with a red and blue flag on the tail.'
-					}
-				],
-				destinations: [NORWAY, GREECE, ARGENTINA, CHINA]
-			},
-			{
-				atlas: NORWAY,
-				scenes: [
-					{
-						place: Place.AIRPORT,
-						witness: Witness.PILOT,
-						clue: 'She was in a hurry to catch a plane with a blue and white flag on the tail.'
-					}
-				],
-				destinations: [GREECE, CHINA, ARGENTINA, USA]
-			},
-			{
-				atlas: GREECE,
-				scenes: [
-					{
-						place: Place.AIRPORT,
-						witness: Witness.PILOT,
-						clue: 'She was in a hurry to catch a plane with a blue and white flag on the tail.'
-					}
-				],
-				destinations: [USA, CHINA, ARGENTINA, NORWAY]
-			}
-		]
+		currentTime: getStartTime(),
+		stolenTreasure: getRandomStolenItem(),
+		suspect: getRandomSuspect(),
+		rounds: getRounds()
 	};
 
 	$: currentRoundIndex = 0;
@@ -84,7 +86,9 @@
 
 	function setDecoyRound(destination: Atlas) {
 		// Make sure the user can come back to where the suspect was last seen
+		const destinations = new Set<Atlas>();
 		const anchorDestination = game.rounds[currentRoundIndex].atlas;
+		destinations.add(anchorDestination);
 
 		currentRound = {
 			atlas: destination,
@@ -95,7 +99,7 @@
 					clue: "Didn't see anyone matching that description."
 				}
 			],
-			destinations: [anchorDestination]
+			destinations
 		};
 	}
 
@@ -114,49 +118,54 @@
 	}
 </script>
 
-	<!-- Debug controls -->
-	<button on:click={() => (currentRoundIndex -= 1)} disabled={currentRoundIndex === 0}
-		>Prev round</button
-	>
-	<button
-		on:click={() => (currentRoundIndex += 1)}
-		disabled={currentRoundIndex === game.rounds.length - 1}>Next round</button
-	>
+<!-- Debug controls -->
+<button on:click={() => (currentRoundIndex -= 1)} disabled={currentRoundIndex === 0}
+	>Prev round</button
+>
+<button
+	on:click={() => (currentRoundIndex += 1)}
+	disabled={currentRoundIndex === game.rounds.length - 1}>Next round</button
+>
 
-	<h3>Round {currentRoundIndex}</h3>
+<h3>Round {currentRoundIndex}</h3>
 
-	<hr />
+<hr />
 
-	<h1>{currentRound.atlas.city}</h1>
-	<h2>{format(game.currentTime, 'EEEE hh:mm aaa')}</h2>
+<p>The stolen item is <u>{game.stolenTreasure}</u></p>
+<p>The suspect sex is <u>{game.suspect.sex}</u></p>
 
-	<hr />
+<hr />
 
-	<h3>Clues</h3>
+<h1>{currentRound.atlas.city}</h1>
+<h2>{format(game.currentTime, 'EEEE hh:mm aaa')}</h2>
 
-	<ul>
-		{#each currentRound.scenes as scene}
-			<li>
-				<p>
-					<strong>{scene.place}</strong><br />
-					<strong>{scene.witness}</strong> — {scene.clue}
-				</p>
-			</li>
-		{/each}
-	</ul>
+<hr />
 
-	<hr />
+<h3>Clues</h3>
 
-	<h3>Depart to</h3>
+<ul>
+	{#each currentRound.scenes as scene}
+		<li>
+			<p>
+				<strong>{scene.place}</strong><br />
+				<strong>{scene.witness}</strong> — {scene.clue}
+			</p>
+		</li>
+	{/each}
+</ul>
 
-	<ul>
-		{#each currentRound.destinations as destination}
-			<li>
-				<button on:click={() => travelTo(destination)}>{destination.city}</button>
-			</li>
-		{/each}
-	</ul>
+<hr />
 
-	<hr />
+<h3>Depart to</h3>
 
-	<a href="/">Abandon game</a>
+<ul>
+	{#each Array.from(currentRound.destinations) as destination}
+		<li>
+			<button on:click={() => travelTo(destination)}>{destination.city}</button>
+		</li>
+	{/each}
+</ul>
+
+<hr />
+
+<a href="/">Abandon game</a>

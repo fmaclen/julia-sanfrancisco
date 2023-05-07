@@ -1,4 +1,4 @@
-import { ARGENTINA } from "./atlas/argentina"
+import { ARGENTINA } from "./atlases/argentina"
 
 const startTime = "Monday 9:00 am"
 const endTime = "Sunday 5:00 pm"
