@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { ATLASES, getRandomAtlas, type Atlas } from '$lib/atlases';
 	import { getRandomValue, redirectTo } from '$lib/helpers';
 	import { getRank } from '$lib/player';
