@@ -1,4 +1,17 @@
-export const SUSPECTS = [
+
+export interface Suspect {
+	name: string;
+	hobby: string;
+	hair: string;
+	feature: string;
+	vehicle: string;
+	sex: string;
+	subjectPronoun: string;
+	possesivePronoun: string;
+}
+
+
+export const SUSPECTS: Suspect[] = [
 	{
 		name: 'Julia Sanfrancisco',
 		hobby: 'mountain climbing',

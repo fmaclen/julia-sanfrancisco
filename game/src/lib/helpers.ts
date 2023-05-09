@@ -1,15 +1,5 @@
 import type { Round } from './rounds';
-
-export interface Suspect {
-	name: string;
-	hobby: string;
-	hair: string;
-	feature: string;
-	vehicle: string;
-	sex: string;
-	subjectPronoun: string;
-	possesivePronoun: string;
-}
+import type { Suspect } from './suspects';
 
 export enum Rank {
 	ROOKIE = 'Rookie', // 0 cases

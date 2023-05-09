@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { ATLASES, getRandomAtlas, type Atlas } from '$lib/atlases';
-	import { type Game, type Suspect, getRandomValue } from '$lib/helpers';
+	import { type Game, getRandomValue } from '$lib/helpers';
 	import { getRounds, getDecoyRound } from '$lib/rounds';
-	import { SUSPECTS } from '$lib/suspects';
+	import { SUSPECTS, type Suspect } from '$lib/suspects';
 	import { format } from 'date-fns';
 
 	const atlasesInRound = [...ATLASES];
