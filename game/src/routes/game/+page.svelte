@@ -1,32 +1,12 @@
 <script lang="ts">
-	import { ARGENTINA } from '$lib/atlases/argentina';
-	import { AUSTRALIA } from '$lib/atlases/australia';
-	import { BRAZIL } from '$lib/atlases/brazil';
-	import { CHINA } from '$lib/atlases/china';
-	import { GREECE } from '$lib/atlases/greece';
-	import { ITALY } from '$lib/atlases/italy';
-	import { JAPAN } from '$lib/atlases/japan';
-	import { NORWAY } from '$lib/atlases/norway';
-	import { UNITED_KINGDOM } from '$lib/atlases/uk';
-	import { USA } from '$lib/atlases/usa';
-	import { Witness, type Game, Place, type Atlas, type Suspect, type Round } from '$lib/helpers';
+	import { ATLASES, getRandomAtlas, setRandomDestinations, type Atlas } from '$lib/atlases';
+	import { Witness, type Game, Place, type Suspect, getRandomValue } from '$lib/helpers';
+	import { getRounds, setDecoyRound } from '$lib/rounds';
 	import { SUSPECTS } from '$lib/suspects';
 	import { format } from 'date-fns';
 
-	const atlases = [
-		ARGENTINA,
-		AUSTRALIA,
-		BRAZIL,
-		CHINA,
-		GREECE,
-		ITALY,
-		JAPAN,
-		NORWAY,
-		UNITED_KINGDOM,
-		USA
-	];
-	const atlasesInRound = [...atlases];
-	const startingLocation: Atlas = getRandomAtlas();
+	const atlasesInRound = [...ATLASES];
+	const startingDestination: Atlas = getRandomAtlas();
 
 	function getStartTime() {
 		const monday = new Date();
@@ -35,111 +15,23 @@
 		return monday;
 	}
 
-	function getRandomAtlas(): Atlas {
-		const atlas = getRandomValue(atlases);
-		return atlas;
-	}
-
 	function getRandomStolenItem(): string {
-		return getRandomValue(startingLocation.stolen);
+		return getRandomValue(startingDestination.stolen);
 	}
 
 	function getRandomSuspect(): Suspect {
 		return getRandomValue(SUSPECTS);
 	}
 
-	function getRounds(): Round[] {
-		const rounds: Round[] = [];
-		const NUMBER_OF_ROUNDS = 4;
-		const roundAtlases: Atlas[] = [];
-
-		// Set the first round
-		roundAtlases.push(startingLocation);
-
-		for (let i = 0; i < NUMBER_OF_ROUNDS; i++) {
-			let atlasInRound = getRandomAtlas();
-
-			// Prevent duplicate atlas in rounds
-			while (roundAtlases.includes(atlasInRound)) atlasInRound = getRandomAtlas();
-			roundAtlases.push(atlasInRound);
-
-			// Remove the atlas from the list so it can't be used again
-			atlasesInRound.splice(atlasesInRound.indexOf(atlasInRound), 1);
-		}
-
-		for (const roundAtlas of roundAtlases) {
-			const previousRoundAtlas: Atlas = roundAtlases[roundAtlases.indexOf(roundAtlas) - 1];
-			const nextRoundAtlas: Atlas = roundAtlases[roundAtlases.indexOf(roundAtlas) + 1];
-
-			const destinations: Set<Atlas> = new Set();
-			if (previousRoundAtlas) destinations.add(previousRoundAtlas);
-			if (nextRoundAtlas) destinations.add(nextRoundAtlas);
-
-			setRandomDestinations(destinations, roundAtlas);
-
-			rounds.push({
-				atlas: roundAtlas,
-				scenes: [
-					{
-						place: Place.AIRPORT,
-						witness: Witness.PILOT,
-						clue: `Yup, saw them leave on a plane with a ${nextRoundAtlas?.city} flag on the tail.`
-					}
-				],
-				destinations
-			});
-		}
-
-		return rounds;
-	}
-
-	function setRandomDestinations(destinations: Set<Atlas>, currentAtlas: Atlas) {
-		const MAX_DESTINATIONS = 5;
-
-		while (destinations.size < MAX_DESTINATIONS) {
-			const randomAtlas = getRandomAtlas();
-
-			// Do not add the current atlas as a possible destination
-			if (randomAtlas !== currentAtlas) destinations.add(randomAtlas);
-		}
-	}
-
-	function getRandomValue<T>(array: T[]): T {
-		return array[Math.floor(Math.random() * array.length)];
-	}
-
-	////////////////////////////////////////////////////////////
-
 	const game: Game = {
 		currentTime: getStartTime(),
 		stolenTreasure: getRandomStolenItem(),
 		suspect: getRandomSuspect(),
-		rounds: getRounds()
+		rounds: getRounds(startingDestination, atlasesInRound)
 	};
 
 	$: currentRoundIndex = 0;
 	$: currentRound = game.rounds[currentRoundIndex];
-
-	function setDecoyRound(atlas: Atlas) {
-		// Make sure the user can come back to where the suspect was last seen
-		const destinations = new Set<Atlas>();
-		const anchorDestination = game.rounds[currentRoundIndex].atlas;
-		destinations.add(anchorDestination);
-
-		setRandomDestinations(destinations, atlas);
-
-		currentRound = {
-			atlas,
-			scenes: [
-				{
-					place: Place.LIBRARY,
-					witness: Witness.ARCHIVIST,
-					clue: "Didn't see anyone matching that description."
-				}
-			],
-			destinations
-		};
-	}
 
 	function travelTo(destination: Atlas) {
 		const { rounds } = game;
@@ -153,7 +45,10 @@
 		if (isCurrentRound) currentRound = rounds[currentRoundIndex];
 		if (isPreviousRoundAtlas) currentRoundIndex -= 1;
 		if (isNextRoundAtlas) currentRoundIndex += 1;
-		if (isDecoyRound) setDecoyRound(destination);
+
+		// There should always be a way to return to the 
+		const anchorDestination = game.rounds[currentRoundIndex].atlas;
+		if (isDecoyRound) setDecoyRound(destination, anchorDestination);
 	}
 </script>
 

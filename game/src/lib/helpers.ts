@@ -1,3 +1,5 @@
+import type { Atlas } from "./atlases";
+
 export interface Suspect {
   name: string;
   hobby: string;
@@ -96,20 +98,6 @@ export enum Witness {
 }
 
 
-export interface Atlas {
-  city: string;
-  descriptions: string[];
-  currency: string;
-  language: string;
-  flag: string;
-  leader: 'king' | 'president' | 'prime minister' | 'party chairman';
-  see: string[];
-  toDo: string[];
-  trade: string[];
-  study: string[];
-  stolen: string[];
-}
-
 export interface Scene {
   place: Place;
   witness: Witness;
@@ -132,4 +120,8 @@ export interface Game {
 export interface Player {
   name: string;
   score: number;
+}
+
+export function getRandomValue<T>(array: T[]): T {
+  return array[Math.floor(Math.random() * array.length)];
 }
