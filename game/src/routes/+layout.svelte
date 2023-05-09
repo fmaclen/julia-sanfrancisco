@@ -19,8 +19,8 @@
 
     font-family: 'Mona Sans';
     margin: unset;
-    color: var(--color-neutral-100);
-    background-color: var(--color-neutral-900);
+    color: var(--color-neutral-900);
+    background-color: var(--color-neutral-50);
 	}
 
 	main.main {

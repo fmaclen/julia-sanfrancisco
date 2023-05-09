@@ -24,7 +24,6 @@
 
 	function getRandomAtlas(): Atlas {
 		const atlas = getRandomValue(atlases);
-		atlases.splice(atlases.indexOf(atlas), 1); // Remove the atlas from the list so it can't be used again
 		return atlas;
 	}
 
@@ -45,7 +44,14 @@
 		roundAtlases.push(startingLocation);
 
 		for (let i = 0; i < NUMBER_OF_ROUNDS; i++) {
-			roundAtlases.push(getRandomAtlas());
+			let atlasInRound = getRandomAtlas();
+
+			// Prevent duplicate atlas in rounds
+			while (roundAtlases.includes(atlasInRound)) atlasInRound = getRandomAtlas();
+			roundAtlases.push(atlasInRound);
+
+			// Remove the atlas from the list so it can't be used again
+			atlasesInRound.splice(atlasesInRound.indexOf(atlasInRound), 1);
 		}
 
 		for (const roundAtlas of roundAtlases) {
@@ -56,20 +62,11 @@
 			if (previousRoundAtlas) destinations.add(previousRoundAtlas);
 			if (nextRoundAtlas) destinations.add(nextRoundAtlas);
 
-			//////////////////////////////////////////////////////////////////////////
-			//////////////////////////////////////////////////////////////////////////
-			//////////////////////////////////////////////////////////////////////////
-			
-			// FIXME: these need to be dynamic
-			destinations.add(ARGENTINA);
-			destinations.add(CHINA);
-			destinations.add(NORWAY);
-			destinations.add(USA);
-			destinations.add(GREECE);
-			
-			//////////////////////////////////////////////////////////////////////////
-			//////////////////////////////////////////////////////////////////////////
-			//////////////////////////////////////////////////////////////////////////
+			// Add random decoy destinations
+			while (destinations.size < 5) {
+				const randomAtlas = getRandomAtlas();
+				if (randomAtlas !== roundAtlas) destinations.add(randomAtlas);
+			}
 
 			rounds.push({
 				atlas: roundAtlas,
@@ -124,11 +121,18 @@
 
 	function travelTo(destination: Atlas) {
 		const { rounds } = game;
+
 		const isPreviousRoundAtlas =
 			currentRoundIndex !== 0 && rounds[currentRoundIndex - 1].atlas === destination;
 		const isCurrentRound = rounds[currentRoundIndex].atlas === destination;
 		const isNextRoundAtlas = rounds[currentRoundIndex + 1].atlas === destination;
 		const isDecoyRound = !isCurrentRound && !isPreviousRoundAtlas && !isNextRoundAtlas;
+
+		// console.log("isPreviousRoundAtlas", isPreviousRoundAtlas)
+		// console.log("isCurrentRound", isCurrentRound)
+		// console.log("isNextRoundAtlas", isNextRoundAtlas)
+		// console.log("isDecoyRound", isDecoyRound)
+		// console.log("//////////////////////////////////////////////////////")
 
 		if (isCurrentRound) currentRound = rounds[currentRoundIndex];
 		if (isPreviousRoundAtlas) currentRoundIndex -= 1;
@@ -137,18 +141,25 @@
 	}
 </script>
 
-<!-- Debug controls -->
-<button on:click={() => (currentRoundIndex -= 1)} disabled={currentRoundIndex === 0}
-	>Prev round</button
->
-<button
-	on:click={() => (currentRoundIndex += 1)}
-	disabled={currentRoundIndex === game.rounds.length - 1}>Next round</button
->
-
-<h3>Round {currentRoundIndex}</h3>
-
-<hr />
+<form>
+	<fieldset>
+		<legend>Debug controls</legend>
+		<p>
+			<strong> rounds: </strong>
+			{#each game.rounds as round, i}
+				<u>{round.atlas.city} ({i})</u>&nbsp;
+			{/each}
+		</p>
+		<p><strong>currentRoundIndex: {currentRoundIndex}</strong></p>
+		<button on:click={() => (currentRoundIndex -= 1)} disabled={currentRoundIndex === 0}>
+			Prev round
+		</button>
+		<button
+			on:click={() => (currentRoundIndex += 1)}
+			disabled={currentRoundIndex === game.rounds.length - 1}>Next round</button
+		>
+	</fieldset>
+</form>
 
 <p>The stolen item is <u>{game.stolenTreasure}</u></p>
 <p>The suspect sex is <u>{game.suspect.sex}</u></p>
