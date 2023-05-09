@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { ATLASES, getRandomAtlas, setRandomDestinations, type Atlas } from '$lib/atlases';
-	import { Witness, type Game, Place, type Suspect, getRandomValue } from '$lib/helpers';
-	import { getRounds, setDecoyRound } from '$lib/rounds';
+	import { ATLASES, getRandomAtlas, type Atlas } from '$lib/atlases';
+	import { type Game, type Suspect, getRandomValue } from '$lib/helpers';
+	import { getRounds, getDecoyRound } from '$lib/rounds';
 	import { SUSPECTS } from '$lib/suspects';
 	import { format } from 'date-fns';
 
@@ -30,9 +30,6 @@
 		rounds: getRounds(startingDestination, atlasesInRound)
 	};
 
-	$: currentRoundIndex = 0;
-	$: currentRound = game.rounds[currentRoundIndex];
-
 	function travelTo(destination: Atlas) {
 		const { rounds } = game;
 
@@ -46,10 +43,15 @@
 		if (isPreviousRoundAtlas) currentRoundIndex -= 1;
 		if (isNextRoundAtlas) currentRoundIndex += 1;
 
-		// There should always be a way to return to the 
-		const anchorDestination = game.rounds[currentRoundIndex].atlas;
-		if (isDecoyRound) setDecoyRound(destination, anchorDestination);
+		// There should always be a way to return to the
+		const anchorDestination = rounds[currentRoundIndex].atlas;
+		if (isDecoyRound) {
+			currentRound = getDecoyRound(destination, anchorDestination);
+		}
 	}
+
+	$: currentRoundIndex = 0;
+	$: currentRound = game.rounds[currentRoundIndex];
 </script>
 
 <form>
