@@ -1,14 +1,18 @@
 <script lang="ts">
 	import { ARGENTINA } from '$lib/atlases/argentina';
+	import { AUSTRALIA } from '$lib/atlases/australia';
 	import { CHINA } from '$lib/atlases/china';
 	import { GREECE } from '$lib/atlases/greece';
+	import { ITALY } from '$lib/atlases/italy';
+	import { JAPAN } from '$lib/atlases/japan';
 	import { NORWAY } from '$lib/atlases/norway';
 	import { USA } from '$lib/atlases/usa';
 	import { Witness, type Game, Place, type Atlas, type Suspect, type Round } from '$lib/helpers';
 	import { SUSPECTS } from '$lib/suspects';
 	import { format } from 'date-fns';
 
-	const atlases = [ARGENTINA, CHINA, GREECE, NORWAY, USA];
+	const atlases = [ARGENTINA, AUSTRALIA, CHINA, GREECE, ITALY, JAPAN, NORWAY, USA];
+	const atlasesInRound = [...atlases];
 	const startingLocation: Atlas = getRandomAtlas();
 
 	function getStartTime() {
