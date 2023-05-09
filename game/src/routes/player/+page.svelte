@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Rank } from '$lib/helpers';
 	import { playerStore } from '$lib/stores/player';
-	import { redirect } from '@sveltejs/kit';
 
 	let playerName: string;
 	let rank = getRank($playerStore?.score);
@@ -17,7 +16,7 @@
 
 	function setPlayer() {
 		playerStore.set({ name: playerName, score: 0 });
-		redirect(307, '/game');
+		window.location.href = '/game';
 	}
 </script>
 

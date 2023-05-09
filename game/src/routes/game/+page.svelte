@@ -1,9 +1,14 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { ATLASES, getRandomAtlas, type Atlas } from '$lib/atlases';
 	import { type Game, getRandomValue } from '$lib/helpers';
 	import { getRounds, getDecoyRound } from '$lib/rounds';
+	import { playerStore } from '$lib/stores/player';
 	import { SUSPECTS, type Suspect } from '$lib/suspects';
 	import { format } from 'date-fns';
+
+	// If there is no user profile, redirect to the player page
+	if ($playerStore === null && browser) window.location.href = '/player';
 
 	const atlasesInRound = [...ATLASES];
 	const startingDestination: Atlas = getRandomAtlas();
@@ -54,9 +59,11 @@
 	$: currentRound = game.rounds[currentRoundIndex];
 </script>
 
+
 <form>
 	<fieldset>
 		<legend>Debug controls</legend>
+		<p>$playerStore — Name: <u>{$playerStore?.name}</u> - Score: <u>{$playerStore?.score}</u></p>
 		<p>
 			<strong> rounds: </strong>
 			{#each game.rounds as round, i}
@@ -86,7 +93,7 @@
 
 <hr />
 
-<h3>Clues</h3>
+<h3>Walk to</h3>
 
 <ul>
 	{#each currentRound.scenes as scene}
