@@ -4,7 +4,7 @@
 	import { getRandomValue } from '$lib/helpers';
 	import { getRank } from '$lib/player';
 	import { getRounds, getDecoyRound, type Round } from '$lib/rounds';
-	import { playerStore } from '$lib/stores/player';
+	import { playerStore } from '$lib/player';
 	import { SUSPECTS, type Suspect } from '$lib/suspects';
 	import { format } from 'date-fns';
 

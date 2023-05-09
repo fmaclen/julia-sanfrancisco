@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getRank } from '$lib/player';
-	import { playerStore } from '$lib/stores/player';
+	import { playerStore } from '$lib/player';
 
 	let playerName: string;
 	let rank = getRank($playerStore?.score);
