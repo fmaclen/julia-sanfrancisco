@@ -3,7 +3,7 @@ name: Build and Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main # Replace with the name of the branch you want to trigger the workflow
+      - main
 
 jobs:
   build_and_deploy:
@@ -16,7 +16,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: 14 # You can specify a different Node.js version if needed
+        node-version: 18
 
     - name: Install dependencies
       run: npm ci
@@ -28,4 +28,4 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./build # The directory with your built static site
+        publish_dir: ./build
