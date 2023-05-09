@@ -1,6 +1,7 @@
 import { getRandomAtlas, type Atlas, setRandomDestinations } from "./atlases";
 import { Place, Witness, type Round } from "./helpers";
 
+// Generates the atlas, scenes, destinatinos, etc... for each round in the game
 export function getRounds(startingDestination: Atlas, atlasesInRound: Atlas[]): Round[] {
   const rounds: Round[] = [];
   const NUMBER_OF_ROUNDS = 4;
@@ -46,6 +47,7 @@ export function getRounds(startingDestination: Atlas, atlasesInRound: Atlas[]): 
   return rounds;
 }
 
+// Creates a temporary round without any clues when the user travels to an incorrect city
 export function setDecoyRound(atlas: Atlas, anchorDestination: Atlas): Round {
   const destinations = new Set<Atlas>();
 
