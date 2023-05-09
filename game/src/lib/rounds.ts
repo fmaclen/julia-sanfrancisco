@@ -1,6 +1,11 @@
 import { getRandomAtlas, type Atlas, setRandomDestinations } from './atlases';
-import type { Round } from './helpers';
-import { getScenes } from './scenes';
+import { getScenes, type Scene } from './scenes';
+
+export interface Round {
+	atlas: Atlas;
+	scenes: Scene[];
+	destinations: Set<Atlas>;
+}
 
 // Generates the atlas, scenes, destinatinos, etc... for each round in the game
 export function getRounds(startingDestination: Atlas, atlasesInRound: Atlas[]): Round[] {

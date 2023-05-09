@@ -1,4 +1,6 @@
+import type Scene from './Scene.svelte';
 import type { Atlas } from './atlases';
+import type { Round } from './rounds';
 
 export interface Suspect {
 	name: string;
@@ -95,18 +97,6 @@ export enum Witness {
 	UNDER_SECRETARY = 'Under Secretary',
 	ATTACHE = 'Attache',
 	AMBASSADOR = 'Ambassador'
-}
-
-export interface Scene {
-	place: Place;
-	witness: Witness;
-	clue: string;
-}
-
-export interface Round {
-	atlas: Atlas;
-	scenes: Scene[];
-	destinations: Set<Atlas>;
 }
 
 export interface Game {

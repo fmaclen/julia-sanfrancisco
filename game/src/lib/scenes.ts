@@ -1,5 +1,11 @@
 import type { Atlas } from './atlases';
-import { Place, Witness, type Scene } from './helpers';
+import { Place, Witness } from './helpers';
+
+export interface Scene {
+	place: Place;
+	witness: Witness;
+	clue: string;
+}
 
 export function getScenes({
 	nextRoundAtlas,
