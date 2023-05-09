@@ -62,11 +62,7 @@
 			if (previousRoundAtlas) destinations.add(previousRoundAtlas);
 			if (nextRoundAtlas) destinations.add(nextRoundAtlas);
 
-			// Add random decoy destinations
-			while (destinations.size < 5) {
-				const randomAtlas = getRandomAtlas();
-				if (randomAtlas !== roundAtlas) destinations.add(randomAtlas);
-			}
+			setRandomDestinations(destinations, roundAtlas)
 
 			rounds.push({
 				atlas: roundAtlas,
@@ -82,6 +78,17 @@
 		}
 
 		return rounds;
+	}
+
+	function setRandomDestinations(destinations: Set<Atlas>, currentAtlas: Atlas) {
+		const MAX_DESTINATIONS = 5;
+
+		while (destinations.size < MAX_DESTINATIONS) {
+			const randomAtlas = getRandomAtlas();
+
+			// Do not add the current atlas as a possible destination
+			if (randomAtlas !== currentAtlas) destinations.add(randomAtlas);
+		}
 	}
 
 	function getRandomValue<T>(array: T[]): T {
@@ -100,19 +107,16 @@
 	$: currentRoundIndex = 0;
 	$: currentRound = game.rounds[currentRoundIndex];
 
-	function setDecoyRound(destination: Atlas) {
+	function setDecoyRound(atlas: Atlas) {
 		// Make sure the user can come back to where the suspect was last seen
 		const destinations = new Set<Atlas>();
 		const anchorDestination = game.rounds[currentRoundIndex].atlas;
 		destinations.add(anchorDestination);
 
-		while (destinations.size < 5) {
-			const randomAtlas = getRandomAtlas();
-			destinations.add(randomAtlas);
-		}
+		setRandomDestinations(destinations, atlas);
 
 		currentRound = {
-			atlas: destination,
+			atlas,
 			scenes: [
 				{
 					place: Place.LIBRARY,
@@ -152,7 +156,6 @@
 				&nbsp;
 			{/each}
 		</p>
-		<p><strong>currentRoundIndex: {currentRoundIndex}</strong></p>
 		<button on:click={() => (currentRoundIndex -= 1)} disabled={currentRoundIndex === 0}>
 			Prev round
 		</button>
