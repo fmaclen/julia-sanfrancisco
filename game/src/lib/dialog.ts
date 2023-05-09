@@ -1,3 +1,5 @@
+// FIXME: this file is only kept as a reference, it's not used anywhere else in the codebase
+
 import { ARGENTINA } from './atlases/argentina';
 
 const startTime = 'Monday 9:00 am';
@@ -21,11 +23,11 @@ const trade = ARGENTINA.trade[0];
 const study = ARGENTINA.study[0];
 const stolen = ARGENTINA.stolen[0];
 
-export const BRIEFING = [
+const BRIEFING = [
 	`National treasure stolen from ${city}. The treasure has been identified as ${stolen}. ${sex} suspect reported at the scene of the crime. `
 ];
 
-export const LOCATION_CLUES = [
+const LOCATION_CLUES = [
 	`All I know is that ${pronoun} was researching ${study}.`,
 	`All I know is that ${pronoun} asked about the exchange rate for ${currency}.`,
 	`All I know is that ${pronoun} planned to ${toDo}.`,
