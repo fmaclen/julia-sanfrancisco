@@ -16,7 +16,7 @@
 	}
 
 	// If there is no user profile, redirect to the player page
-	if ($playerStore === null && browser) window.location.href = '/player';
+	if ($playerStore === null && browser) window.location.href = '/player/';
 
 	const atlasesInRound = [...ATLASES];
 	const startingDestination: Atlas = getRandomAtlas();
@@ -69,7 +69,7 @@
 			return player;
 		});
 
-		if (browser) window.location.href = '/player';
+		if (browser) window.location.href = '/player/';
 	}
 
 	$: currentRoundIndex = 0;
