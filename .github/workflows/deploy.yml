@@ -32,4 +32,5 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./build
-        force_orphan: true
+        force_orphan: true # This will create a new orphan gh-pages branch if it doesn't exist
+        allow_empty_commit: true # This allows the action to continue even if no changes are detected
