@@ -1,18 +1,9 @@
 <script lang="ts">
-	import { Rank } from '$lib/helpers';
+	import { getRank } from '$lib/player';
 	import { playerStore } from '$lib/stores/player';
 
 	let playerName: string;
 	let rank = getRank($playerStore?.score);
-
-	function getRank(score: number | undefined) {
-		if (score === undefined || score === 0) return Rank.ROOKIE;
-		else if (score < 4) return Rank.SLEUTH;
-		else if (score < 7) return Rank.PRIVATE_EYE;
-		else if (score < 10) return Rank.INVESTIGATOR;
-		else if (score < 14) return Rank.ACE_DETECTIVE;
-		else return Rank.SUPER_SLEUTH;
-	}
 
 	function setPlayer() {
 		playerStore.set({ name: playerName, score: 0 });

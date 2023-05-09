@@ -1,5 +1,5 @@
 import { browser } from '$app/environment';
-import type { Player } from '$lib/helpers';
+import type { Player } from '$lib/player';
 import { writable } from 'svelte/store';
 
 const playersLocalStorage: string | null = browser ? window.localStorage.getItem('player') : null;
