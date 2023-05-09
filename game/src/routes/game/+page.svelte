@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { ATLASES, getRandomAtlas, type Atlas } from '$lib/atlases';
-	import { getRandomValue } from '$lib/helpers';
+	import { getRandomValue, redirectTo } from '$lib/helpers';
 	import { getRank } from '$lib/player';
-	import { getRounds, getDecoyRound, type Round } from '$lib/rounds';
 	import { playerStore } from '$lib/player';
+	import { getRounds, getDecoyRound, type Round } from '$lib/rounds';
 	import { SUSPECTS, type Suspect } from '$lib/suspects';
 	import { format } from 'date-fns';
 
@@ -16,7 +16,7 @@
 	}
 
 	// If there is no user profile, redirect to the player page
-	if ($playerStore === null && browser) window.location.href = '/player/';
+	if ($playerStore === null) redirectTo('/player/');
 
 	const atlasesInRound = [...ATLASES];
 	const startingDestination: Atlas = getRandomAtlas();
@@ -69,7 +69,7 @@
 			return player;
 		});
 
-		if (browser) window.location.href = '/player/';
+		redirectTo('/player/');
 	}
 
 	$: currentRoundIndex = 0;

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { redirectTo } from '$lib/helpers';
 	import { getRank } from '$lib/player';
 	import { playerStore } from '$lib/player';
 
@@ -7,7 +8,7 @@
 
 	function setPlayer() {
 		playerStore.set({ name: playerName, score: 0 });
-		window.location.href = '/game/';
+		redirectTo('/game/')
 	}
 </script>
 
