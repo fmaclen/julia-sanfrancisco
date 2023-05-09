@@ -1,17 +1,30 @@
 <script lang="ts">
 	import { ARGENTINA } from '$lib/atlases/argentina';
 	import { AUSTRALIA } from '$lib/atlases/australia';
+	import { BRAZIL } from '$lib/atlases/brazil';
 	import { CHINA } from '$lib/atlases/china';
 	import { GREECE } from '$lib/atlases/greece';
 	import { ITALY } from '$lib/atlases/italy';
 	import { JAPAN } from '$lib/atlases/japan';
 	import { NORWAY } from '$lib/atlases/norway';
+	import { UNITED_KINGDOM } from '$lib/atlases/uk';
 	import { USA } from '$lib/atlases/usa';
 	import { Witness, type Game, Place, type Atlas, type Suspect, type Round } from '$lib/helpers';
 	import { SUSPECTS } from '$lib/suspects';
 	import { format } from 'date-fns';
 
-	const atlases = [ARGENTINA, AUSTRALIA, CHINA, GREECE, ITALY, JAPAN, NORWAY, USA];
+	const atlases = [
+		ARGENTINA,
+		AUSTRALIA,
+		BRAZIL,
+		CHINA,
+		GREECE,
+		ITALY,
+		JAPAN,
+		NORWAY,
+		UNITED_KINGDOM,
+		USA
+	];
 	const atlasesInRound = [...atlases];
 	const startingLocation: Atlas = getRandomAtlas();
 
@@ -62,7 +75,7 @@
 			if (previousRoundAtlas) destinations.add(previousRoundAtlas);
 			if (nextRoundAtlas) destinations.add(nextRoundAtlas);
 
-			setRandomDestinations(destinations, roundAtlas)
+			setRandomDestinations(destinations, roundAtlas);
 
 			rounds.push({
 				atlas: roundAtlas,
