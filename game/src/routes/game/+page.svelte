@@ -106,6 +106,11 @@
 		const anchorDestination = game.rounds[currentRoundIndex].atlas;
 		destinations.add(anchorDestination);
 
+		while (destinations.size < 5) {
+			const randomAtlas = getRandomAtlas();
+			destinations.add(randomAtlas);
+		}
+
 		currentRound = {
 			atlas: destination,
 			scenes: [
@@ -128,12 +133,6 @@
 		const isNextRoundAtlas = rounds[currentRoundIndex + 1].atlas === destination;
 		const isDecoyRound = !isCurrentRound && !isPreviousRoundAtlas && !isNextRoundAtlas;
 
-		// console.log("isPreviousRoundAtlas", isPreviousRoundAtlas)
-		// console.log("isCurrentRound", isCurrentRound)
-		// console.log("isNextRoundAtlas", isNextRoundAtlas)
-		// console.log("isDecoyRound", isDecoyRound)
-		// console.log("//////////////////////////////////////////////////////")
-
 		if (isCurrentRound) currentRound = rounds[currentRoundIndex];
 		if (isPreviousRoundAtlas) currentRoundIndex -= 1;
 		if (isNextRoundAtlas) currentRoundIndex += 1;
@@ -147,7 +146,10 @@
 		<p>
 			<strong> rounds: </strong>
 			{#each game.rounds as round, i}
-				<u>{round.atlas.city} ({i})</u>&nbsp;
+				<u style={currentRoundIndex === i ? `color: tomato;` : ''}>
+					{round.atlas.city} ({i})
+				</u>
+				&nbsp;
 			{/each}
 		</p>
 		<p><strong>currentRoundIndex: {currentRoundIndex}</strong></p>
