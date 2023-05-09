@@ -17,10 +17,10 @@
 		--color-neutral-950: #141414;
 		--color-neutral-1000: #0f0f0f;
 
-    font-family: 'Mona Sans';
-    margin: unset;
-    color: var(--color-neutral-900);
-    background-color: var(--color-neutral-50);
+		font-family: 'Mona Sans';
+		margin: unset;
+		color: var(--color-neutral-900);
+		background-color: var(--color-neutral-50);
 	}
 
 	main.main {

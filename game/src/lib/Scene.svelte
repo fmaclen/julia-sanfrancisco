@@ -7,7 +7,7 @@
 	<div class="scene__details">
 		<h1 class="h1">{city}</h1>
 		<h3 class="h3">{calendar}</h3>
-    <img src="locations/{city.toLowerCase()}.png" class="scene__img" alt="{city}" />
+		<img src="locations/{city.toLowerCase()}.png" class="scene__img" alt={city} />
 	</div>
 </section>
 

@@ -1,11 +1,11 @@
-import type { Atlas } from "../helpers";
+import type { Atlas } from '../helpers';
 
 export const GREECE: Atlas = {
 	city: 'Athens',
 	descriptions: [
-		"Athens is the capital and largest city of Greece, with a population of about 3.2 million people in its metropolitan area.",
-		"Greece is known for its rich history, ancient ruins, beautiful islands, and Mediterranean climate.",
-		"Welcome to Athens, a city that showcases its ancient history through landmarks such as the Acropolis and the Parthenon."
+		'Athens is the capital and largest city of Greece, with a population of about 3.2 million people in its metropolitan area.',
+		'Greece is known for its rich history, ancient ruins, beautiful islands, and Mediterranean climate.',
+		'Welcome to Athens, a city that showcases its ancient history through landmarks such as the Acropolis and the Parthenon.'
 	],
 	currency: 'EUR',
 	language: 'Greek',
@@ -32,9 +32,5 @@ export const GREECE: Atlas = {
 		'Socrates, Plato, and Aristotle',
 		'Greek contributions to mathematics and science'
 	],
-	stolen: [
-		'a rare painting by El Greco',
-		'the golden mask of Agamemnon',
-	]
+	stolen: ['a rare painting by El Greco', 'the golden mask of Agamemnon']
 };
-

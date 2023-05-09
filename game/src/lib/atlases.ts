@@ -11,17 +11,17 @@ import { USA } from '$lib/atlases/usa';
 import { getRandomValue } from './helpers';
 
 export interface Atlas {
-  city: string;
-  descriptions: string[];
-  currency: string;
-  language: string;
-  flag: string;
-  leader: 'king' | 'president' | 'prime minister' | 'party chairman';
-  see: string[];
-  toDo: string[];
-  trade: string[];
-  study: string[];
-  stolen: string[];
+	city: string;
+	descriptions: string[];
+	currency: string;
+	language: string;
+	flag: string;
+	leader: 'king' | 'president' | 'prime minister' | 'party chairman';
+	see: string[];
+	toDo: string[];
+	trade: string[];
+	study: string[];
+	stolen: string[];
 }
 
 export const ATLASES = [

@@ -1,11 +1,11 @@
-import type { Atlas } from "../helpers";
+import type { Atlas } from '../helpers';
 
 export const UNITED_KINGDOM: Atlas = {
 	city: 'London',
 	descriptions: [
-		"London is the capital and largest city of the United Kingdom, with a population of about 9.4 million people.",
-		"The United Kingdom is known for its rich history, diverse culture, and influential role in global politics.",
-		"Welcome to London, a city steeped in history and home to iconic landmarks such as Buckingham Palace, Big Ben, and the Tower of London."
+		'London is the capital and largest city of the United Kingdom, with a population of about 9.4 million people.',
+		'The United Kingdom is known for its rich history, diverse culture, and influential role in global politics.',
+		'Welcome to London, a city steeped in history and home to iconic landmarks such as Buckingham Palace, Big Ben, and the Tower of London.'
 	],
 	currency: 'GBP',
 	language: 'English',
@@ -34,6 +34,6 @@ export const UNITED_KINGDOM: Atlas = {
 	],
 	stolen: [
 		'a handwritten manuscript by Jane Austen',
-		'a rare first edition of a Charles Dickens novel',
+		'a rare first edition of a Charles Dickens novel'
 	]
 };

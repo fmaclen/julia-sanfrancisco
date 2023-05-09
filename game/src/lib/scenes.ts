@@ -4,7 +4,7 @@ import { Place, Witness, type Scene } from './helpers';
 export function getScenes({
 	nextRoundAtlas,
 	isRoundFinal,
-  isRoundDecoy
+	isRoundDecoy
 }: {
 	nextRoundAtlas?: Atlas;
 	isRoundFinal?: boolean;
@@ -12,20 +12,19 @@ export function getScenes({
 }): Scene[] {
 	let scenes: Scene[] = [];
 
-  // Round with clues
+	// Round with clues
 	if (nextRoundAtlas) {
-    console.log("is next round", nextRoundAtlas)
 		scenes = [
 			{
-        place: Place.LIBRARY,
+				place: Place.LIBRARY,
 				witness: Witness.ARCHIVIST,
 				clue: `Yup, saw them leave on a plane with a ${nextRoundAtlas?.city} flag on the tail.`
 			}
 		];
 	}
-  
-  // Final round
-  if (isRoundFinal) {
+
+	// Final round
+	if (isRoundFinal) {
 		scenes = [
 			{
 				place: Place.MARKETPLACE,
@@ -33,11 +32,10 @@ export function getScenes({
 				clue: `You are getting too close gumshoe.`
 			}
 		];
-	} 
-  
-  // Decoy round
-  if (isRoundDecoy){
-    console.log("is decoy round")
+	}
+
+	// Decoy round
+	if (isRoundDecoy) {
 		scenes = [
 			{
 				place: Place.AIRPORT,
@@ -46,5 +44,6 @@ export function getScenes({
 			}
 		];
 	}
+
 	return scenes;
 }

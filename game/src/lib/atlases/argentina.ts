@@ -1,4 +1,4 @@
-import type { Atlas } from "../helpers";
+import type { Atlas } from '../helpers';
 
 export const ARGENTINA: Atlas = {
 	city: 'Buenos Aires',
@@ -9,8 +9,8 @@ export const ARGENTINA: Atlas = {
 	],
 	currency: 'ARS',
 	language: 'Spanish',
-  flag: 'a sun on the flag',
-  leader: 'president',
+	flag: 'a sun on the flag',
+	leader: 'president',
 	see: ['the Pampas', 'Patagonia', 'the Andes mountains', 'Iguazu falls', 'Ushuaia'],
 	toDo: [
 		'climb tallest mountain outside of Asia',
@@ -32,8 +32,5 @@ export const ARGENTINA: Atlas = {
 		'Spanish and Italian migrations of the 20th century to South America',
 		'Jorge Luis Borges'
 	],
-	stolen: [
-		'the sword of San Martin',
-		'a rare painting by Benito Quinquela Martin',
-	]
+	stolen: ['the sword of San Martin', 'a rare painting by Benito Quinquela Martin']
 };

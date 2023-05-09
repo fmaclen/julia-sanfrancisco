@@ -29,11 +29,11 @@ export function getRounds(startingDestination: Atlas, atlasesInRound: Atlas[]): 
 		const destinations: Set<Atlas> = new Set();
 		if (previousRoundAtlas) destinations.add(previousRoundAtlas);
 		if (nextRoundAtlas) destinations.add(nextRoundAtlas);
-    
+
 		setRandomDestinations(destinations, roundAtlas);
-    
-    const isRoundFinal = !nextRoundAtlas;
-    
+
+		const isRoundFinal = !nextRoundAtlas;
+
 		rounds.push({
 			atlas: roundAtlas,
 			scenes: getScenes({ nextRoundAtlas, isRoundFinal }),

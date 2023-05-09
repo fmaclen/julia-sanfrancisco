@@ -38,5 +38,5 @@ export const USA: Atlas = {
 		'Silicon Valley and tech innovation',
 		'financial markets and Wall Street'
 	],
-	stolen: ['a rare manuscript from the Library of Congress', "a spare tire from The Beast"]
+	stolen: ['a rare manuscript from the Library of Congress', 'a spare tire from The Beast']
 };

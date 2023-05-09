@@ -1,11 +1,11 @@
-import type { Atlas } from "../helpers";
+import type { Atlas } from '../helpers';
 
 export const JAPAN: Atlas = {
 	city: 'Tokyo',
 	descriptions: [
-		"Tokyo is the capital and largest city of Japan, with a population of about 37.8 million people in its metropolitan area.",
-		"Japan is known for its rich history, cutting-edge technology, and unique cultural experiences.",
-		"Welcome to Tokyo, a city that seamlessly blends ancient traditions with modern life through landmarks such as the Imperial Palace, Meiji Shrine, and the iconic Shibuya Crossing."
+		'Tokyo is the capital and largest city of Japan, with a population of about 37.8 million people in its metropolitan area.',
+		'Japan is known for its rich history, cutting-edge technology, and unique cultural experiences.',
+		'Welcome to Tokyo, a city that seamlessly blends ancient traditions with modern life through landmarks such as the Imperial Palace, Meiji Shrine, and the iconic Shibuya Crossing.'
 	],
 	currency: 'JPY',
 	language: 'Japanese',
@@ -32,8 +32,5 @@ export const JAPAN: Atlas = {
 		'Japanese calligraphy and painting',
 		'anime and manga culture'
 	],
-	stolen: [
-		'an ancient samurai sword',
-		'a priceless ukiyo-e woodblock print',
-	]
+	stolen: ['an ancient samurai sword', 'a priceless ukiyo-e woodblock print']
 };

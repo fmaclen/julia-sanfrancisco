@@ -17,7 +17,7 @@
 
 	function setPlayer() {
 		playerStore.set({ name: playerName, score: 0 });
-    redirect(307, '/game');
+		redirect(307, '/game');
 	}
 </script>
 
