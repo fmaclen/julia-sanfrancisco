@@ -55,10 +55,19 @@
 		}
 	}
 
+	function updateScore() {
+		playerStore.update((player) => {
+			player ? (player.score += 1) : null;
+			return player;
+		});
+
+		if (browser) window.location.href = '/player';
+	}
+
 	$: currentRoundIndex = 0;
 	$: currentRound = game.rounds[currentRoundIndex];
+	$: isGameWon = currentRoundIndex === game.rounds.length - 1;
 </script>
-
 
 <form>
 	<fieldset>
@@ -107,16 +116,19 @@
 </ul>
 
 <hr />
-
-<h3>Depart to</h3>
-
-<ul>
-	{#each Array.from(currentRound.destinations) as destination}
-		<li>
-			<button on:click={() => travelTo(destination)}>{destination.city}</button>
-		</li>
-	{/each}
-</ul>
+{#if isGameWon}
+	<h3>You win!</h3>
+	<button on:click={updateScore}>Continue</button>
+{:else}
+	<h3>Depart to</h3>
+	<ul>
+		{#each Array.from(currentRound.destinations) as destination}
+			<li>
+				<button on:click={() => travelTo(destination)}>{destination.city}</button>
+			</li>
+		{/each}
+	</ul>
+{/if}
 
 <hr />
 
