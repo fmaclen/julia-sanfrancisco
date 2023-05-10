@@ -2,4 +2,4 @@
 
 <hr />
 
-<a href="/player/">New game</a>
+<a href="player/">New game</a>

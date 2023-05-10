@@ -8,7 +8,7 @@
 
 	function setPlayer() {
 		playerStore.set({ name: playerName, score: 0 });
-		redirectTo('/game/')
+		redirectTo('game/')
 	}
 </script>
 
@@ -17,7 +17,7 @@
 {#if $playerStore}
 	<p>You have been identified as <u>{$playerStore.name}</u></p>
 	<p>Your current rank is <u>{rank}</u></p>
-	<a href="/game/">Continue</a>
+	<a href="game/">Continue</a>
 {:else}
 	<p>Detective at keyboard, please identify yourself</p>
 	<input type="text" name="name" placeholder="Your name" bind:value={playerName} />

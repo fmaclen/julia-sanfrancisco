@@ -5,8 +5,29 @@
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width" />
+
 		%sveltekit.head%
+
+		<style>
+			/* Importing fonts here so we can use `%sveltekit.assets%` */
+
+			@font-face {
+				font-family: 'Mona Sans';
+				src: url('%sveltekit.assets%/fonts/Mona-Sans-Regular.woff2') format('woff2');
+				font-weight: normal;
+				font-style: normal;
+			}
+
+			@font-face {
+				font-family: 'Mona Sans';
+				src: url('%sveltekit.assets%/fonts/Mona-Sans-Bold.woff2') format('woff2');
+				font-weight: bold;
+				font-style: normal;
+			}
+		</style>
 	</head>
+
+	
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents">%sveltekit.body%</div>
 	</body>

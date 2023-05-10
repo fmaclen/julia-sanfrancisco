@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { ATLASES, getRandomAtlas, type Atlas } from '$lib/atlases';
 	import { getRandomValue, redirectTo } from '$lib/helpers';
-	import { getRank } from '$lib/player';
-	import { playerStore } from '$lib/player';
+	import { getRank, playerStore, type Player } from '$lib/player';
 	import { getRounds, getDecoyRound, type Round } from '$lib/rounds';
 	import { SUSPECTS, type Suspect } from '$lib/suspects';
 	import { format } from 'date-fns';
@@ -15,7 +14,7 @@
 	}
 
 	// If there is no user profile, redirect to the player page
-	if ($playerStore === null) redirectTo('/player/');
+	if ($playerStore === null) redirectTo('player/');
 
 	const atlasesInRound = [...ATLASES];
 	const startingDestination: Atlas = getRandomAtlas();
@@ -63,12 +62,12 @@
 	}
 
 	function updateScore() {
-		playerStore.update((player) => {
+		playerStore.update((player: Player | null) => {
 			player ? (player.score += 1) : null;
 			return player;
 		});
 
-		redirectTo('/player/');
+		redirectTo('player/');
 	}
 
 	$: currentRoundIndex = 0;
