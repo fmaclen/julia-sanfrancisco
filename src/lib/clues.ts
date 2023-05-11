@@ -73,6 +73,11 @@ export function generateClues(cluesBrief: CluesBrief): string[] {
     ${getRandomValue(SEE_CLUES)}
     ${getRandomValue(atlas.see)}.`,
 
+		`${getRandomValue(INTRODUCTION_CLUES)}
+    ${subjectPronoun}
+    ${getRandomValue(SEE_CLUES)}
+    ${getRandomValue(atlas.see)} with the ${atlas.leader}.`,
+
 		// To do
 		`${getRandomValue(INTRODUCTION_CLUES)}
     ${subjectPronoun}
