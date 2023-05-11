@@ -37,6 +37,7 @@ const LOCATION_CLUES = [
 	`A suspicious person was here and ${pronoun} wanted to study ${study}.`,
 	`A suspicious person was here and ${pronoun} asked about the exchange rate for ${currency}.`,
 	`A suspicious person was here and ${pronoun} changed ${pronounConjugation} money to ${currency}.`,
+
 	`I saw the person you're looking for and ${pronoun} wanted to know about ${study}.`,
 	`I saw the person you're looking for and ${pronoun} was researching ${study}.`,
 	`A reliable source told me ${pronoun} changed ${pronounConjugation} money to ${currency}.`,

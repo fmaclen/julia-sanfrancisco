@@ -1,4 +1,4 @@
-import type { Atlas } from '../helpers';
+import type { Atlas } from '$lib/atlases';
 
 export const INDIA: Atlas = {
 	city: 'New Delhi',

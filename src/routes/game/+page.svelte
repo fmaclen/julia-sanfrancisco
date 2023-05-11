@@ -34,11 +34,13 @@
 		return getRandomValue(SUSPECTS);
 	}
 
+	const suspect = getRandomSuspect()
+
 	const game: Game = {
 		currentTime: getStartTime(),
 		stolenTreasure: getRandomStolenItem(),
-		suspect: getRandomSuspect(),
-		rounds: getRounds(startingDestination, atlasesInRound)
+		suspect,
+		rounds: getRounds(startingDestination, atlasesInRound, suspect)
 	};
 
 	function travelTo(destination: Atlas) {
