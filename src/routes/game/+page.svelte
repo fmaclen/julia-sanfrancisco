@@ -62,12 +62,11 @@
 	}
 
 	function updateScore() {
+		redirectTo('/player/');
 		playerStore.update((player: Player | null) => {
 			player ? (player.score += 1) : null;
 			return player;
 		});
-
-		redirectTo('player/');
 	}
 
 	$: currentRoundIndex = 0;
