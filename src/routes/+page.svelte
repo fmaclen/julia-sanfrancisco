@@ -16,7 +16,7 @@
 	<Section>
 		<P>
 			Chase Julia and her accomplices across different countries, unraveling clues, solving puzzles,
-			and expanding your geography knowledge in this exciting educational detective game.
+			and expanding your geography knowledge in this exciting detective game.
 		</P>
 	</Section>
 
