@@ -1,6 +1,5 @@
-<main class="main">
-	<slot />
-</main>
+<slot />
+
 
 <style lang="scss">
 	:global(body) {
@@ -19,13 +18,11 @@
 
 		font-family: 'Mona Sans';
 		margin: unset;
-		color: var(--color-neutral-900);
-		background-color: var(--color-neutral-50);
-	}
+		color: var(--color-neutral-100);
+		background-color: var(--color-neutral-900);
 
-	main.main {
-		width: 100%;
-		max-width: 640px;
-		margin-inline: auto;
+		padding: 24px;
+		height: 100dvh;
+		box-sizing: border-box;
 	}
 </style>
