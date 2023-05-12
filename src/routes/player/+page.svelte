@@ -7,7 +7,7 @@
 	let rank = getRank($playerStore?.score);
 
 	function setPlayer() {
-		redirectTo('/game/')
+		redirectTo('/game/');
 		playerStore.set({ name: playerName, score: 0 });
 	}
 </script>

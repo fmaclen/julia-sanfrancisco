@@ -20,10 +20,10 @@
 	const atlasesInRound = [...ATLASES];
 	const startingDestination: Atlas = getRandomAtlas();
 
-	function getStartTime() {
+	function getStartTime(): Date {
 		const monday = new Date();
-		monday.setUTCHours(9, 0, 0, 0); // Set time to 9:00 am
-		monday.setUTCDate(monday.getUTCDate() - ((monday.getUTCDay() + 6) % 7)); // Set to the previous Monday
+		monday.setHours(9, 0, 0, 0); // Set time to 9:00 am
+		monday.setDate(monday.getDate() - ((monday.getDate() + 6) % 7)); // Set to the previous Monday
 		return monday;
 	}
 
@@ -44,7 +44,28 @@
 		rounds: getRounds(startingDestination, atlasesInRound, suspect)
 	};
 
-	function travelTo(destination: Atlas) {
+	function resetScene(): void {
+		isDepartingTo = false;
+		isLookingForClues = false;
+		currentClueIndex = null;
+	}
+
+	function departTo(): void {
+		resetScene();
+		isDepartingTo = !isDepartingTo;
+	}
+
+	function findClues(): void {
+		resetScene();
+		isLookingForClues = !isLookingForClues;
+	}
+
+	function findClue(index: number): void {
+		currentClueIndex = index;
+	}
+
+	function travelTo(destination: Atlas): void {
+		resetScene();
 		const { rounds } = game;
 
 		const isPreviousRoundAtlas =
@@ -64,22 +85,9 @@
 		}
 	}
 
-	function departTo() {
-		isDepartingTo = true;
-		isLookingForClues = false;
-	}
-
-	function findClues() {
-		isLookingForClues = true;
-		isDepartingTo = false;
-	}
-
-	function findClue(place: Place) {
-
-	}
-
-	function updateScore() {
+	function updateScore(): void {
 		redirectTo('/player/');
+
 		playerStore.update((player: Player | null) => {
 			player ? (player.score += 1) : null;
 			return player;
@@ -88,6 +96,8 @@
 
 	$: currentRoundIndex = 0;
 	$: currentRound = game.rounds[currentRoundIndex];
+
+	let currentClueIndex: number | null = null;
 
 	$: isDepartingTo = false;
 	$: isLookingForClues = false;
@@ -108,103 +118,57 @@
 		<time class="round__time">{format(game.currentTime, 'EEEE hh:mm aaa')}</time>
 	</header>
 
-	<section class="round__scene">
-		{#if !isSceneVisible}
-			<p class="round__description">{getRandomValue(currentRound.atlas.descriptions)}</p>
-		{/if}
-
-		{#if isLookingForClues}
-			{#each currentRound.scenes as scene}
-				<button on:click={() => findClue(scene.place)}>{scene.place}</button>
-
-				{scene.clue}
-			{/each}
-		{/if}
-
-		{#if isDepartingTo}
-			{#each Array.from(currentRound.destinations) as destination}
-				<button on:click={() => travelTo(destination)}>{destination.city}</button>
-			{/each}
-		{/if}
-
-		{#if isGameWon}
-			<h3>You win!</h3>
-			<button on:click={updateScore}>Continue</button>
-		{/if}
-	</section>
-
-	<nav class="round__nav">
-		<button class="round__action" on:click={findClues}>Find clues</button>
-		<button class="round__action" on:click={departTo}>Depart to</button>
-		<button class="round__action" disabled={true} title="Under construction">Get warrant</button>
-		<a class="round__action round__action--quit" href="/">Quit</a>
-	</nav>
-</main>
-
-<!-- <form>
-	<fieldset>
-		<legend>Debug controls</legend>
-		<p>
-			<strong> rounds: </strong>
-			{#each game.rounds as round, i}
-				<u style={currentRoundIndex === i ? `color: tomato;` : ''}>
-					{round.atlas.city} ({i})
-				</u>
-				&nbsp;
-			{/each}
-		</p>
-		<button on:click={() => (currentRoundIndex -= 1)} disabled={currentRoundIndex === 0}>
-			Prev round
-		</button>
-		<button
-			on:click={() => (currentRoundIndex += 1)}
-			disabled={currentRoundIndex === game.rounds.length - 1}>Next round</button
-		>
-	</fieldset>
-</form> -->
-
-<!-- {#if $playerStore}
-		<p>Name: <u>{$playerStore.name}</u> - Rank: <u>{getRank($playerStore.score)}</u></p>
-	{/if} -->
-
-<!-- <p>The stolen item is <u>{game.stolenTreasure}</u></p>
-	<p>The suspect sex is <u>{game.suspect.sex}</u></p> -->
-
-<!-- <hr />
-
-
-	<hr />
-
-	<h3>Walk to</h3>
-
-	<ul>
-		{#each currentRound.scenes as scene}
-			<li>
-				<p>
-					<strong>{scene.place}</strong><br />
-					<strong>{scene.witness}</strong> — {scene.clue}
-				</p>
-			</li>
-		{/each}
-	</ul>
-
-	<hr />
-	{#if isGameWon}
-		<h3>You win!</h3>
-		<button on:click={updateScore}>Continue</button>
-	{:else}
-		<h3>Depart to</h3>
-		<ul>
-			{#each Array.from(currentRound.destinations) as destination}
-				<li>
-					<button on:click={() => travelTo(destination)}>{destination.city}</button>
-				</li>
-			{/each}
-		</ul>
+	{#if !isSceneVisible}
+		<section class="round__content">
+			<p class="round__p">{getRandomValue(currentRound.atlas.descriptions)}</p>
+		</section>
 	{/if}
 
-	<hr />
--->
+	{#if isLookingForClues}
+		<section class="round__content round__content--places">
+			{#if typeof currentClueIndex === 'number'}
+				<p class="round__p">
+					<strong>{currentRound.scenes[currentClueIndex].witness}</strong><br />
+					{currentRound.scenes[currentClueIndex].clue}
+				</p>
+			{/if}
+
+			{#each currentRound.scenes as scene, index}
+				<button
+					class="round__action {currentClueIndex === index ? 'round__action--active' : ''}"
+					on:click={() => findClue(index)}>{scene.place}</button
+				>
+			{/each}
+		</section>
+	{/if}
+
+	{#if isDepartingTo}
+		<section class="round__content round__content--places">
+			{#each Array.from(currentRound.destinations) as destination}
+				<button class="round__action" on:click={() => travelTo(destination)}>
+					{destination.city}
+				</button>
+			{/each}
+		</section>
+	{/if}
+
+	<nav class="round__nav">
+		{#if isGameWon}
+			<button class="round__action" on:click={updateScore}>You won!</button>
+		{:else}
+			<button
+				class="round__action {isLookingForClues ? 'round__action--active' : ''}"
+				on:click={findClues}>Find clues</button
+			>
+			<button
+				class="round__action {isDepartingTo ? 'round__action--active' : ''}"
+				on:click={departTo}>Depart to</button
+			>
+			<button class="round__action" disabled={true} title="Under construction">Get warrant</button>
+			<a class="round__action round__action--quit" href="/">Quit</a>
+		{/if}
+	</nav>
+</main>
 
 <style lang="scss">
 	@mixin card {
@@ -221,7 +185,7 @@
 		height: 100%;
 		width: 100%;
 		max-width: 512px;
-		gap: 8px;
+		gap: 24px;
 		padding-block: 24px;
 		box-sizing: border-box;
 		background-color: var(--color-neutral-1000);
@@ -234,7 +198,7 @@
 
 	header.round__header,
 	nav.round__nav,
-	section.round__scene {
+	section.round__content {
 		padding-inline: 20px;
 	}
 
@@ -251,19 +215,27 @@
 		margin-block: 0;
 	}
 
-	time.round__time {
-	}
+	/* time.round__time {
+	} */
 
-	section.round__scene {
+	section.round__content {
 		display: flex;
 		align-items: flex-start;
+
+		&--places {
+			justify-content: flex-end;
+			flex-direction: column;
+			gap: 8px;
+		}
 	}
 
-	p.round__description {
+	p.round__p {
 		@include card;
-		font-size: 20px;
+		font-size: 16px;
 		line-height: 130%;
 		margin-block: 0;
+		width: 100%;
+		box-sizing: border-box;
 	}
 
 	nav.round__nav {
@@ -275,14 +247,13 @@
 
 	a.round__action,
 	button.round__action {
+		@include card;
 		display: block;
-		background: transparent;
 		border: none;
 		text-align: center;
 		text-decoration: none;
 		width: 100%;
 		font-size: 14px;
-		@include card;
 
 		&:not(:disabled) {
 			cursor: pointer;
@@ -292,9 +263,13 @@
 			color: var(--color-neutral-300);
 			opacity: 0.66;
 		}
+	}
 
-		&--quit {
-			background-color: #421108;
-		}
+	button.round__action--active {
+		filter: invert(1);
+	}
+
+	a.round__action--quit {
+		background-color: #421108;
 	}
 </style>

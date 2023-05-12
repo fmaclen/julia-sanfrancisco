@@ -1,6 +1,5 @@
 <slot />
 
-
 <style lang="scss">
 	:global(body) {
 		--color-neutral-50: #ffffff;

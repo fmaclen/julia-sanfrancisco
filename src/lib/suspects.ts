@@ -1,4 +1,3 @@
-
 export interface Suspect {
 	name: string;
 	hobby: string;
@@ -9,7 +8,6 @@ export interface Suspect {
 	subjectPronoun: string;
 	possesivePronoun: string;
 }
-
 
 export const SUSPECTS: Suspect[] = [
 	{

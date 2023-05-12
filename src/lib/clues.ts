@@ -73,11 +73,6 @@ export function generateClues(cluesBrief: CluesBrief): string[] {
     ${getRandomValue(SEE_CLUES)}
     ${getRandomValue(atlas.see)}.`,
 
-		`${getRandomValue(INTRODUCTION_CLUES)}
-    ${subjectPronoun}
-    ${getRandomValue(SEE_CLUES)}
-    ${getRandomValue(atlas.see)} with the ${atlas.leader}.`,
-
 		// To do
 		`${getRandomValue(INTRODUCTION_CLUES)}
     ${subjectPronoun}
@@ -132,7 +127,7 @@ export function generateClues(cluesBrief: CluesBrief): string[] {
 			clues = [
 				...clues,
 				`${getRandomValue(INTRODUCTION_CLUES)}
-        ${subjectPronoun} sailed away on a ship flying a ${atlas.flag} flag.`,
+        ${subjectPronoun} sailed away on a ship flying a ${atlas.flag} flag.`
 			];
 			break;
 
