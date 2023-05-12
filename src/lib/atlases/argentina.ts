@@ -1,4 +1,4 @@
-import type { Atlas } from '../helpers';
+import type { Atlas } from '$lib/atlases';
 
 export const ARGENTINA: Atlas = {
 	city: 'Buenos Aires',
@@ -22,7 +22,7 @@ export const ARGENTINA: Atlas = {
 	trade: [
 		'gaucho costumes',
 		'tango shoes',
-		'a mate gourd and a bombilla',
+		'a mate gourds and a bombillas',
 		'Malbec wine',
 		'empanadas'
 	],

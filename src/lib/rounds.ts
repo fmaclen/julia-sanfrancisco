@@ -1,5 +1,6 @@
 import { getRandomAtlas, type Atlas, setRandomDestinations } from './atlases';
 import { getScenes, type Scene } from './scenes';
+import type { Suspect } from './suspects';
 
 export interface Round {
 	atlas: Atlas;
@@ -8,7 +9,11 @@ export interface Round {
 }
 
 // Generates the atlas, scenes, destinatinos, etc... for each round in the game
-export function getRounds(startingDestination: Atlas, atlasesInRound: Atlas[]): Round[] {
+export function getRounds(
+	startingDestination: Atlas,
+	atlasesInRound: Atlas[],
+	suspect: Suspect
+): Round[] {
 	const rounds: Round[] = [];
 	const NUMBER_OF_ROUNDS = 4;
 	const roundAtlases: Atlas[] = [];
@@ -41,7 +46,7 @@ export function getRounds(startingDestination: Atlas, atlasesInRound: Atlas[]): 
 
 		rounds.push({
 			atlas: roundAtlas,
-			scenes: getScenes({ nextRoundAtlas, isRoundFinal }),
+			scenes: getScenes({ nextRoundAtlas, isRoundFinal, suspect }),
 			destinations
 		});
 	}

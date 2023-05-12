@@ -1,7 +1,15 @@
 <script lang="ts">
 	import { ATLASES, getRandomAtlas, type Atlas } from '$lib/atlases';
+	import Button from '$lib/components/Button.svelte';
+	import ButtonLink from '$lib/components/ButtonLink.svelte';
+	import H1 from '$lib/components/H1.svelte';
+	import Header from '$lib/components/Header.svelte';
+	import Main from '$lib/components/Main.svelte';
+	import Nav from '$lib/components/Nav.svelte';
+	import P from '$lib/components/P.svelte';
+	import Section from '$lib/components/Section.svelte';
 	import { getRandomValue, redirectTo } from '$lib/helpers';
-	import { getRank, playerStore, type Player } from '$lib/player';
+	import { playerStore, type Player } from '$lib/player';
 	import { getRounds, getDecoyRound, type Round } from '$lib/rounds';
 	import { SUSPECTS, type Suspect } from '$lib/suspects';
 	import { format } from 'date-fns';
@@ -14,15 +22,15 @@
 	}
 
 	// If there is no user profile, redirect to the player page
-	if ($playerStore === null) redirectTo('player/');
+	if ($playerStore === null) redirectTo('/player/');
 
 	const atlasesInRound = [...ATLASES];
 	const startingDestination: Atlas = getRandomAtlas();
 
-	function getStartTime() {
+	function getStartTime(): Date {
 		const monday = new Date();
-		monday.setUTCHours(9, 0, 0, 0); // Set time to 9:00 am
-		monday.setUTCDate(monday.getUTCDate() - ((monday.getUTCDay() + 6) % 7)); // Set to the previous Monday
+		monday.setHours(9, 0, 0, 0); // Set time to 9:00 am
+		monday.setDate(monday.getDate() - ((monday.getDate() + 6) % 7)); // Set to the previous Monday
 		return monday;
 	}
 
@@ -34,14 +42,37 @@
 		return getRandomValue(SUSPECTS);
 	}
 
+	const suspect = getRandomSuspect();
+
 	const game: Game = {
 		currentTime: getStartTime(),
 		stolenTreasure: getRandomStolenItem(),
-		suspect: getRandomSuspect(),
-		rounds: getRounds(startingDestination, atlasesInRound)
+		suspect,
+		rounds: getRounds(startingDestination, atlasesInRound, suspect)
 	};
 
-	function travelTo(destination: Atlas) {
+	function resetScene(): void {
+		isDepartingTo = false;
+		isLookingForClues = false;
+		currentClueIndex = null;
+	}
+
+	function departTo(): void {
+		isDepartingTo = !isDepartingTo;
+		isLookingForClues = false;
+	}
+
+	function findClues(): void {
+		isLookingForClues = !isLookingForClues;
+		isDepartingTo = false;
+	}
+
+	function findClue(index: number): void {
+		currentClueIndex = index;
+	}
+
+	function travelTo(destination: Atlas): void {
+		resetScene();
 		const { rounds } = game;
 
 		const isPreviousRoundAtlas =
@@ -61,84 +92,101 @@
 		}
 	}
 
-	function updateScore() {
+	function updateScore(): void {
+		redirectTo('/player/');
+
 		playerStore.update((player: Player | null) => {
 			player ? (player.score += 1) : null;
 			return player;
 		});
-
-		redirectTo('player/');
 	}
 
 	$: currentRoundIndex = 0;
 	$: currentRound = game.rounds[currentRoundIndex];
+
+	let currentClueIndex: number | null = null;
+
+	$: isDepartingTo = false;
+	$: isLookingForClues = false;
+	$: isSceneVisible = isDepartingTo || isLookingForClues;
+
 	$: isGameWon = currentRoundIndex === game.rounds.length - 1;
 </script>
 
-<form>
-	<fieldset>
-		<legend>Debug controls</legend>
-		<p>
-			<strong> rounds: </strong>
-			{#each game.rounds as round, i}
-				<u style={currentRoundIndex === i ? `color: tomato;` : ''}>
-					{round.atlas.city} ({i})
-				</u>
-				&nbsp;
+<Main>
+	<div class="round__background">
+		<img
+			src="/locations/{currentRound.atlas.city
+				.replace(' ', '-')
+				.replace(' ', '-')
+				.toLowerCase()}.png"
+			alt="Illustration of {currentRound.atlas.city}"
+		/>
+	</div>
+
+	<Header>
+		<H1>{currentRound.atlas.city}</H1>
+		<time class="round__time">{format(game.currentTime, 'EEEE hh:mm aaa')}</time>
+	</Header>
+
+	{#if !isSceneVisible}
+		<Section>
+			<P>{getRandomValue(currentRound.atlas.descriptions)}</P>
+		</Section>
+	{/if}
+
+	{#if isLookingForClues}
+		<Section align="bottom">
+			{#if typeof currentClueIndex === 'number'}
+				<P>
+					<strong>{currentRound.scenes[currentClueIndex].witness}</strong><br />
+					{currentRound.scenes[currentClueIndex].clue}
+				</P>
+			{/if}
+
+			{#each currentRound.scenes as scene, index}
+				<Button active={currentClueIndex === index} on:click={() => findClue(index)}>
+					{scene.place}
+				</Button>
 			{/each}
-		</p>
-		<button on:click={() => (currentRoundIndex -= 1)} disabled={currentRoundIndex === 0}>
-			Prev round
-		</button>
-		<button
-			on:click={() => (currentRoundIndex += 1)}
-			disabled={currentRoundIndex === game.rounds.length - 1}>Next round</button
-		>
-	</fieldset>
-</form>
+		</Section>
+	{/if}
 
-{#if $playerStore}
-	<p>Name: <u>{$playerStore.name}</u> - Rank: <u>{getRank($playerStore.score)}</u></p>
-{/if}
+	{#if isDepartingTo}
+		<Section align="bottom">
+			{#each Array.from(currentRound.destinations) as destination}
+				<Button on:click={() => travelTo(destination)}>
+					{destination.city}
+				</Button>
+			{/each}
+		</Section>
+	{/if}
 
-<p>The stolen item is <u>{game.stolenTreasure}</u></p>
-<p>The suspect sex is <u>{game.suspect.sex}</u></p>
+	<Nav>
+		{#if isGameWon}
+			<Button on:click={updateScore}>Continue</Button>
+		{:else}
+			<Button active={isLookingForClues} on:click={findClues}>Find clues</Button>
+			<Button active={isDepartingTo} on:click={departTo}>Depart to</Button>
+			<Button disabled={true}>Get warrant</Button>
+			<ButtonLink href="/">Quit</ButtonLink>
+		{/if}
+	</Nav>
+</Main>
 
-<hr />
+<style lang="scss">
+	div.round__background {
+		position: absolute;
+		z-index: -1;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
 
-<h1>{currentRound.atlas.city}</h1>
-<h2>{format(game.currentTime, 'EEEE hh:mm aaa')}</h2>
-
-<hr />
-
-<h3>Walk to</h3>
-
-<ul>
-	{#each currentRound.scenes as scene}
-		<li>
-			<p>
-				<strong>{scene.place}</strong><br />
-				<strong>{scene.witness}</strong> — {scene.clue}
-			</p>
-		</li>
-	{/each}
-</ul>
-
-<hr />
-{#if isGameWon}
-	<h3>You win!</h3>
-	<button on:click={updateScore}>Continue</button>
-{:else}
-	<h3>Depart to</h3>
-	<ul>
-		{#each Array.from(currentRound.destinations) as destination}
-			<li>
-				<button on:click={() => travelTo(destination)}>{destination.city}</button>
-			</li>
-		{/each}
-	</ul>
-{/if}
-
-<hr />
-
-<a href="/">Abandon game</a>
+		> img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+</style>

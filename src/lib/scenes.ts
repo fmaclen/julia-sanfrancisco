@@ -1,5 +1,7 @@
 import type { Atlas } from './atlases';
+import { FINAL_ROUND_CLUES, generateClues, getDecoyClues } from './clues';
 import { getRandomValue } from './helpers';
+import type { Suspect } from './suspects';
 
 export enum Place {
 	AIRPORT = 'Airport',
@@ -87,11 +89,13 @@ export interface Scene {
 export function getScenes({
 	nextRoundAtlas,
 	isRoundFinal,
-	isRoundDecoy
+	isRoundDecoy,
+	suspect
 }: {
 	nextRoundAtlas?: Atlas;
 	isRoundFinal?: boolean;
 	isRoundDecoy?: boolean;
+	suspect?: Suspect;
 }): Scene[] {
 	const NUMBER_OF_SCENES = 3;
 
@@ -107,11 +111,12 @@ export function getScenes({
 		const place = Array.from(places)[i];
 
 		let sceneClues: string[] = [];
-		if (isRoundFinal) sceneClues = getFinalClues();
+		if (isRoundFinal) sceneClues = FINAL_ROUND_CLUES;
 		if (isRoundDecoy) sceneClues = getDecoyClues(place);
-		if (nextRoundAtlas) sceneClues = getNextRoundClues(nextRoundAtlas);
+		if (nextRoundAtlas && suspect)
+			sceneClues = generateClues({ atlas: nextRoundAtlas, place, suspect });
 
-		while (clues.size < NUMBER_OF_SCENES) {
+		while (clues.size < i + 1) {
 			clues.add(getRandomValue(sceneClues));
 		}
 
@@ -123,33 +128,6 @@ export function getScenes({
 	}
 
 	return scenes;
-}
-
-function getFinalClues(): string[] {
-	return [
-		"The word is out, you're getting too close gumshoe...",
-		'Rumor has it that the gang is in town somewhere.',
-		'All I know is that something suspicious is happening in town.',
-		'The only thing I can tell you is to watch your step.'
-	];
-}
-
-function getDecoyClues(place: string): string[] {
-	return [
-		"Didn't see anyone matching that description.",
-		`Sorry, I haven't noticed anything suspicious around the ${place}.`,
-		"Sorry, I haven't seen anybody like that around here.",
-		"Sorry, I haven't seen anyone like that around here."
-	];
-}
-
-function getNextRoundClues(nextRoundAtlas: Atlas): string[] {
-	return [
-		`Yup, saw them leave on a plane with ${nextRoundAtlas.flag} on the tail.`,
-		`He wanted to study ${getRandomValue(nextRoundAtlas.study)}.`,
-		`He was talking about seeing ${getRandomValue(nextRoundAtlas.see)}.`,
-		`He asked about changing his money to $${nextRoundAtlas.currency}.`
-	];
 }
 
 function getRandomPlace(): Place {
