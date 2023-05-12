@@ -93,7 +93,7 @@ export function generateClues(cluesBrief: CluesBrief): string[] {
 		// Dictionary
 		`${getRandomValue(INTRODUCTION_CLUES)}
     ${subjectPronoun} had
-    ${atlas.language} in
+    ${atlas.language} dictionary in
     ${possesivePronoun} pocket.`,
 
 		`${getRandomValue(INTRODUCTION_CLUES)}
