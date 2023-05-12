@@ -1,10 +1,17 @@
 <script lang="ts">
 	import { ATLASES, getRandomAtlas, type Atlas } from '$lib/atlases';
 	import { getRandomValue, redirectTo } from '$lib/helpers';
-	import { getRank, playerStore, type Player } from '$lib/player';
+	import { playerStore, type Player } from '$lib/player';
 	import { getRounds, getDecoyRound, type Round } from '$lib/rounds';
-	import type { Place } from '$lib/scenes';
 	import { SUSPECTS, type Suspect } from '$lib/suspects';
+	import Button from '../../lib/components/Button.svelte';
+	import ButtonLink from '../../lib/components/ButtonLink.svelte';
+	import H1 from '../../lib/components/H1.svelte';
+	import Header from '../../lib/components/Header.svelte';
+	import Main from '../../lib/components/Main.svelte';
+	import Nav from '../../lib/components/Nav.svelte';
+	import P from '../../lib/components/P.svelte';
+	import Section from '../../lib/components/Section.svelte';
 	import { format } from 'date-fns';
 
 	interface Game {
@@ -15,7 +22,7 @@
 	}
 
 	// If there is no user profile, redirect to the player page
-	if ($playerStore === null) redirectTo('player/');
+	if ($playerStore === null) redirectTo('/player/');
 
 	const atlasesInRound = [...ATLASES];
 	const startingDestination: Atlas = getRandomAtlas();
@@ -51,13 +58,13 @@
 	}
 
 	function departTo(): void {
-		resetScene();
 		isDepartingTo = !isDepartingTo;
+		isLookingForClues = false;
 	}
 
 	function findClues(): void {
-		resetScene();
 		isLookingForClues = !isLookingForClues;
+		isDepartingTo = false;
 	}
 
 	function findClue(index: number): void {
@@ -106,170 +113,80 @@
 	$: isGameWon = currentRoundIndex === game.rounds.length - 1;
 </script>
 
-<main
-	class="round"
-	style="background-image: url('/locations/{currentRound.atlas.city
-		.replace(' ', '-')
-		.replace(' ', '-')
-		.toLowerCase()}.png');"
->
-	<header class="round__header">
-		<h1 class="round__city">{currentRound.atlas.city}</h1>
+<Main>
+	<div class="round__background">
+		<img
+			src="/locations/{currentRound.atlas.city
+				.replace(' ', '-')
+				.replace(' ', '-')
+				.toLowerCase()}.png"
+			alt="Illustration of {currentRound.atlas.city}"
+		/>
+	</div>
+
+	<Header>
+		<H1>{currentRound.atlas.city}</H1>
 		<time class="round__time">{format(game.currentTime, 'EEEE hh:mm aaa')}</time>
-	</header>
+	</Header>
 
 	{#if !isSceneVisible}
-		<section class="round__content">
-			<p class="round__p">{getRandomValue(currentRound.atlas.descriptions)}</p>
-		</section>
+		<Section>
+			<P>{getRandomValue(currentRound.atlas.descriptions)}</P>
+		</Section>
 	{/if}
 
 	{#if isLookingForClues}
-		<section class="round__content round__content--places">
+		<Section align="bottom">
 			{#if typeof currentClueIndex === 'number'}
-				<p class="round__p">
+				<P>
 					<strong>{currentRound.scenes[currentClueIndex].witness}</strong><br />
 					{currentRound.scenes[currentClueIndex].clue}
-				</p>
+				</P>
 			{/if}
 
 			{#each currentRound.scenes as scene, index}
-				<button
-					class="round__action {currentClueIndex === index ? 'round__action--active' : ''}"
-					on:click={() => findClue(index)}>{scene.place}</button
-				>
+				<Button active={currentClueIndex === index} on:click={() => findClue(index)}>
+					{scene.place}
+				</Button>
 			{/each}
-		</section>
+		</Section>
 	{/if}
 
 	{#if isDepartingTo}
-		<section class="round__content round__content--places">
+		<Section align="bottom">
 			{#each Array.from(currentRound.destinations) as destination}
-				<button class="round__action" on:click={() => travelTo(destination)}>
+				<Button on:click={() => travelTo(destination)}>
 					{destination.city}
-				</button>
+				</Button>
 			{/each}
-		</section>
+		</Section>
 	{/if}
 
-	<nav class="round__nav">
+	<Nav>
 		{#if isGameWon}
-			<button class="round__action" on:click={updateScore}>You won!</button>
+			<Button on:click={updateScore}>Continue</Button>
 		{:else}
-			<button
-				class="round__action {isLookingForClues ? 'round__action--active' : ''}"
-				on:click={findClues}>Find clues</button
-			>
-			<button
-				class="round__action {isDepartingTo ? 'round__action--active' : ''}"
-				on:click={departTo}>Depart to</button
-			>
-			<button class="round__action" disabled={true} title="Under construction">Get warrant</button>
-			<a class="round__action round__action--quit" href="/">Quit</a>
+			<Button active={isLookingForClues} on:click={findClues}>Find clues</Button>
+			<Button active={isDepartingTo} on:click={departTo}>Depart to</Button>
+			<Button disabled={true}>Get warrant</Button>
+			<ButtonLink href="/">Quit</ButtonLink>
 		{/if}
-	</nav>
-</main>
+	</Nav>
+</Main>
 
 <style lang="scss">
-	@mixin card {
-		padding-inline: 16px;
-		padding-block: 16px;
-		border-radius: 8px;
-		color: var(--color-neutral-100);
-		background-color: var(--color-neutral-800);
-	}
-
-	main.round {
-		display: grid;
-		grid-template-rows: max-content auto max-content;
+	div.round__background {
+		position: absolute;
+		z-index: -1;
+		top: 0;
+		left: 0;
+		width: 100%;
 		height: 100%;
-		width: 100%;
-		max-width: 512px;
-		gap: 24px;
-		padding-block: 24px;
-		box-sizing: border-box;
-		background-color: var(--color-neutral-1000);
-		background-repeat: no-repeat;
-		background-size: cover;
-		background-position-y: bottom;
-		border-radius: 12px;
-		margin-inline: auto;
-	}
 
-	header.round__header,
-	nav.round__nav,
-	section.round__content {
-		padding-inline: 20px;
-	}
-
-	header.round__header {
-		display: flex;
-		flex-direction: column;
-		gap: 4px;
-		@include card;
-		margin-inline: 20px;
-	}
-
-	h1.round__city {
-		font-size: 24px;
-		margin-block: 0;
-	}
-
-	/* time.round__time {
-	} */
-
-	section.round__content {
-		display: flex;
-		align-items: flex-start;
-
-		&--places {
-			justify-content: flex-end;
-			flex-direction: column;
-			gap: 8px;
+		> img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
 		}
-	}
-
-	p.round__p {
-		@include card;
-		font-size: 16px;
-		line-height: 130%;
-		margin-block: 0;
-		width: 100%;
-		box-sizing: border-box;
-	}
-
-	nav.round__nav {
-		display: flex;
-		width: 100%;
-		box-sizing: border-box;
-		gap: 8px;
-	}
-
-	a.round__action,
-	button.round__action {
-		@include card;
-		display: block;
-		border: none;
-		text-align: center;
-		text-decoration: none;
-		width: 100%;
-		font-size: 14px;
-
-		&:not(:disabled) {
-			cursor: pointer;
-		}
-
-		&:disabled {
-			color: var(--color-neutral-300);
-			opacity: 0.66;
-		}
-	}
-
-	button.round__action--active {
-		filter: invert(1);
-	}
-
-	a.round__action--quit {
-		background-color: #421108;
 	}
 </style>

@@ -1,4 +1,6 @@
-<slot />
+<div class="layout">
+	<slot />
+</div>
 
 <style lang="scss">
 	:global(body) {
@@ -15,13 +17,37 @@
 		--color-neutral-950: #141414;
 		--color-neutral-1000: #0f0f0f;
 
+		--border-radius-l: 8px;
+		--border-radius-m: 6px;
+		--border-radius-s: 4px;
+
+		--spacing-l: 16px;
+		--spacing-m: 8px;
+		--spacing-s: 4px;
+
 		font-family: 'Mona Sans';
 		margin: unset;
 		color: var(--color-neutral-100);
-		background-color: var(--color-neutral-900);
+		background-color: var(--color-neutral-1000);
 
-		padding: 24px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100dvw;
 		height: 100dvh;
-		box-sizing: border-box;
+	}
+
+	div.layout {
+		width: 100dvw;
+		min-width: 320px;
+		max-width: 512px;
+
+		height: 100dvh;
+		max-height: 1024px;
+
+		@media (min-width: 512px) and (min-height: 1024px) {
+			border-radius: var(--border-radius-l);
+			overflow: hidden;
+		}
 	}
 </style>

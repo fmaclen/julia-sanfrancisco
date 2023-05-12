@@ -1,0 +1,19 @@
+@mixin plate {
+	padding-inline: 16px;
+	padding-block: 16px;
+	border-radius: var(--border-radius-m);
+	color: var(--color-neutral-100);
+	background-color: var(--color-neutral-800);
+}
+
+@mixin button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: none;
+	color: inherit;
+	text-decoration: none;
+	box-sizing: border-box;
+	width: 100%;
+	font-size: 14px;
+}
