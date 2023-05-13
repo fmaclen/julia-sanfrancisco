@@ -67,16 +67,20 @@
 		isDepartingTo = false;
 	}
 
-	function findClue(index: number): void {
-		clock.fastForward(2);
+	async function findClue(index: number): Promise<void> {
+		currentClueIndex = null;
+		isTimeAdvancing = true;
+		isTimeAdvancing = await clock.fastForward(2);
 		currentClueIndex = index;
 	}
 
-	function travelTo(destination: Atlas): void {
+	async function travelTo(destination: Atlas): Promise<void> {
 		resetScene();
 
-		clock.isTraveling = true;
-		clock.fastForward(4);
+		isTimeAdvancing = true;
+		isTraveling = true;
+		isTimeAdvancing = await clock.fastForward(4);
+		isTraveling = isTimeAdvancing;
 
 		const isPreviousRoundAtlas =
 			currentRoundIndex !== 0 && rounds[currentRoundIndex - 1].atlas === destination;
@@ -107,8 +111,6 @@
 	onMount(() => {
 		setInterval(() => {
 			currentTime = clock.getCurrentTime();
-			isTimeAdvancing = clock.isTimeAdvancing;
-			isTraveling = clock.isTraveling;
 			isSleeping = clock.isSleeping;
 			timeIsUp = clock.timeIsUp;
 		}, clock.tickRate);
@@ -119,10 +121,10 @@
 
 	let clock = new Clock();
 	let currentTime: string;
-	let isTimeAdvancing: boolean;
 	let isTraveling: boolean;
 	let isSleeping: boolean;
 	let timeIsUp: boolean;
+	$: isTimeAdvancing = isTraveling || isSleeping;
 
 	let isDepartingTo = false;
 	let isLookingForClues = false;
@@ -150,7 +152,11 @@
 
 	{#if !isSceneVisible}
 		<Section>
-			<P>{getRandomValue(currentRound.atlas.descriptions)}</P>
+			{#if !isTraveling}
+				<P>
+					{getRandomValue(currentRound.atlas.descriptions)}
+				</P>
+			{/if}
 		</Section>
 	{/if}
 
@@ -185,7 +191,7 @@
 		{#if isGameWon}
 			<Button on:click={updateScore}>Continue</Button>
 		{:else}
-			<button on:click={clock.start}>Start Clock</button>
+			<!-- <button on:click={clock.start}>Start Clock</button> -->
 
 			<Button active={isLookingForClues} on:click={findClues}>Find clues</Button>
 			<Button active={isDepartingTo} on:click={departTo}>Depart to</Button>
@@ -212,7 +218,7 @@
 		}
 
 		&--disabled {
-			filter: grayscale(100%) blur(1px);
+			filter: grayscale(100%) blur(10px);
 		}
 	}
 </style>

@@ -40,32 +40,36 @@ export default class Clock {
 		return format(this.currentTime, 'EEEE h:mm aaa');
 	};
 
-	public fastForward = (hours: number) => {
-		this.stop();
-		this.isTimeAdvancing = true;
+	public fastForward = (hours: number): Promise<boolean> => {
+		return new Promise((resolve, reject) => {
+			this.stop();
+			this.isTimeAdvancing = true;
 
-		const ONE_HOUR_IN_SECONDS = 3600;
-		const totalSecondsToAdd = hours * ONE_HOUR_IN_SECONDS;
-		let secondsAdded = 0;
+			const ONE_HOUR_IN_SECONDS = 3600;
+			const totalSecondsToAdd = hours * ONE_HOUR_IN_SECONDS;
+			let secondsAdded = 0;
 
-		this.timerId = setInterval(() => {
-			const secondsToAddThisTick = Math.min(
-				totalSecondsToAdd - secondsAdded,
-				ONE_HOUR_IN_SECONDS / FPS
-			);
-			this.advanceTime(secondsToAddThisTick);
-			secondsAdded += secondsToAddThisTick;
+			this.timerId = setInterval(() => {
+				const secondsToAddThisTick = Math.min(
+					totalSecondsToAdd - secondsAdded,
+					ONE_HOUR_IN_SECONDS / FPS
+				);
+				this.advanceTime(secondsToAddThisTick);
+				secondsAdded += secondsToAddThisTick;
 
-			// Returns the clock to normal speed once the fast forward is complete
-			if (secondsAdded >= totalSecondsToAdd) {
-				this.stop();
-				this.start();
+				// Returns the clock to normal speed once the fast forward is complete
+				if (secondsAdded >= totalSecondsToAdd) {
+					this.stop();
+					this.start();
 
-				if (this.isTimeAdvancing) this.isTimeAdvancing = false;
-				if (this.isTraveling) this.isTraveling = false;
-				if (this.isSleeping) this.isSleeping = false; // Wake up Neo...
-			}
-		}, this.tickRate);
+					if (this.isTimeAdvancing) this.isTimeAdvancing = false;
+					if (this.isTraveling) this.isTraveling = false;
+					if (this.isSleeping) this.isSleeping = false; // Wake up Neo...
+
+					resolve(false);
+				}
+			}, this.tickRate);
+		});
 	};
 
 	// Advances the time by the specified number of seconds and checks if the clock should sleep or if time is up
