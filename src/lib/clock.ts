@@ -1,8 +1,6 @@
 import { addDays, addHours, addSeconds, format, isAfter, startOfWeek } from 'date-fns';
 
 const FPS = 60;
-const RATE_IN_MS = 500;
-const ONE_HOUR_IN_SECONDS = 3600;
 
 export default class Clock {
 	startTime: Date;
@@ -10,13 +8,19 @@ export default class Clock {
 	currentTime: Date;
 	timerId: NodeJS.Timer | null;
 	tickRate: number;
+	isTimeAdvancing: boolean;
+	isTraveling: boolean;
 	isSleeping: boolean;
 	timeIsUp: boolean;
 
 	constructor() {
+		const RATE_IN_MS = 500;
+
 		this.timerId = null;
 		this.tickRate = RATE_IN_MS / FPS;
 
+		this.isTimeAdvancing = false;
+		this.isTraveling = false;
 		this.isSleeping = false;
 		this.timeIsUp = false;
 
@@ -32,15 +36,15 @@ export default class Clock {
 		this.timerId = setInterval(() => this.advanceTime(oneMinuteInSeconds), 1500);
 	};
 
-	// Returns the current time as a formatted string
 	public getCurrentTime = (): string => {
 		return format(this.currentTime, 'EEEE h:mm aaa');
 	};
 
-	// Fast forwards the clock by the specified number of hours
 	public fastForward = (hours: number) => {
 		this.stop();
+		this.isTimeAdvancing = true;
 
+		const ONE_HOUR_IN_SECONDS = 3600;
 		const totalSecondsToAdd = hours * ONE_HOUR_IN_SECONDS;
 		let secondsAdded = 0;
 
@@ -57,8 +61,9 @@ export default class Clock {
 				this.stop();
 				this.start();
 
-				// Wake up Neo...
-				if (this.isSleeping) this.isSleeping = false;
+				if (this.isTimeAdvancing) this.isTimeAdvancing = false;
+				if (this.isTraveling) this.isTraveling = false;
+				if (this.isSleeping) this.isSleeping = false; // Wake up Neo...
 			}
 		}, this.tickRate);
 	};
@@ -76,7 +81,8 @@ export default class Clock {
 		if (this.timerId) clearInterval(this.timerId);
 	};
 
-	// Checks if the current hour is 22 (10 PM). If so, it fast forwards the clock by 10 hours
+	// Checks if the current hour is 22 (10 PM)
+	// If so, it fast forwards the clock by 10 hours
 	private checkShouldSleep = () => {
 		const currentHour = this.currentTime.getHours();
 		const shouldSleep = currentHour === 22 && !this.isSleeping;
@@ -87,7 +93,8 @@ export default class Clock {
 		}
 	};
 
-	// Checks if the current time is after the end time. If so, it stops the clock
+	// Checks if the current time is after the end time.
+	// If so, it stops the clock
 	private checkTimeIsUp = () => {
 		const isTimeUp = isAfter(this.currentTime, this.endTime);
 

@@ -19,7 +19,6 @@
 	if ($playerStore === null) redirectTo('/player/');
 
 	interface Game {
-		currentTime: Date;
 		stolenTreasure: string;
 		suspect: Suspect;
 		rounds: Round[];
@@ -46,11 +45,11 @@
 	const suspect = getRandomSuspect();
 
 	const game: Game = {
-		currentTime: getStartTime(),
 		stolenTreasure: getRandomStolenItem(),
 		suspect,
 		rounds: getRounds(startingDestination, atlasesInRound, suspect)
 	};
+	const { rounds } = game;
 
 	function resetScene(): void {
 		isDepartingTo = false;
@@ -69,13 +68,15 @@
 	}
 
 	function findClue(index: number): void {
-		clock.fastForward(1);
+		clock.fastForward(2);
 		currentClueIndex = index;
 	}
 
 	function travelTo(destination: Atlas): void {
 		resetScene();
-		const { rounds } = game;
+
+		clock.isTraveling = true;
+		clock.fastForward(4);
 
 		const isPreviousRoundAtlas =
 			currentRoundIndex !== 0 && rounds[currentRoundIndex - 1].atlas === destination;
@@ -106,6 +107,8 @@
 	onMount(() => {
 		setInterval(() => {
 			currentTime = clock.getCurrentTime();
+			isTimeAdvancing = clock.isTimeAdvancing;
+			isTraveling = clock.isTraveling;
 			isSleeping = clock.isSleeping;
 			timeIsUp = clock.timeIsUp;
 		}, clock.tickRate);
@@ -116,21 +119,21 @@
 
 	let clock = new Clock();
 	let currentTime: string;
-	let isSleeping: boolean = clock.isSleeping;
-	let timeIsUp: boolean = clock.timeIsUp;
+	let isTimeAdvancing: boolean;
+	let isTraveling: boolean;
+	let isSleeping: boolean;
+	let timeIsUp: boolean;
 
 	let isDepartingTo = false;
 	let isLookingForClues = false;
 
-	$: currentRound = game.rounds[currentRoundIndex];
+	$: currentRound = rounds[currentRoundIndex];
 	$: isSceneVisible = isDepartingTo || isLookingForClues;
-	$: isGameWon = !timeIsUp && currentRoundIndex === game.rounds.length - 1;
-
-	$: console.log('isSleeping', isSleeping);
+	$: isGameWon = !timeIsUp && currentRoundIndex === rounds.length - 1;
 </script>
 
 <Main>
-	<div class="round__background">
+	<div class="round__background {isTimeAdvancing ? 'round__background--disabled' : ''}">
 		<img
 			src="/locations/{currentRound.atlas.city
 				.replace(' ', '-')
@@ -141,7 +144,7 @@
 	</div>
 
 	<Header>
-		<H1>{isSleeping ? 'Sleeping...' : currentRound.atlas.city}</H1>
+		<H1>{isTraveling ? 'Traveling...' : isSleeping ? 'Sleeping...' : currentRound.atlas.city}</H1>
 		<time class="round__time">{currentTime}</time>
 	</Header>
 
@@ -200,11 +203,16 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
+		transition: filter 500ms;
 
 		> img {
 			width: 100%;
 			height: 100%;
 			object-fit: cover;
+		}
+
+		&--disabled {
+			filter: grayscale(100%) blur(1px);
 		}
 	}
 </style>
