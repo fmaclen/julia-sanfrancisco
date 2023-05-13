@@ -1,7 +1,7 @@
 import { addDays, addHours, addSeconds, format, isAfter, startOfWeek } from 'date-fns';
 
 const FPS = 60;
-const ONE_SECOND = 1000;
+const RATE_IN_MS = 500;
 const ONE_HOUR_IN_SECONDS = 3600;
 
 export default class Clock {
@@ -10,10 +10,15 @@ export default class Clock {
 	currentTime: Date;
 	timerId: NodeJS.Timer | null;
 	tickRate: number;
+	isSleeping: boolean;
+	timeIsUp: boolean;
 
 	constructor() {
 		this.timerId = null;
-		this.tickRate = ONE_SECOND / FPS; // 60 fps
+		this.tickRate = RATE_IN_MS / FPS;
+
+		this.isSleeping = false;
+		this.timeIsUp = false;
 
 		const startOfCurrentWeek = startOfWeek(new Date(), { weekStartsOn: 1 });
 		this.startTime = addHours(startOfCurrentWeek, 9); // Monday at 9 am
@@ -51,6 +56,9 @@ export default class Clock {
 			if (secondsAdded >= totalSecondsToAdd) {
 				this.stop();
 				this.start();
+
+				// Wake up Neo...
+				if (this.isSleeping) this.isSleeping = false;
 			}
 		}, this.tickRate);
 	};
@@ -71,11 +79,21 @@ export default class Clock {
 	// Checks if the current hour is 22 (10 PM). If so, it fast forwards the clock by 10 hours
 	private checkShouldSleep = () => {
 		const currentHour = this.currentTime.getHours();
-		if (currentHour === 22) this.fastForward(10);
+		const shouldSleep = currentHour === 22 && !this.isSleeping;
+
+		if (shouldSleep) {
+			this.isSleeping = true;
+			this.fastForward(10);
+		}
 	};
 
 	// Checks if the current time is after the end time. If so, it stops the clock
 	private checkTimeIsUp = () => {
-		if (isAfter(this.currentTime, this.endTime)) this.stop();
+		const isTimeUp = isAfter(this.currentTime, this.endTime);
+
+		if (isTimeUp) {
+			this.timeIsUp = true;
+			this.stop();
+		}
 	};
 }

@@ -106,6 +106,8 @@
 	onMount(() => {
 		setInterval(() => {
 			currentTime = clock.getCurrentTime();
+			isSleeping = clock.isSleeping;
+			timeIsUp = clock.timeIsUp;
 		}, clock.tickRate);
 	});
 
@@ -114,13 +116,17 @@
 
 	let clock = new Clock();
 	let currentTime: string;
+	let isSleeping: boolean = clock.isSleeping;
+	let timeIsUp: boolean = clock.timeIsUp;
 
 	let isDepartingTo = false;
 	let isLookingForClues = false;
 
 	$: currentRound = game.rounds[currentRoundIndex];
 	$: isSceneVisible = isDepartingTo || isLookingForClues;
-	$: isGameWon = currentRoundIndex === game.rounds.length - 1;
+	$: isGameWon = !timeIsUp && currentRoundIndex === game.rounds.length - 1;
+
+	$: console.log('isSleeping', isSleeping);
 </script>
 
 <Main>
@@ -135,7 +141,7 @@
 	</div>
 
 	<Header>
-		<H1>{currentRound.atlas.city}</H1>
+		<H1>{isSleeping ? 'Sleeping...' : currentRound.atlas.city}</H1>
 		<time class="round__time">{currentTime}</time>
 	</Header>
 
