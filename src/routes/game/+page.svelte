@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ATLASES, getRandomAtlas, type Atlas } from '$lib/atlases';
-	import Clock from '$lib/clock';
+	import Clock, { RATE_IN_MS } from '$lib/clock';
 	import Button from '$lib/components/Button.svelte';
 	import ButtonLink from '$lib/components/ButtonLink.svelte';
 	import H1 from '$lib/components/H1.svelte';
@@ -14,6 +14,7 @@
 	import { getRounds, getDecoyRound, type Round } from '$lib/rounds';
 	import { SUSPECTS, type Suspect } from '$lib/suspects';
 	import { onMount } from 'svelte';
+	import { fade, slide } from 'svelte/transition';
 
 	// If there is no user profile, redirect to the player page
 	if ($playerStore === null) redirectTo('/player/');
@@ -52,11 +53,22 @@
 	}
 
 	async function findClue(index: number): Promise<void> {
-		currentClueIndex = null;
 		isTimeAdvancing = true;
+		currentClueIndex = null;
 		isTimeAdvancing = await clock.fastForward(2);
 		currentClueIndex = index;
 		backgroundName = `places/${currentRound.scenes[index].place}`;
+	}
+
+	function dismissClue(): void {
+		currentClueIndex = null;
+		isTimeAdvancing = true;
+
+		setTimeout(() => {
+			backgroundName = `atlas/${currentRound.atlas.city}`;
+			isTimeAdvancing = false;
+			resetScene();
+		}, RATE_IN_MS);
 	}
 
 	async function travelTo(destination: Atlas): Promise<void> {
@@ -115,7 +127,7 @@
 
 	$: currentRoundIndex = 0;
 	$: currentRound = rounds[currentRoundIndex];
-	$: isSceneVisible = isDepartingTo || isLookingForClues;
+	$: isDescriptionVisible = isDepartingTo || isLookingForClues;
 	$: isGameWon = !timeIsUp && currentRoundIndex === rounds.length - 1;
 	$: backgroundName = `atlas/${currentRound.atlas.city}`;
 </script>
@@ -131,12 +143,12 @@
 
 	<Header>
 		<H1>{isTraveling ? 'Traveling...' : isSleeping ? 'Sleeping...' : currentRound.atlas.city}</H1>
-		<time class="round__time">{currentTime}</time>
+		<time class="round__time {isTimeAdvancing ? 'round__time--active' : ''}">{currentTime}</time>
 	</Header>
 
-	{#if !isSceneVisible}
+	{#if !isDescriptionVisible}
 		<Section>
-			{#if !isTraveling}
+			{#if !isTimeAdvancing}
 				<P>
 					{getRandomValue(currentRound.atlas.descriptions)}
 				</P>
@@ -146,20 +158,20 @@
 
 	{#if isLookingForClues}
 		<Section align="bottom">
-			{#if typeof currentClueIndex === 'number'}
+			{#if currentClueIndex === null}
+				{#if !isTimeAdvancing}
+					{#each currentRound.scenes as scene, index}
+						<Button active={currentClueIndex === index} on:click={() => findClue(index)}>
+							{scene.place}
+						</Button>
+					{/each}
+				{/if}
+			{:else}
 				<P>
 					<strong>{currentRound.scenes[currentClueIndex].witness}</strong><br />
 					{currentRound.scenes[currentClueIndex].clue}
 				</P>
 			{/if}
-
-			<!-- {#if currentClueIndex === null} -->
-			{#each currentRound.scenes as scene, index}
-				<Button active={currentClueIndex === index} on:click={() => findClue(index)}>
-					{scene.place}
-				</Button>
-			{/each}
-			<!-- {/if} -->
 		</Section>
 	{/if}
 
@@ -176,9 +188,15 @@
 	<Nav>
 		{#if isGameWon}
 			<Button on:click={updateScore}>Continue</Button>
-		{:else}
-			<Button active={isLookingForClues} on:click={findClues}>Find clues</Button>
-			<Button active={isDepartingTo} on:click={departTo}>Depart to</Button>
+		{:else if currentClueIndex !== null}
+			<Button on:click={dismissClue}>Dismiss</Button>
+		{:else if !isTimeAdvancing}
+			<Button active={isLookingForClues} disabled={isTimeAdvancing} on:click={findClues}>
+				Find clues
+			</Button>
+			<Button active={isDepartingTo} disabled={isTimeAdvancing} on:click={departTo}>
+				Depart to
+			</Button>
 			<Button disabled={true}>Get warrant</Button>
 			<ButtonLink href="/">Quit</ButtonLink>
 		{/if}
@@ -186,6 +204,15 @@
 </Main>
 
 <style lang="scss">
+	time.round__time {
+		opacity: 0.33;
+		transition: opacity 250ms;
+
+		&--active {
+			opacity: 1;
+		}
+	}
+
 	div.round__background {
 		position: absolute;
 		z-index: -1;

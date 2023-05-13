@@ -1,5 +1,6 @@
 import { addDays, addHours, addSeconds, format, isAfter, startOfWeek } from 'date-fns';
 
+export const RATE_IN_MS = 500;
 const FPS = 60;
 
 export default class Clock {
@@ -14,8 +15,6 @@ export default class Clock {
 	timeIsUp: boolean;
 
 	constructor() {
-		const RATE_IN_MS = 500;
-
 		this.timerId = null;
 		this.tickRate = RATE_IN_MS / FPS;
 
