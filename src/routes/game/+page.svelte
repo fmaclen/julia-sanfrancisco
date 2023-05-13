@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { ATLASES, getRandomAtlas, type Atlas } from '$lib/atlases';
+	import Clock from '$lib/clock';
 	import Button from '$lib/components/Button.svelte';
 	import ButtonLink from '$lib/components/ButtonLink.svelte';
 	import H1 from '$lib/components/H1.svelte';
@@ -12,44 +13,27 @@
 	import { playerStore, type Player } from '$lib/player';
 	import { getRounds, getDecoyRound, type Round } from '$lib/rounds';
 	import { SUSPECTS, type Suspect } from '$lib/suspects';
-	import { format } from 'date-fns';
+	import { onMount } from 'svelte';
+
+	// If there is no user profile, redirect to the player page
+	if ($playerStore === null) redirectTo('/player/');
 
 	interface Game {
-		currentTime: Date;
 		stolenTreasure: string;
 		suspect: Suspect;
 		rounds: Round[];
 	}
 
-	// If there is no user profile, redirect to the player page
-	if ($playerStore === null) redirectTo('/player/');
-
 	const atlasesInRound = [...ATLASES];
 	const startingDestination: Atlas = getRandomAtlas();
-
-	function getStartTime(): Date {
-		const monday = new Date();
-		monday.setHours(9, 0, 0, 0); // Set time to 9:00 am
-		monday.setDate(monday.getDate() - ((monday.getDate() + 6) % 7)); // Set to the previous Monday
-		return monday;
-	}
-
-	function getRandomStolenItem(): string {
-		return getRandomValue(startingDestination.stolen);
-	}
-
-	function getRandomSuspect(): Suspect {
-		return getRandomValue(SUSPECTS);
-	}
-
-	const suspect = getRandomSuspect();
+	const suspect = getRandomValue(SUSPECTS);
 
 	const game: Game = {
-		currentTime: getStartTime(),
-		stolenTreasure: getRandomStolenItem(),
+		stolenTreasure: getRandomValue(startingDestination.stolen),
 		suspect,
 		rounds: getRounds(startingDestination, atlasesInRound, suspect)
 	};
+	const { rounds } = game;
 
 	function resetScene(): void {
 		isDepartingTo = false;
@@ -67,13 +51,21 @@
 		isDepartingTo = false;
 	}
 
-	function findClue(index: number): void {
+	async function findClue(index: number): Promise<void> {
+		currentClueIndex = null;
+		isTimeAdvancing = true;
+		isTimeAdvancing = await clock.fastForward(2);
 		currentClueIndex = index;
+		backgroundName = `places/${currentRound.scenes[index].place}`;
 	}
 
-	function travelTo(destination: Atlas): void {
+	async function travelTo(destination: Atlas): Promise<void> {
 		resetScene();
-		const { rounds } = game;
+
+		isTimeAdvancing = true;
+		isTraveling = true;
+		isTimeAdvancing = await clock.fastForward(4);
+		isTraveling = isTimeAdvancing;
 
 		const isPreviousRoundAtlas =
 			currentRoundIndex !== 0 && rounds[currentRoundIndex - 1].atlas === destination;
@@ -101,37 +93,54 @@
 		});
 	}
 
-	$: currentRoundIndex = 0;
-	$: currentRound = game.rounds[currentRoundIndex];
+	onMount(() => {
+		setInterval(() => {
+			currentTime = clock.getCurrentTime();
+			isSleeping = clock.isSleeping;
+			timeIsUp = clock.timeIsUp;
+		}, clock.tickRate);
+	});
 
 	let currentClueIndex: number | null = null;
 
-	$: isDepartingTo = false;
-	$: isLookingForClues = false;
-	$: isSceneVisible = isDepartingTo || isLookingForClues;
+	let clock = new Clock();
+	let currentTime: string;
+	let isTraveling: boolean;
+	let isSleeping: boolean;
+	let timeIsUp: boolean;
+	$: isTimeAdvancing = isTraveling || isSleeping;
 
-	$: isGameWon = currentRoundIndex === game.rounds.length - 1;
+	let isDepartingTo = false;
+	let isLookingForClues = false;
+
+	$: currentRoundIndex = 0;
+	$: currentRound = rounds[currentRoundIndex];
+	$: isSceneVisible = isDepartingTo || isLookingForClues;
+	$: isGameWon = !timeIsUp && currentRoundIndex === rounds.length - 1;
+	$: backgroundName = `atlas/${currentRound.atlas.city}`;
 </script>
 
 <Main>
-	<div class="round__background">
+	<div class="round__background {isTimeAdvancing ? 'round__background--disabled' : ''}">
 		<img
-			src="/locations/{currentRound.atlas.city
-				.replace(' ', '-')
-				.replace(' ', '-')
-				.toLowerCase()}.png"
-			alt="Illustration of {currentRound.atlas.city}"
+			class="round__img"
+			src="/artwork/{backgroundName.replace(' ', '-').replace(' ', '-').toLowerCase()}.png"
+			alt="Illustration of scene"
 		/>
 	</div>
 
 	<Header>
-		<H1>{currentRound.atlas.city}</H1>
-		<time class="round__time">{format(game.currentTime, 'EEEE hh:mm aaa')}</time>
+		<H1>{isTraveling ? 'Traveling...' : isSleeping ? 'Sleeping...' : currentRound.atlas.city}</H1>
+		<time class="round__time">{currentTime}</time>
 	</Header>
 
 	{#if !isSceneVisible}
 		<Section>
-			<P>{getRandomValue(currentRound.atlas.descriptions)}</P>
+			{#if !isTraveling}
+				<P>
+					{getRandomValue(currentRound.atlas.descriptions)}
+				</P>
+			{/if}
 		</Section>
 	{/if}
 
@@ -144,11 +153,13 @@
 				</P>
 			{/if}
 
+			<!-- {#if currentClueIndex === null} -->
 			{#each currentRound.scenes as scene, index}
 				<Button active={currentClueIndex === index} on:click={() => findClue(index)}>
 					{scene.place}
 				</Button>
 			{/each}
+			<!-- {/if} -->
 		</Section>
 	{/if}
 
@@ -182,11 +193,18 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
+		opacity: 1;
+		transition: filter 250ms, opacity 500ms;
 
-		> img {
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
+		&--disabled {
+			filter: grayscale(100%) blur(2px);
+			opacity: 0;
 		}
+	}
+
+	img.round__img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 </style>
