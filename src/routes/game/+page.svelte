@@ -26,26 +26,10 @@
 
 	const atlasesInRound = [...ATLASES];
 	const startingDestination: Atlas = getRandomAtlas();
-
-	function getStartTime(): Date {
-		const monday = new Date();
-		monday.setHours(9, 0, 0, 0); // Set time to 9:00 am
-		monday.setDate(monday.getDate() - ((monday.getDate() + 6) % 7)); // Set to the previous Monday
-		return monday;
-	}
-
-	function getRandomStolenItem(): string {
-		return getRandomValue(startingDestination.stolen);
-	}
-
-	function getRandomSuspect(): Suspect {
-		return getRandomValue(SUSPECTS);
-	}
-
-	const suspect = getRandomSuspect();
+	const suspect = getRandomValue(SUSPECTS);
 
 	const game: Game = {
-		stolenTreasure: getRandomStolenItem(),
+		stolenTreasure: getRandomValue(startingDestination.stolen),
 		suspect,
 		rounds: getRounds(startingDestination, atlasesInRound, suspect)
 	};
@@ -72,6 +56,7 @@
 		isTimeAdvancing = true;
 		isTimeAdvancing = await clock.fastForward(2);
 		currentClueIndex = index;
+		backgroundName = `places/${currentRound.scenes[index].place}`;
 	}
 
 	async function travelTo(destination: Atlas): Promise<void> {
@@ -116,7 +101,6 @@
 		}, clock.tickRate);
 	});
 
-	let currentRoundIndex = 0;
 	let currentClueIndex: number | null = null;
 
 	let clock = new Clock();
@@ -129,19 +113,19 @@
 	let isDepartingTo = false;
 	let isLookingForClues = false;
 
+	$: currentRoundIndex = 0;
 	$: currentRound = rounds[currentRoundIndex];
 	$: isSceneVisible = isDepartingTo || isLookingForClues;
 	$: isGameWon = !timeIsUp && currentRoundIndex === rounds.length - 1;
+	$: backgroundName = `atlas/${currentRound.atlas.city}`;
 </script>
 
 <Main>
 	<div class="round__background {isTimeAdvancing ? 'round__background--disabled' : ''}">
 		<img
-			src="/locations/{currentRound.atlas.city
-				.replace(' ', '-')
-				.replace(' ', '-')
-				.toLowerCase()}.png"
-			alt="Illustration of {currentRound.atlas.city}"
+			class="round__img"
+			src="/artwork/{backgroundName.replace(' ', '-').replace(' ', '-').toLowerCase()}.png"
+			alt="Illustration of scene"
 		/>
 	</div>
 
@@ -169,11 +153,13 @@
 				</P>
 			{/if}
 
+			<!-- {#if currentClueIndex === null} -->
 			{#each currentRound.scenes as scene, index}
 				<Button active={currentClueIndex === index} on:click={() => findClue(index)}>
 					{scene.place}
 				</Button>
 			{/each}
+			<!-- {/if} -->
 		</Section>
 	{/if}
 
@@ -191,8 +177,6 @@
 		{#if isGameWon}
 			<Button on:click={updateScore}>Continue</Button>
 		{:else}
-			<!-- <button on:click={clock.start}>Start Clock</button> -->
-
 			<Button active={isLookingForClues} on:click={findClues}>Find clues</Button>
 			<Button active={isDepartingTo} on:click={departTo}>Depart to</Button>
 			<Button disabled={true}>Get warrant</Button>
@@ -209,16 +193,18 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
-		transition: filter 500ms;
-
-		> img {
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-		}
+		opacity: 1;
+		transition: filter 250ms, opacity 500ms;
 
 		&--disabled {
-			filter: grayscale(100%) blur(10px);
+			filter: grayscale(100%) blur(2px);
+			opacity: 0;
 		}
+	}
+
+	img.round__img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 </style>
