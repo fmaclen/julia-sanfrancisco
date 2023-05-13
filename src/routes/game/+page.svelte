@@ -69,7 +69,7 @@
 	}
 
 	function findClue(index: number): void {
-		clock.fastForward(3);
+		clock.fastForward(1);
 		currentClueIndex = index;
 	}
 
@@ -176,7 +176,7 @@
 		{#if isGameWon}
 			<Button on:click={updateScore}>Continue</Button>
 		{:else}
-			<button on:click={clock.startClock}>Start Clock</button>
+			<button on:click={clock.start}>Start Clock</button>
 
 			<Button active={isLookingForClues} on:click={findClues}>Find clues</Button>
 			<Button active={isDepartingTo} on:click={departTo}>Depart to</Button>

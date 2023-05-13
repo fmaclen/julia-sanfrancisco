@@ -21,18 +21,20 @@ export default class Clock {
 		this.currentTime = this.startTime;
 	}
 
-	public startClock = () => {
-		// Advances time by 1 minute every 1.5 seconds
+	// Starts the clock and advances the time by 1 minute every 1.5 seconds
+	public start = () => {
 		const oneMinuteInSeconds = 60;
 		this.timerId = setInterval(() => this.advanceTime(oneMinuteInSeconds), 1500);
 	};
 
+	// Returns the current time as a formatted string
 	public getCurrentTime = (): string => {
 		return format(this.currentTime, 'EEEE h:mm aaa');
 	};
 
+	// Fast forwards the clock by the specified number of hours
 	public fastForward = (hours: number) => {
-		this.stopClock();
+		this.stop();
 
 		const totalSecondsToAdd = hours * ONE_HOUR_IN_SECONDS;
 		let secondsAdded = 0;
@@ -45,13 +47,15 @@ export default class Clock {
 			this.advanceTime(secondsToAddThisTick);
 			secondsAdded += secondsToAddThisTick;
 
+			// Returns the clock to normal speed once the fast forward is complete
 			if (secondsAdded >= totalSecondsToAdd) {
-				this.stopClock();
-				this.startClock();
+				this.stop();
+				this.start();
 			}
 		}, this.tickRate);
 	};
 
+	// Advances the time by the specified number of seconds and checks if the clock should sleep or if time is up
 	private advanceTime = (seconds: number) => {
 		this.currentTime = addSeconds(this.currentTime, seconds);
 
@@ -59,16 +63,19 @@ export default class Clock {
 		this.checkTimeIsUp();
 	};
 
-	private stopClock = () => {
+	// Stops the clock by clearing the interval
+	private stop = () => {
 		if (this.timerId) clearInterval(this.timerId);
 	};
 
+	// Checks if the current hour is 22 (10 PM). If so, it fast forwards the clock by 10 hours
 	private checkShouldSleep = () => {
 		const currentHour = this.currentTime.getHours();
 		if (currentHour === 22) this.fastForward(10);
 	};
 
+	// Checks if the current time is after the end time. If so, it stops the clock
 	private checkTimeIsUp = () => {
-		if (isAfter(this.currentTime, this.endTime)) this.stopClock();
+		if (isAfter(this.currentTime, this.endTime)) this.stop();
 	};
 }
