@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { ATLASES, getRandomAtlas, type Atlas } from '$lib/atlases';
+	import Clock from '$lib/clock';
 	import Button from '$lib/components/Button.svelte';
 	import ButtonLink from '$lib/components/ButtonLink.svelte';
 	import H1 from '$lib/components/H1.svelte';
@@ -12,7 +13,10 @@
 	import { playerStore, type Player } from '$lib/player';
 	import { getRounds, getDecoyRound, type Round } from '$lib/rounds';
 	import { SUSPECTS, type Suspect } from '$lib/suspects';
-	import { format } from 'date-fns';
+	import { onMount } from 'svelte';
+
+	// If there is no user profile, redirect to the player page
+	if ($playerStore === null) redirectTo('/player/');
 
 	interface Game {
 		currentTime: Date;
@@ -20,9 +24,6 @@
 		suspect: Suspect;
 		rounds: Round[];
 	}
-
-	// If there is no user profile, redirect to the player page
-	if ($playerStore === null) redirectTo('/player/');
 
 	const atlasesInRound = [...ATLASES];
 	const startingDestination: Atlas = getRandomAtlas();
@@ -68,6 +69,7 @@
 	}
 
 	function findClue(index: number): void {
+		clock.fastForward(3);
 		currentClueIndex = index;
 	}
 
@@ -101,15 +103,23 @@
 		});
 	}
 
-	$: currentRoundIndex = 0;
-	$: currentRound = game.rounds[currentRoundIndex];
+	onMount(() => {
+		setInterval(() => {
+			currentTime = clock.getCurrentTime();
+		}, clock.tickRate);
+	});
 
+	let currentRoundIndex = 0;
 	let currentClueIndex: number | null = null;
 
-	$: isDepartingTo = false;
-	$: isLookingForClues = false;
-	$: isSceneVisible = isDepartingTo || isLookingForClues;
+	let clock = new Clock();
+	let currentTime: string;
 
+	let isDepartingTo = false;
+	let isLookingForClues = false;
+
+	$: currentRound = game.rounds[currentRoundIndex];
+	$: isSceneVisible = isDepartingTo || isLookingForClues;
 	$: isGameWon = currentRoundIndex === game.rounds.length - 1;
 </script>
 
@@ -126,7 +136,7 @@
 
 	<Header>
 		<H1>{currentRound.atlas.city}</H1>
-		<time class="round__time">{format(game.currentTime, 'EEEE hh:mm aaa')}</time>
+		<time class="round__time">{currentTime}</time>
 	</Header>
 
 	{#if !isSceneVisible}
@@ -166,6 +176,8 @@
 		{#if isGameWon}
 			<Button on:click={updateScore}>Continue</Button>
 		{:else}
+			<button on:click={clock.startClock}>Start Clock</button>
+
 			<Button active={isLookingForClues} on:click={findClues}>Find clues</Button>
 			<Button active={isDepartingTo} on:click={departTo}>Depart to</Button>
 			<Button disabled={true}>Get warrant</Button>

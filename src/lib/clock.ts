@@ -1,4 +1,8 @@
-import { addDays, addHours, addMinutes, format, isAfter, startOfWeek } from 'date-fns';
+import { addDays, addHours, addSeconds, format, isAfter, startOfWeek } from 'date-fns';
+
+const FPS = 60;
+const ONE_SECOND = 1000;
+const ONE_HOUR_IN_SECONDS = 3600;
 
 export default class Clock {
 	startTime: Date;
@@ -9,7 +13,7 @@ export default class Clock {
 
 	constructor() {
 		this.timerId = null;
-		this.tickRate = 1000 / 60; // 60 fps
+		this.tickRate = ONE_SECOND / FPS; // 60 fps
 
 		const startOfCurrentWeek = startOfWeek(new Date(), { weekStartsOn: 1 });
 		this.startTime = addHours(startOfCurrentWeek, 9); // Monday at 9 am
@@ -18,34 +22,45 @@ export default class Clock {
 	}
 
 	public startClock = () => {
-		// Advanecs time by 1 minute every 1.5 seconds
-		this.timerId = setInterval(() => this.advanceTime(), 1500);
+		// Advances time by 1 minute every 1.5 seconds
+		const oneMinuteInSeconds = 60;
+		this.timerId = setInterval(() => this.advanceTime(oneMinuteInSeconds), 1500);
 	};
 
 	public getCurrentTime = (): string => {
-		return format(this.currentTime, 'EEEE hh:mm aaa');
+		return format(this.currentTime, 'EEEE h:mm aaa');
 	};
 
 	public fastForward = (hours: number) => {
 		this.stopClock();
 
-		const minutesToAdvance = 60 / hours / this.tickRate;
-		this.timerId = setInterval(() => this.advanceTime(minutesToAdvance), this.tickRate);
+		const totalSecondsToAdd = hours * ONE_HOUR_IN_SECONDS;
+		let secondsAdded = 0;
 
-		setTimeout(() => {
-			this.stopClock();
-			this.startClock();
-		}, hours * 1000);
+		this.timerId = setInterval(() => {
+			const secondsToAddThisTick = Math.min(
+				totalSecondsToAdd - secondsAdded,
+				ONE_HOUR_IN_SECONDS / FPS
+			);
+			this.advanceTime(secondsToAddThisTick);
+			secondsAdded += secondsToAddThisTick;
+
+			if (secondsAdded >= totalSecondsToAdd) {
+				this.stopClock();
+				this.startClock();
+			}
+		}, this.tickRate);
+	};
+
+	private advanceTime = (seconds: number) => {
+		this.currentTime = addSeconds(this.currentTime, seconds);
+
+		this.checkShouldSleep();
+		this.checkTimeIsUp();
 	};
 
 	private stopClock = () => {
 		if (this.timerId) clearInterval(this.timerId);
-	};
-
-	private advanceTime = (minutes = 1) => {
-		this.currentTime = addMinutes(this.currentTime, minutes);
-		this.checkShouldSleep();
-		this.checkTimeIsUp();
 	};
 
 	private checkShouldSleep = () => {
