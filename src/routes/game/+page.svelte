@@ -189,7 +189,7 @@
 			{/each}
 		{/if}
 
-		{#if isClueVisible}
+		{#if isClueVisible && currentClueIndex !== null}
 			<P>
 				<strong>{currentRound.scenes[currentClueIndex].witness}</strong>
 				<br />
