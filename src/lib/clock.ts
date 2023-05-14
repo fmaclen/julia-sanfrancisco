@@ -1,6 +1,6 @@
 import { addDays, addHours, addSeconds, format, isAfter, startOfWeek } from 'date-fns';
 
-export const RATE_IN_MS = 500;
+export const DELAY_IN_MS = 500;
 const FPS = 60;
 
 export default class Clock {
@@ -12,16 +12,16 @@ export default class Clock {
 	isTimeAdvancing: boolean;
 	isTraveling: boolean;
 	isSleeping: boolean;
-	timeIsUp: boolean;
+	isTimeUp: boolean;
 
 	constructor() {
 		this.timerId = null;
-		this.tickRate = RATE_IN_MS / FPS;
+		this.tickRate = DELAY_IN_MS / FPS;
 
 		this.isTimeAdvancing = false;
 		this.isTraveling = false;
 		this.isSleeping = false;
-		this.timeIsUp = false;
+		this.isTimeUp = false;
 
 		const startOfCurrentWeek = startOfWeek(new Date(), { weekStartsOn: 1 });
 		this.startTime = addHours(startOfCurrentWeek, 9); // Monday at 9 am
@@ -88,9 +88,11 @@ export default class Clock {
 	// If so, it fast forwards the clock by 10 hours
 	private checkShouldSleep = () => {
 		const currentHour = this.currentTime.getHours();
-		const shouldSleep = currentHour === 22 && !this.isSleeping;
+		const shouldSleep = currentHour === 12 && !this.isSleeping;
+		// const shouldSleep = currentHour === 22 && !this.isSleeping;
 
 		if (shouldSleep) {
+			this.isTraveling = false;
 			this.isSleeping = true;
 			this.fastForward(10);
 		}
@@ -99,10 +101,10 @@ export default class Clock {
 	// Checks if the current time is after the end time.
 	// If so, it stops the clock
 	private checkTimeIsUp = () => {
-		const isTimeUp = isAfter(this.currentTime, this.endTime);
+		const timeIsUp = isAfter(this.currentTime, this.endTime);
 
-		if (isTimeUp) {
-			this.timeIsUp = true;
+		if (timeIsUp) {
+			this.isTimeUp = true;
 			this.stop();
 		}
 	};

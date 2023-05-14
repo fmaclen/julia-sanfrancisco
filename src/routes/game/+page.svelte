@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ATLASES, getRandomAtlas, type Atlas } from '$lib/atlases';
-	import Clock, { RATE_IN_MS } from '$lib/clock';
+	import Clock, { DELAY_IN_MS } from '$lib/clock';
 	import Button from '$lib/components/Button.svelte';
 	import ButtonLink from '$lib/components/ButtonLink.svelte';
 	import H1 from '$lib/components/H1.svelte';
@@ -14,7 +14,6 @@
 	import { getRounds, getDecoyRound, type Round } from '$lib/rounds';
 	import { SUSPECTS, type Suspect } from '$lib/suspects';
 	import { onMount } from 'svelte';
-	import { fade, slide } from 'svelte/transition';
 
 	// If there is no user profile, redirect to the player page
 	if ($playerStore === null) redirectTo('/player/');
@@ -71,7 +70,7 @@
 			artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
 			isTimeAdvancing = false;
 			resetScene();
-		}, RATE_IN_MS);
+		}, DELAY_IN_MS);
 	}
 
 	async function travelTo(destination: Atlas): Promise<void> {
@@ -114,7 +113,7 @@
 		setInterval(() => {
 			currentTime = clock.getCurrentTime();
 			isSleeping = clock.isSleeping;
-			timeIsUp = clock.timeIsUp;
+			isTimeUp = clock.isTimeUp;
 		}, clock.tickRate);
 	});
 
@@ -124,7 +123,7 @@
 	let currentTime: string;
 	let isTraveling: boolean;
 	let isSleeping: boolean;
-	let timeIsUp: boolean;
+	let isTimeUp: boolean;
 
 	let isDescriptionVisible = true;
 	let isDepartingTo = false;
@@ -135,7 +134,7 @@
 	$: artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
 
 	$: isTimeAdvancing = isTraveling || isSleeping;
-	$: isGameWon = !timeIsUp && currentRoundIndex === rounds.length - 1;
+	$: isGameWon = !isTimeUp && currentRoundIndex === rounds.length - 1;
 </script>
 
 <Main>
