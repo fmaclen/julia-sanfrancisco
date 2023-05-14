@@ -69,7 +69,7 @@
 	function dismissClue(): void {
 		transitionTo(() => {
 			resetRound();
-			isArtworkFaded = false;
+			isArtworkHidden = false;
 		});
 	}
 
@@ -101,7 +101,7 @@
 	}
 
 	function transitionTo(callback: Function) {
-		isArtworkFaded = true;
+		isArtworkHidden = true;
 
 		setTimeout(() => {
 			callback();
@@ -146,15 +146,18 @@
 
 	$: currentRound = rounds[currentRoundIndex];
 	$: artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
+
 	$: isClockTicking = isSleeping || isWalking || isFlying;
-	$: isArtworkFaded = isClockTicking && !isSleeping;
+	$: isArtworkHidden = isClockTicking && !isSleeping;
 	$: isClueVisible = currentClueIndex !== null && !isWalking && !isSleeping;
 	$: isGameWon = !isTimeUp && currentRoundIndex === rounds.length - 1;
 </script>
 
 <Main>
 	<div
-		class="artwork {isArtworkFaded ? 'artwork--fade' : ''} {isSleeping ? 'artwork--disabled' : ''}"
+		class="artwork {isArtworkHidden ? 'artwork--hidden' : ''} {isSleeping
+			? 'artwork--disabled'
+			: ''}"
 	>
 		<img class="artwork__img" src={artworkPath} alt="Illustration of scene" />
 	</div>
@@ -240,7 +243,7 @@
 		opacity: 1;
 		transition: filter 100ms, opacity 500ms;
 
-		&--fade {
+		&--hidden {
 			opacity: 0;
 		}
 
