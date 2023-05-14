@@ -37,23 +37,23 @@
 
 	function resetScene(): void {
 		isDepartingTo = false;
-		isLookingForClues = false;
+		isWalking = false;
 		currentClueIndex = null;
 		isDescriptionVisible = true;
 	}
 
-	function departTo(): void {
+	function flyTo(): void {
 		resetScene();
 		isDescriptionVisible = false;
 		isDepartingTo = true;
 	}
 
-	function findClues(): void {
+	function walkTo(): void {
 		resetScene();
-		isLookingForClues = true;
+		isWalking = true;
 	}
 
-	async function findClue(index: number): Promise<void> {
+	async function getClue(index: number): Promise<void> {
 		resetScene();
 		isDescriptionVisible = false;
 		isTimeAdvancing = true;
@@ -73,7 +73,7 @@
 		}, DELAY_IN_MS);
 	}
 
-	async function travelTo(destination: Atlas): Promise<void> {
+	async function setScene(destination: Atlas): Promise<void> {
 		resetScene();
 		isDescriptionVisible = false;
 		isTraveling = true;
@@ -127,7 +127,7 @@
 
 	let isDescriptionVisible = true;
 	let isDepartingTo = false;
-	let isLookingForClues = false;
+	let isWalking = false;
 
 	let currentRoundIndex = 0;
 	$: currentRound = rounds[currentRoundIndex];
@@ -156,9 +156,9 @@
 	</Section>
 
 	<Section align="bottom">
-		{#if isLookingForClues}
+		{#if isWalking}
 			{#each currentRound.scenes as scene, index}
-				<Button active={currentClueIndex === index} on:click={() => findClue(index)}>
+				<Button active={currentClueIndex === index} on:click={() => getClue(index)}>
 					{scene.place}
 				</Button>
 			{/each}
@@ -174,7 +174,7 @@
 
 		{#if isDepartingTo}
 			{#each Array.from(currentRound.destinations) as destination}
-				<Button on:click={() => travelTo(destination)}>
+				<Button on:click={() => setScene(destination)}>
 					{destination.city}
 				</Button>
 			{/each}
@@ -187,12 +187,8 @@
 		{:else if currentClueIndex !== null}
 			<Button on:click={dismissClue}>Dismiss</Button>
 		{:else if !isTimeAdvancing}
-			<Button active={isLookingForClues} disabled={isTimeAdvancing} on:click={findClues}>
-				Find clues
-			</Button>
-			<Button active={isDepartingTo} disabled={isTimeAdvancing} on:click={departTo}>
-				Depart to
-			</Button>
+			<Button active={isWalking} disabled={isTimeAdvancing} on:click={walkTo}>Walk to</Button>
+			<Button active={isDepartingTo} disabled={isTimeAdvancing} on:click={flyTo}>Fly to</Button>
 			<Button disabled={true}>Get warrant</Button>
 			<ButtonLink href="/">Quit</ButtonLink>
 		{/if}
