@@ -1,5 +1,6 @@
 import { addDays, addHours, addSeconds, format, isAfter, startOfWeek } from 'date-fns';
 
+export const DELAY_IN_MS = 500;
 const FPS = 60;
 
 export default class Clock {
@@ -8,21 +9,20 @@ export default class Clock {
 	currentTime: Date;
 	timerId: NodeJS.Timer | null;
 	tickRate: number;
-	isTimeAdvancing: boolean;
-	isTraveling: boolean;
+
+	isWalking: boolean;
+	isFlying: boolean;
 	isSleeping: boolean;
-	timeIsUp: boolean;
+	isTimeUp: boolean;
 
 	constructor() {
-		const RATE_IN_MS = 500;
-
 		this.timerId = null;
-		this.tickRate = RATE_IN_MS / FPS;
+		this.tickRate = DELAY_IN_MS / FPS;
 
-		this.isTimeAdvancing = false;
-		this.isTraveling = false;
+		this.isWalking = false;
+		this.isFlying = false;
 		this.isSleeping = false;
-		this.timeIsUp = false;
+		this.isTimeUp = false;
 
 		const startOfCurrentWeek = startOfWeek(new Date(), { weekStartsOn: 1 });
 		this.startTime = addHours(startOfCurrentWeek, 9); // Monday at 9 am
@@ -43,7 +43,6 @@ export default class Clock {
 	public fastForward = (hours: number): Promise<boolean> => {
 		return new Promise((resolve, reject) => {
 			this.stop();
-			this.isTimeAdvancing = true;
 
 			const ONE_HOUR_IN_SECONDS = 3600;
 			const totalSecondsToAdd = hours * ONE_HOUR_IN_SECONDS;
@@ -62,8 +61,8 @@ export default class Clock {
 					this.stop();
 					this.start();
 
-					if (this.isTimeAdvancing) this.isTimeAdvancing = false;
-					if (this.isTraveling) this.isTraveling = false;
+					if (this.isWalking) this.isWalking = false;
+					if (this.isFlying) this.isFlying = false;
 					if (this.isSleeping) this.isSleeping = false; // Wake up Neo...
 
 					resolve(false);
@@ -92,6 +91,8 @@ export default class Clock {
 		const shouldSleep = currentHour === 22 && !this.isSleeping;
 
 		if (shouldSleep) {
+			this.isWalking = false;
+			this.isFlying = false;
 			this.isSleeping = true;
 			this.fastForward(10);
 		}
@@ -100,10 +101,10 @@ export default class Clock {
 	// Checks if the current time is after the end time.
 	// If so, it stops the clock
 	private checkTimeIsUp = () => {
-		const isTimeUp = isAfter(this.currentTime, this.endTime);
+		const timeIsUp = isAfter(this.currentTime, this.endTime);
 
-		if (isTimeUp) {
-			this.timeIsUp = true;
+		if (timeIsUp) {
+			this.isTimeUp = true;
 			this.stop();
 		}
 	};

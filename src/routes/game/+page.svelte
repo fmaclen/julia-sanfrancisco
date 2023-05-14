@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ATLASES, getRandomAtlas, type Atlas } from '$lib/atlases';
-	import Clock from '$lib/clock';
+	import Clock, { DELAY_IN_MS } from '$lib/clock';
 	import Button from '$lib/components/Button.svelte';
 	import ButtonLink from '$lib/components/ButtonLink.svelte';
 	import H1 from '$lib/components/H1.svelte';
@@ -9,7 +9,7 @@
 	import Nav from '$lib/components/Nav.svelte';
 	import P from '$lib/components/P.svelte';
 	import Section from '$lib/components/Section.svelte';
-	import { getRandomValue, redirectTo } from '$lib/helpers';
+	import { getArtworkPath, getRandomValue, redirectTo } from '$lib/helpers';
 	import { playerStore, type Player } from '$lib/player';
 	import { getRounds, getDecoyRound, type Round } from '$lib/rounds';
 	import { SUSPECTS, type Suspect } from '$lib/suspects';
@@ -35,53 +35,77 @@
 	};
 	const { rounds } = game;
 
-	function resetScene(): void {
-		isDepartingTo = false;
-		isLookingForClues = false;
+	function resetRound(): void {
+		showDescription = true;
+		showPlaces = false;
+		showDestinations = false;
 		currentClueIndex = null;
+		artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
 	}
 
-	function departTo(): void {
-		isDepartingTo = !isDepartingTo;
-		isLookingForClues = false;
+	function flyTo(): void {
+		resetRound();
+		showDestinations = true;
 	}
 
-	function findClues(): void {
-		isLookingForClues = !isLookingForClues;
-		isDepartingTo = false;
+	function walkTo(): void {
+		resetRound();
+		showPlaces = true;
 	}
 
-	async function findClue(index: number): Promise<void> {
-		currentClueIndex = null;
-		isTimeAdvancing = true;
-		isTimeAdvancing = await clock.fastForward(2);
-		currentClueIndex = index;
-		backgroundName = `places/${currentRound.scenes[index].place}`;
+	async function getClue(index: number): Promise<void> {
+		showPlaces = false;
+		showDescription = false;
+		clock.isWalking = true;
+
+		transitionTo(() => {
+			currentClueIndex = index;
+			artworkPath = getArtworkPath(currentRound.scenes[index].place, 'places');
+		});
+
+		await clock.fastForward(2);
 	}
 
-	async function travelTo(destination: Atlas): Promise<void> {
-		resetScene();
+	function dismissClue(): void {
+		transitionTo(() => {
+			resetRound();
+			isArtworkHidden = false;
+		});
+	}
 
-		isTimeAdvancing = true;
-		isTraveling = true;
-		isTimeAdvancing = await clock.fastForward(4);
-		isTraveling = isTimeAdvancing;
+	async function setRound(destination: Atlas): Promise<void> {
+		showDestinations = false;
+		showDescription = false;
+		clock.isFlying = true;
 
-		const isPreviousRoundAtlas =
-			currentRoundIndex !== 0 && rounds[currentRoundIndex - 1].atlas === destination;
-		const isCurrentRound = rounds[currentRoundIndex].atlas === destination;
-		const isNextRoundAtlas = rounds[currentRoundIndex + 1].atlas === destination;
-		const isDecoyRound = !isCurrentRound && !isPreviousRoundAtlas && !isNextRoundAtlas;
+		transitionTo(() => {
+			const isPreviousRoundAtlas =
+				currentRoundIndex !== 0 && rounds[currentRoundIndex - 1].atlas === destination;
+			const isCurrentRound = rounds[currentRoundIndex].atlas === destination;
+			const isNextRoundAtlas = rounds[currentRoundIndex + 1].atlas === destination;
+			const isDecoyRound = !isCurrentRound && !isPreviousRoundAtlas && !isNextRoundAtlas;
 
-		if (isCurrentRound) currentRound = rounds[currentRoundIndex];
-		if (isPreviousRoundAtlas) currentRoundIndex -= 1;
-		if (isNextRoundAtlas) currentRoundIndex += 1;
+			if (isCurrentRound) currentRound = rounds[currentRoundIndex];
+			if (isPreviousRoundAtlas) currentRoundIndex -= 1;
+			if (isNextRoundAtlas) currentRoundIndex += 1;
 
-		// There should always be a way to return to the
-		const anchorDestination = rounds[currentRoundIndex].atlas;
-		if (isDecoyRound) {
-			currentRound = getDecoyRound(destination, anchorDestination);
-		}
+			// There should always be a way to return to the
+			const anchorDestination = rounds[currentRoundIndex].atlas;
+			if (isDecoyRound) {
+				currentRound = getDecoyRound(destination, anchorDestination);
+			}
+		});
+
+		await clock.fastForward(4);
+		resetRound();
+	}
+
+	function transitionTo(callback: Function) {
+		isArtworkHidden = true;
+
+		setTimeout(() => {
+			callback();
+		}, DELAY_IN_MS);
 	}
 
 	function updateScore(): void {
@@ -94,91 +118,105 @@
 	}
 
 	onMount(() => {
+		clock.start();
+
 		setInterval(() => {
 			currentTime = clock.getCurrentTime();
+			isWalking = clock.isWalking;
+			isFlying = clock.isFlying;
 			isSleeping = clock.isSleeping;
-			timeIsUp = clock.timeIsUp;
+			isTimeUp = clock.isTimeUp;
 		}, clock.tickRate);
 	});
 
+	let currentRoundIndex = 0;
 	let currentClueIndex: number | null = null;
 
 	let clock = new Clock();
 	let currentTime: string;
-	let isTraveling: boolean;
+
+	let isWalking: boolean;
+	let isFlying: boolean;
 	let isSleeping: boolean;
-	let timeIsUp: boolean;
-	$: isTimeAdvancing = isTraveling || isSleeping;
+	let isTimeUp: boolean;
 
-	let isDepartingTo = false;
-	let isLookingForClues = false;
+	let showPlaces = false;
+	let showDestinations = false;
+	let showDescription = true;
 
-	$: currentRoundIndex = 0;
 	$: currentRound = rounds[currentRoundIndex];
-	$: isSceneVisible = isDepartingTo || isLookingForClues;
-	$: isGameWon = !timeIsUp && currentRoundIndex === rounds.length - 1;
-	$: backgroundName = `atlas/${currentRound.atlas.city}`;
+	$: artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
+
+	$: isClockTicking = isSleeping || isWalking || isFlying;
+	$: isArtworkHidden = isClockTicking && !isSleeping;
+	$: isClueVisible = currentClueIndex !== null && !isWalking && !isSleeping;
+	$: isGameWon = !isTimeUp && currentRoundIndex === rounds.length - 1;
 </script>
 
 <Main>
-	<div class="round__background {isTimeAdvancing ? 'round__background--disabled' : ''}">
-		<img
-			class="round__img"
-			src="/artwork/{backgroundName.replace(' ', '-').replace(' ', '-').toLowerCase()}.png"
-			alt="Illustration of scene"
-		/>
+	<div
+		class="artwork {isArtworkHidden ? 'artwork--hidden' : ''} {isSleeping
+			? 'artwork--disabled'
+			: ''}"
+	>
+		<img class="artwork__img" src={artworkPath} alt="Illustration of scene" />
 	</div>
 
 	<Header>
-		<H1>{isTraveling ? 'Traveling...' : isSleeping ? 'Sleeping...' : currentRound.atlas.city}</H1>
-		<time class="round__time">{currentTime}</time>
+		<H1>
+			{isSleeping
+				? 'Sleeping...'
+				: isFlying
+				? 'Flying...'
+				: isWalking
+				? 'Walking...'
+				: currentRound.atlas.city}
+		</H1>
+		<time class="time {isClockTicking ? 'time--active' : ''}">{currentTime}</time>
 	</Header>
 
-	{#if !isSceneVisible}
-		<Section>
-			{#if !isTraveling}
-				<P>
-					{getRandomValue(currentRound.atlas.descriptions)}
-				</P>
-			{/if}
-		</Section>
-	{/if}
+	<Section>
+		{#if showDescription}
+			<P>
+				{getRandomValue(currentRound.atlas.descriptions)}
+			</P>
+		{/if}
+	</Section>
 
-	{#if isLookingForClues}
-		<Section align="bottom">
-			{#if typeof currentClueIndex === 'number'}
-				<P>
-					<strong>{currentRound.scenes[currentClueIndex].witness}</strong><br />
-					{currentRound.scenes[currentClueIndex].clue}
-				</P>
-			{/if}
-
-			<!-- {#if currentClueIndex === null} -->
+	<Section align="bottom">
+		{#if showPlaces}
 			{#each currentRound.scenes as scene, index}
-				<Button active={currentClueIndex === index} on:click={() => findClue(index)}>
+				<Button active={currentClueIndex === index} on:click={() => getClue(index)}>
 					{scene.place}
 				</Button>
 			{/each}
-			<!-- {/if} -->
-		</Section>
-	{/if}
+		{/if}
 
-	{#if isDepartingTo}
-		<Section align="bottom">
+		{#if isClueVisible && currentClueIndex !== null}
+			<P>
+				<strong>{currentRound.scenes[currentClueIndex].witness}</strong>
+				<br />
+				{currentRound.scenes[currentClueIndex].clue}
+			</P>
+		{/if}
+
+		{#if showDestinations}
 			{#each Array.from(currentRound.destinations) as destination}
-				<Button on:click={() => travelTo(destination)}>
+				<Button on:click={() => setRound(destination)}>
 					{destination.city}
 				</Button>
 			{/each}
-		</Section>
-	{/if}
+		{/if}
+	</Section>
 
 	<Nav>
 		{#if isGameWon}
 			<Button on:click={updateScore}>Continue</Button>
-		{:else}
-			<Button active={isLookingForClues} on:click={findClues}>Find clues</Button>
-			<Button active={isDepartingTo} on:click={departTo}>Depart to</Button>
+		{:else if isClueVisible}
+			<Button on:click={dismissClue}>Dismiss</Button>
+		{:else if !isClockTicking}
+			<Button active={isWalking} on:click={walkTo}>Walk to</Button>
+			<Button active={isFlying} on:click={flyTo}>Fly to</Button>
 			<Button disabled={true}>Get warrant</Button>
 			<ButtonLink href="/">Quit</ButtonLink>
 		{/if}
@@ -186,7 +224,16 @@
 </Main>
 
 <style lang="scss">
-	div.round__background {
+	time.time {
+		opacity: 0.33;
+		transition: opacity 250ms;
+
+		&--active {
+			opacity: 1;
+		}
+	}
+
+	div.artwork {
 		position: absolute;
 		z-index: -1;
 		top: 0;
@@ -194,15 +241,18 @@
 		width: 100%;
 		height: 100%;
 		opacity: 1;
-		transition: filter 250ms, opacity 500ms;
+		transition: filter 100ms, opacity 500ms;
+
+		&--hidden {
+			opacity: 0;
+		}
 
 		&--disabled {
-			filter: grayscale(100%) blur(2px);
-			opacity: 0;
+			filter: grayscale(100%) blur(1px);
 		}
 	}
 
-	img.round__img {
+	img.artwork__img {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
