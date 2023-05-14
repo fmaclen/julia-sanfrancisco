@@ -9,7 +9,7 @@
 	import Nav from '$lib/components/Nav.svelte';
 	import P from '$lib/components/P.svelte';
 	import Section from '$lib/components/Section.svelte';
-	import { getRandomValue, redirectTo } from '$lib/helpers';
+	import { getArtworkPath, getRandomValue, redirectTo } from '$lib/helpers';
 	import { playerStore, type Player } from '$lib/player';
 	import { getRounds, getDecoyRound, type Round } from '$lib/rounds';
 	import { SUSPECTS, type Suspect } from '$lib/suspects';
@@ -57,7 +57,7 @@
 		currentClueIndex = null;
 		isTimeAdvancing = await clock.fastForward(2);
 		currentClueIndex = index;
-		backgroundName = `places/${currentRound.scenes[index].place}`;
+		artworkPath = getArtworkPath(currentRound.scenes[index].place, 'places');
 	}
 
 	function dismissClue(): void {
@@ -65,7 +65,7 @@
 		isTimeAdvancing = true;
 
 		setTimeout(() => {
-			backgroundName = `atlas/${currentRound.atlas.city}`;
+			artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
 			isTimeAdvancing = false;
 			resetScene();
 		}, RATE_IN_MS);
@@ -106,6 +106,8 @@
 	}
 
 	onMount(() => {
+		clock.start();
+
 		setInterval(() => {
 			currentTime = clock.getCurrentTime();
 			isSleeping = clock.isSleeping;
@@ -129,21 +131,17 @@
 	$: currentRound = rounds[currentRoundIndex];
 	$: isDescriptionVisible = isDepartingTo || isLookingForClues;
 	$: isGameWon = !timeIsUp && currentRoundIndex === rounds.length - 1;
-	$: backgroundName = `atlas/${currentRound.atlas.city}`;
+	$: artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
 </script>
 
 <Main>
-	<div class="round__background {isTimeAdvancing ? 'round__background--disabled' : ''}">
-		<img
-			class="round__img"
-			src="/artwork/{backgroundName.replace(' ', '-').replace(' ', '-').toLowerCase()}.png"
-			alt="Illustration of scene"
-		/>
+	<div class="artwork {isTimeAdvancing ? 'artwork--disabled' : ''}">
+		<img class="artwork__img" src={artworkPath} alt="Illustration of scene" />
 	</div>
 
 	<Header>
 		<H1>{isTraveling ? 'Traveling...' : isSleeping ? 'Sleeping...' : currentRound.atlas.city}</H1>
-		<time class="round__time {isTimeAdvancing ? 'round__time--active' : ''}">{currentTime}</time>
+		<time class="time {isTimeAdvancing ? 'time--active' : ''}">{currentTime}</time>
 	</Header>
 
 	{#if !isDescriptionVisible}
@@ -168,7 +166,8 @@
 				{/if}
 			{:else}
 				<P>
-					<strong>{currentRound.scenes[currentClueIndex].witness}</strong><br />
+					<strong>{currentRound.scenes[currentClueIndex].witness}</strong>
+					<br />
 					{currentRound.scenes[currentClueIndex].clue}
 				</P>
 			{/if}
@@ -204,7 +203,7 @@
 </Main>
 
 <style lang="scss">
-	time.round__time {
+	time.time {
 		opacity: 0.33;
 		transition: opacity 250ms;
 
@@ -213,7 +212,7 @@
 		}
 	}
 
-	div.round__background {
+	div.artwork {
 		position: absolute;
 		z-index: -1;
 		top: 0;
@@ -229,7 +228,7 @@
 		}
 	}
 
-	img.round__img {
+	img.artwork__img {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
