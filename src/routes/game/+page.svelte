@@ -40,21 +40,24 @@
 		isDepartingTo = false;
 		isLookingForClues = false;
 		currentClueIndex = null;
+		isDescriptionVisible = true;
 	}
 
 	function departTo(): void {
-		isDepartingTo = !isDepartingTo;
-		isLookingForClues = false;
+		resetScene();
+		isDescriptionVisible = false;
+		isDepartingTo = true;
 	}
 
 	function findClues(): void {
-		isLookingForClues = !isLookingForClues;
-		isDepartingTo = false;
+		resetScene();
+		isLookingForClues = true;
 	}
 
 	async function findClue(index: number): Promise<void> {
+		resetScene();
+		isDescriptionVisible = false;
 		isTimeAdvancing = true;
-		currentClueIndex = null;
 		isTimeAdvancing = await clock.fastForward(2);
 		currentClueIndex = index;
 		artworkPath = getArtworkPath(currentRound.scenes[index].place, 'places');
@@ -73,9 +76,9 @@
 
 	async function travelTo(destination: Atlas): Promise<void> {
 		resetScene();
-
-		isTimeAdvancing = true;
+		isDescriptionVisible = false;
 		isTraveling = true;
+		isTimeAdvancing = true;
 		isTimeAdvancing = await clock.fastForward(4);
 		isTraveling = isTimeAdvancing;
 
@@ -122,16 +125,17 @@
 	let isTraveling: boolean;
 	let isSleeping: boolean;
 	let timeIsUp: boolean;
-	$: isTimeAdvancing = isTraveling || isSleeping;
 
+	let isDescriptionVisible = true;
 	let isDepartingTo = false;
 	let isLookingForClues = false;
 
-	$: currentRoundIndex = 0;
+	let currentRoundIndex = 0;
 	$: currentRound = rounds[currentRoundIndex];
-	$: isDescriptionVisible = isDepartingTo || isLookingForClues;
-	$: isGameWon = !timeIsUp && currentRoundIndex === rounds.length - 1;
 	$: artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
+
+	$: isTimeAdvancing = isTraveling || isSleeping;
+	$: isGameWon = !timeIsUp && currentRoundIndex === rounds.length - 1;
 </script>
 
 <Main>
@@ -144,45 +148,39 @@
 		<time class="time {isTimeAdvancing ? 'time--active' : ''}">{currentTime}</time>
 	</Header>
 
-	{#if !isDescriptionVisible}
-		<Section>
-			{#if !isTimeAdvancing}
-				<P>
-					{getRandomValue(currentRound.atlas.descriptions)}
-				</P>
-			{/if}
-		</Section>
-	{/if}
+	<Section>
+		{#if isDescriptionVisible}
+			<P>
+				{getRandomValue(currentRound.atlas.descriptions)}
+			</P>
+		{/if}
+	</Section>
 
-	{#if isLookingForClues}
-		<Section align="bottom">
-			{#if currentClueIndex === null}
-				{#if !isTimeAdvancing}
-					{#each currentRound.scenes as scene, index}
-						<Button active={currentClueIndex === index} on:click={() => findClue(index)}>
-							{scene.place}
-						</Button>
-					{/each}
-				{/if}
-			{:else}
-				<P>
-					<strong>{currentRound.scenes[currentClueIndex].witness}</strong>
-					<br />
-					{currentRound.scenes[currentClueIndex].clue}
-				</P>
-			{/if}
-		</Section>
-	{/if}
+	<Section align="bottom">
+		{#if isLookingForClues}
+			{#each currentRound.scenes as scene, index}
+				<Button active={currentClueIndex === index} on:click={() => findClue(index)}>
+					{scene.place}
+				</Button>
+			{/each}
+		{/if}
 
-	{#if isDepartingTo}
-		<Section align="bottom">
+		{#if currentClueIndex !== null}
+			<P>
+				<strong>{currentRound.scenes[currentClueIndex].witness}</strong>
+				<br />
+				{currentRound.scenes[currentClueIndex].clue}
+			</P>
+		{/if}
+
+		{#if isDepartingTo}
 			{#each Array.from(currentRound.destinations) as destination}
 				<Button on:click={() => travelTo(destination)}>
 					{destination.city}
 				</Button>
 			{/each}
-		</Section>
-	{/if}
+		{/if}
+	</Section>
 
 	<Nav>
 		{#if isGameWon}
@@ -220,7 +218,7 @@
 		width: 100%;
 		height: 100%;
 		opacity: 1;
-		transition: filter 250ms, opacity 500ms;
+		transition: filter 100ms, opacity 500ms;
 
 		&--disabled {
 			filter: grayscale(100%) blur(2px);

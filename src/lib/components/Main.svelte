@@ -5,10 +5,10 @@
 <style lang="scss">
 	main.main {
 		display: grid;
-		grid-template-rows: max-content auto max-content;
+		grid-template-rows: max-content auto auto max-content;
 		box-sizing: border-box;
 		position: relative;
-		gap: 24px;
+		gap: var(--spacing-l);
 		padding-block: 24px;
 		height: 100%;
 		width: 100%;
