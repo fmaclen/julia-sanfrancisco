@@ -9,8 +9,9 @@ export default class Clock {
 	currentTime: Date;
 	timerId: NodeJS.Timer | null;
 	tickRate: number;
-	isTimeAdvancing: boolean;
-	isTraveling: boolean;
+
+	isWalking: boolean;
+	isFlying: boolean;
 	isSleeping: boolean;
 	isTimeUp: boolean;
 
@@ -18,8 +19,8 @@ export default class Clock {
 		this.timerId = null;
 		this.tickRate = DELAY_IN_MS / FPS;
 
-		this.isTimeAdvancing = false;
-		this.isTraveling = false;
+		this.isWalking = false;
+		this.isFlying = false;
 		this.isSleeping = false;
 		this.isTimeUp = false;
 
@@ -42,7 +43,6 @@ export default class Clock {
 	public fastForward = (hours: number): Promise<boolean> => {
 		return new Promise((resolve, reject) => {
 			this.stop();
-			this.isTimeAdvancing = true;
 
 			const ONE_HOUR_IN_SECONDS = 3600;
 			const totalSecondsToAdd = hours * ONE_HOUR_IN_SECONDS;
@@ -61,8 +61,8 @@ export default class Clock {
 					this.stop();
 					this.start();
 
-					if (this.isTimeAdvancing) this.isTimeAdvancing = false;
-					if (this.isTraveling) this.isTraveling = false;
+					if (this.isWalking) this.isWalking = false;
+					if (this.isFlying) this.isFlying = false;
 					if (this.isSleeping) this.isSleeping = false; // Wake up Neo...
 
 					resolve(false);
@@ -88,11 +88,11 @@ export default class Clock {
 	// If so, it fast forwards the clock by 10 hours
 	private checkShouldSleep = () => {
 		const currentHour = this.currentTime.getHours();
-		const shouldSleep = currentHour === 12 && !this.isSleeping;
-		// const shouldSleep = currentHour === 22 && !this.isSleeping;
+		const shouldSleep = currentHour === 22 && !this.isSleeping;
 
 		if (shouldSleep) {
-			this.isTraveling = false;
+			this.isWalking = false;
+			this.isFlying = false;
 			this.isSleeping = true;
 			this.fastForward(10);
 		}

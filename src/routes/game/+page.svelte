@@ -35,67 +35,77 @@
 	};
 	const { rounds } = game;
 
-	function resetScene(): void {
-		isDepartingTo = false;
-		isWalking = false;
+	function resetRound(): void {
+		showDescription = true;
+		showPlaces = false;
+		showDestinations = false;
 		currentClueIndex = null;
-		isDescriptionVisible = true;
+		artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
 	}
 
 	function flyTo(): void {
-		resetScene();
-		isDescriptionVisible = false;
-		isDepartingTo = true;
+		resetRound();
+		showDestinations = true;
 	}
 
 	function walkTo(): void {
-		resetScene();
-		isWalking = true;
+		resetRound();
+		showPlaces = true;
 	}
 
 	async function getClue(index: number): Promise<void> {
-		resetScene();
-		isDescriptionVisible = false;
-		isTimeAdvancing = true;
-		isTimeAdvancing = await clock.fastForward(2);
-		currentClueIndex = index;
-		artworkPath = getArtworkPath(currentRound.scenes[index].place, 'places');
+		showPlaces = false;
+		showDescription = false;
+		clock.isWalking = true;
+
+		transitionTo(() => {
+			currentClueIndex = index;
+			artworkPath = getArtworkPath(currentRound.scenes[index].place, 'places');
+		});
+
+		await clock.fastForward(2);
 	}
 
 	function dismissClue(): void {
-		currentClueIndex = null;
-		isTimeAdvancing = true;
-
-		setTimeout(() => {
-			artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
-			isTimeAdvancing = false;
-			resetScene();
-		}, DELAY_IN_MS);
+		transitionTo(() => {
+			resetRound();
+			isArtworkFaded = false;
+		});
 	}
 
-	async function setScene(destination: Atlas): Promise<void> {
-		resetScene();
-		isDescriptionVisible = false;
-		isTraveling = true;
-		isTimeAdvancing = true;
-		isTimeAdvancing = await clock.fastForward(4);
-		isTraveling = isTimeAdvancing;
+	async function setRound(destination: Atlas): Promise<void> {
+		showDestinations = false;
+		showDescription = false;
+		clock.isFlying = true;
 
-		const isPreviousRoundAtlas =
-			currentRoundIndex !== 0 && rounds[currentRoundIndex - 1].atlas === destination;
-		const isCurrentRound = rounds[currentRoundIndex].atlas === destination;
-		const isNextRoundAtlas = rounds[currentRoundIndex + 1].atlas === destination;
-		const isDecoyRound = !isCurrentRound && !isPreviousRoundAtlas && !isNextRoundAtlas;
+		transitionTo(() => {
+			const isPreviousRoundAtlas =
+				currentRoundIndex !== 0 && rounds[currentRoundIndex - 1].atlas === destination;
+			const isCurrentRound = rounds[currentRoundIndex].atlas === destination;
+			const isNextRoundAtlas = rounds[currentRoundIndex + 1].atlas === destination;
+			const isDecoyRound = !isCurrentRound && !isPreviousRoundAtlas && !isNextRoundAtlas;
 
-		if (isCurrentRound) currentRound = rounds[currentRoundIndex];
-		if (isPreviousRoundAtlas) currentRoundIndex -= 1;
-		if (isNextRoundAtlas) currentRoundIndex += 1;
+			if (isCurrentRound) currentRound = rounds[currentRoundIndex];
+			if (isPreviousRoundAtlas) currentRoundIndex -= 1;
+			if (isNextRoundAtlas) currentRoundIndex += 1;
 
-		// There should always be a way to return to the
-		const anchorDestination = rounds[currentRoundIndex].atlas;
-		if (isDecoyRound) {
-			currentRound = getDecoyRound(destination, anchorDestination);
-		}
+			// There should always be a way to return to the
+			const anchorDestination = rounds[currentRoundIndex].atlas;
+			if (isDecoyRound) {
+				currentRound = getDecoyRound(destination, anchorDestination);
+			}
+		});
+
+		await clock.fastForward(4);
+		resetRound();
+	}
+
+	function transitionTo(callback: Function) {
+		isArtworkFaded = true;
+
+		setTimeout(() => {
+			callback();
+		}, DELAY_IN_MS);
 	}
 
 	function updateScore(): void {
@@ -112,43 +122,58 @@
 
 		setInterval(() => {
 			currentTime = clock.getCurrentTime();
+			isWalking = clock.isWalking;
+			isFlying = clock.isFlying;
 			isSleeping = clock.isSleeping;
 			isTimeUp = clock.isTimeUp;
 		}, clock.tickRate);
 	});
 
+	let currentRoundIndex = 0;
 	let currentClueIndex: number | null = null;
 
 	let clock = new Clock();
 	let currentTime: string;
-	let isTraveling: boolean;
+
+	let isWalking: boolean;
+	let isFlying: boolean;
 	let isSleeping: boolean;
 	let isTimeUp: boolean;
 
-	let isDescriptionVisible = true;
-	let isDepartingTo = false;
-	let isWalking = false;
+	let showPlaces = false;
+	let showDestinations = false;
+	let showDescription = true;
 
-	let currentRoundIndex = 0;
 	$: currentRound = rounds[currentRoundIndex];
 	$: artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
-
-	$: isTimeAdvancing = isTraveling || isSleeping;
+	$: isClockTicking = isSleeping || isWalking || isFlying;
+	$: isArtworkFaded = isClockTicking && !isSleeping;
+	$: isClueVisible = currentClueIndex !== null && !isWalking && !isSleeping;
 	$: isGameWon = !isTimeUp && currentRoundIndex === rounds.length - 1;
 </script>
 
 <Main>
-	<div class="artwork {isTimeAdvancing ? 'artwork--disabled' : ''}">
+	<div
+		class="artwork {isArtworkFaded ? 'artwork--fade' : ''} {isSleeping ? 'artwork--disabled' : ''}"
+	>
 		<img class="artwork__img" src={artworkPath} alt="Illustration of scene" />
 	</div>
 
 	<Header>
-		<H1>{isTraveling ? 'Traveling...' : isSleeping ? 'Sleeping...' : currentRound.atlas.city}</H1>
-		<time class="time {isTimeAdvancing ? 'time--active' : ''}">{currentTime}</time>
+		<H1>
+			{isSleeping
+				? 'Sleeping...'
+				: isFlying
+				? 'Flying...'
+				: isWalking
+				? 'Walking...'
+				: currentRound.atlas.city}
+		</H1>
+		<time class="time {isClockTicking ? 'time--active' : ''}">{currentTime}</time>
 	</Header>
 
 	<Section>
-		{#if isDescriptionVisible}
+		{#if showDescription}
 			<P>
 				{getRandomValue(currentRound.atlas.descriptions)}
 			</P>
@@ -156,7 +181,7 @@
 	</Section>
 
 	<Section align="bottom">
-		{#if isWalking}
+		{#if showPlaces}
 			{#each currentRound.scenes as scene, index}
 				<Button active={currentClueIndex === index} on:click={() => getClue(index)}>
 					{scene.place}
@@ -164,7 +189,7 @@
 			{/each}
 		{/if}
 
-		{#if currentClueIndex !== null}
+		{#if isClueVisible}
 			<P>
 				<strong>{currentRound.scenes[currentClueIndex].witness}</strong>
 				<br />
@@ -172,9 +197,9 @@
 			</P>
 		{/if}
 
-		{#if isDepartingTo}
+		{#if showDestinations}
 			{#each Array.from(currentRound.destinations) as destination}
-				<Button on:click={() => setScene(destination)}>
+				<Button on:click={() => setRound(destination)}>
 					{destination.city}
 				</Button>
 			{/each}
@@ -184,11 +209,11 @@
 	<Nav>
 		{#if isGameWon}
 			<Button on:click={updateScore}>Continue</Button>
-		{:else if currentClueIndex !== null}
+		{:else if isClueVisible}
 			<Button on:click={dismissClue}>Dismiss</Button>
-		{:else if !isTimeAdvancing}
-			<Button active={isWalking} disabled={isTimeAdvancing} on:click={walkTo}>Walk to</Button>
-			<Button active={isDepartingTo} disabled={isTimeAdvancing} on:click={flyTo}>Fly to</Button>
+		{:else if !isClockTicking}
+			<Button active={isWalking} on:click={walkTo}>Walk to</Button>
+			<Button active={isFlying} on:click={flyTo}>Fly to</Button>
 			<Button disabled={true}>Get warrant</Button>
 			<ButtonLink href="/">Quit</ButtonLink>
 		{/if}
@@ -215,9 +240,12 @@
 		opacity: 1;
 		transition: filter 100ms, opacity 500ms;
 
-		&--disabled {
-			filter: grayscale(100%) blur(2px);
+		&--fade {
 			opacity: 0;
+		}
+
+		&--disabled {
+			filter: grayscale(100%) blur(1px);
 		}
 	}
 
