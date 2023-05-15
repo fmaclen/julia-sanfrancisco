@@ -3,6 +3,7 @@ import { AUSTRALIA } from '$lib/atlases/australia';
 import { BRAZIL } from '$lib/atlases/brazil';
 import { CHINA } from '$lib/atlases/china';
 import { GREECE } from '$lib/atlases/greece';
+import { INDIA } from '$lib/atlases/india';
 import { ITALY } from '$lib/atlases/italy';
 import { JAPAN } from '$lib/atlases/japan';
 import { NORWAY } from '$lib/atlases/norway';
@@ -30,6 +31,7 @@ export const ATLASES = [
 	BRAZIL,
 	CHINA,
 	GREECE,
+	INDIA,
 	ITALY,
 	JAPAN,
 	NORWAY,

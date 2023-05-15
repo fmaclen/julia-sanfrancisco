@@ -241,14 +241,14 @@
 		width: 100%;
 		height: 100%;
 		opacity: 1;
-		transition: filter 100ms, opacity 500ms;
+		transition: filter 1500ms, opacity 500ms;
 
 		&--hidden {
 			opacity: 0;
 		}
 
 		&--disabled {
-			filter: grayscale(100%) blur(1px);
+			filter: grayscale(100%) blur(4px);
 		}
 	}
 
