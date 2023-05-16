@@ -3,34 +3,33 @@ import type { Atlas } from '$lib/atlases';
 export const NORWAY: Atlas = {
 	city: 'Oslo',
 	descriptions: [
-		'Oslo is the capital and largest city of Norway, with a population of about 700,000 in its metropolitan area.',
-		'Norway is known for its stunning fjords, picturesque coastal towns, and the aurora borealis, or Northern Lights.',
-		'Welcome to Oslo, a city that blends modern architecture with historic sites, such as the Viking Ship Museum and Akershus Fortress.'
+		'Oslo, the capital of Norway, is a city of green spaces and a modern architecture.',
+		'Nestled between the Oslofjord and forested hills, Oslo was named European Green Capital 2019 for its dedication to conserving natural areas and reducing pollution.',
+		'Oslo is known for its museums, including the Edvard Munch Museum, the Viking Ship Museum, and the Nobel Peace Centre.'
+	],
+	places: [
+		'the Sognefjord',
+		'the Lofoten Islands',
+		'Jotunheimen National Park',
+		'the Hardangervidda Plateau',
+		'Trolltunga rock formation'
+	],
+	objects: [
+		'a Viking helmet',
+		'a piece of Hardanger embroidery',
+		'a Bunad, the traditional Norwegian costume',
+		'a Brown Cheese block',
+		'a model of a Stave church'
+	],
+	topics: [
+		'the history of the Vikings',
+		'the Norwegian resistance during WWII',
+		'the Norwegian folklore and mythology',
+		'the Sami culture and their reindeer herding',
+		'the oil and gas industry in the North Sea'
 	],
 	currency: 'NOK',
-	language: 'Norwegian',
-	flag: 'a blue cross on the flag',
-	leader: 'prime minister',
-	see: ['the fjords', 'the Northern Lights', 'Bergen', 'Tromsø', 'Lofoten Islands'],
-	toDo: [
-		'kayak through the fjords',
-		'sail in the Barents Sea',
-		'learn Nordic skiing',
-		'visit the Viking Ship Museum',
-		'explore the historic Bryggen Wharf'
-	],
-	trade: [
-		'Norwegian wool sweaters',
-		'cloudberry jam',
-		'Viking-inspired jewelry',
-		'brown cheese',
-		'Norwegian smoked salmon'
-	],
-	study: [
-		'Viking history',
-		'Edvard Munch and The Scream',
-		'Scandinavian mythology',
-		'Henrik Ibsen and Norwegian literature'
-	],
-	stolen: ['a rare Viking helmet', 'a priceless painting by Edvard Munch']
+	leader: 'king',
+	flag: 'a red and white flag with a blue cross',
+	language: 'Norwegian'
 };

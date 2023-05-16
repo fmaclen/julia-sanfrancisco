@@ -3,40 +3,33 @@ import type { Atlas } from '$lib/atlases';
 export const CHINA: Atlas = {
 	city: 'Beijing',
 	descriptions: [
-		'Beijing is the capital and one of the largest cities in China, with a population of about 21.5 million people.',
-		'China is known for its ancient history, diverse landscapes, and rich cultural heritage.',
-		'Welcome to Beijing, a city that showcases its ancient past through landmarks such as the Forbidden City and the Great Wall of China.'
+		'Beijing, the capital of China, is one of the most populous cities in the world, with a population of over 21 million people.',
+		'Surrounded by mountains that protect it from the cold Siberian winds, Beijing is a city rich in history and culture.',
+		'Welcome to Beijing, the cultural, educational, and political heart of China. The city is known for its opulent palaces, temples, and enormous stone walls and gates.'
+	],
+	places: [
+		'the Great Wall of China',
+		'The Yellow Mountains',
+		'the Yangtze River',
+		"The Terracotta Army in Xi'an",
+		'The Potala Palace in Tibet'
+	],
+	objects: [
+		'a traditional Chinese fan',
+		'a jade sculpture',
+		'a bottle of Maotai liquor',
+		'a piece of silk fabric',
+		'a Chinese lantern'
+	],
+	topics: [
+		'the history of the Chinese dynasties',
+		'the biodiversity of the Yangshuo countryside',
+		'the traditional tea culture',
+		'the martial art of Kung Fu',
+		'the development of calligraphy'
 	],
 	currency: 'CNY',
-	language: 'Mandarin',
-	flag: 'a red flag with yellow stars',
 	leader: 'party chairman',
-	see: [
-		'the Great Wall',
-		'the Forbidden City',
-		'the Terracotta Army',
-		'Zhangjiajie National Forest Park',
-		'Potala Palace'
-	],
-	toDo: [
-		'hike along the Great Wall',
-		'visit the Forbidden City',
-		'see the Terracotta Army',
-		'visit the Giant Panda Breeding Research Base',
-		'attend a traditional tea ceremony'
-	],
-	trade: [
-		'silk clothing and accessories',
-		'Pu-erh and Longjing teas',
-		'mass-produced electronics and gadgets',
-		'hand-painted porcelain',
-		'Jade and stone carvings'
-	],
-	study: [
-		'Confucius and Confucianism',
-		'Sun Tzu and The Art of War',
-		'ancient dynasties and their influence on modern culture',
-		'traditional Chinese medicine and acupuncture'
-	],
-	stolen: ['a rare painting by Qi Baishi', 'a rare Ming vase']
+	flag: 'a red flag with five golden stars',
+	language: 'Chinese'
 };
