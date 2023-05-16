@@ -3,34 +3,27 @@ import type { Atlas } from '$lib/atlases';
 export const GREECE: Atlas = {
 	city: 'Athens',
 	descriptions: [
-		'Athens is the capital and largest city of Greece, with a population of about 3.2 million people in its metropolitan area.',
-		'Greece is known for its rich history, ancient ruins, beautiful islands, and Mediterranean climate.',
-		'Welcome to Athens, a city that showcases its ancient history through landmarks such as the Acropolis and the Parthenon.'
+		'Athens is the capital of Greece and is one of the oldest cities in the world, with a recorded history spanning over 3,400 years.',
+		'Greece is known for its abundance of islands, with more than 2,000 islands, of which approximately 170 are populated.',
+		'Welcome to Athens, a city with a mixture of classical and modern influences. The city is dominated by the Acropolis, a hilltop citadel topped with ancient buildings like the colonnaded Parthenon temple.'
 	],
-	currency: 'EUR',
-	language: 'Greek',
-	flag: 'a blue and white flag',
+	places: ['the Acropolis', 'Meteora', 'Mount Olympus', 'the Ionian Sea', 'the Aegean Islands'],
+	objects: [
+		'an ancient Greek amphora',
+		'a piece of marble from the Parthenon',
+		'a Greek Orthodox icon',
+		'a discus from the original Olympic Games',
+		'a bottle of Ouzo'
+	],
+	topics: [
+		'the history of the Greek gods',
+		'the architecture of the Parthenon',
+		'the philosophy of Socrates',
+		'the Olympic Games in ancient times',
+		'the Battle of Thermopylae'
+	],
+	currency: 'euros',
 	leader: 'prime minister',
-	see: ['the Acropolis', 'the Parthenon', 'Santorini', 'Mykonos', 'Delphi'],
-	toDo: [
-		'explore ancient ruins',
-		'swim in the turquoise waters of the Aegean Sea',
-		'hike the Samaria Gorge',
-		'visit the monasteries of Meteora',
-		'enjoy Greek cuisine at a local taverna'
-	],
-	trade: [
-		'Greek olive oil',
-		'handmade leather sandals',
-		'Komboloi or worry beads',
-		'Greek honey',
-		'ceramic pottery'
-	],
-	study: [
-		'Ancient Greek history',
-		'Greek mythology',
-		'Socrates, Plato, and Aristotle',
-		'Greek contributions to mathematics and science'
-	],
-	stolen: ['a rare painting by El Greco', 'the golden mask of Agamemnon']
+	flag: 'a blue and white flag',
+	language: 'Greek'
 };

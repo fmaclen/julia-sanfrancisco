@@ -3,34 +3,33 @@ import type { Atlas } from '$lib/atlases';
 export const ITALY: Atlas = {
 	city: 'Rome',
 	descriptions: [
-		'Rome is the capital and one of the largest cities in Italy, with a population of about 4.3 million people in its metropolitan area.',
-		'Italy is known for its rich history, beautiful landscapes, and world-renowned cuisine.',
-		'Welcome to Rome, the Eternal City, where ancient history meets modern life through landmarks such as the Colosseum, the Roman Forum, and the Vatican.'
+		'Rome, the capital of Italy, is home to nearly 3 million people and boasts a rich history dating back to its founding in 753 BC.',
+		'Known as the "Eternal City", Rome is famous for its ancient ruins, classical architecture, and vibrant street life.',
+		'Welcome to Rome, a city that has been an epicenter of culture and power for over two millennia. From the Colosseum to the Vatican, this city is brimming with historical significance.'
 	],
-	currency: 'EUR',
-	language: 'Italian',
-	flag: 'a vertical tricolor of green, white, and red',
-	leader: 'prime minister',
-	see: ['the Colosseum', 'the Vatican', 'Pompeii', 'Florence', 'Venice'],
-	toDo: [
-		'explore ancient Roman ruins',
-		'admire Renaissance art and architecture',
-		'indulge in pizza, pasta, and gelato',
-		'stroll through picturesque Tuscan vineyards',
-		'cruise along the Amalfi Coast'
+	places: [
+		'the Colosseum',
+		'St. Peter’s Basilica',
+		'the Vatican Museums',
+		'the Roman Forum',
+		'the Sistine Chapel'
 	],
-	trade: [
-		'Italian leather goods',
-		'high-quality olive oil',
-		'fashion from Milan',
-		'Murano glassware',
-		'Parmigiano-Reggiano cheese'
+	objects: [
+		'a Roman gladiator’s helmet',
+		'an ancient Roman coin',
+		'a bottle of Chianti wine',
+		'a Venetian mask',
+		'a Murano glass vase'
 	],
-	study: [
-		'Roman history',
-		'the Italian Renaissance',
-		'Michelangelo, Leonardo da Vinci, and other masters',
-		'Dante Alighieri and the Divine Comedy'
+	topics: [
+		'the history of the Roman Empire',
+		'the Renaissance art movement',
+		'the fashion industry in Milan',
+		'the cuisine of Tuscany',
+		'the Venice Carnival tradition'
 	],
-	stolen: ['a lost fresco by Caravaggio', 'an ancient Roman coin collection']
+	currency: 'euros',
+	leader: 'president',
+	flag: 'a green, white, and red flag',
+	language: 'Italian'
 };

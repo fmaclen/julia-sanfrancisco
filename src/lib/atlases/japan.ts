@@ -3,34 +3,27 @@ import type { Atlas } from '$lib/atlases';
 export const JAPAN: Atlas = {
 	city: 'Tokyo',
 	descriptions: [
-		'Tokyo is the capital and largest city of Japan, with a population of about 37.8 million people in its metropolitan area.',
-		'Japan is known for its rich history, cutting-edge technology, and unique cultural experiences.',
-		'Welcome to Tokyo, a city that seamlessly blends ancient traditions with modern life through landmarks such as the Imperial Palace, Meiji Shrine, and the iconic Shibuya Crossing.'
+		'Tokyo, the capital city of Japan, is a bustling metropolis known for its blend of modern living and old traditions.',
+		'The city is part of the larger Tokyo Metropolitan area which is the most populous metropolitan area in the world.',
+		'Tokyo boasts a variety of diverse neighborhoods, from the neon-lit skyscrapers of Shinjuku and Shibuya to the old temples and markets of Asakusa.'
 	],
-	currency: 'JPY',
-	language: 'Japanese',
-	flag: 'a red circle on a white background',
+	places: [
+		'the foothills of Mount Fuji',
+		'Lake Biwa',
+		'the islands of Okinawa',
+		'the hot springs of Hakone',
+		'the snow-capped peaks of the Japanese Alps'
+	],
+	objects: ['a samurai sword', 'a kimono', 'a manga comic', 'a bottle of sake', 'a bonsai tree'],
+	topics: [
+		'the history of the Meiji Restoration',
+		'the art of origami',
+		'the tea ceremonies of Uji',
+		'the influence of anime and manga in popular culture',
+		'the practice of Zen Buddhism'
+	],
+	currency: 'yen',
 	leader: 'prime minister',
-	see: ['Mount Fuji', 'Kyoto', 'Hiroshima Peace Memorial Park', 'Osaka', 'Nara'],
-	toDo: [
-		'attend a traditional tea ceremony',
-		'visit ancient temples and shrines',
-		'savor sushi, ramen, and other local cuisine',
-		'experience the art of Japanese gardens',
-		'travel by high-speed bullet train'
-	],
-	trade: [
-		'Japanese electronics and gadgets',
-		'artisan ceramics and pottery',
-		'kimonos and traditional textiles',
-		'Japanese green tea',
-		'origami paper and supplies'
-	],
-	study: [
-		'Samurai history',
-		'the art of haiku poetry',
-		'Japanese calligraphy and painting',
-		'anime and manga culture'
-	],
-	stolen: ['an ancient samurai sword', 'a priceless ukiyo-e woodblock print']
+	flag: 'a red and white flag',
+	language: 'Japanese'
 };

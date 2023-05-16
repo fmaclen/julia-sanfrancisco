@@ -3,37 +3,33 @@ import type { Atlas } from '$lib/atlases';
 export const BRAZIL: Atlas = {
 	city: 'Rio de Janeiro',
 	descriptions: [
-		'Rio de Janeiro is the second largest city in Brazil, with a population of about 13.4 million people in its metropolitan area.',
-		'Brazil is known for its diverse landscapes, vibrant culture, and passion for sports.',
-		'Welcome to Rio de Janeiro, a city famous for its stunning natural beauty, including the iconic Christ the Redeemer statue, Sugarloaf Mountain, and Copacabana Beach.'
+		'Rio de Janeiro, often simply referred to as Rio, is the second-most populous city in Brazil and the sixth-most populous in the Americas.',
+		'Rio de Janeiro is known for its natural settings, Carnival, samba, bossa nova, and balneario beaches such as Barra da Tijuca, Copacabana, Ipanema, and Leblon.',
+		"The city's vibrant culture and plentiful beaches are complemented by its iconic landmarks including the giant statue of Christ the Redeemer, one of the New Seven Wonders of the World."
 	],
-	currency: 'BRL',
-	language: 'Portuguese',
-	flag: 'a green field with a yellow diamond and a blue circle',
+	places: [
+		'the Amazon Rainforest',
+		'the Pantanal wetlands',
+		'Fernando de Noronha archipelago',
+		'the Chapada Diamantina National Park',
+		'the Serra da Capivara National Park'
+	],
+	objects: [
+		'a samba drum',
+		'a capoeira berimbau',
+		'a hammock from Ceará',
+		'an Amazonian tribal mask',
+		'a bottle of cachaça'
+	],
+	topics: [
+		'the wildlife of the Amazon',
+		'the history of Brazilian football',
+		'the cultural significance of Carnival',
+		'the tradition of capoeira',
+		'the coffee production in Minas Gerais'
+	],
+	currency: 'reals',
 	leader: 'president',
-	see: ['the Amazon Rainforest', 'Iguazu Falls', 'Salvador', 'Ouro Preto', 'Fernando de Noronha'],
-	toDo: [
-		'experience the excitement of Carnival',
-		"explore the city's vibrant neighborhoods",
-		'discover Brazilian flavors like feijoada and churrasco',
-		'attend a football match at Maracanã Stadium',
-		'visit the historic town of Paraty'
-	],
-	trade: [
-		'Brazilian coffee',
-		'gemstones and jewelry',
-		'handmade crafts and souvenirs',
-		'cachaça, the national spirit',
-		'colorful Brazilian bikinis and beachwear'
-	],
-	study: [
-		'Brazilian colonial history',
-		'Capoeira and other Afro-Brazilian traditions',
-		'the impact of the Portuguese language on Brazilian culture',
-		'Brazilian music, from samba to bossa nova'
-	],
-	stolen: [
-		'a priceless gemstone from Minas Gerais',
-		'a rare recording of a legendary samba musician'
-	]
+	flag: 'a green, blue and yellow flag',
+	language: 'Portuguese'
 };
