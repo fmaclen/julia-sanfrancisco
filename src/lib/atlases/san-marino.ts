@@ -28,7 +28,7 @@ export const SAN_MARINO: Atlas = {
 		'the philatelic tradition of San Marino',
 		'the winemaking in San Marino'
 	],
-	currency: 'EUR',
+	currency: 'euros',
 	leader: 'captains regent',
 	flag: 'a blue and white flag',
 	language: 'Italian'

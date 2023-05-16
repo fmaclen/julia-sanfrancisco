@@ -18,7 +18,7 @@ export const ARGENTINA: Atlas = {
 		"a gaucho's poncho",
 		'a mate gourd',
 		'a tango record',
-		'a Malbec wine bottle',
+		'a bottle of Malbec wine',
 		'a piece of Argentine leather'
 	],
 	topics: [
@@ -28,7 +28,7 @@ export const ARGENTINA: Atlas = {
 		'the tango music scene in Buenos Aires',
 		'the wine production in Mendoza'
 	],
-	currency: 'ARS',
+	currency: 'pesos',
 	leader: 'president',
 	flag: 'a light blue and white flag',
 	language: 'Spanish'

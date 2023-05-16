@@ -28,7 +28,7 @@ export const MEXICO: Atlas = {
 		'the cuisine of Oaxaca',
 		'the Day of the Dead traditions'
 	],
-	currency: 'MXN',
+	currency: 'pesos',
 	leader: 'president',
 	flag: 'a green, white and red flag',
 	language: 'Spanish'

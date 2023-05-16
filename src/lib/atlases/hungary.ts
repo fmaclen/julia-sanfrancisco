@@ -28,7 +28,7 @@ export const HUNGARY: Atlas = {
 		'the Liszt Ferenc Academy of Music',
 		'the wine production in the Tokaj region'
 	],
-	currency: 'HUF',
+	currency: 'forints',
 	leader: 'president',
 	flag: 'a red, white and green flag',
 	language: 'Hungarian'

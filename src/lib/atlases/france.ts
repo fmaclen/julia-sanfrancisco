@@ -28,7 +28,7 @@ export const FRANCE: Atlas = {
 		'the Gothic architecture of Chartres Cathedral',
 		'the wine production in Bordeaux'
 	],
-	currency: 'EUR',
+	currency: 'euros',
 	leader: 'president',
 	flag: 'a blue, white, and red flag',
 	language: 'French'

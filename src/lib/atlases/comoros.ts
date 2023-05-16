@@ -16,7 +16,7 @@ export const COMOROS: Atlas = {
 		'the volcanic lake Dziani Boundouni'
 	],
 	objects: [
-		'a ylang-ylang perfume bottle',
+		'a bottle of ylang-ylang perfume',
 		'a Comorian textile',
 		'a vanilla pod',
 		'a carved coelacanth figure',
@@ -29,7 +29,7 @@ export const COMOROS: Atlas = {
 		'the coelacanth, a prehistoric fish discovered in Comorian waters',
 		'the cultivation and export of ylang-ylang and vanilla'
 	],
-	currency: 'KMF',
+	currency: 'Comorian francs',
 	leader: 'president',
 	flag: 'a green, white, yellow, and red flag with a crescent and four stars',
 	language: 'Comorian'

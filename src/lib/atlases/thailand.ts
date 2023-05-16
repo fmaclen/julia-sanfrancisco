@@ -28,7 +28,7 @@ export const THAILAND: Atlas = {
 		'the Thai cuisine and street food culture',
 		'the intricate art of Thai puppetry'
 	],
-	currency: 'THB',
+	currency: 'baht',
 	leader: 'prime minister',
 	flag: 'a red, white and blue flag',
 	language: 'Thai'

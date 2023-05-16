@@ -28,7 +28,7 @@ export const TURKEY: Atlas = {
 		'the traditional music scene of Turkey',
 		'the tea production in Rize'
 	],
-	currency: 'TRY',
+	currency: 'lira',
 	leader: 'president',
 	flag: 'a red flag with a star and crescent',
 	language: 'Turkish'

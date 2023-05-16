@@ -28,7 +28,7 @@ export const USA: Atlas = {
 		'the jazz music scene in New Orleans',
 		'the film production in Hollywood'
 	],
-	currency: 'USD',
+	currency: 'dollars',
 	leader: 'president',
 	flag: 'a stars and stripes flag',
 	language: 'English'

@@ -28,7 +28,7 @@ export const CANADA: Atlas = {
 		'the jazz music scene in Canada',
 		'the wine production in Okanagan Valley'
 	],
-	currency: 'CAD',
+	currency: 'dollars',
 	leader: 'prime minister',
 	flag: 'a red and white flag with a maple leaf',
 	language: 'French'

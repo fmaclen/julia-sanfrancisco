@@ -28,7 +28,7 @@ export const PERU: Atlas = {
 		'the traditional cuisine of the Andean region',
 		'the process of Pisco production'
 	],
-	currency: 'PEN',
+	currency: 'soles',
 	leader: 'president',
 	flag: 'a red and white flag',
 	language: 'Spanish'

@@ -28,7 +28,7 @@ export const ICELAND: Atlas = {
 		'the history of the Althing',
 		'the Icelandic sagas'
 	],
-	currency: 'ISK',
+	currency: 'kronur',
 	leader: 'president',
 	flag: 'a red and white cross on a blue background',
 	language: 'Icelandic'

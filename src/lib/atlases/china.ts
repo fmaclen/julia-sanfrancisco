@@ -28,7 +28,7 @@ export const CHINA: Atlas = {
 		'the martial art of Kung Fu',
 		'the development of calligraphy'
 	],
-	currency: 'CNY',
+	currency: 'yuan',
 	leader: 'party chairman',
 	flag: 'a red flag with five golden stars',
 	language: 'Chinese'

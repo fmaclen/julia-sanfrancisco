@@ -22,7 +22,7 @@ export const GREECE: Atlas = {
 		'the Olympic Games in ancient times',
 		'the Battle of Thermopylae'
 	],
-	currency: 'EUR',
+	currency: 'euros',
 	leader: 'prime minister',
 	flag: 'a blue and white flag',
 	language: 'Greek'

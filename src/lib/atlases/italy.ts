@@ -28,7 +28,7 @@ export const ITALY: Atlas = {
 		'the cuisine of Tuscany',
 		'the Venice Carnival tradition'
 	],
-	currency: 'EUR',
+	currency: 'euros',
 	leader: 'president',
 	flag: 'a green, white, and red flag',
 	language: 'Italian'

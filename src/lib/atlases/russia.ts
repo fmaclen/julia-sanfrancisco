@@ -28,7 +28,7 @@ export const RUSSIA: Atlas = {
 		'the ballet scene in Russia',
 		'the vodka production in Russia'
 	],
-	currency: 'RUB',
+	currency: 'rubles',
 	leader: 'president',
 	flag: 'a white, blue, and red flag',
 	language: 'Russian'

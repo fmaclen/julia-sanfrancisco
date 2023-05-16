@@ -28,7 +28,7 @@ export const RWANDA: Atlas = {
 		'the coffee production in Rwanda',
 		'the traditional dance, Intore'
 	],
-	currency: 'RWF',
+	currency: 'francs',
 	leader: 'president',
 	flag: 'a blue, yellow and green flag',
 	language: 'Kinyarwanda'

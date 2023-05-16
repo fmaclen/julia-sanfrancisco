@@ -28,7 +28,7 @@ export const INDIA: Atlas = {
 		'the spices and flavors of Indian cuisine',
 		'the art and symbolism in Hindu temples'
 	],
-	currency: 'INR',
+	currency: 'rupees',
 	leader: 'prime minister',
 	flag: 'a orange, white, and green flag',
 	language: 'Hindi'

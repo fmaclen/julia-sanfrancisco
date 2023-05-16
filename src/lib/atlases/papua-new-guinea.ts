@@ -28,7 +28,7 @@ export const PAPUA_NEW_GUINEA: Atlas = {
 		'the art of the Sepik region',
 		'the unique bird species of Papua New Guinea'
 	],
-	currency: 'PGK',
+	currency: 'kina',
 	leader: 'prime minister',
 	flag: 'a red and black flag with a bird of paradise and the Southern Cross',
 	language: 'Tok Pisin'

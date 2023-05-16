@@ -29,7 +29,7 @@
 	const suspect = getRandomValue(SUSPECTS);
 
 	const game: Game = {
-		stolenTreasure: getRandomValue(startingDestination.stolen),
+		stolenTreasure: getRandomValue(startingDestination.objects),
 		suspect,
 		rounds: getRounds(startingDestination, atlasesInRound, suspect)
 	};

@@ -22,7 +22,7 @@ export const JAPAN: Atlas = {
 		'the influence of anime and manga in popular culture',
 		'the practice of Zen Buddhism'
 	],
-	currency: 'JPY',
+	currency: 'yen',
 	leader: 'prime minister',
 	flag: 'a red and white flag',
 	language: 'Japanese'

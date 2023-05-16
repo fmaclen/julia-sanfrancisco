@@ -28,7 +28,7 @@ export const SRI_LANKA: Atlas = {
 		'the traditional Kandyan dance',
 		'the tea production in Nuwara Eliya'
 	],
-	currency: 'LKR',
+	currency: 'rupees',
 	leader: 'president',
 	flag: 'a lion holding a sword on a maroon background with green and orange stripes',
 	language: 'Sinhala'

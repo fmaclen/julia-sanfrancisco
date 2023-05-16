@@ -28,7 +28,7 @@ export const BRAZIL: Atlas = {
 		'the tradition of capoeira',
 		'the coffee production in Minas Gerais'
 	],
-	currency: 'BRL',
+	currency: 'reals',
 	leader: 'president',
 	flag: 'a green, blue and yellow flag',
 	language: 'Portuguese'

@@ -28,7 +28,7 @@ export const IRAQ: Atlas = {
 		'the influence of Sumerian civilization',
 		'the traditional music and dance of Iraq'
 	],
-	currency: 'IQD',
+	currency: 'dinars',
 	leader: 'president',
 	flag: 'a red, white, and black flag',
 	language: 'Arabic'

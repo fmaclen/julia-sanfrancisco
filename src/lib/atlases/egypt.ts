@@ -28,7 +28,7 @@ export const EGYPT: Atlas = {
 		'the construction of the pyramids',
 		'the importance of the Nile River in ancient civilization'
 	],
-	currency: 'EGP',
+	currency: 'pounds',
 	leader: 'president',
 	flag: 'a red, white, and black flag',
 	language: 'Arabic'

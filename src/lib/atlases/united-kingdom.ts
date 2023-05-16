@@ -28,7 +28,7 @@ export const UNITED_KINGDOM: Atlas = {
 		'the British Invasion in music',
 		'the works of Shakespeare'
 	],
-	currency: 'GBP',
+	currency: 'pounds',
 	leader: 'prime minister',
 	flag: 'a red, white, and blue flag',
 	language: 'English'

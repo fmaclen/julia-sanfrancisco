@@ -28,7 +28,7 @@ export const NEPAL: Atlas = {
 		'the spiritual practices in Buddhist monasteries',
 		'the art of Nepalese carpet weaving'
 	],
-	currency: 'NPR',
+	currency: 'rupees',
 	leader: 'president',
 	flag: 'a double-pennant flag',
 	language: 'Nepali'

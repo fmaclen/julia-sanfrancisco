@@ -28,7 +28,7 @@ export const SINGAPORE: Atlas = {
 		'the architectural design of the Helix Bridge',
 		'the urban planning strategies of Singapore'
 	],
-	currency: 'SGD',
+	currency: 'dollars',
 	leader: 'prime minister',
 	flag: 'a red and white flag',
 	language: 'English'

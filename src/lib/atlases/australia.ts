@@ -28,7 +28,7 @@ export const AUSTRALIA: Atlas = {
 		'the wine production in Barossa Valley',
 		'the conservation efforts for the Great Barrier Reef'
 	],
-	currency: 'AUD',
+	currency: 'dollars',
 	leader: 'prime minister',
 	flag: 'a blue flag with the Union Jack and a constellation',
 	language: 'English'

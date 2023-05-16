@@ -28,7 +28,7 @@ export const MALI: Atlas = {
 		'the architecture of the Great Mosque of Djenné',
 		'the nomadic lifestyle of the Tuareg'
 	],
-	currency: 'XOF',
+	currency: 'francs',
 	leader: 'president',
 	flag: 'a green, yellow, and red flag',
 	language: 'French'

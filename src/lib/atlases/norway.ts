@@ -28,7 +28,7 @@ export const NORWAY: Atlas = {
 		'the Sami culture and their reindeer herding',
 		'the oil and gas industry in the North Sea'
 	],
-	currency: 'NOK',
+	currency: 'kroner',
 	leader: 'king',
 	flag: 'a red and white flag with a blue cross',
 	language: 'Norwegian'

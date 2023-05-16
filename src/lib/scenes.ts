@@ -113,8 +113,7 @@ export function getScenes({
 		let sceneClues: string[] = [];
 		if (isRoundFinal) sceneClues = FINAL_ROUND_CLUES;
 		if (isRoundDecoy) sceneClues = getDecoyClues(place);
-		if (nextRoundAtlas && suspect)
-			sceneClues = generateClues({ atlas: nextRoundAtlas, place, suspect });
+		if (nextRoundAtlas && suspect) sceneClues = generateClues(nextRoundAtlas, suspect, place);
 
 		while (clues.size < i + 1) {
 			clues.add(getRandomValue(sceneClues));
