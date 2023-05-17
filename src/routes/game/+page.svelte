@@ -24,7 +24,7 @@
 		showPlaces = false;
 		showDestinations = false;
 		currentClueIndex = null;
-		artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
+		if (currentRound) artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
 	}
 
 	function flyTo(): void {
@@ -44,7 +44,7 @@
 
 		transitionTo(() => {
 			currentClueIndex = index;
-			artworkPath = getArtworkPath(currentRound.scenes[index].place, 'places');
+			if (currentRound) artworkPath = getArtworkPath(currentRound.scenes[index].place, 'places');
 		});
 
 		await clock.fastForward(2);
@@ -63,6 +63,8 @@
 		clock.isFlying = true;
 
 		transitionTo(() => {
+			if (!currentRoundIndex) return Error('No current round index');
+
 			const isPreviousRoundAtlas =
 				currentRoundIndex !== 0 && rounds[currentRoundIndex - 1].atlas === destination;
 			const isCurrentRound = rounds[currentRoundIndex].atlas === destination;
