@@ -21,6 +21,6 @@
 	</Section>
 
 	<Nav>
-		<ButtonLink href="/player/">New game</ButtonLink>
+		<ButtonLink href="/headquarters/">New game</ButtonLink>
 	</Nav>
 </Main>

@@ -24,14 +24,14 @@ export function getRank(score: number | undefined) {
 	else return Rank.SUPER_SLEUTH;
 }
 
-const playersLocalStorage: string | null = browser ? window.localStorage.getItem('player') : null;
+const playerLocalStorage: string | null = browser ? window.localStorage.getItem('player') : null;
 
 let player: Player | null = null;
 export const playerStore = writable<Player | null>(null);
 
 // Read existing player from localStorage
-if (playersLocalStorage) {
-	player = JSON.parse(playersLocalStorage) as Player;
+if (playerLocalStorage) {
+	player = JSON.parse(playerLocalStorage) as Player;
 	playerStore.set(player);
 }
 

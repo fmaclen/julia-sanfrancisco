@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ATLASES, getRandomAtlas, type Atlas } from '$lib/atlases';
+	import type { Atlas } from '$lib/atlases';
 	import Clock, { DELAY_IN_MS } from '$lib/clock';
 	import Button from '$lib/components/Button.svelte';
 	import ButtonLink from '$lib/components/ButtonLink.svelte';
@@ -9,31 +9,15 @@
 	import Nav from '$lib/components/Nav.svelte';
 	import P from '$lib/components/P.svelte';
 	import Section from '$lib/components/Section.svelte';
+	import Time from '$lib/components/Time.svelte';
+	import { gameStore } from '$lib/game';
 	import { getArtworkPath, getRandomValue, redirectTo } from '$lib/helpers';
 	import { playerStore, type Player } from '$lib/player';
-	import { getRounds, getDecoyRound, type Round } from '$lib/rounds';
-	import { SUSPECTS, type Suspect } from '$lib/suspects';
+	import { getDecoyRound, type Round } from '$lib/rounds';
 	import { onMount } from 'svelte';
 
 	// If there is no user profile, redirect to the player page
-	if ($playerStore === null) redirectTo('/player/');
-
-	interface Game {
-		stolenTreasure: string;
-		suspect: Suspect;
-		rounds: Round[];
-	}
-
-	const atlasesInRound = [...ATLASES];
-	const startingDestination: Atlas = getRandomAtlas();
-	const suspect = getRandomValue(SUSPECTS);
-
-	const game: Game = {
-		stolenTreasure: getRandomValue(startingDestination.objects),
-		suspect,
-		rounds: getRounds(startingDestination, atlasesInRound, suspect)
-	};
-	const { rounds } = game;
+	if ($playerStore === null || $gameStore === null) redirectTo('/headquarters/');
 
 	function resetRound(): void {
 		showDescription = true;
@@ -109,7 +93,7 @@
 	}
 
 	function updateScore(): void {
-		redirectTo('/player/');
+		redirectTo('/headquarters/');
 
 		playerStore.update((player: Player | null) => {
 			player ? (player.score += 1) : null;
@@ -118,6 +102,12 @@
 	}
 
 	onMount(() => {
+		// Load game state from store
+		if ($gameStore) {
+			rounds = $gameStore.rounds;
+			currentRoundIndex = $gameStore.currentRoundIndex;
+		}
+
 		clock.start();
 
 		setInterval(() => {
@@ -129,7 +119,8 @@
 		}, clock.tickRate);
 	});
 
-	let currentRoundIndex = 0;
+	let rounds: Round[] = [];
+	let currentRoundIndex: number | null = null;
 	let currentClueIndex: number | null = null;
 
 	let clock = new Clock();
@@ -144,8 +135,8 @@
 	let showDestinations = false;
 	let showDescription = true;
 
-	$: currentRound = rounds[currentRoundIndex];
-	$: artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
+	$: currentRound = currentRoundIndex === null ? null : rounds[currentRoundIndex];
+	$: artworkPath = currentRound ? getArtworkPath(currentRound.atlas.city, 'atlas') : '';
 
 	$: isClockTicking = isSleeping || isWalking || isFlying;
 	$: isArtworkHidden = isClockTicking && !isSleeping;
@@ -153,86 +144,79 @@
 	$: isGameWon = !isTimeUp && currentRoundIndex === rounds.length - 1;
 </script>
 
-<Main>
-	<div
-		class="artwork {isArtworkHidden ? 'artwork--hidden' : ''} {isSleeping
-			? 'artwork--disabled'
-			: ''}"
-	>
-		<img class="artwork__img" src={artworkPath} alt="Illustration of scene" />
-	</div>
+{#if currentRound}
+	<Main>
+		<div
+			class="artwork {isArtworkHidden ? 'artwork--hidden' : ''} {isSleeping
+				? 'artwork--disabled'
+				: ''}"
+		>
+			<img class="artwork__img" src={artworkPath} alt="Illustration of scene" />
+		</div>
 
-	<Header>
-		<H1>
-			{isSleeping
-				? 'Sleeping...'
-				: isFlying
-				? 'Flying...'
-				: isWalking
-				? 'Walking...'
-				: currentRound.atlas.city}
-		</H1>
-		<time class="time {isClockTicking ? 'time--active' : ''}">{currentTime}</time>
-	</Header>
+		<Header>
+			<H1>
+				{isSleeping
+					? 'Sleeping...'
+					: isFlying
+					? 'Flying...'
+					: isWalking
+					? 'Walking...'
+					: currentRound.atlas.city}
+			</H1>
+			<Time {isClockTicking} {currentTime} />
+		</Header>
 
-	<Section>
-		{#if showDescription}
-			<P>
-				{getRandomValue(currentRound.atlas.descriptions)}
-			</P>
-		{/if}
-	</Section>
+		<Section>
+			{#if showDescription}
+				<P>
+					{getRandomValue(currentRound.atlas.descriptions)}
+				</P>
+			{/if}
+		</Section>
 
-	<Section align="bottom">
-		{#if showPlaces}
-			{#each currentRound.scenes as scene, index}
-				<Button active={currentClueIndex === index} on:click={() => getClue(index)}>
-					{scene.place}
-				</Button>
-			{/each}
-		{/if}
+		<Section align="bottom">
+			{#if showPlaces}
+				{#each currentRound.scenes as scene, index}
+					<Button active={currentClueIndex === index} on:click={() => getClue(index)}>
+						{scene.place}
+					</Button>
+				{/each}
+			{/if}
 
-		{#if isClueVisible && currentClueIndex !== null}
-			<P>
-				<strong>{currentRound.scenes[currentClueIndex].witness}</strong>
-				<br />
-				{currentRound.scenes[currentClueIndex].clue}
-			</P>
-		{/if}
+			{#if isClueVisible && currentClueIndex !== null}
+				<P>
+					<strong>{currentRound.scenes[currentClueIndex].witness}</strong>
+					<br />
+					{currentRound.scenes[currentClueIndex].clue}
+				</P>
+			{/if}
 
-		{#if showDestinations}
-			{#each Array.from(currentRound.destinations) as destination}
-				<Button on:click={() => setRound(destination)}>
-					{destination.city}
-				</Button>
-			{/each}
-		{/if}
-	</Section>
+			{#if showDestinations}
+				{#each Array.from(currentRound.destinations) as destination}
+					<Button on:click={() => setRound(destination)}>
+						{destination.city}
+					</Button>
+				{/each}
+			{/if}
+		</Section>
 
-	<Nav>
-		{#if isGameWon}
-			<Button on:click={updateScore}>Continue</Button>
-		{:else if isClueVisible}
-			<Button on:click={dismissClue}>Dismiss</Button>
-		{:else if !isClockTicking}
-			<Button active={isWalking} on:click={walkTo}>Walk to</Button>
-			<Button active={isFlying} on:click={flyTo}>Fly to</Button>
-			<Button disabled={true}>Get warrant</Button>
-			<ButtonLink href="/">Quit</ButtonLink>
-		{/if}
-	</Nav>
-</Main>
+		<Nav>
+			{#if isGameWon}
+				<Button on:click={updateScore}>Continue</Button>
+			{:else if isClueVisible}
+				<Button on:click={dismissClue}>Dismiss</Button>
+			{:else if !isClockTicking}
+				<Button active={isWalking} on:click={walkTo}>Walk to</Button>
+				<Button active={isFlying} on:click={flyTo}>Fly to</Button>
+				<Button disabled={true}>Get warrant</Button>
+				<ButtonLink href="/">Quit</ButtonLink>
+			{/if}
+		</Nav>
+	</Main>
+{/if}
 
 <style lang="scss">
-	time.time {
-		opacity: 0.33;
-		transition: opacity 250ms;
-
-		&--active {
-			opacity: 1;
-		}
-	}
-
 	div.artwork {
 		position: absolute;
 		z-index: -1;

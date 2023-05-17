@@ -26,24 +26,24 @@ export function generateClues(atlas: Atlas, suspect: Suspect, place: Place): str
 	const shipPlaces = [Place.HARBOR, Place.RIVERFRONT];
 
 	const placeClues = [
-		`said ${suspect.pronoun} wanted to photograph`,
+		`said ${suspect.pronouns.subject} wanted to photograph`,
 		`asked for a map of`,
 		`planned to visit`,
-		`mentioned ${suspect.pronoun} wanted to see`,
+		`mentioned ${suspect.pronouns.subject} wanted to see`,
 		`was considering taking a trip to`,
 		`had an urge to visit`,
-		`said ${suspect.pronoun} wanted to explore`,
+		`said ${suspect.pronouns.subject} wanted to explore`,
 		`asked about day tours to`,
 		`wanted to know if there were any five-star hotels near`
 	];
 
 	const languageClues = [
-		`had a ${atlas.language} dictionary in ${suspect.possessivePronoun} pocket`,
+		`had a ${atlas.language} dictionary in ${suspect.pronouns.possessive} pocket`,
 		`was carrying a ${atlas.language} phrase book`
 	];
 
 	const currencyClues = [
-		`changed ${suspect.possessivePronoun} money to ${atlas.currency}`,
+		`changed ${suspect.pronouns.possessive} money to ${atlas.currency}`,
 		`asked about the exchange rate for ${atlas.currency}`,
 		`wanted to know how much ${atlas.currency} were worth`
 	];
@@ -75,7 +75,7 @@ export function generateClues(atlas: Atlas, suspect: Suspect, place: Place): str
 		// Currency clues
 		if (currencyPlaces.includes(place)) {
 			for (const clue of currencyClues) {
-				clues.push(`${intro} ${suspect.pronoun} ${clue}.`);
+				clues.push(`${intro} ${suspect.pronouns.subject} ${clue}.`);
 			}
 		}
 
@@ -83,7 +83,7 @@ export function generateClues(atlas: Atlas, suspect: Suspect, place: Place): str
 		if (topicPlaces.includes(place)) {
 			for (const clue of topicClues) {
 				atlas.topics.forEach((topic) => {
-					clues.push(`${intro} ${suspect.pronoun} ${clue} ${topic}.`);
+					clues.push(`${intro} ${suspect.pronouns.subject} ${clue} ${topic}.`);
 				});
 			}
 		}
@@ -91,32 +91,32 @@ export function generateClues(atlas: Atlas, suspect: Suspect, place: Place): str
 		// Plane clues
 		if (place === Place.AIRPORT) {
 			for (const clue of planeClues) {
-				clues.push(`${intro} ${suspect.pronoun} ${clue}.`);
+				clues.push(`${intro} ${suspect.pronouns.subject} ${clue}.`);
 			}
 		}
 
 		// Ship clues
 		if (shipPlaces.includes(place)) {
 			for (const clue of shipClues) {
-				clues.push(`${intro} ${suspect.pronoun} ${clue}.`);
+				clues.push(`${intro} ${suspect.pronouns.subject} ${clue}.`);
 			}
 		}
 
 		// General clues
 		for (const clue of placeClues) {
 			atlas.places.forEach((place) => {
-				clues.push(`${intro} ${suspect.pronoun} ${clue} ${place}.`);
+				clues.push(`${intro} ${suspect.pronouns.subject} ${clue} ${place}.`);
 			});
 		}
 
 		for (const clue of objectClues) {
 			atlas.objects.forEach((object) => {
-				clues.push(`${intro} ${suspect.pronoun} ${clue} ${object}.`);
+				clues.push(`${intro} ${suspect.pronouns.subject} ${clue} ${object}.`);
 			});
 		}
 
 		for (const clue of languageClues) {
-			clues.push(`${intro} ${suspect.pronoun} ${clue}.`);
+			clues.push(`${intro} ${suspect.pronouns.subject} ${clue}.`);
 		}
 	}
 

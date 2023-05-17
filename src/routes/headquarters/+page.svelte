@@ -7,6 +7,8 @@
 	import Nav from '$lib/components/Nav.svelte';
 	import P from '$lib/components/P.svelte';
 	import Section from '$lib/components/Section.svelte';
+	import Time from '$lib/components/Time.svelte';
+	import { gameStore, generateGame } from '$lib/game';
 	import { getRank } from '$lib/player';
 	import { playerStore } from '$lib/player';
 
@@ -16,20 +18,52 @@
 	function setPlayer() {
 		playerStore.set({ name: playerName, score: 0 });
 	}
+
+	function setGame() {
+		gameStore.set(generateGame());
+	}
 </script>
 
 <Main>
 	<Header>
 		<H1>Headquarters</H1>
+		<Time />
 	</Header>
 
 	{#if $playerStore}
 		<Section>
-			<P>You have been identified as <strong>{$playerStore.name}</strong>.</P>
-			<P>Your current rank is <strong>{rank}</strong></P>
+			<P>
+				You have been identified as <strong>{$playerStore.name}</strong>.<br />
+				Your current rank is <strong>{rank}</strong>
+			</P>
+
+			{#if $gameStore}
+				<P>
+					<strong>Newsflash</strong>
+					<br />
+					National treasure stolen from <strong>{$gameStore.rounds[0].atlas.city}</strong>.
+					<br /><br />
+					The treasure has been identified as <strong>{$gameStore.stolenTreasure}</strong>.
+					<br /><br />
+					<strong>{$gameStore.suspect.sex}</strong> has been reported at the scene of the crime.
+					<br />
+				</P>
+				<P>
+					<strong>Your assignment</strong>
+					<br />
+					Track the thief from <strong>{$gameStore.rounds[0].atlas.city}</strong> to {$gameStore
+						.suspect.pronouns.possessive} hideout and arrest {$gameStore.suspect.pronouns.object}.
+					<br />
+				</P>
+			{/if}
 		</Section>
+
 		<Nav>
-			<ButtonLink href="/game/">Continue</ButtonLink>
+			{#if !$gameStore}
+				<Button on:click={setGame}>Continue</Button>
+			{:else}
+				<ButtonLink href="/game/">Continue</ButtonLink>
+			{/if}
 		</Nav>
 	{:else}
 		<Section>

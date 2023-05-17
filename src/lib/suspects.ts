@@ -5,8 +5,11 @@ export interface Suspect {
 	feature: string;
 	vehicle: string;
 	sex: string;
-	pronoun: string;
-	possessivePronoun: string;
+	pronouns: {
+		subject: string;
+		possessive: string;
+		object: string;
+	};
 }
 
 export const SUSPECTS: Suspect[] = [
@@ -16,9 +19,12 @@ export const SUSPECTS: Suspect[] = [
 		hair: 'brown',
 		feature: 'mole on her left cheek',
 		vehicle: 'convertible',
-		sex: 'female',
-		pronoun: 'she',
-		possessivePronoun: 'her'
+		sex: 'Female',
+		pronouns: {
+			subject: 'she',
+			possessive: 'her',
+			object: 'her'
+		}
 	},
 	{
 		name: 'Pedro Sanantonio',
@@ -26,8 +32,11 @@ export const SUSPECTS: Suspect[] = [
 		hair: 'black',
 		feature: 'scar on his right cheek',
 		vehicle: 'motorcycle',
-		sex: 'male',
-		pronoun: 'he',
-		possessivePronoun: 'his'
+		sex: 'Male',
+		pronouns: {
+			subject: 'he',
+			possessive: 'his',
+			object: 'him'
+		}
 	}
 ];
