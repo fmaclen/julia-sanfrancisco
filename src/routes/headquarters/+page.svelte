@@ -40,11 +40,6 @@
 		</Section>
 	{:else if $playerStore}
 		<Section>
-			<P>
-				You have been identified as <strong>{$playerStore.name}</strong>.<br />
-				Your current rank is <strong>{rank}</strong>.
-			</P>
-
 			{#if $gameStore}
 				<P>
 					<strong>Newsflash</strong>
@@ -68,6 +63,11 @@
 					<br />
 					Good luck, {rank.toLowerCase()}
 					<strong>{$playerStore.name}</strong>.
+				</P>
+			{:else}
+				<P>
+					You have been identified as <strong>{$playerStore.name}</strong>.<br />
+					Your current rank is <strong>{rank}</strong>.
 				</P>
 			{/if}
 		</Section>

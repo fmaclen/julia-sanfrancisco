@@ -109,6 +109,8 @@
 			player ? (player.score += 1) : null;
 			return player;
 		});
+
+		gameStore.set(null);
 	}
 
 	onMount(() => {
@@ -161,7 +163,7 @@
 
 	$: if (game) {
 		currentRound = game.roundDecoy ? game.roundDecoy : game.rounds[game.currentRoundIndex];
-		isGameWon = isTimeUp && game.currentRoundIndex === game.rounds.length - 1;
+		isGameWon = !isTimeUp && game.currentRoundIndex === game.rounds.length - 1;
 		artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
 	}
 
