@@ -12,7 +12,7 @@
 	import Time from '$lib/components/Time.svelte';
 	import { gameStore, type Game } from '$lib/game';
 	import { getArtworkPath, getRandomValue, redirectTo } from '$lib/helpers';
-	import { playerStore, type Player } from '$lib/player';
+	import { playerStore, type Player, getCasesUntilPromotion } from '$lib/player';
 	import { getDecoyRound, type Round } from '$lib/rounds';
 	import { onMount } from 'svelte';
 
@@ -22,19 +22,20 @@
 		showDestinations = false;
 		currentClueIndex = null;
 		artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
+		game.currentTime = clock.currentTime;
 
 		// Save the game state to localStorage
 		gameStore.set(game);
 	}
 
 	function flyTo(): void {
-		resetRound();
-		showDestinations = true;
+		if (!showDestinations) resetRound();
+		showDestinations = !showDestinations;
 	}
 
 	function walkTo(): void {
-		resetRound();
-		showPlaces = true;
+		if (!showPlaces) resetRound();
+		showPlaces = !showPlaces;
 	}
 
 	async function getClue(index: number): Promise<void> {
@@ -53,7 +54,7 @@
 	function dismissClue(): void {
 		transitionTo(() => {
 			resetRound();
-			isArtworkHidden = false; // NOTE: maybe this should be moved to the setTimeout inisde transitionTo()
+			isArtworkHidden = false; // Since clock is not ticking we need to manually show the artwork
 		});
 	}
 
@@ -65,17 +66,18 @@
 		transitionTo(() => {
 			const { rounds, currentRoundIndex } = game;
 
-			const isPreviousRoundAtlas =
-				currentRoundIndex !== 0 && rounds[currentRoundIndex - 1].atlas === destination;
 			const isCurrentRound = rounds[currentRoundIndex].atlas === destination;
-			const isNextRoundAtlas = rounds[currentRoundIndex + 1].atlas === destination;
-			const isDecoyRound = !isCurrentRound && !isPreviousRoundAtlas && !isNextRoundAtlas;
+			const isNextRound = rounds[currentRoundIndex + 1].atlas === destination;
+			const isPreviousRound =
+				currentRoundIndex > 0 && rounds[currentRoundIndex - 1].atlas === destination;
 
 			if (isCurrentRound) currentRound = rounds[currentRoundIndex];
-			if (isPreviousRoundAtlas) game.currentRoundIndex -= 1;
-			if (isNextRoundAtlas) game.currentRoundIndex += 1;
+			if (isNextRound) game.currentRoundIndex += 1;
+			if (isPreviousRound) game.currentRoundIndex -= 1;
 
 			// Decoy rounds are used to throw the player off the trail
+			const isDecoyRound = !isCurrentRound && !isPreviousRound && !isNextRound;
+
 			// There should always be a way to return to the round where the suspect trail was lost
 			const anchorDestination = rounds[currentRoundIndex].atlas;
 			if (isDecoyRound) {
@@ -121,16 +123,14 @@
 
 		// Set game state from localStorage
 		game = $gameStore;
-
-		// Set current round
-		currentRound = game.roundDecoy ? game.roundDecoy : game.rounds[game.currentRoundIndex];
+		if (game.currentTime) clock.currentTime = new Date(game.currentTime);
 
 		// Start game loop
 		clock.start();
 
 		// Game loop
 		setInterval(() => {
-			currentTime = clock.getCurrentTime();
+			currentTimeFormatted = clock.getFormattedTime();
 			isWalking = clock.isWalking;
 			isFlying = clock.isFlying;
 			isSleeping = clock.isSleeping;
@@ -145,7 +145,7 @@
 	let currentClueIndex: number | null = null;
 
 	let clock = new Clock();
-	let currentTime: string;
+	let currentTimeFormatted: string;
 
 	let isLoading: boolean = true;
 	let isWalking: boolean;
@@ -194,11 +194,32 @@
 					? 'Walking...'
 					: currentRound.atlas.city}
 			</H1>
-			<Time {isClockTicking} {currentTime} />
+			<Time {isClockTicking} currentTime={currentTimeFormatted} />
 		</Header>
 
 		<Section>
-			{#if showDescription}
+			{#if isGameWon}
+				<P><strong>Congratulations!</strong> You caught up with the suspect</P>
+				<P>
+					Thanks to your help, the <strong>{game.rounds[0].atlas.city}</strong> police have
+					apprehended <strong>{game.suspect.name}</strong>.
+					<br />
+					<br />
+					<strong>{game.suspect.name}</strong> had the loot, <strong>{game.stolenTreasure}</strong>,
+					which will be returned to the grateful residents of
+					<strong>{game.rounds[0].atlas.city}</strong>.
+					<br />
+					<br />
+					We here at Interpol thank you for your good work on this case. Your success will be noted on
+					your record.
+					<br />
+					<br />
+					{$playerStore ? getCasesUntilPromotion($playerStore.score + 1) : ''}
+					<br />
+					<br />
+					Ready for the next case, {$playerStore?.name}?
+				</P>
+			{:else if showDescription && !isClockTicking}
 				<P>
 					{getRandomValue(currentRound.atlas.descriptions)}
 				</P>

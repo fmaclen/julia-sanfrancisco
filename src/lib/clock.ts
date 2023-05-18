@@ -36,7 +36,7 @@ export default class Clock {
 		this.timerId = setInterval(() => this.advanceTime(oneMinuteInSeconds), 1500);
 	};
 
-	public getCurrentTime = (): string => {
+	public getFormattedTime = (): string => {
 		return format(this.currentTime, 'EEEE h:mm aaa');
 	};
 

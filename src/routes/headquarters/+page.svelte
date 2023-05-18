@@ -42,7 +42,7 @@
 		<Section>
 			<P>
 				You have been identified as <strong>{$playerStore.name}</strong>.<br />
-				Your current rank is <strong>{rank}</strong>
+				Your current rank is <strong>{rank}</strong>.
 			</P>
 
 			{#if $gameStore}
@@ -62,6 +62,12 @@
 					Track the thief from <strong>{$gameStore.rounds[0].atlas.city}</strong> to {$gameStore
 						.suspect.pronouns.possessive} hideout and arrest {$gameStore.suspect.pronouns.object}.
 					<br />
+					<br />
+					You must aprehend the thief by <strong>Sunday 5pm</strong>.
+					<br />
+					<br />
+					Good luck, {rank.toLowerCase()}
+					<strong>{$playerStore.name}</strong>.
 				</P>
 			{/if}
 		</Section>
