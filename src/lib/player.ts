@@ -24,14 +24,14 @@ export function getRank(score: number | undefined) {
 	else return Rank.SUPER_SLEUTH;
 }
 
-const playersLocalStorage: string | null = browser ? window.localStorage.getItem('player') : null;
+const playerLocalStorage: string | null = browser ? window.localStorage.getItem('player') : null;
 
 let player: Player | null = null;
 export const playerStore = writable<Player | null>(null);
 
 // Read existing player from localStorage
-if (playersLocalStorage) {
-	player = JSON.parse(playersLocalStorage) as Player;
+if (playerLocalStorage) {
+	player = JSON.parse(playerLocalStorage) as Player;
 	playerStore.set(player);
 }
 
@@ -41,3 +41,16 @@ playerStore.subscribe((value) => {
 		window.localStorage.setItem('player', JSON.stringify(value));
 	}
 });
+
+export function getCasesUntilPromotion(score: number): string {
+	let cases: number;
+
+	if (score < 3) cases = 4 - score;
+	else if (score < 6) cases = 7 - score;
+	else if (score < 9) cases = 10 - score;
+	else if (score < 13) cases = 14 - score;
+	else return '';
+
+	const caseWord = cases > 1 ? 'cases' : 'case';
+	return `${cases} more ${caseWord} until your next promotion.`;
+}
