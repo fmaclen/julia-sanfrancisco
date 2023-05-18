@@ -11,7 +11,9 @@
 	import { gameStore, generateGame } from '$lib/game';
 	import { getRank } from '$lib/player';
 	import { playerStore } from '$lib/player';
+	import { onMount } from 'svelte';
 
+	let isLoading: boolean = true;
 	let playerName: string;
 	let rank = getRank($playerStore?.score);
 
@@ -22,6 +24,8 @@
 	function setGame() {
 		gameStore.set(generateGame());
 	}
+
+	onMount(() => (isLoading = false));
 </script>
 
 <Main>
@@ -30,7 +34,11 @@
 		<Time />
 	</Header>
 
-	{#if $playerStore}
+	{#if isLoading}
+		<Section>
+			<P>Loading...</P>
+		</Section>
+	{:else if $playerStore}
 		<Section>
 			<P>
 				You have been identified as <strong>{$playerStore.name}</strong>.<br />

@@ -10,21 +10,21 @@
 	import P from '$lib/components/P.svelte';
 	import Section from '$lib/components/Section.svelte';
 	import Time from '$lib/components/Time.svelte';
-	import { gameStore } from '$lib/game';
+	import { gameStore, type Game } from '$lib/game';
 	import { getArtworkPath, getRandomValue, redirectTo } from '$lib/helpers';
 	import { playerStore, type Player } from '$lib/player';
 	import { getDecoyRound, type Round } from '$lib/rounds';
 	import { onMount } from 'svelte';
-
-	// If there is no user profile, redirect to the player page
-	if ($playerStore === null || $gameStore === null) redirectTo('/headquarters/');
 
 	function resetRound(): void {
 		showDescription = true;
 		showPlaces = false;
 		showDestinations = false;
 		currentClueIndex = null;
-		if (currentRound) artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
+		artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
+
+		// Save the game state to localStorage
+		gameStore.set(game);
 	}
 
 	function flyTo(): void {
@@ -53,7 +53,7 @@
 	function dismissClue(): void {
 		transitionTo(() => {
 			resetRound();
-			isArtworkHidden = false;
+			isArtworkHidden = false; // NOTE: maybe this should be moved to the setTimeout inisde transitionTo()
 		});
 	}
 
@@ -63,7 +63,7 @@
 		clock.isFlying = true;
 
 		transitionTo(() => {
-			if (!currentRoundIndex) return Error('No current round index');
+			const { rounds, currentRoundIndex } = game;
 
 			const isPreviousRoundAtlas =
 				currentRoundIndex !== 0 && rounds[currentRoundIndex - 1].atlas === destination;
@@ -72,18 +72,24 @@
 			const isDecoyRound = !isCurrentRound && !isPreviousRoundAtlas && !isNextRoundAtlas;
 
 			if (isCurrentRound) currentRound = rounds[currentRoundIndex];
-			if (isPreviousRoundAtlas) currentRoundIndex -= 1;
-			if (isNextRoundAtlas) currentRoundIndex += 1;
+			if (isPreviousRoundAtlas) game.currentRoundIndex -= 1;
+			if (isNextRoundAtlas) game.currentRoundIndex += 1;
 
-			// There should always be a way to return to the
+			// Decoy rounds are used to throw the player off the trail
+			// There should always be a way to return to the round where the suspect trail was lost
 			const anchorDestination = rounds[currentRoundIndex].atlas;
 			if (isDecoyRound) {
 				currentRound = getDecoyRound(destination, anchorDestination);
+				game.roundDecoy = currentRound;
+			} else {
+				game.roundDecoy = null;
 			}
+
+			// Must reset round after transition
+			resetRound();
 		});
 
 		await clock.fastForward(4);
-		resetRound();
 	}
 
 	function transitionTo(callback: Function) {
@@ -104,14 +110,25 @@
 	}
 
 	onMount(() => {
-		// Load game state from store
-		if ($gameStore) {
-			rounds = $gameStore.rounds;
-			currentRoundIndex = $gameStore.currentRoundIndex;
+		// Load game state from localStorage
+
+		// Can't start the game without $playerStore and $gameStore
+		// Redirect back to HQ to generate them
+		if ($playerStore === null || $gameStore === null) {
+			redirectTo('/headquarters/');
+			return new Error('No player or game store');
 		}
 
+		// Set game state from localStorage
+		game = $gameStore;
+
+		// Set current round
+		currentRound = game.roundDecoy ? game.roundDecoy : game.rounds[game.currentRoundIndex];
+
+		// Start game loop
 		clock.start();
 
+		// Game loop
 		setInterval(() => {
 			currentTime = clock.getCurrentTime();
 			isWalking = clock.isWalking;
@@ -119,35 +136,46 @@
 			isSleeping = clock.isSleeping;
 			isTimeUp = clock.isTimeUp;
 		}, clock.tickRate);
+
+		isLoading = false;
 	});
 
-	let rounds: Round[] = [];
-	let currentRoundIndex: number | null = null;
+	let game: Game;
+	let currentRound: Round;
 	let currentClueIndex: number | null = null;
 
 	let clock = new Clock();
 	let currentTime: string;
 
+	let isLoading: boolean = true;
 	let isWalking: boolean;
 	let isFlying: boolean;
 	let isSleeping: boolean;
 	let isTimeUp: boolean;
+	let isGameWon: boolean;
+	let artworkPath: string;
 
 	let showPlaces = false;
 	let showDestinations = false;
 	let showDescription = true;
 
-	$: currentRound = currentRoundIndex === null ? null : rounds[currentRoundIndex];
-	$: artworkPath = currentRound ? getArtworkPath(currentRound.atlas.city, 'atlas') : '';
+	$: if (game) {
+		currentRound = game.roundDecoy ? game.roundDecoy : game.rounds[game.currentRoundIndex];
+		isGameWon = isTimeUp && game.currentRoundIndex === game.rounds.length - 1;
+		artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
+	}
 
 	$: isClockTicking = isSleeping || isWalking || isFlying;
 	$: isArtworkHidden = isClockTicking && !isSleeping;
 	$: isClueVisible = currentClueIndex !== null && !isWalking && !isSleeping;
-	$: isGameWon = !isTimeUp && currentRoundIndex === rounds.length - 1;
 </script>
 
-{#if currentRound}
-	<Main>
+<Main>
+	{#if isLoading}
+		<Section>
+			<P>Loading...</P>
+		</Section>
+	{:else if currentRound}
 		<div
 			class="artwork {isArtworkHidden ? 'artwork--hidden' : ''} {isSleeping
 				? 'artwork--disabled'
@@ -211,12 +239,11 @@
 			{:else if !isClockTicking}
 				<Button active={isWalking} on:click={walkTo}>Walk to</Button>
 				<Button active={isFlying} on:click={flyTo}>Fly to</Button>
-				<Button disabled={true}>Get warrant</Button>
 				<ButtonLink href="/">Quit</ButtonLink>
 			{/if}
 		</Nav>
-	</Main>
-{/if}
+	{/if}
+</Main>
 
 <style lang="scss">
 	div.artwork {

@@ -5,7 +5,7 @@ import type { Suspect } from './suspects';
 export interface Round {
 	atlas: Atlas;
 	scenes: Scene[];
-	destinations: Set<Atlas>;
+	destinations: Atlas[]; // Would have used a Set<Atlas>, but we can't save that object type to localStorage
 }
 
 // Generates the atlas, scenes, destinatinos, etc... for each round in the game
@@ -47,7 +47,7 @@ export function getRounds(
 		rounds.push({
 			atlas: roundAtlas,
 			scenes: getScenes({ nextRoundAtlas, isRoundFinal, suspect }),
-			destinations
+			destinations: Array.from(destinations)
 		});
 	}
 
@@ -67,6 +67,6 @@ export function getDecoyRound(atlas: Atlas, anchorDestination: Atlas): Round {
 	return {
 		atlas,
 		scenes: getScenes({ isRoundDecoy: true }),
-		destinations
+		destinations: Array.from(destinations)
 	};
 }

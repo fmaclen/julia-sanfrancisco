@@ -5,11 +5,13 @@ import { getRounds, type Round } from './rounds';
 import { SUSPECTS, type Suspect } from './suspects';
 import { writable } from 'svelte/store';
 
-interface Game {
+export interface Game {
+	currentRoundIndex: number;
+	currentTime: Date | null;
+	roundDecoy: Round | null;
+	rounds: Round[];
 	stolenTreasure: string;
 	suspect: Suspect;
-	rounds: Round[];
-	currentRoundIndex: number;
 }
 
 const atlasesInRound = [...ATLASES];
@@ -18,10 +20,12 @@ const suspect = getRandomValue(SUSPECTS);
 
 export function generateGame(): Game {
 	return {
-		stolenTreasure: getRandomValue(startingDestination.objects),
-		suspect,
+		currentRoundIndex: 0,
+		currentTime: null,
+		roundDecoy: null,
 		rounds: getRounds(startingDestination, atlasesInRound, suspect),
-		currentRoundIndex: 0
+		stolenTreasure: getRandomValue(startingDestination.objects),
+		suspect
 	};
 }
 
