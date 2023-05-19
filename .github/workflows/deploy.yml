@@ -7,6 +7,9 @@ on:
 
 jobs:
   build_and_deploy:
+    permissions:
+      contents: write
+
     runs-on: ubuntu-latest
 
     steps:
@@ -24,7 +27,6 @@ jobs:
       - name: Semantic Release
         run: npx semantic-release --branches main
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build
