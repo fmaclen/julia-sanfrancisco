@@ -1,4 +1,5 @@
-<script>
+<script lang="ts">
+	import { PUBLIC_VERSION } from '$env/static/public';
 	import ButtonLink from '$lib/components/ButtonLink.svelte';
 	import H1 from '$lib/components/H1.svelte';
 	import Header from '$lib/components/Header.svelte';
@@ -23,4 +24,21 @@
 	<Nav>
 		<ButtonLink href="/headquarters/">New game</ButtonLink>
 	</Nav>
+
+	<a class="version" href="https://github.com/fmaclen/julia-sanfrancisco/">
+		<code>{PUBLIC_VERSION}</code>
+	</a>
 </Main>
+
+<style lang="scss">
+	a.version {
+		padding: var(--spacing-s);
+		text-align: center;
+		color: var(--color-neutral-400);
+		text-decoration: none;
+
+		&:hover {
+			color: var(--color-neutral-200);
+		}
+	}
+</style>

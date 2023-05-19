@@ -2,9 +2,11 @@
 
 Chase Julia and her accomplices across different countries, unraveling clues, solving puzzles, and expanding your geography knowledge in this exciting detective game.
 
-## Try it out!
-http://julia-sanfrancisco.s3-website-us-east-1.amazonaws.com/
+> **Try it out!** > https://julia.strictoaster.com
 
+![Current artwork style](https://github.com/fmaclen/julia-sanfrancisco/assets/1434675/a8e7df0a-6603-4e10-9be7-1d52f1e13d08)
+
+> **Devlog on Discord** > https://discord.com/channels/532702198040100874/1108858794831790080
 
 ## Development
 
