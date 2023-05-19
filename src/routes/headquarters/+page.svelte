@@ -1,4 +1,5 @@
 <script lang="ts">
+	import LL from '$i18n/i18n-svelte';
 	import Button from '$lib/components/Button.svelte';
 	import ButtonLink from '$lib/components/ButtonLink.svelte';
 	import H1 from '$lib/components/H1.svelte';
@@ -11,6 +12,7 @@
 	import { gameStore, generateGame } from '$lib/game';
 	import { getRank } from '$lib/player';
 	import { playerStore } from '$lib/player';
+	import { SUSPECTS } from '../../lib/suspects';
 	import { onMount } from 'svelte';
 
 	let isLoading: boolean = true;
@@ -30,58 +32,62 @@
 
 <Main>
 	<Header>
-		<H1>Headquarters</H1>
+		<H1>{$LL.headquarters.title()}</H1>
 		<Time />
 	</Header>
 
 	{#if isLoading}
 		<Section>
-			<P>Loading...</P>
+			<P>{$LL.components.loading()}...</P>
 		</Section>
 	{:else if $playerStore}
 		<Section>
 			{#if $gameStore}
 				<P>
-					<strong>Newsflash</strong>
-					<br />
-					National treasure stolen from <strong>{$gameStore.rounds[0].atlas.city}</strong>.
-					<br /><br />
-					The treasure has been identified as <strong>{$gameStore.stolenTreasure}</strong>.
-					<br /><br />
-					<strong>{$gameStore.suspect.sex}</strong> has been reported at the scene of the crime.
-					<br />
+					<strong>{$LL.headquarters.newsflash.title()}</strong>
+					<p>
+						{$LL.headquarters.newsflash.content.line1({ city: $gameStore.rounds[0].atlas.city })}
+					</p>
+					<p>{$LL.headquarters.newsflash.content.line2({ treasure: $gameStore.stolenTreasure })}</p>
+					<p>{$LL.headquarters.newsflash.content.line3({ sex: $gameStore.suspect.sex })}</p>
 				</P>
 				<P>
-					<strong>Your assignment</strong>
-					<br />
-					Track the thief from <strong>{$gameStore.rounds[0].atlas.city}</strong> to {$gameStore
-						.suspect.pronouns.possessive} hideout and arrest {$gameStore.suspect.pronouns.object}.
-					<br />
-					<br />
-					You must aprehend the thief by <strong>Sunday 5pm</strong>.
-					<br />
-					<br />
-					Good luck, {rank.toLowerCase()}
-					<strong>{$playerStore.name}</strong>.
+					<strong>{$LL.headquarters.assignment.title()}</strong>
+					<p>
+						{$LL.headquarters.assignment.content.line1({
+							city: $gameStore.rounds[0].atlas.city,
+							pronounPossessive: $gameStore.suspect.pronouns.possessive,
+							pronounObject: $gameStore.suspect.pronouns.object
+						})}
+					</p>
+					<p>
+						{$LL.headquarters.assignment.content.line2()}
+					</p>
+					<p>
+						{$LL.headquarters.assignment.content.line3({
+							rank: rank.toLowerCase(),
+							name: $playerStore.name
+						})}
+					</p>
 				</P>
 			{:else}
 				<P>
-					You have been identified as <strong>{$playerStore.name}</strong>.<br />
-					Your current rank is <strong>{rank}</strong>.
+					<p>{$LL.headquarters.id.indentified({ name: $playerStore.name })}</p>
+					<p>{$LL.headquarters.id.rank({ rank })}</p>
 				</P>
 			{/if}
 		</Section>
 
 		<Nav>
 			{#if !$gameStore}
-				<Button on:click={setGame}>Continue</Button>
+				<Button on:click={setGame}>{$LL.components.buttons.continue()}</Button>
 			{:else}
-				<ButtonLink href="/game/">Continue</ButtonLink>
+				<ButtonLink href="/game/">{$LL.components.buttons.continue()}</ButtonLink>
 			{/if}
 		</Nav>
 	{:else}
 		<Section>
-			<P>Detective at keyboard, please identify yourself</P>
+			<P>{$LL.headquarters.id.pending()}</P>
 			<input
 				class="input"
 				type="text"
@@ -91,7 +97,9 @@
 			/>
 		</Section>
 		<Nav>
-			<Button on:click={setPlayer} disabled={!playerName}>Continue</Button>
+			<Button on:click={setPlayer} disabled={!playerName}
+				>{$LL.components.buttons.continue()}</Button
+			>
 		</Nav>
 	{/if}
 </Main>
