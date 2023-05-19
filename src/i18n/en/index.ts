@@ -1,8 +1,19 @@
 import type { BaseTranslation } from '../i18n-types';
 
 const en = {
-	// TODO: your translations go here
-	HI: 'Hi {name:string}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n'
+	home: {
+		title: 'Julia Sanfrancisco',
+		introduction:
+			'Chase Julia and her accomplices across different countries, unraveling clues, solving puzzles, and expanding your geography knowledge in this exciting detective game.',
+		newGame: 'New game'
+	},
+	components: {
+		loading: 'Loading',
+		buttons: {
+			continue: 'Continue',
+			quit: 'Quit'
+		}
+	}
 } satisfies BaseTranslation;
 
 export default en;

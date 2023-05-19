@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { PUBLIC_VERSION } from '$env/static/public';
+	import LL, { setLocale, locale } from '$i18n/i18n-svelte';
+	import Button from '$lib/components/Button.svelte';
 	import ButtonLink from '$lib/components/ButtonLink.svelte';
 	import H1 from '$lib/components/H1.svelte';
 	import Header from '$lib/components/Header.svelte';
@@ -11,18 +13,21 @@
 
 <Main>
 	<Header>
-		<H1>Julia Sanfrancisco</H1>
+		<H1>{$LL.home.title()}</H1>
 	</Header>
 
 	<Section>
 		<P>
-			Chase Julia and her accomplices across different countries, unraveling clues, solving puzzles,
-			and expanding your geography knowledge in this exciting detective game.
+			{$LL.home.introduction()}
 		</P>
 	</Section>
 
 	<Nav>
-		<ButtonLink href="/headquarters/">New game</ButtonLink>
+		<Nav>
+			<Button disabled={$locale === 'en'} on:click={() => setLocale('en')}>EN</Button>
+			<Button disabled={$locale === 'es'} on:click={() => setLocale('es')}>ES</Button>
+		</Nav>
+		<ButtonLink href="/headquarters/">{$LL.home.newGame()}</ButtonLink>
 	</Nav>
 
 	<a class="version" href="https://github.com/fmaclen/julia-sanfrancisco/">

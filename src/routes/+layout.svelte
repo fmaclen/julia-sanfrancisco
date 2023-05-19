@@ -1,5 +1,18 @@
-<script>
+<script lang="ts">
 	import { browser } from '$app/environment';
+	import { setLocale } from '$i18n/i18n-svelte';
+	import { loadLocale } from '$i18n/i18n-util.sync';
+	import { onMount } from 'svelte';
+	import { detectLocale, navigatorDetector } from 'typesafe-i18n/detectors';
+
+	// Load all available locales
+	loadLocale('en');
+	loadLocale('es');
+
+	onMount(() => {
+		const detectedLocale = detectLocale('es', ['en', 'es'], navigatorDetector);
+		setLocale(detectedLocale);
+	});
 </script>
 
 <svelte:head>
