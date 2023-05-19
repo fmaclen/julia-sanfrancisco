@@ -36,8 +36,8 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/fmaclen/julia-sanfrancisco"
+		"url": "https://github.com/fmaclen/julia-sanfrancisco/"
 	},
-	"homepage": "https://julia.strictoaster.com",
+	"homepage": "https://julia.strictoaster.com/",
 	"type": "module"
 }
