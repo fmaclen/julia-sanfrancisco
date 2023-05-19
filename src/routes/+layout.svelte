@@ -2,6 +2,7 @@
 	import { browser } from '$app/environment';
 	import { setLocale } from '$i18n/i18n-svelte';
 	import { loadLocale } from '$i18n/i18n-util.sync';
+	import { type Language, playerStore } from '../lib/player';
 	import { onMount } from 'svelte';
 	import { detectLocale, navigatorDetector } from 'typesafe-i18n/detectors';
 
@@ -10,8 +11,9 @@
 	loadLocale('es');
 
 	onMount(() => {
-		const detectedLocale = detectLocale('es', ['en', 'es'], navigatorDetector);
-		setLocale(detectedLocale);
+		const locale: Language =
+			$playerStore?.language ?? detectLocale('en', ['en', 'es'], navigatorDetector);
+		setLocale(locale);
 	});
 </script>
 

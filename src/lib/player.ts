@@ -4,7 +4,10 @@ import { writable } from 'svelte/store';
 export interface Player {
 	name: string;
 	score: number;
+	language: Language;
 }
+
+export type Language = 'en' | 'es';
 
 export enum Rank {
 	ROOKIE = 'Rookie', // 0 cases

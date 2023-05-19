@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LL from '$i18n/i18n-svelte';
+	import LL, { locale } from '$i18n/i18n-svelte';
 	import Button from '$lib/components/Button.svelte';
 	import ButtonLink from '$lib/components/ButtonLink.svelte';
 	import H1 from '$lib/components/H1.svelte';
@@ -12,7 +12,6 @@
 	import { gameStore, generateGame } from '$lib/game';
 	import { getRank } from '$lib/player';
 	import { playerStore } from '$lib/player';
-	import { SUSPECTS } from '../../lib/suspects';
 	import { onMount } from 'svelte';
 
 	let isLoading: boolean = true;
@@ -20,7 +19,7 @@
 	let rank = getRank($playerStore?.score);
 
 	function setPlayer() {
-		playerStore.set({ name: playerName, score: 0 });
+		playerStore.set({ name: playerName, score: 0, language: $locale });
 	}
 
 	function setGame() {
