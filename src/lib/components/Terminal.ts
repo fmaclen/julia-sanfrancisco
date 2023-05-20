@@ -1,4 +1,4 @@
 export interface TerminalLine {
-	text: string;
+	text?: string;
 	type?: 'title' | 'line-break';
 }

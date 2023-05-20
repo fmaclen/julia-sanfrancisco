@@ -39,7 +39,7 @@
         {line.type ? `terminal__line--${line.type}` : ''}"
 		>
 			<!-- <span transition:typewriter>{line.text}</span> -->
-			{line.text}
+			{line.text ?? ''}
 		</li>
 	{/each}
 </ul>
@@ -49,7 +49,7 @@
 		list-style: none;
 		width: 100%;
 		padding-left: 0;
-		padding-block: 8px;
+		padding-block: 4px;
 		background-color: var(--color-neutral-900);
 		border-radius: var(--border-radius-m);
 	}
@@ -69,8 +69,7 @@
 		&--line-break {
 			height: 1px;
 			border-top: 1px dashed var(--color-neutral-500);
-			margin-top: 8px;
-			padding-bottom: 8px;
+			margin-top: 16px;
 		}
 	}
 </style>
