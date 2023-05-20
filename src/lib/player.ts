@@ -10,12 +10,12 @@ export interface Player {
 export type Language = 'en' | 'es';
 
 export enum Rank {
-	ROOKIE = 'Rookie', // 0 cases
-	SLEUTH = 'Sleuth', // 1-3 cases
-	PRIVATE_EYE = 'Private eye', // 4-6 cases
-	INVESTIGATOR = 'Investigator', // 7-9 cases
-	ACE_DETECTIVE = 'Ace detective', // 10-13 cases
-	SUPER_SLEUTH = 'Super sleuth' // 14+ cases
+	ROOKIE, // 0 cases
+	SLEUTH, // 1-3 cases
+	PRIVATE_EYE, // 4-6 cases
+	INVESTIGATOR, // 7-9 cases
+	ACE_DETECTIVE, // 10-13 cases
+	SUPER_SLEUTH // 14+ cases
 }
 
 export function getRank(score: number | undefined) {

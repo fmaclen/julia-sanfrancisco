@@ -18,7 +18,6 @@
 
 	let isLoading: boolean = true;
 	let playerName: string;
-	let rank = getRank($playerStore?.score);
 
 	function setPlayer() {
 		playerStore.set({ name: playerName, score: 0, language: $locale });
@@ -31,50 +30,68 @@
 	let terminalLines: TerminalLine[] = [];
 
 	$: {
-		if ($playerStore && $gameStore) {
-			const newsFlash: TerminalLine[] = [
-				{
-					text: `*** ${$LL.headquarters.newsflash.title()} ***`,
-					type: 'title'
-				},
-				{
-					text: $LL.headquarters.newsflash.content.line1({ city: $gameStore.rounds[0].atlas.city })
-				},
-				{
-					text: $LL.headquarters.newsflash.content.line2({ treasure: $gameStore.stolenTreasure })
-				},
-				{
-					text: $LL.headquarters.newsflash.content.line3({ sex: $gameStore.suspect.sex })
-				}
-			];
+		if ($playerStore) {
+			const playerRankIndex = getRank($playerStore.score);
+			let playerRank = $LL.player.ranks[playerRankIndex]();
 
-			const assignment: TerminalLine[] = [
-				{
-					text: '',
-					type: 'line-break'
-				},
-				{
-					text: $LL.headquarters.assignment.title(),
-					type: 'title'
-				},
-				{
-					text: $LL.headquarters.assignment.content.line1({
-						city: $gameStore.rounds[0].atlas.city,
-						sex: $gameStore.suspect.sex.toLowerCase()
-					})
-				},
-				{
-					text: $LL.headquarters.assignment.content.line2()
-				},
-				{
-					text: $LL.headquarters.assignment.content.line3({
-						rank: rank.toLowerCase(),
-						name: $playerStore.name
-					})
-				}
-			];
+			if ($gameStore) {
+				const newsFlash: TerminalLine[] = [
+					{
+						text: `*** ${$LL.headquarters.newsflash.title()} ***`,
+						type: 'title'
+					},
+					{
+						text: $LL.headquarters.newsflash.content.line1({
+							city: $gameStore.rounds[0].atlas.city
+						})
+					},
+					{
+						text: $LL.headquarters.newsflash.content.line2({ treasure: $gameStore.stolenTreasure })
+					},
+					{
+						text: $LL.headquarters.newsflash.content.line3({ sex: $gameStore.suspect.sex })
+					}
+				];
 
-			terminalLines = [...newsFlash, ...assignment];
+				const assignment: TerminalLine[] = [
+					{
+						text: '',
+						type: 'line-break'
+					},
+					{
+						text: $LL.headquarters.assignment.title(),
+						type: 'title'
+					},
+					{
+						text: $LL.headquarters.assignment.content.line1({
+							city: $gameStore.rounds[0].atlas.city,
+							sex: $gameStore.suspect.sex.toLowerCase()
+						})
+					},
+					{
+						text: $LL.headquarters.assignment.content.line2()
+					},
+					{
+						text: $LL.headquarters.assignment.content.line3({
+							rank: playerRank,
+							name: $playerStore.name
+						})
+					}
+				];
+
+				terminalLines = [...newsFlash, ...assignment];
+			}
+
+			if (!$gameStore) {
+				terminalLines = [
+					{
+						text: $LL.headquarters.id.indentified({ name: $playerStore.name })
+					},
+					{
+						text: $LL.headquarters.id.rank({ rank: playerRank.toLowerCase() })
+					}
+				];
+			}
 		}
 	}
 
@@ -91,16 +108,9 @@
 		<Section>
 			<P>{$LL.components.loading()}...</P>
 		</Section>
-	{:else if $playerStore}
+	{:else if terminalLines.length > 0}
 		<Section>
-			{#if $gameStore}
-				<Terminal lines={terminalLines} />
-			{:else}
-				<P>
-					<p>{$LL.headquarters.id.indentified({ name: $playerStore.name })}</p>
-					<p>{$LL.headquarters.id.rank({ rank })}</p>
-				</P>
-			{/if}
+			<Terminal lines={terminalLines} />
 		</Section>
 
 		<Nav>

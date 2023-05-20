@@ -165,6 +165,34 @@ type RootTranslation = {
 			ready: RequiredParams<'name' | 'rank'>
 		}
 	}
+	player: {
+		ranks: {
+			/**
+			 * R​o​o​k​i​e
+			 */
+			'0': string
+			/**
+			 * S​l​e​u​t​h
+			 */
+			'1': string
+			/**
+			 * P​r​i​v​a​t​e​ ​e​y​e
+			 */
+			'2': string
+			/**
+			 * I​n​v​e​s​t​i​g​a​t​o​r
+			 */
+			'3': string
+			/**
+			 * A​c​e​ ​d​e​t​e​c​t​i​v​e
+			 */
+			'4': string
+			/**
+			 * S​u​p​e​r​ ​s​l​e​u​t​h
+			 */
+			'5': string
+		}
+	}
 	components: {
 		/**
 		 * L​o​a​d​i​n​g
@@ -316,6 +344,34 @@ export type TranslationFunctions = {
 			 * Ready for your next case, {rank} {name}?
 			 */
 			ready: (arg: { name: string, rank: string }) => LocalizedString
+		}
+	}
+	player: {
+		ranks: {
+			/**
+			 * Rookie
+			 */
+			'0': () => LocalizedString
+			/**
+			 * Sleuth
+			 */
+			'1': () => LocalizedString
+			/**
+			 * Private eye
+			 */
+			'2': () => LocalizedString
+			/**
+			 * Investigator
+			 */
+			'3': () => LocalizedString
+			/**
+			 * Ace detective
+			 */
+			'4': () => LocalizedString
+			/**
+			 * Super sleuth
+			 */
+			'5': () => LocalizedString
 		}
 	}
 	components: {

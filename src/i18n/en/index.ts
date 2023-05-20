@@ -58,6 +58,17 @@ const en = {
 			ready: 'Ready for your next case, {rank:string} {name:string}?'
 		}
 	},
+	player: {
+		// ranks: ['Rookie', 'Sleuth', 'Private eye', 'Investigator', 'Ace detective', 'Super sleuth']
+		ranks: {
+			0: 'Rookie',
+			1: 'Sleuth',
+			2: 'Private eye',
+			3: 'Investigator',
+			4: 'Ace detective',
+			5: 'Super sleuth'
+		}
+	},
 	components: {
 		loading: 'Loading',
 		buttons: {
