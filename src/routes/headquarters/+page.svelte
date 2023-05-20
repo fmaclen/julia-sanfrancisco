@@ -12,6 +12,8 @@
 	import { gameStore, generateGame } from '$lib/game';
 	import { getRank } from '$lib/player';
 	import { playerStore } from '$lib/player';
+	import type { TerminalLine } from '../../lib/components/Terminal';
+	import Terminal from '../../lib/components/Terminal.svelte';
 	import { onMount } from 'svelte';
 
 	let isLoading: boolean = true;
@@ -24,6 +26,56 @@
 
 	function setGame() {
 		gameStore.set(generateGame());
+	}
+
+	let terminalLines: TerminalLine[] = [];
+
+	$: {
+		if ($playerStore && $gameStore) {
+			const newsFlash: TerminalLine[] = [
+				{
+					text: `*** ${$LL.headquarters.newsflash.title()} ***`,
+					type: 'title'
+				},
+				{
+					text: $LL.headquarters.newsflash.content.line1({ city: $gameStore.rounds[0].atlas.city })
+				},
+				{
+					text: $LL.headquarters.newsflash.content.line2({ treasure: $gameStore.stolenTreasure })
+				},
+				{
+					text: $LL.headquarters.newsflash.content.line3({ sex: $gameStore.suspect.sex })
+				}
+			];
+
+			const assignment: TerminalLine[] = [
+				{
+					text: '',
+					type: 'line-break'
+				},
+				{
+					text: $LL.headquarters.assignment.title(),
+					type: 'title'
+				},
+				{
+					text: $LL.headquarters.assignment.content.line1({
+						city: $gameStore.rounds[0].atlas.city,
+						sex: $gameStore.suspect.sex.toLowerCase()
+					})
+				},
+				{
+					text: $LL.headquarters.assignment.content.line2()
+				},
+				{
+					text: $LL.headquarters.assignment.content.line3({
+						rank: rank.toLowerCase(),
+						name: $playerStore.name
+					})
+				}
+			];
+
+			terminalLines = [...newsFlash, ...assignment];
+		}
 	}
 
 	onMount(() => (isLoading = false));
@@ -42,33 +94,7 @@
 	{:else if $playerStore}
 		<Section>
 			{#if $gameStore}
-				<P>
-					<strong>{$LL.headquarters.newsflash.title()}</strong>
-					<p>
-						{$LL.headquarters.newsflash.content.line1({ city: $gameStore.rounds[0].atlas.city })}
-					</p>
-					<p>{$LL.headquarters.newsflash.content.line2({ treasure: $gameStore.stolenTreasure })}</p>
-					<p>{$LL.headquarters.newsflash.content.line3({ sex: $gameStore.suspect.sex })}</p>
-				</P>
-				<P>
-					<strong>{$LL.headquarters.assignment.title()}</strong>
-					<p>
-						{$LL.headquarters.assignment.content.line1({
-							city: $gameStore.rounds[0].atlas.city,
-							pronounPossessive: $gameStore.suspect.pronouns.possessive,
-							pronounObject: $gameStore.suspect.pronouns.object
-						})}
-					</p>
-					<p>
-						{$LL.headquarters.assignment.content.line2()}
-					</p>
-					<p>
-						{$LL.headquarters.assignment.content.line3({
-							rank: rank.toLowerCase(),
-							name: $playerStore.name
-						})}
-					</p>
-				</P>
+				<Terminal lines={terminalLines} />
 			{:else}
 				<P>
 					<p>{$LL.headquarters.id.indentified({ name: $playerStore.name })}</p>

@@ -63,12 +63,11 @@ type RootTranslation = {
 			title: string
 			content: {
 				/**
-				 * T​r​a​c​k​ ​t​h​e​ ​t​h​i​e​f​ ​f​r​o​m​ ​{​c​i​t​y​}​ ​t​o​ ​{​p​r​o​n​o​u​n​P​o​s​s​e​s​s​i​v​e​}​ ​h​i​d​e​o​u​t​ ​a​n​d​ ​a​r​r​e​s​t​ ​{​p​r​o​n​o​u​n​O​b​j​e​c​t​}​.
+				 * T​r​a​c​k​ ​t​h​e​ ​t​h​i​e​f​ ​f​r​o​m​ ​{​c​i​t​y​}​ ​t​o​ ​{​s​e​x​|​{​m​a​l​e​:​ ​h​i​s​,​ ​f​e​m​a​l​e​:​ ​h​e​r​}​}​ ​h​i​d​e​o​u​t​ ​a​n​d​ ​a​r​r​e​s​t​ ​{​s​e​x​|​{​m​a​l​e​:​ ​h​i​m​,​ ​f​e​m​a​l​e​:​ ​h​e​r​}​}​.
 				 * @param {string} city
-				 * @param {string} pronounObject
-				 * @param {string} pronounPossessive
+				 * @param {string} sex
 				 */
-				line1: RequiredParams<'city' | 'pronounObject' | 'pronounPossessive'>
+				line1: RequiredParams<'city' | `sex|{male:${string}, female:${string}}` | `sex|{male:${string}, female:${string}}`>
 				/**
 				 * Y​o​u​ ​m​u​s​t​ ​a​p​p​r​e​h​e​n​d​ ​t​h​e​ ​t​h​i​e​f​ ​b​y​ ​S​u​n​d​a​y​ ​5​p​m​.
 				 */
@@ -96,6 +95,74 @@ type RootTranslation = {
 			 * @param {string} rank
 			 */
 			rank: RequiredParams<'rank'>
+		}
+	}
+	game: {
+		outcome: {
+			/**
+			 * M​e​s​s​a​g​e​ ​f​r​o​m​ ​I​n​t​e​r​p​o​l
+			 */
+			title: string
+			win: {
+				/**
+				 * C​o​n​g​r​a​t​u​l​a​t​i​o​n​s​!
+				 */
+				line1: string
+				/**
+				 * Y​o​u​ ​c​a​u​g​h​t​ ​u​p​ ​w​i​t​h​ ​t​h​e​ ​s​u​s​p​e​c​t​.
+				 */
+				line2: string
+				/**
+				 * T​h​a​n​k​s​ ​t​o​ ​y​o​u​r​ ​h​e​l​p​,​ ​t​h​e​ ​{​c​i​t​y​}​ ​p​o​l​i​c​e​ ​h​a​v​e​ ​a​p​p​r​e​h​e​n​d​e​d​ ​{​s​u​s​p​e​c​t​}​.
+				 * @param {string} city
+				 * @param {string} suspect
+				 */
+				line3: RequiredParams<'city' | 'suspect'>
+				/**
+				 * W​e​ ​t​h​a​n​k​ ​y​o​u​ ​f​o​r​ ​y​o​u​r​ ​g​o​o​d​ ​w​o​r​k​ ​o​n​ ​t​h​i​s​ ​c​a​s​e​.​ ​Y​o​u​r​ ​s​u​c​c​e​s​s​ ​w​i​l​l​ ​b​e​ ​n​o​t​e​d​ ​o​n​ ​y​o​u​r​ ​r​e​c​o​r​d​.
+				 */
+				line4: string
+				/**
+				 * {​c​a​s​e​s​}​ ​m​o​r​e​ ​c​a​s​e​{​{​s​}​}​ ​u​n​t​i​l​ ​y​o​u​r​ ​n​e​x​t​ ​p​r​o​m​o​t​i​o​n​.
+				 * @param {number} cases
+				 */
+				line5: RequiredParams<'cases'>
+			}
+			loose: {
+				timedOut: {
+					/**
+					 * B​a​d​ ​n​e​w​s​.​.​.
+					 */
+					line1: string
+					/**
+					 * L​o​o​k​s​ ​l​i​k​e​ ​{​s​u​s​p​e​c​t​}​ ​s​l​i​p​p​e​d​ ​t​h​r​o​u​g​h​ ​y​o​u​r​ ​f​i​n​g​e​r​s​ ​b​e​c​a​u​s​e​ ​y​o​u​r​ ​i​n​v​e​s​t​i​g​a​t​i​o​n​ ​t​o​o​k​ ​t​o​o​ ​l​o​n​g​!
+					 * @param {string} suspect
+					 */
+					line2: RequiredParams<'suspect'>
+				}
+				noWarrant: {
+					/**
+					 * Y​o​u​ ​c​a​u​g​h​t​ ​u​p​ ​w​i​t​h​ ​s​u​s​p​e​c​t​ ​{​s​u​s​p​e​c​t​}​!
+					 * @param {string} suspect
+					 */
+					line1: RequiredParams<'suspect'>
+					/**
+					 * H​o​w​e​v​e​r​,​ ​w​i​t​h​o​u​t​ ​a​ ​w​a​r​r​a​n​t​ ​t​h​e​ ​{​c​i​t​y​}​ ​p​o​l​i​c​e​ ​c​a​n​n​o​t​ ​m​a​k​e​ ​a​n​ ​a​r​r​e​s​t​.
+					 * @param {string} city
+					 */
+					line2: RequiredParams<'city'>
+					/**
+					 * I​t​ ​l​o​o​k​s​ ​l​i​k​e​ ​J​u​l​i​a​'​s​ ​g​a​n​g​ ​h​a​s​ ​g​o​t​t​e​n​ ​a​w​a​y​ ​w​i​t​h​ ​a​n​o​t​h​e​r​ ​c​a​p​e​r​.
+					 */
+					line3: string
+				}
+			}
+			/**
+			 * R​e​a​d​y​ ​f​o​r​ ​y​o​u​r​ ​n​e​x​t​ ​c​a​s​e​,​ ​{​r​a​n​k​}​ ​{​n​a​m​e​}​?
+			 * @param {string} name
+			 * @param {string} rank
+			 */
+			ready: RequiredParams<'name' | 'rank'>
 		}
 	}
 	components: {
@@ -163,9 +230,9 @@ export type TranslationFunctions = {
 			title: () => LocalizedString
 			content: {
 				/**
-				 * Track the thief from {city} to {pronounPossessive} hideout and arrest {pronounObject}.
+				 * Track the thief from {city} to {sex|{male: his, female: her}} hideout and arrest {sex|{male: him, female: her}}.
 				 */
-				line1: (arg: { city: string, pronounObject: string, pronounPossessive: string }) => LocalizedString
+				line1: (arg: { city: string, sex: string }) => LocalizedString
 				/**
 				 * You must apprehend the thief by Sunday 5pm.
 				 */
@@ -189,6 +256,66 @@ export type TranslationFunctions = {
 			 * Your current rank is {rank}.
 			 */
 			rank: (arg: { rank: string }) => LocalizedString
+		}
+	}
+	game: {
+		outcome: {
+			/**
+			 * Message from Interpol
+			 */
+			title: () => LocalizedString
+			win: {
+				/**
+				 * Congratulations!
+				 */
+				line1: () => LocalizedString
+				/**
+				 * You caught up with the suspect.
+				 */
+				line2: () => LocalizedString
+				/**
+				 * Thanks to your help, the {city} police have apprehended {suspect}.
+				 */
+				line3: (arg: { city: string, suspect: string }) => LocalizedString
+				/**
+				 * We thank you for your good work on this case. Your success will be noted on your record.
+				 */
+				line4: () => LocalizedString
+				/**
+				 * {cases} more case{{s}} until your next promotion.
+				 */
+				line5: (arg: { cases: number }) => LocalizedString
+			}
+			loose: {
+				timedOut: {
+					/**
+					 * Bad news...
+					 */
+					line1: () => LocalizedString
+					/**
+					 * Looks like {suspect} slipped through your fingers because your investigation took too long!
+					 */
+					line2: (arg: { suspect: string }) => LocalizedString
+				}
+				noWarrant: {
+					/**
+					 * You caught up with suspect {suspect}!
+					 */
+					line1: (arg: { suspect: string }) => LocalizedString
+					/**
+					 * However, without a warrant the {city} police cannot make an arrest.
+					 */
+					line2: (arg: { city: string }) => LocalizedString
+					/**
+					 * It looks like Julia's gang has gotten away with another caper.
+					 */
+					line3: () => LocalizedString
+				}
+			}
+			/**
+			 * Ready for your next case, {rank} {name}?
+			 */
+			ready: (arg: { name: string, rank: string }) => LocalizedString
 		}
 	}
 	components: {

@@ -45,15 +45,15 @@ playerStore.subscribe((value) => {
 	}
 });
 
-export function getCasesUntilPromotion(score: number): string {
+export function getCasesUntilPromotion(score: number): number {
 	let cases: number;
+	score += 1; // Add 1 to score to account for the current case
 
 	if (score < 3) cases = 4 - score;
 	else if (score < 6) cases = 7 - score;
 	else if (score < 9) cases = 10 - score;
 	else if (score < 13) cases = 14 - score;
-	else return '';
+	else return 0;
 
-	const caseWord = cases > 1 ? 'cases' : 'case';
-	return `${cases} more ${caseWord} until your next promotion.`;
+	return cases;
 }

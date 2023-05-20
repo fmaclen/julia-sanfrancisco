@@ -20,11 +20,11 @@ const es = {
 			}
 		},
 		assignment: {
-			title: 'Tu tarea',
+			title: 'Tu misión',
 			content: {
 				line1:
-					'Sigue al ladrón desde {city} hasta {pronounPossessive} escondite y arresta a {pronounObject}.',
-				line2: 'Debes capturar al ladrón antes de las 5 p.m. del domingo.',
+					'Sigue {sex|{male: al ladrón, female: a la ladrona}} desde {city} hasta su escondite y {sex|{male: arréstalo, female: arréstala}}.',
+				line2: 'Debes capturar al malechor antes de las 5 p.m. del domingo.',
 				line3: 'Buena suerte, {rank} {name}.'
 			}
 		},

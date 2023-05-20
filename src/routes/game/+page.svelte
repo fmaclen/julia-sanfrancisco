@@ -1,4 +1,5 @@
 <script lang="ts">
+	import LL from '$i18n/i18n-svelte';
 	import type { Atlas } from '$lib/atlases';
 	import Clock, { DELAY_IN_MS } from '$lib/clock';
 	import Button from '$lib/components/Button.svelte';
@@ -12,8 +13,10 @@
 	import Time from '$lib/components/Time.svelte';
 	import { gameStore, type Game } from '$lib/game';
 	import { getArtworkPath, getRandomValue, redirectTo } from '$lib/helpers';
-	import { playerStore, type Player, getCasesUntilPromotion } from '$lib/player';
+	import { playerStore, type Player, getCasesUntilPromotion, getRank } from '$lib/player';
 	import { getDecoyRound, type Round } from '$lib/rounds';
+	import type { TerminalLine } from '../../lib/components/Terminal';
+	import Terminal from '../../lib/components/Terminal.svelte';
 	import { onMount } from 'svelte';
 
 	function resetRound(): void {
@@ -161,10 +164,73 @@
 	let showDestinations = false;
 	let showDescription = true;
 
+	let outcomeWon: TerminalLine[] = [];
+	let outcomeTimedUp: TerminalLine[] = [];
+
 	$: if (game) {
 		currentRound = game.roundDecoy ? game.roundDecoy : game.rounds[game.currentRoundIndex];
 		isGameWon = !isTimeUp && game.currentRoundIndex === game.rounds.length - 1;
 		artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
+
+		outcomeWon = [
+			{
+				text: $LL.game.outcome.title(),
+				type: 'title'
+			},
+			{
+				text: $LL.game.outcome.win.line1()
+			},
+			{
+				text: $LL.game.outcome.win.line2()
+			},
+			{
+				text: $LL.game.outcome.win.line3({
+					city: game.rounds[0].atlas.city,
+					suspect: game.suspect.name
+				})
+			},
+			{
+				text: $LL.game.outcome.win.line4()
+			},
+			{
+				text: $LL.game.outcome.win.line5({
+					cases: getCasesUntilPromotion($playerStore!.score)
+				})
+			},
+			{
+				text: '',
+				type: 'line-break'
+			},
+			{
+				text: $LL.game.outcome.ready({
+					rank: getRank($playerStore!.score),
+					name: $playerStore!.name
+				})
+			}
+		];
+
+		outcomeTimedUp = [
+			{
+				text: $LL.game.outcome.title(),
+				type: 'title'
+			},
+			{
+				text: $LL.game.outcome.loose.timedOut.line1()
+			},
+			{
+				text: $LL.game.outcome.loose.timedOut.line2({ suspect: game.suspect.name })
+			},
+			{
+				text: '',
+				type: 'line-break'
+			},
+			{
+				text: $LL.game.outcome.ready({
+					rank: getRank($playerStore!.score),
+					name: $playerStore!.name
+				})
+			}
+		];
 	}
 
 	$: isClockTicking = isSleeping || isWalking || isFlying;
@@ -201,26 +267,9 @@
 
 		<Section>
 			{#if isGameWon}
-				<P><strong>Congratulations!</strong> You caught up with the suspect</P>
-				<P>
-					Thanks to your help, the <strong>{game.rounds[0].atlas.city}</strong> police have
-					apprehended <strong>{game.suspect.name}</strong>.
-					<br />
-					<br />
-					<strong>{game.suspect.name}</strong> had the loot, <strong>{game.stolenTreasure}</strong>,
-					which will be returned to the grateful residents of
-					<strong>{game.rounds[0].atlas.city}</strong>.
-					<br />
-					<br />
-					We here at Interpol thank you for your good work on this case. Your success will be noted on
-					your record.
-					<br />
-					<br />
-					{$playerStore ? getCasesUntilPromotion($playerStore.score + 1) : ''}
-					<br />
-					<br />
-					Ready for the next case, {$playerStore?.name}?
-				</P>
+				<Terminal lines={outcomeWon} />
+			{:else if isTimeUp}
+				<Terminal lines={outcomeTimedUp} />
 			{:else if showDescription && !isClockTicking}
 				<P>
 					{getRandomValue(currentRound.atlas.descriptions)}

@@ -21,7 +21,7 @@ const en = {
 			title: 'Your assignment',
 			content: {
 				line1:
-					'Track the thief from {city:string} to {pronounPossessive:string} hideout and arrest {pronounObject:string}.',
+					'Track the thief from {city:string} to {sex:string|{male: his, female: her}} hideout and arrest {sex:string|{male: him, female: her}}.',
 				line2: 'You must apprehend the thief by Sunday 5pm.',
 				line3: 'Good luck, {rank:string} {name:string}.'
 			}
@@ -30,6 +30,32 @@ const en = {
 			pending: 'Detective at keyboard, please identify yourself',
 			indentified: 'You have been identified as {name:string}.',
 			rank: 'Your current rank is {rank:string}.'
+		}
+	},
+	game: {
+		outcome: {
+			title: 'Message from Interpol',
+			win: {
+				line1: 'Congratulations!',
+				line2: 'You caught up with the suspect.',
+				line3: 'Thanks to your help, the {city:string} police have apprehended {suspect:string}.',
+				line4:
+					'We thank you for your good work on this case. Your success will be noted on your record.',
+				line5: '{cases:number} more case{{cases:s}} until your next promotion.'
+			},
+			loose: {
+				timedOut: {
+					line1: 'Bad news...',
+					line2:
+						'Looks like {suspect:string} slipped through your fingers because your investigation took too long!'
+				},
+				noWarrant: {
+					line1: 'You caught up with suspect {suspect:string}!',
+					line2: 'However, without a warrant the {city:string} police cannot make an arrest.',
+					line3: "It looks like Julia's gang has gotten away with another caper."
+				}
+			},
+			ready: 'Ready for your next case, {rank:string} {name:string}?'
 		}
 	},
 	components: {

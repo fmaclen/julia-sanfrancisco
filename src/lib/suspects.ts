@@ -4,39 +4,24 @@ export interface Suspect {
 	hair: string;
 	feature: string;
 	vehicle: string;
-	sex: string;
-	pronouns: {
-		subject: string;
-		possessive: string;
-		object: string;
-	};
+	sex: 'Male' | 'Female';
 }
 
 export const SUSPECTS: Suspect[] = [
 	{
 		name: 'Julia Sanfrancisco',
-		hobby: 'mountain climbing',
-		hair: 'brown',
-		feature: 'mole on her left cheek',
-		vehicle: 'convertible',
-		sex: 'Female',
-		pronouns: {
-			subject: 'she',
-			possessive: 'her',
-			object: 'her'
-		}
+		hobby: 'Mountain climbing',
+		hair: 'Brown',
+		feature: 'Mole on her left cheek',
+		vehicle: 'Convertible',
+		sex: 'Female'
 	},
 	{
 		name: 'Pedro Sanantonio',
-		hobby: 'sailing',
-		hair: 'black',
-		feature: 'scar on his right cheek',
-		vehicle: 'motorcycle',
-		sex: 'Male',
-		pronouns: {
-			subject: 'he',
-			possessive: 'his',
-			object: 'him'
-		}
+		hobby: 'Sailing',
+		hair: 'Black',
+		feature: 'Scar on his right cheek',
+		vehicle: 'Motorcycle',
+		sex: 'Male'
 	}
 ];
