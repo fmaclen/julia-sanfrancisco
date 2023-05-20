@@ -27,7 +27,8 @@
 		gameStore.set(generateGame());
 	}
 
-	let terminalLines: TerminalLine[] = [];
+	let playerLines: TerminalLine[] = [];
+	let gameLines: TerminalLine[] | null = null;
 
 	$: {
 		if ($playerStore) {
@@ -37,7 +38,7 @@
 			if ($gameStore) {
 				const newsFlash: TerminalLine[] = [
 					{
-						text: `*** ${$LL.headquarters.newsflash.title()} ***`,
+						text: `** ${$LL.headquarters.newsflash.title()} **`,
 						type: 'title'
 					},
 					{
@@ -78,22 +79,20 @@
 					}
 				];
 
-				terminalLines = [...newsFlash, ...assignment];
+				gameLines = [...newsFlash, ...assignment];
 			}
 
-			if (!$gameStore) {
-				terminalLines = [
-					{
-						text: $LL.headquarters.id.indentified({ name: $playerStore.name })
-					},
-					{
-						type: 'line-break'
-					},
-					{
-						text: $LL.headquarters.id.rank({ rank: playerRank.toLowerCase() })
-					}
-				];
-			}
+			playerLines = [
+				{
+					text: $LL.headquarters.id.indentified({ name: $playerStore.name })
+				},
+				{
+					type: 'line-break'
+				},
+				{
+					text: $LL.headquarters.id.rank({ rank: playerRank.toLowerCase() })
+				}
+			];
 		}
 	}
 
@@ -110,9 +109,13 @@
 		<Section>
 			<P>{$LL.components.loading()}...</P>
 		</Section>
-	{:else if terminalLines.length > 0}
+	{:else if $playerStore}
 		<Section>
-			<Terminal lines={terminalLines} />
+			<Terminal lines={playerLines} />
+
+			{#if gameLines}
+				<Terminal lines={gameLines} />
+			{/if}
 		</Section>
 
 		<Nav>
