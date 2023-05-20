@@ -61,6 +61,16 @@ const es = {
 			ready: '¿Listo para tu próximo caso, {rank} {name}?'
 		}
 	},
+	player: {
+		ranks: {
+			0: 'Novato',
+			1: 'Investigador',
+			2: 'Detective privado',
+			3: 'Investigador',
+			4: 'Detective experto',
+			5: 'Super investigador'
+		}
+	},
 	components: {
 		loading: 'Cargando',
 		buttons: {

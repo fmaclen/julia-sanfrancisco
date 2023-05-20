@@ -59,7 +59,6 @@ const en = {
 		}
 	},
 	player: {
-		// ranks: ['Rookie', 'Sleuth', 'Private eye', 'Investigator', 'Ace detective', 'Super sleuth']
 		ranks: {
 			0: 'Rookie',
 			1: 'Sleuth',

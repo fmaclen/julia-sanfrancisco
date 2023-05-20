@@ -18,6 +18,7 @@
 	import type { TerminalLine } from '../../lib/components/Terminal';
 	import Terminal from '../../lib/components/Terminal.svelte';
 	import { onMount } from 'svelte';
+	import type { LocalizedString } from 'typesafe-i18n';
 
 	function resetRound(): void {
 		showDescription = true;
@@ -116,34 +117,7 @@
 		gameStore.set(null);
 	}
 
-	onMount(() => {
-		// Load game state from localStorage
-
-		// Can't start the game without $playerStore and $gameStore
-		// Redirect back to HQ to generate them
-		if ($playerStore === null || $gameStore === null) {
-			redirectTo('/headquarters/');
-			return new Error('No player or game store');
-		}
-
-		// Set game state from localStorage
-		game = $gameStore;
-		if (game.currentTime) clock.currentTime = new Date(game.currentTime);
-
-		// Start game loop
-		clock.start();
-
-		// Game loop
-		setInterval(() => {
-			currentTimeFormatted = clock.getFormattedTime();
-			isWalking = clock.isWalking;
-			isFlying = clock.isFlying;
-			isSleeping = clock.isSleeping;
-			isTimeUp = clock.isTimeUp;
-		}, clock.tickRate);
-
-		isLoading = false;
-	});
+	let playerRank: LocalizedString;
 
 	let game: Game;
 	let currentRound: Round;
@@ -166,6 +140,39 @@
 
 	let outcomeWon: TerminalLine[] = [];
 	let outcomeTimedUp: TerminalLine[] = [];
+
+	onMount(() => {
+		// Load game state from localStorage
+
+		// Can't start the game without $playerStore and $gameStore
+		// Redirect back to HQ to generate them
+		if ($playerStore === null || $gameStore === null) {
+			redirectTo('/headquarters/');
+			return new Error('No player or game store');
+		}
+
+		// Set the localized rank
+		const playerRankIndex = getRank($playerStore.score);
+		playerRank = $LL.player.ranks[playerRankIndex]();
+
+		// Set game state from localStorage
+		game = $gameStore;
+		if (game.currentTime) clock.currentTime = new Date(game.currentTime);
+
+		// Start game loop
+		clock.start();
+
+		// Game loop
+		setInterval(() => {
+			currentTimeFormatted = clock.getFormattedTime();
+			isWalking = clock.isWalking;
+			isFlying = clock.isFlying;
+			isSleeping = clock.isSleeping;
+			isTimeUp = clock.isTimeUp;
+		}, clock.tickRate);
+
+		isLoading = false;
+	});
 
 	$: if (game) {
 		currentRound = game.roundDecoy ? game.roundDecoy : game.rounds[game.currentRoundIndex];
@@ -198,12 +205,11 @@
 				})
 			},
 			{
-				text: '',
 				type: 'line-break'
 			},
 			{
 				text: $LL.game.outcome.ready({
-					rank: getRank($playerStore!.score),
+					rank: playerRank,
 					name: $playerStore!.name
 				})
 			}
@@ -221,12 +227,11 @@
 				text: $LL.game.outcome.loose.timedOut.line2({ suspect: game.suspect.name })
 			},
 			{
-				text: '',
 				type: 'line-break'
 			},
 			{
 				text: $LL.game.outcome.ready({
-					rank: getRank($playerStore!.score),
+					rank: playerRank,
 					name: $playerStore!.name
 				})
 			}

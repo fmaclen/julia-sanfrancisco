@@ -55,7 +55,6 @@
 
 				const assignment: TerminalLine[] = [
 					{
-						text: '',
 						type: 'line-break'
 					},
 					{
@@ -86,6 +85,9 @@
 				terminalLines = [
 					{
 						text: $LL.headquarters.id.indentified({ name: $playerStore.name })
+					},
+					{
+						type: 'line-break'
 					},
 					{
 						text: $LL.headquarters.id.rank({ rank: playerRank.toLowerCase() })
