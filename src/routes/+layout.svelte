@@ -57,6 +57,10 @@
 		justify-content: center;
 		width: 100dvw;
 		height: 100dvh;
+
+		@media (min-width: 512px) and (min-height: 1024px) {
+			background-color: var(--color-neutral-950);
+		}
 	}
 
 	div.layout {
