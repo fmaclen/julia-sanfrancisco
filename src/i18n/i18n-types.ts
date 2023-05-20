@@ -164,6 +164,419 @@ type RootTranslation = {
 			 */
 			ready: RequiredParams<'name' | 'rank'>
 		}
+		actions: {
+			/**
+			 * Q​u​i​t
+			 */
+			quit: string
+			/**
+			 * W​a​l​k​ ​t​o
+			 */
+			walk: string
+			/**
+			 * F​l​y​ ​t​o
+			 */
+			fly: string
+		}
+	}
+	clues: {
+		introduction: {
+			/**
+			 * I​ ​s​a​w​ ​t​h​e​ ​p​e​r​s​o​n​ ​y​o​u​'​r​e​ ​l​o​o​k​i​n​g​ ​f​o​r​ ​a​n​d
+			 */
+			'0': string
+			/**
+			 * T​h​e​ ​p​e​r​s​o​n​ ​y​o​u​ ​a​r​e​ ​l​o​o​k​i​n​g​ ​f​o​r​ ​w​a​s​ ​h​e​r​e​ ​a​n​d
+			 */
+			'1': string
+			/**
+			 * M​y​ ​s​o​u​r​c​e​s​ ​t​e​l​l​ ​m​e
+			 */
+			'2': string
+			/**
+			 * A​ ​r​e​l​i​a​b​l​e​ ​s​o​u​r​c​e​ ​t​o​l​d​ ​m​e
+			 */
+			'3': string
+			/**
+			 * S​o​u​r​c​e​s​ ​t​e​l​l​ ​m​e
+			 */
+			'4': string
+			/**
+			 * A​l​l​ ​I​ ​k​n​o​w​ ​i​s​ ​t​h​a​t
+			 */
+			'5': string
+			/**
+			 * A​ ​s​u​s​p​i​c​i​o​u​s​ ​p​e​r​s​o​n​ ​w​a​s​ ​h​e​r​e​ ​a​n​d
+			 */
+			'6': string
+			/**
+			 * I​ ​h​e​a​r​d
+			 */
+			'7': string
+		}
+		place: {
+			/**
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​s​a​i​d​ ​{​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​w​a​n​t​e​d​ ​t​o​ ​p​h​o​t​o​g​r​a​p​h
+			 * @param {string} sex
+			 */
+			'0': RequiredParams<`sex|{male:${string}, female:${string}}` | `sex|{male:${string}, female:${string}}`>
+			/**
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​a​s​k​e​d​ ​f​o​r​ ​a​ ​m​a​p​ ​o​f
+			 * @param {string} sex
+			 */
+			'1': RequiredParams<`sex|{male:${string}, female:${string}}`>
+			/**
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​p​l​a​n​n​e​d​ ​t​o​ ​v​i​s​i​t
+			 * @param {string} sex
+			 */
+			'2': RequiredParams<`sex|{male:${string}, female:${string}}`>
+			/**
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​m​e​n​t​i​o​n​e​d​ ​{​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​w​a​n​t​e​d​ ​t​o​ ​s​e​e
+			 * @param {string} sex
+			 */
+			'3': RequiredParams<`sex|{male:${string}, female:${string}}` | `sex|{male:${string}, female:${string}}`>
+			/**
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​w​a​s​ ​c​o​n​s​i​d​e​r​i​n​g​ ​t​a​k​i​n​g​ ​a​ ​t​r​i​p​ ​t​o
+			 * @param {string} sex
+			 */
+			'4': RequiredParams<`sex|{male:${string}, female:${string}}`>
+			/**
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​h​a​d​ ​a​n​ ​u​r​g​e​ ​t​o​ ​v​i​s​i​t
+			 * @param {string} sex
+			 */
+			'5': RequiredParams<`sex|{male:${string}, female:${string}}`>
+			/**
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​s​a​i​d​ ​{​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​w​a​n​t​e​d​ ​t​o​ ​e​x​p​l​o​r​e
+			 * @param {string} sex
+			 */
+			'6': RequiredParams<`sex|{male:${string}, female:${string}}` | `sex|{male:${string}, female:${string}}`>
+			/**
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​a​s​k​e​d​ ​a​b​o​u​t​ ​d​a​y​ ​t​o​u​r​s​ ​t​o
+			 * @param {string} sex
+			 */
+			'7': RequiredParams<`sex|{male:${string}, female:${string}}`>
+			/**
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​w​a​n​t​e​d​ ​t​o​ ​k​n​o​w​ ​i​f​ ​t​h​e​r​e​ ​w​e​r​e​ ​a​n​y​ ​f​i​v​e​-​s​t​a​r​ ​h​o​t​e​l​s​ ​n​e​a​r
+			 * @param {string} sex
+			 */
+			'8': RequiredParams<`sex|{male:${string}, female:${string}}`>
+		}
+		language: {
+			/**
+			 * h​a​d​ ​a​ ​{​l​a​n​g​u​a​g​e​}​ ​d​i​c​t​i​o​n​a​r​y​ ​i​n​ ​{​s​e​x​|​{​m​a​l​e​:​ ​h​i​s​,​ ​f​e​m​a​l​e​:​ ​h​e​r​}​}​ ​p​o​c​k​e​t
+			 * @param {string} language
+			 * @param {string} sex
+			 */
+			'0': RequiredParams<'language' | `sex|{male:${string}, female:${string}}`>
+			/**
+			 * w​a​s​ ​c​a​r​r​y​i​n​g​ ​a​ ​{​l​a​n​g​u​a​g​e​}​ ​p​h​r​a​s​e​ ​b​o​o​k
+			 * @param {string} language
+			 */
+			'1': RequiredParams<'language'>
+		}
+		currency: {
+			/**
+			 * c​h​a​n​g​e​d​ ​{​s​e​x​|​{​m​a​l​e​:​ ​h​i​s​,​ ​f​e​m​a​l​e​:​ ​h​e​r​}​}​ ​m​o​n​e​y​ ​t​o​ ​{​c​u​r​r​e​n​c​y​}
+			 * @param {string} currency
+			 * @param {string} sex
+			 */
+			'0': RequiredParams<'currency' | `sex|{male:${string}, female:${string}}`>
+			/**
+			 * a​s​k​e​d​ ​a​b​o​u​t​ ​t​h​e​ ​e​x​c​h​a​n​g​e​ ​r​a​t​e​ ​f​o​r​ ​{​c​u​r​r​e​n​c​y​}
+			 * @param {string} currency
+			 */
+			'1': RequiredParams<'currency'>
+			/**
+			 * w​a​n​t​e​d​ ​t​o​ ​k​n​o​w​ ​h​o​w​ ​m​u​c​h​ ​{​c​u​r​r​e​n​c​y​}​ ​w​e​r​e​ ​w​o​r​t​h
+			 * @param {string} currency
+			 */
+			'2': RequiredParams<'currency'>
+		}
+		object: {
+			/**
+			 * w​a​s​ ​c​a​r​r​y​i​n​g​ ​a
+			 */
+			'0': string
+			/**
+			 * w​a​n​t​e​d​ ​t​o​ ​g​e​t
+			 */
+			'1': string
+			/**
+			 * w​a​n​t​e​d​ ​t​o​ ​s​e​l​l
+			 */
+			'2': string
+			/**
+			 * a​s​k​e​d​ ​w​h​e​r​e​ ​t​o​ ​f​i​n​d
+			 */
+			'3': string
+			/**
+			 * w​a​s​ ​l​o​o​k​i​n​g​ ​f​o​r
+			 */
+			'4': string
+		}
+		topic: {
+			/**
+			 * w​a​s​ ​r​e​s​e​a​r​c​h​i​n​g
+			 */
+			'0': string
+			/**
+			 * w​a​n​t​e​d​ ​t​o​ ​s​t​u​d​y
+			 */
+			'1': string
+			/**
+			 * w​a​s​ ​i​n​t​e​r​e​s​t​e​d​ ​i​n
+			 */
+			'2': string
+			/**
+			 * a​s​k​e​d​ ​a​b​o​u​t
+			 */
+			'3': string
+		}
+		plane: {
+			/**
+			 * l​e​f​t​ ​i​n​ ​a​ ​p​l​a​n​e​ ​w​i​t​h​ ​a​ ​{​f​l​a​g​}​ ​o​n​ ​i​t​s​ ​w​i​n​g
+			 * @param {string} flag
+			 */
+			'0': RequiredParams<'flag'>
+			/**
+			 * w​a​s​ ​i​n​ ​a​ ​r​u​s​h​ ​t​o​ ​c​a​t​c​h​ ​a​ ​p​l​a​n​e​ ​w​i​t​h​ ​a​ ​{​f​l​a​g​}​ ​o​n​ ​i​t​s​ ​w​i​n​g
+			 * @param {string} flag
+			 */
+			'1': RequiredParams<'flag'>
+			/**
+			 * f​l​e​w​ ​a​w​a​y​ ​o​n​ ​a​ ​p​l​a​n​e​ ​w​i​t​h​ ​a​ ​{​f​l​a​g​}​ ​o​n​ ​i​t​s​ ​t​a​i​l
+			 * @param {string} flag
+			 */
+			'2': RequiredParams<'flag'>
+		}
+		ship: {
+			/**
+			 * s​a​i​l​e​d​ ​a​w​a​y​ ​o​n​ ​a​ ​s​h​i​p​ ​f​l​y​i​n​g​ ​a​ ​{​f​l​a​g​}​ ​f​l​a​g
+			 * @param {string} flag
+			 */
+			'0': RequiredParams<'flag'>
+			/**
+			 * l​e​f​t​ ​o​n​ ​a​ ​s​h​i​p​ ​w​i​t​h​ ​a​ ​{​f​l​a​g​}​ ​f​l​a​g
+			 * @param {string} flag
+			 */
+			'1': RequiredParams<'flag'>
+		}
+		finalRound: {
+			/**
+			 * T​h​e​ ​w​o​r​d​ ​i​s​ ​o​u​t​,​ ​y​o​u​'​r​e​ ​g​e​t​t​i​n​g​ ​t​o​o​ ​c​l​o​s​e​ ​g​u​m​s​h​o​e​.​.​.
+			 */
+			'0': string
+			/**
+			 * R​u​m​o​r​ ​h​a​s​ ​i​t​ ​t​h​a​t​ ​t​h​e​ ​g​a​n​g​ ​i​s​ ​i​n​ ​t​o​w​n​ ​s​o​m​e​w​h​e​r​e​.
+			 */
+			'1': string
+			/**
+			 * A​l​l​ ​I​ ​k​n​o​w​ ​i​s​ ​t​h​a​t​ ​s​o​m​e​t​h​i​n​g​ ​s​u​s​p​i​c​i​o​u​s​ ​i​s​ ​h​a​p​p​e​n​i​n​g​ ​i​n​ ​t​o​w​n​.
+			 */
+			'2': string
+			/**
+			 * T​h​e​ ​o​n​l​y​ ​t​h​i​n​g​ ​I​ ​c​a​n​ ​t​e​l​l​ ​y​o​u​ ​i​s​ ​t​o​ ​w​a​t​c​h​ ​y​o​u​r​ ​s​t​e​p​.
+			 */
+			'3': string
+		}
+	}
+	scenes: {
+		places: {
+			/**
+			 * A​i​r​p​o​r​t
+			 */
+			'0': string
+			/**
+			 * B​a​n​k
+			 */
+			'1': string
+			/**
+			 * F​o​r​e​i​g​n​ ​m​i​n​i​s​t​r​y
+			 */
+			'2': string
+			/**
+			 * H​a​r​b​o​r
+			 */
+			'3': string
+			/**
+			 * H​o​t​e​l
+			 */
+			'4': string
+			/**
+			 * L​i​b​r​a​r​y
+			 */
+			'5': string
+			/**
+			 * M​a​r​k​e​t
+			 */
+			'6': string
+			/**
+			 * M​u​s​e​u​m
+			 */
+			'7': string
+			/**
+			 * P​a​l​a​c​e
+			 */
+			'8': string
+			/**
+			 * R​i​v​e​r​f​r​o​n​t
+			 */
+			'9': string
+			/**
+			 * S​p​o​r​t​ ​c​l​u​b
+			 */
+			'10': string
+			/**
+			 * S​t​o​c​k​ ​e​x​c​h​a​n​g​e
+			 */
+			'11': string
+		}
+		witnesses: {
+			/**
+			 * B​a​g​g​a​g​e​ ​c​l​e​r​k
+			 */
+			'0': string
+			/**
+			 * F​l​i​g​h​t​ ​a​t​t​e​n​d​a​n​t
+			 */
+			'1': string
+			/**
+			 * P​i​l​o​t
+			 */
+			'2': string
+			/**
+			 * B​a​n​k​ ​g​u​a​r​d
+			 */
+			'3': string
+			/**
+			 * T​e​l​l​e​r
+			 */
+			'4': string
+			/**
+			 * V​i​c​e​ ​p​r​e​s​i​d​e​n​t
+			 */
+			'5': string
+			/**
+			 * A​m​b​a​s​s​a​d​o​r
+			 */
+			'6': string
+			/**
+			 * A​t​t​a​c​h​e
+			 */
+			'7': string
+			/**
+			 * U​n​d​e​r​ ​s​e​c​r​e​t​a​r​y
+			 */
+			'8': string
+			/**
+			 * C​u​s​t​o​m​s​ ​o​f​f​i​c​e​r
+			 */
+			'9': string
+			/**
+			 * H​a​r​b​o​r​ ​m​a​s​t​e​r
+			 */
+			'10': string
+			/**
+			 * S​a​i​l​o​r
+			 */
+			'11': string
+			/**
+			 * B​e​l​l​h​o​p
+			 */
+			'12': string
+			/**
+			 * H​o​u​s​e​ ​d​e​t​e​c​t​i​v​e
+			 */
+			'13': string
+			/**
+			 * H​o​t​e​l​ ​m​a​n​a​g​e​r
+			 */
+			'14': string
+			/**
+			 * A​r​c​h​i​v​i​s​t
+			 */
+			'15': string
+			/**
+			 * C​i​r​c​u​l​a​t​i​o​n​ ​c​l​e​r​k
+			 */
+			'16': string
+			/**
+			 * R​e​f​e​r​e​n​c​e​ ​l​i​b​r​a​r​i​a​n
+			 */
+			'17': string
+			/**
+			 * H​a​w​k​e​r
+			 */
+			'18': string
+			/**
+			 * S​t​r​e​e​t​ ​m​e​r​c​h​a​n​t
+			 */
+			'19': string
+			/**
+			 * U​r​c​h​i​n
+			 */
+			'20': string
+			/**
+			 * C​u​r​a​t​o​r
+			 */
+			'21': string
+			/**
+			 * D​o​c​e​n​t
+			 */
+			'22': string
+			/**
+			 * M​u​s​e​u​m​ ​g​u​a​r​d
+			 */
+			'23': string
+			/**
+			 * P​a​l​a​c​e​ ​g​u​a​r​d
+			 */
+			'24': string
+			/**
+			 * P​r​i​v​y​ ​c​o​u​n​c​i​l​l​o​r
+			 */
+			'25': string
+			/**
+			 * S​o​l​d​i​e​r
+			 */
+			'26': string
+			/**
+			 * S​a​i​l​o​r​'​s​ ​p​a​r​r​o​t
+			 */
+			'27': string
+			/**
+			 * S​t​e​v​e​d​o​r​e
+			 */
+			'28': string
+			/**
+			 * T​u​g​b​o​a​t​ ​c​a​p​t​a​i​n
+			 */
+			'29': string
+			/**
+			 * B​a​r​t​e​n​d​e​r
+			 */
+			'30': string
+			/**
+			 * T​e​n​n​i​s​ ​p​r​o
+			 */
+			'31': string
+			/**
+			 * W​a​i​t​e​r
+			 */
+			'32': string
+			/**
+			 * A​n​a​l​y​s​t
+			 */
+			'33': string
+			/**
+			 * M​e​s​s​e​n​g​e​r
+			 */
+			'34': string
+			/**
+			 * T​r​a​d​e​r
+			 */
+			'35': string
+		}
 	}
 	player: {
 		ranks: {
@@ -344,6 +757,398 @@ export type TranslationFunctions = {
 			 * Ready for your next case, {rank} {name}?
 			 */
 			ready: (arg: { name: string, rank: string }) => LocalizedString
+		}
+		actions: {
+			/**
+			 * Quit
+			 */
+			quit: () => LocalizedString
+			/**
+			 * Walk to
+			 */
+			walk: () => LocalizedString
+			/**
+			 * Fly to
+			 */
+			fly: () => LocalizedString
+		}
+	}
+	clues: {
+		introduction: {
+			/**
+			 * I saw the person you're looking for and
+			 */
+			'0': () => LocalizedString
+			/**
+			 * The person you are looking for was here and
+			 */
+			'1': () => LocalizedString
+			/**
+			 * My sources tell me
+			 */
+			'2': () => LocalizedString
+			/**
+			 * A reliable source told me
+			 */
+			'3': () => LocalizedString
+			/**
+			 * Sources tell me
+			 */
+			'4': () => LocalizedString
+			/**
+			 * All I know is that
+			 */
+			'5': () => LocalizedString
+			/**
+			 * A suspicious person was here and
+			 */
+			'6': () => LocalizedString
+			/**
+			 * I heard
+			 */
+			'7': () => LocalizedString
+		}
+		place: {
+			/**
+			 * {sex|{male: he, female: she}} said {sex|{male: he, female: she}} wanted to photograph
+			 */
+			'0': (arg: { sex: string }) => LocalizedString
+			/**
+			 * {sex|{male: he, female: she}} asked for a map of
+			 */
+			'1': (arg: { sex: string }) => LocalizedString
+			/**
+			 * {sex|{male: he, female: she}} planned to visit
+			 */
+			'2': (arg: { sex: string }) => LocalizedString
+			/**
+			 * {sex|{male: he, female: she}} mentioned {sex|{male: he, female: she}} wanted to see
+			 */
+			'3': (arg: { sex: string }) => LocalizedString
+			/**
+			 * {sex|{male: he, female: she}} was considering taking a trip to
+			 */
+			'4': (arg: { sex: string }) => LocalizedString
+			/**
+			 * {sex|{male: he, female: she}} had an urge to visit
+			 */
+			'5': (arg: { sex: string }) => LocalizedString
+			/**
+			 * {sex|{male: he, female: she}} said {sex|{male: he, female: she}} wanted to explore
+			 */
+			'6': (arg: { sex: string }) => LocalizedString
+			/**
+			 * {sex|{male: he, female: she}} asked about day tours to
+			 */
+			'7': (arg: { sex: string }) => LocalizedString
+			/**
+			 * {sex|{male: he, female: she}} wanted to know if there were any five-star hotels near
+			 */
+			'8': (arg: { sex: string }) => LocalizedString
+		}
+		language: {
+			/**
+			 * had a {language} dictionary in {sex|{male: his, female: her}} pocket
+			 */
+			'0': (arg: { language: string, sex: string }) => LocalizedString
+			/**
+			 * was carrying a {language} phrase book
+			 */
+			'1': (arg: { language: string }) => LocalizedString
+		}
+		currency: {
+			/**
+			 * changed {sex|{male: his, female: her}} money to {currency}
+			 */
+			'0': (arg: { currency: string, sex: string }) => LocalizedString
+			/**
+			 * asked about the exchange rate for {currency}
+			 */
+			'1': (arg: { currency: string }) => LocalizedString
+			/**
+			 * wanted to know how much {currency} were worth
+			 */
+			'2': (arg: { currency: string }) => LocalizedString
+		}
+		object: {
+			/**
+			 * was carrying a
+			 */
+			'0': () => LocalizedString
+			/**
+			 * wanted to get
+			 */
+			'1': () => LocalizedString
+			/**
+			 * wanted to sell
+			 */
+			'2': () => LocalizedString
+			/**
+			 * asked where to find
+			 */
+			'3': () => LocalizedString
+			/**
+			 * was looking for
+			 */
+			'4': () => LocalizedString
+		}
+		topic: {
+			/**
+			 * was researching
+			 */
+			'0': () => LocalizedString
+			/**
+			 * wanted to study
+			 */
+			'1': () => LocalizedString
+			/**
+			 * was interested in
+			 */
+			'2': () => LocalizedString
+			/**
+			 * asked about
+			 */
+			'3': () => LocalizedString
+		}
+		plane: {
+			/**
+			 * left in a plane with a {flag} on its wing
+			 */
+			'0': (arg: { flag: string }) => LocalizedString
+			/**
+			 * was in a rush to catch a plane with a {flag} on its wing
+			 */
+			'1': (arg: { flag: string }) => LocalizedString
+			/**
+			 * flew away on a plane with a {flag} on its tail
+			 */
+			'2': (arg: { flag: string }) => LocalizedString
+		}
+		ship: {
+			/**
+			 * sailed away on a ship flying a {flag} flag
+			 */
+			'0': (arg: { flag: string }) => LocalizedString
+			/**
+			 * left on a ship with a {flag} flag
+			 */
+			'1': (arg: { flag: string }) => LocalizedString
+		}
+		finalRound: {
+			/**
+			 * The word is out, you're getting too close gumshoe...
+			 */
+			'0': () => LocalizedString
+			/**
+			 * Rumor has it that the gang is in town somewhere.
+			 */
+			'1': () => LocalizedString
+			/**
+			 * All I know is that something suspicious is happening in town.
+			 */
+			'2': () => LocalizedString
+			/**
+			 * The only thing I can tell you is to watch your step.
+			 */
+			'3': () => LocalizedString
+		}
+	}
+	scenes: {
+		places: {
+			/**
+			 * Airport
+			 */
+			'0': () => LocalizedString
+			/**
+			 * Bank
+			 */
+			'1': () => LocalizedString
+			/**
+			 * Foreign ministry
+			 */
+			'2': () => LocalizedString
+			/**
+			 * Harbor
+			 */
+			'3': () => LocalizedString
+			/**
+			 * Hotel
+			 */
+			'4': () => LocalizedString
+			/**
+			 * Library
+			 */
+			'5': () => LocalizedString
+			/**
+			 * Market
+			 */
+			'6': () => LocalizedString
+			/**
+			 * Museum
+			 */
+			'7': () => LocalizedString
+			/**
+			 * Palace
+			 */
+			'8': () => LocalizedString
+			/**
+			 * Riverfront
+			 */
+			'9': () => LocalizedString
+			/**
+			 * Sport club
+			 */
+			'10': () => LocalizedString
+			/**
+			 * Stock exchange
+			 */
+			'11': () => LocalizedString
+		}
+		witnesses: {
+			/**
+			 * Baggage clerk
+			 */
+			'0': () => LocalizedString
+			/**
+			 * Flight attendant
+			 */
+			'1': () => LocalizedString
+			/**
+			 * Pilot
+			 */
+			'2': () => LocalizedString
+			/**
+			 * Bank guard
+			 */
+			'3': () => LocalizedString
+			/**
+			 * Teller
+			 */
+			'4': () => LocalizedString
+			/**
+			 * Vice president
+			 */
+			'5': () => LocalizedString
+			/**
+			 * Ambassador
+			 */
+			'6': () => LocalizedString
+			/**
+			 * Attache
+			 */
+			'7': () => LocalizedString
+			/**
+			 * Under secretary
+			 */
+			'8': () => LocalizedString
+			/**
+			 * Customs officer
+			 */
+			'9': () => LocalizedString
+			/**
+			 * Harbor master
+			 */
+			'10': () => LocalizedString
+			/**
+			 * Sailor
+			 */
+			'11': () => LocalizedString
+			/**
+			 * Bellhop
+			 */
+			'12': () => LocalizedString
+			/**
+			 * House detective
+			 */
+			'13': () => LocalizedString
+			/**
+			 * Hotel manager
+			 */
+			'14': () => LocalizedString
+			/**
+			 * Archivist
+			 */
+			'15': () => LocalizedString
+			/**
+			 * Circulation clerk
+			 */
+			'16': () => LocalizedString
+			/**
+			 * Reference librarian
+			 */
+			'17': () => LocalizedString
+			/**
+			 * Hawker
+			 */
+			'18': () => LocalizedString
+			/**
+			 * Street merchant
+			 */
+			'19': () => LocalizedString
+			/**
+			 * Urchin
+			 */
+			'20': () => LocalizedString
+			/**
+			 * Curator
+			 */
+			'21': () => LocalizedString
+			/**
+			 * Docent
+			 */
+			'22': () => LocalizedString
+			/**
+			 * Museum guard
+			 */
+			'23': () => LocalizedString
+			/**
+			 * Palace guard
+			 */
+			'24': () => LocalizedString
+			/**
+			 * Privy councillor
+			 */
+			'25': () => LocalizedString
+			/**
+			 * Soldier
+			 */
+			'26': () => LocalizedString
+			/**
+			 * Sailor's parrot
+			 */
+			'27': () => LocalizedString
+			/**
+			 * Stevedore
+			 */
+			'28': () => LocalizedString
+			/**
+			 * Tugboat captain
+			 */
+			'29': () => LocalizedString
+			/**
+			 * Bartender
+			 */
+			'30': () => LocalizedString
+			/**
+			 * Tennis pro
+			 */
+			'31': () => LocalizedString
+			/**
+			 * Waiter
+			 */
+			'32': () => LocalizedString
+			/**
+			 * Analyst
+			 */
+			'33': () => LocalizedString
+			/**
+			 * Messenger
+			 */
+			'34': () => LocalizedString
+			/**
+			 * Trader
+			 */
+			'35': () => LocalizedString
 		}
 	}
 	player: {

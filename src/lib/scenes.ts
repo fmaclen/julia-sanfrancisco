@@ -1,5 +1,5 @@
 import type { Atlas } from './atlases';
-import { FINAL_ROUND_CLUES, generateClues, getDecoyClues } from './clues';
+import { finalRoundClues, generateClues, getDecoyClues } from './clues';
 import { getRandomValue } from './helpers';
 import type { Suspect } from './suspects';
 
@@ -111,7 +111,7 @@ export function getScenes({
 		const place = Array.from(places)[i];
 
 		let sceneClues: string[] = [];
-		if (isRoundFinal) sceneClues = FINAL_ROUND_CLUES;
+		if (isRoundFinal) sceneClues = finalRoundClues;
 		if (isRoundDecoy) sceneClues = getDecoyClues(place);
 		if (nextRoundAtlas && suspect) sceneClues = generateClues(nextRoundAtlas, suspect, place);
 

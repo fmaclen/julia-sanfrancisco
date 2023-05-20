@@ -24,7 +24,8 @@
 	}
 
 	function setGame() {
-		gameStore.set(generateGame());
+		const newGame = generateGame();
+		gameStore.set(newGame);
 	}
 
 	let playerLines: TerminalLine[] = [];

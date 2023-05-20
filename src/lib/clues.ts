@@ -1,73 +1,78 @@
 import type { Atlas } from '$lib/atlases';
 import { Place } from '$lib/scenes';
 import type { Suspect } from '$lib/suspects';
+import en from '../i18n/en';
+import type { TranslationFunctions } from '../i18n/i18n-types';
+import { typesafeI18nObject } from 'typesafe-i18n';
 
-export const FINAL_ROUND_CLUES = [
-	"The word is out, you're getting too close gumshoe...",
-	'Rumor has it that the gang is in town somewhere.',
-	'All I know is that something suspicious is happening in town.',
-	'The only thing I can tell you is to watch your step.'
-];
+const NEED_TO_IMPORT_THIS = 'en';
+
+const LL = typesafeI18nObject(NEED_TO_IMPORT_THIS, en);
+
+interface ClueSources {
+	type:
+		| 'introduction'
+		| 'place'
+		| 'language'
+		| 'currency'
+		| 'object'
+		| 'topic'
+		| 'plane'
+		| 'ship'
+		| 'finalRound';
+	atlas?: Atlas;
+	suspect?: Suspect;
+}
+
+// NOTE:
+// In generalt I'm not sure this is the correct way of working with LL.
+// All I'm trying with this is to loop through the translated strings applying
+// the parameters all at once to get an array with all of the clues as a string.
+//
+// I'm not sure why I can't import `BaseTranslationFunction[]` (the type `LL.clues` is)
+// as a type so I could use it as `translations: BaseTranslationFunction[]`.
+function getTranslatedClues(clueSources: ClueSources): string[] {
+	const params = {
+		sex: clueSources?.suspect?.sex,
+		currency: clueSources?.atlas?.currency,
+		language: clueSources?.atlas?.language,
+		flag: clueSources?.atlas?.flag
+	};
+
+	const translatedClues: string[] = [];
+
+	for (let i = 0; i < en.clues[clueSources.type].length; i++) {
+		console.log('{ params }', { params });
+		console.log('clueSources.type', clueSources.type);
+		console.log('LL.clues[clueSources.type]', LL.clues[clueSources.type]);
+		console.log('LL.clues[clueSources.type][i]', LL.clues[clueSources.type][i]);
+		console.log(
+			'LL.clues[clueSources.type][i]({ params })',
+			LL.clues[clueSources.type][i]({ params })
+		);
+		console.log('--------------------------------');
+		const clue = LL.clues[clueSources.type][i]({ params });
+		translatedClues.push(clue);
+	}
+
+	return translatedClues;
+}
+
+export const finalRoundClues = getTranslatedClues({ type: 'finalRound' });
 
 export function generateClues(atlas: Atlas, suspect: Suspect, place: Place): string[] {
-	const introductions = [
-		"I saw the person you're looking for and",
-		'The person you are looking for was here and',
-		'My sources tell me',
-		'A reliable source told me',
-		'Sources tell me',
-		'All I know is that',
-		'A suspicious person was here and',
-		'I heard'
-	];
-
 	const currencyPlaces = [Place.BANK, Place.STOCK_EXCHANGE, Place.HOTEL, Place.AIRPORT];
 	const topicPlaces = [Place.MUSEUM, Place.LIBRARY];
 	const shipPlaces = [Place.HARBOR, Place.RIVERFRONT];
 
-	const placeClues = [
-		`said ${suspect.sex} wanted to photograph`,
-		`asked for a map of`,
-		`planned to visit`,
-		`mentioned ${suspect.sex} wanted to see`,
-		`was considering taking a trip to`,
-		`had an urge to visit`,
-		`said ${suspect.sex} wanted to explore`,
-		`asked about day tours to`,
-		`wanted to know if there were any five-star hotels near`
-	];
-
-	const languageClues = [
-		`had a ${atlas.language} dictionary in ${suspect.sex} pocket`,
-		`was carrying a ${atlas.language} phrase book`
-	];
-
-	const currencyClues = [
-		`changed ${suspect.sex} money to ${atlas.currency}`,
-		`asked about the exchange rate for ${atlas.currency}`,
-		`wanted to know how much ${atlas.currency} were worth`
-	];
-
-	const objectClues = [
-		`was carrying a`,
-		`wanted to buy`,
-		`wanted to sell a rare`,
-		`asked where to find`,
-		`was looking for`
-	];
-
-	const topicClues = [`was researching`, `wanted to study`, `was interested in`, `asked about`];
-
-	const planeClues = [
-		`left in a plane with a ${atlas.flag} on its wing`,
-		`was in a rush to catch a plane with a ${atlas.flag} on its wing`,
-		`flew away on a plane with a ${atlas.flag} on its tail`
-	];
-
-	const shipClues = [
-		`sailed away on a ship flying a ${atlas.flag} flag`,
-		`left on a ship with a ${atlas.flag} flag`
-	];
+	const introductions = getTranslatedClues({ atlas, suspect, type: 'introduction' });
+	const currencyClues = getTranslatedClues({ atlas, suspect, type: 'currency' });
+	const topicClues = getTranslatedClues({ atlas, suspect, type: 'topic' });
+	const placeClues = getTranslatedClues({ atlas, suspect, type: 'place' });
+	const objectClues = getTranslatedClues({ atlas, suspect, type: 'object' });
+	const languageClues = getTranslatedClues({ atlas, suspect, type: 'language' });
+	const planeClues = getTranslatedClues({ atlas, suspect, type: 'plane' });
+	const shipClues = getTranslatedClues({ atlas, suspect, type: 'ship' });
 
 	const clues = [];
 
@@ -75,48 +80,42 @@ export function generateClues(atlas: Atlas, suspect: Suspect, place: Place): str
 		// Currency clues
 		if (currencyPlaces.includes(place)) {
 			for (const clue of currencyClues) {
-				clues.push(`${intro} ${suspect} ${clue}.`);
+				clues.push(`${intro} ${clue}.`);
 			}
 		}
 
 		// Topic clues
 		if (topicPlaces.includes(place)) {
 			for (const clue of topicClues) {
-				atlas.topics.forEach((topic) => {
-					clues.push(`${intro} ${suspect.sex} ${clue} ${topic}.`);
-				});
+				clues.push(`${intro} ${clue}.`);
 			}
 		}
 
 		// Plane clues
 		if (place === Place.AIRPORT) {
 			for (const clue of planeClues) {
-				clues.push(`${intro} ${suspect.sex} ${clue}.`);
+				clues.push(`${intro} ${clue}.`);
 			}
 		}
 
 		// Ship clues
 		if (shipPlaces.includes(place)) {
 			for (const clue of shipClues) {
-				clues.push(`${intro} ${suspect.sex} ${clue}.`);
+				clues.push(`${intro} ${clue}.`);
 			}
 		}
 
 		// General clues
 		for (const clue of placeClues) {
-			atlas.places.forEach((place) => {
-				clues.push(`${intro} ${suspect.sex} ${clue} ${place}.`);
-			});
+			clues.push(`${intro} ${clue}.`);
 		}
 
 		for (const clue of objectClues) {
-			atlas.objects.forEach((object) => {
-				clues.push(`${intro} ${suspect.sex} ${clue} ${object}.`);
-			});
+			clues.push(`${intro} ${clue}.`);
 		}
 
 		for (const clue of languageClues) {
-			clues.push(`${intro} ${suspect.sex} ${clue}.`);
+			clues.push(`${intro} ${clue}.`);
 		}
 	}
 

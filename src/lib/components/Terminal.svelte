@@ -33,7 +33,7 @@
 <ul class="terminal">
 	{#each lines as line, i}
 		<li
-			in:slide={{ delay: i * 2000 }}
+			in:slide={{ delay: i * 10 }}
 			class="
         terminal__line
         {line.type ? `terminal__line--${line.type}` : ''}"
