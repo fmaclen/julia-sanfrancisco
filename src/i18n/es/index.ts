@@ -34,6 +34,33 @@ const es = {
 			rank: 'Tu rango actual es {rank}.'
 		}
 	},
+	game: {
+		outcome: {
+			title: 'Mensaje de Interpol',
+			win: {
+				line1: '¡Felicidades!',
+				line2: 'Has capturado al sospechoso.',
+				line3: 'Gracias a tu ayuda, la policía de {city} ha detenido a {suspect}.',
+				line4:
+					'Agradecemos tu buen trabajo en este caso. Tu éxito quedará registrado en tu expediente.',
+				line5: '{cases} caso{{cases:s}} más hasta tu próxima promoción.'
+			},
+			loose: {
+				timedOut: {
+					line1: 'Malas noticias...',
+					line2:
+						'¡Parece que {suspect} se escapó de tus manos porque tu investigación tomó demasiado tiempo!'
+				},
+				noWarrant: {
+					line1: '¡Has encontrado al sospechoso {suspect}!',
+					line2:
+						'Sin embargo, sin una orden de arresto, la policía de {city} no puede detener al sospechoso.',
+					line3: 'Parece que la banda de Julia se ha salido con la suya de nuevo.'
+				}
+			},
+			ready: '¿Listo para tu próximo caso, {rank} {name}?'
+		}
+	},
 	components: {
 		loading: 'Cargando',
 		buttons: {
