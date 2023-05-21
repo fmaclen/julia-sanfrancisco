@@ -26,16 +26,17 @@ interface ClueSources {
 function getTranslatedClues(clueSources: ClueSources): string[] {
 	// Applies these params to generate the localized clues
 	const params = {
-		sex: clueSources?.suspect?.sex,
-		currency: clueSources?.atlas?.currency,
-		language: clueSources?.atlas?.language,
-		flag: clueSources?.atlas?.flag
+		// All params must be lowercase
+		sex: clueSources.suspect?.sex.toLowerCase(),
+		currency: clueSources.atlas?.currency.toLowerCase(),
+		language: clueSources.atlas?.language.toLowerCase(),
+		flag: clueSources.atlas?.flag.toLowerCase()
 	};
 
 	const translatedClues: string[] = [];
 
 	for (let i = 0; i < en.clues[clueSources.type].length; i++) {
-		const clue = LL.clues[clueSources.type][i]({ params });
+		const clue = LL.clues[clueSources.type][i](params);
 		translatedClues.push(clue);
 	}
 
@@ -108,8 +109,6 @@ export function generateClues(atlas: Atlas, suspect: Suspect, place: Place): str
 			clues.push(`${intro} ${clue}.`);
 		}
 	}
-
-	console.log(clues);
 
 	return clues;
 }

@@ -86,30 +86,35 @@ const en = {
 			'{sex:string|{male: he, female: she}} wanted to know if there were any five-star hotels near'
 		],
 		language: [
-			'had a {language:string} dictionary in {sex:string|{male: his, female: her}} pocket',
-			'was carrying a {language:string} phrase book'
+			'{sex:string|{male: he, female: she}} had a {language:string} dictionary in {sex:string|{male: his, female: her}} pocket',
+			'{sex:string|{male: he, female: she}} was carrying a {language:string} phrase book'
 		],
 		currency: [
-			'changed {sex:string|{male: his, female: her}} money to {currency:string}',
-			'asked about the exchange rate for {currency:string}',
-			'wanted to know how much {currency:string} were worth'
+			'{sex:string|{male: he, female: she}} changed {sex:string|{male: his, female: her}} money to {currency:string}',
+			'{sex:string|{male: he, female: she}} asked about the exchange rate for {currency:string}',
+			'{sex:string|{male: he, female: she}} wanted to know how much {currency:string} were worth'
 		],
 		object: [
-			'was carrying a',
-			'wanted to get',
-			'wanted to sell',
-			'asked where to find',
-			'was looking for'
+			'{sex:string|{male: he, female: she}} was carrying a',
+			'{sex:string|{male: he, female: she}} wanted to get',
+			'{sex:string|{male: he, female: she}} wanted to sell',
+			'{sex:string|{male: he, female: she}} asked where to find',
+			'{sex:string|{male: he, female: she}} was looking for'
 		],
-		topic: ['was researching', 'wanted to study', 'was interested in', 'asked about'],
+		topic: [
+			'{sex:string|{male: he, female: she}} was researching',
+			'{sex:string|{male: he, female: she}} wanted to study',
+			'{sex:string|{male: he, female: she}} was interested in',
+			'{sex:string|{male: he, female: she}} asked about'
+		],
 		plane: [
-			'left in a plane with a {flag:string} on its wing',
-			'was in a rush to catch a plane with a {flag:string} on its wing',
-			'flew away on a plane with a {flag:string} on its tail'
+			'{sex:string|{male: he, female: she}} left in a plane with a {flag:string} on its wing',
+			'{sex:string|{male: he, female: she}} was in a rush to catch a plane with a {flag:string} on its wing',
+			'{sex:string|{male: he, female: she}} flew away on a plane with a {flag:string} on its tail'
 		],
 		ship: [
-			'sailed away on a ship flying a {flag:string} flag',
-			'left on a ship with a {flag:string} flag'
+			'{sex:string|{male: he, female: she}} sailed away on a ship flying a {flag:string} flag',
+			'{sex:string|{male: he, female: she}} left on a ship with a {flag:string} flag'
 		],
 		finalRound: [
 			"The word is out, you're getting too close gumshoe...",
