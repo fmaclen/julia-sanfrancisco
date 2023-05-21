@@ -121,6 +121,12 @@ const en = {
 			'Rumor has it that the gang is in town somewhere.',
 			'All I know is that something suspicious is happening in town.',
 			'The only thing I can tell you is to watch your step.'
+		],
+		decoy: [
+			"Didn't see anyone matching that description.",
+			"Sorry, I haven't noticed anything suspicious around here.",
+			"Sorry, I haven't seen anybody like that around here.",
+			"Haven't seen anybody that looks like that."
 		]
 	},
 	scenes: {

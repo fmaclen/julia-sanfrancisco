@@ -4,7 +4,8 @@ import type { Suspect } from '$lib/suspects';
 import en from '../i18n/en';
 import { typesafeI18nObject } from 'typesafe-i18n';
 
-const NEED_TO_IMPORT_THIS = 'en';
+const NEED_TO_IMPORT_THIS = 'en'; // FIXME!!!!!!!!!!!!!!!
+console.warn('HARCODED TO ENGLISH, MUST MAKE IT DYNAMIC BEFORE MERGING');
 
 const LL = typesafeI18nObject(NEED_TO_IMPORT_THIS, en);
 
@@ -18,7 +19,8 @@ interface ClueSources {
 		| 'topic'
 		| 'plane'
 		| 'ship'
-		| 'finalRound';
+		| 'finalRound'
+		| 'decoy';
 	atlas?: Atlas;
 	suspect?: Suspect;
 }
@@ -113,11 +115,6 @@ export function generateClues(atlas: Atlas, suspect: Suspect, place: Place): str
 	return clues;
 }
 
-export function getDecoyClues(place: string): string[] {
-	return [
-		"Didn't see anyone matching that description.",
-		`Sorry, I haven't noticed anything suspicious around the ${place}.`,
-		"Sorry, I haven't seen anybody like that around here.",
-		`I've never seen anyone like that around the ${place}.`
-	];
+export function getDecoyClues(): string[] {
+	return getTranslatedClues({ type: 'decoy' });
 }
