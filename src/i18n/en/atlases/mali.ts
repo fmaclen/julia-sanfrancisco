@@ -1,6 +1,4 @@
-import type { Atlas } from '$lib/atlases';
-
-export const MALI: Atlas = {
+export const mali = {
 	city: 'Bamako',
 	descriptions: [
 		'Bamako, located on the Niger River, is one of the fastest growing cities in Africa, known for its bustling markets and vibrant music scene.',

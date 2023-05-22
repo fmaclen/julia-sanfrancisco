@@ -1,6 +1,4 @@
-import type { Atlas } from '$lib/atlases';
-
-export const IRAQ: Atlas = {
+export const iraq = {
 	city: 'Baghdad',
 	descriptions: [
 		'Baghdad, the capital of Iraq, is one of the largest cities in the Arab world.',

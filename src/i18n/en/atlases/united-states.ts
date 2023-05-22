@@ -1,6 +1,4 @@
-import type { Atlas } from '$lib/atlases';
-
-export const USA: Atlas = {
+export const unitedStates = {
 	city: 'New York',
 	descriptions: [
 		'New York, often called New York City to distinguish it from the state of New York, is the most populous city in the United States.',

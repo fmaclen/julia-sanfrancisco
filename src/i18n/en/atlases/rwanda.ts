@@ -1,6 +1,4 @@
-import type { Atlas } from '$lib/atlases';
-
-export const RWANDA: Atlas = {
+export const rwanda = {
 	city: 'Kigali',
 	descriptions: [
 		'Kigali, the capital of Rwanda, is a vibrant city nestled in the heart of the country.',

@@ -1,6 +1,4 @@
-import type { Atlas } from '$lib/atlases';
-
-export const JAPAN: Atlas = {
+export const japan = {
 	city: 'Tokyo',
 	descriptions: [
 		'Tokyo, the capital city of Japan, is a bustling metropolis known for its blend of modern living and old traditions.',

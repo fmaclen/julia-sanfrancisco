@@ -1,6 +1,4 @@
-import type { Atlas } from '$lib/atlases';
-
-export const ITALY: Atlas = {
+export const italy = {
 	city: 'Rome',
 	descriptions: [
 		'Rome, the capital of Italy, is home to nearly 3 million people and boasts a rich history dating back to its founding in 753 BC.',

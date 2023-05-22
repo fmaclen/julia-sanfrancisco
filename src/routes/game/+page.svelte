@@ -83,7 +83,13 @@
 			// There should always be a way to return to the round where the suspect trail was lost
 			const anchorDestination = rounds[currentRoundIndex].atlas;
 			if (isDecoyRound) {
-				currentRound = getDecoyRound(destination, anchorDestination);
+				console.warn('Need to generate decoy round properly');
+				currentRound = {
+					atlas: destination,
+					scenes: [],
+					destinations: []
+				};
+				// currentRound = generateDecoyRound(destination, anchorDestination);
 				game.roundDecoy = currentRound;
 			} else {
 				game.roundDecoy = null;

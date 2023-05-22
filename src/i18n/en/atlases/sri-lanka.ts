@@ -1,6 +1,4 @@
-import type { Atlas } from '$lib/atlases';
-
-export const SRI_LANKA: Atlas = {
+export const sriLanka = {
 	city: 'Colombo',
 	descriptions: [
 		'Colombo, the vibrant capital of Sri Lanka, is a bustling city with a mixture of modern life, colonial buildings, and ruins.',

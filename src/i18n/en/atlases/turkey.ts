@@ -1,6 +1,4 @@
-import type { Atlas } from '$lib/atlases';
-
-export const TURKEY: Atlas = {
+export const turkey = {
 	city: 'Istanbul',
 	descriptions: [
 		"Istanbul, Turkey's largest city, straddles the Bosphorus strait, and its skyline is studded with domes and minarets.",

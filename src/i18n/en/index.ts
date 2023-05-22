@@ -9,6 +9,26 @@ import { egypt } from './atlases/egypt';
 import { france } from './atlases/france';
 import { greece } from './atlases/greece';
 import { hungary } from './atlases/hungary';
+import { iceland } from './atlases/iceland';
+import { india } from './atlases/india';
+import { iraq } from './atlases/iraq';
+import { italy } from './atlases/italy';
+import { japan } from './atlases/japan';
+import { mali } from './atlases/mali';
+import { mexico } from './atlases/mexico';
+import { nepal } from './atlases/nepal';
+import { norway } from './atlases/norway';
+import { papuaNewGuinea } from './atlases/papua-new-guinea';
+import { peru } from './atlases/peru';
+import { russia } from './atlases/russia';
+import { rwanda } from './atlases/rwanda';
+import { sanMarino } from './atlases/san-marino';
+import { singapore } from './atlases/singapore';
+import { sriLanka } from './atlases/sri-lanka';
+import { thailand } from './atlases/thailand';
+import { turkey } from './atlases/turkey';
+import { unitedKingdom } from './atlases/united-kingdom';
+import { unitedStates } from './atlases/united-states';
 
 const en = {
 	home: {
@@ -101,7 +121,27 @@ const en = {
 		egypt,
 		france,
 		greece,
-		hungary
+		hungary,
+		iceland,
+		india,
+		iraq,
+		italy,
+		japan,
+		mali,
+		mexico,
+		nepal,
+		norway,
+		papuaNewGuinea,
+		peru,
+		russia,
+		rwanda,
+		sanMarino,
+		singapore,
+		sriLanka,
+		thailand,
+		turkey,
+		unitedKingdom,
+		unitedStates
 	},
 	clues: {
 		introduction: [

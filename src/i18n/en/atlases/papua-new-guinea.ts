@@ -1,6 +1,4 @@
-import type { Atlas } from '$lib/atlases';
-
-export const PAPUA_NEW_GUINEA: Atlas = {
+export const papuaNewGuinea = {
 	city: 'Port Moresby',
 	descriptions: [
 		'Port Moresby, the capital city of Papua New Guinea, is located on the shores of the Gulf of Papua. The city is known for its vibrant markets and rich cultural history.',

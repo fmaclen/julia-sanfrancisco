@@ -1,6 +1,4 @@
-import type { Atlas } from '$lib/atlases';
-
-export const THAILAND: Atlas = {
+export const thailand = {
 	city: 'Bangkok',
 	descriptions: [
 		"Welcome to Bangkok, Thailand's vibrant capital city, known for its ornate shrines and bustling street life.",

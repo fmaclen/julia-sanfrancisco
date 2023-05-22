@@ -1,6 +1,4 @@
-import type { Atlas } from '$lib/atlases';
-
-export const SAN_MARINO: Atlas = {
+export const sanMarino = {
 	city: 'San Marino',
 	descriptions: [
 		"San Marino, one of the world's smallest countries, is a landlocked enclave in central Italy.",
