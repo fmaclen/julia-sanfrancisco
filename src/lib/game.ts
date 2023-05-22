@@ -191,10 +191,33 @@ function generateRounds(LL: TranslationFunctions, suspect: Suspect): Round[] {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+export function generateDecoyRound(
+	LL: TranslationFunctions,
+	currentAtlas: Atlas,
+	anchorAtlas: Atlas
+): Round {
+	const atlases = getLocalizedAtlases(LL);
+	const destinations = new Set<Atlas>();
+
+	// Make sure the user can come back to where the suspect was last seen
+	destinations.add(anchorAtlas);
+
+	// Fill out the rest destinations with random ones
+	setDecoyDestinations(destinations, currentAtlas, atlases);
+
+	return {
+		atlas: currentAtlas,
+		destinations: Array.from(destinations),
+		scenes: generateScenes({ LL, isRoundDecoy: true })
+	};
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 interface ScenesParams {
 	LL: TranslationFunctions;
-	nextRoundAtlas: Atlas;
-	suspect: Suspect;
+	nextRoundAtlas?: Atlas;
+	suspect?: Suspect;
 	isRoundFinal?: boolean;
 	isRoundDecoy?: boolean;
 }
@@ -276,10 +299,10 @@ function generateClues(params: ScenesParams, place: LocalizedPlace): string[] {
 
 		// All wildcards must be lowercase
 		const wildcards = {
-			sex: params.suspect.sex.toLowerCase(),
-			currency: params.nextRoundAtlas.currency.toLowerCase(),
-			language: params.nextRoundAtlas.language.toLowerCase(),
-			flag: params.nextRoundAtlas.flag.toLowerCase()
+			currency: params.nextRoundAtlas?.currency.toLowerCase(),
+			language: params.nextRoundAtlas?.language.toLowerCase(),
+			flag: params.nextRoundAtlas?.flag.toLowerCase(),
+			sex: params.suspect?.sex.toLowerCase()
 		};
 
 		const localizedClues: string[] = [];
@@ -326,13 +349,13 @@ function generateClues(params: ScenesParams, place: LocalizedPlace): string[] {
 
 		// No-place specific clues
 		for (const clue of sightClues) {
-			params.nextRoundAtlas.sights.forEach((place) => {
+			params.nextRoundAtlas?.sights.forEach((place) => {
 				clues.push(`${intro} ${clue} ${place}.`);
 			});
 		}
 
 		for (const clue of objectClues) {
-			params.nextRoundAtlas.objects.forEach((object) => {
+			params.nextRoundAtlas?.objects.forEach((object) => {
 				clues.push(`${intro} ${clue} ${object}.`);
 			});
 		}
@@ -357,8 +380,8 @@ function setDecoyDestinations(
 	while (destinations.size < MAX_DECOYS) {
 		const randomAtlas = getRandomValue(atlases);
 
-		// Do not add the current atlas as a possible destination
-		if (randomAtlas !== currentAtlas) destinations.add(randomAtlas);
+		// Do not add the current city as a possible destination
+		if (randomAtlas.city !== currentAtlas.city) destinations.add(randomAtlas);
 	}
 }
 

@@ -12,7 +12,7 @@
 	import type { TerminalLine } from '$lib/components/Terminal';
 	import Terminal from '$lib/components/Terminal.svelte';
 	import Time from '$lib/components/Time.svelte';
-	import { gameStore, type Game, type Atlas, type Round } from '$lib/game';
+	import { gameStore, type Game, type Atlas, type Round, generateDecoyRound } from '$lib/game';
 	import { getArtworkPath, getRandomValue, redirectTo } from '$lib/helpers';
 	import { playerStore, type Player, getCasesUntilPromotion, getRank } from '$lib/player';
 	import { onMount } from 'svelte';
@@ -60,7 +60,7 @@
 		});
 	}
 
-	async function setRound(destination: Atlas): Promise<void> {
+	async function setRound(currentAtlas: Atlas): Promise<void> {
 		showDestinations = false;
 		showDescription = false;
 		clock.isFlying = true;
@@ -68,10 +68,10 @@
 		transitionTo(() => {
 			const { rounds, currentRoundIndex } = game;
 
-			const isCurrentRound = rounds[currentRoundIndex].atlas === destination;
-			const isNextRound = rounds[currentRoundIndex + 1].atlas === destination;
+			const isCurrentRound = rounds[currentRoundIndex].atlas === currentAtlas;
+			const isNextRound = rounds[currentRoundIndex + 1].atlas === currentAtlas;
 			const isPreviousRound =
-				currentRoundIndex > 0 && rounds[currentRoundIndex - 1].atlas === destination;
+				currentRoundIndex > 0 && rounds[currentRoundIndex - 1].atlas === currentAtlas;
 
 			if (isCurrentRound) currentRound = rounds[currentRoundIndex];
 			if (isNextRound) game.currentRoundIndex += 1;
@@ -81,26 +81,10 @@
 			const isDecoyRound = !isCurrentRound && !isPreviousRound && !isNextRound;
 
 			// There should always be a way to return to the round where the suspect trail was lost
-			const anchorDestination = rounds[currentRoundIndex].atlas;
+			const anchorAtlas = rounds[currentRoundIndex].atlas;
 			if (isDecoyRound) {
-				////////////////////////////////////////////////////////////////////////////
-				////////////////////////////////////////////////////////////////////////////
-				////////////////////////////////////////////////////////////////////////////
-				////////////////////////////////////////////////////////////////////////////
+				currentRound = generateDecoyRound($LL, currentAtlas, anchorAtlas);
 
-				console.warn('Need to generate decoy round properly');
-				currentRound = {
-					atlas: destination,
-					scenes: [],
-					destinations: []
-				};
-
-				// currentRound = generateDecoyRound(destination, anchorDestination);
-
-				////////////////////////////////////////////////////////////////////////////
-				////////////////////////////////////////////////////////////////////////////
-				////////////////////////////////////////////////////////////////////////////
-				////////////////////////////////////////////////////////////////////////////
 				game.roundDecoy = currentRound;
 			} else {
 				game.roundDecoy = null;

@@ -23,7 +23,7 @@
 	let gameLines: TerminalLine[] | null = null;
 
 	function setPlayer() {
-		playerStore.set({ name: playerName, score: 0, language: $locale });
+		playerStore.set({ name: playerName, score: 0, locale: $locale });
 	}
 
 	function setGame() {
