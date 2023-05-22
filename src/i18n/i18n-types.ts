@@ -50,10 +50,10 @@ type RootTranslation = {
 				 */
 				line2: RequiredParams<'treasure'>
 				/**
-				 * {​s​e​x​}​ ​h​a​s​ ​b​e​e​n​ ​r​e​p​o​r​t​e​d​ ​a​t​ ​t​h​e​ ​s​c​e​n​e​ ​o​f​ ​t​h​e​ ​c​r​i​m​e​.
-				 * @param {string} sex
+				 * {​s​e​x​|​{​m​a​l​e​:​ ​A​ ​m​a​n​,​ ​f​e​m​a​l​e​:​ ​A​ ​w​o​m​a​n​}​}​ ​h​a​s​ ​b​e​e​n​ ​r​e​p​o​r​t​e​d​ ​a​t​ ​t​h​e​ ​s​c​e​n​e​ ​o​f​ ​t​h​e​ ​c​r​i​m​e​.
+				 * @param {'male' | 'female'} sex
 				 */
-				line3: RequiredParams<'sex'>
+				line3: RequiredParams<`sex|{male:${string}, female:${string}}`>
 			}
 		}
 		assignment: {
@@ -165,10 +165,6 @@ type RootTranslation = {
 			ready: RequiredParams<'name' | 'rank'>
 		}
 		actions: {
-			/**
-			 * Q​u​i​t
-			 */
-			quit: string
 			/**
 			 * W​a​l​k​ ​t​o
 			 */
@@ -3814,9 +3810,9 @@ export type TranslationFunctions = {
 				 */
 				line2: (arg: { treasure: string }) => LocalizedString
 				/**
-				 * {sex} has been reported at the scene of the crime.
+				 * {sex|{male: A man, female: A woman}} has been reported at the scene of the crime.
 				 */
-				line3: (arg: { sex: string }) => LocalizedString
+				line3: (arg: { sex: 'male' | 'female' }) => LocalizedString
 			}
 		}
 		assignment: {
@@ -3914,10 +3910,6 @@ export type TranslationFunctions = {
 			ready: (arg: { name: string, rank: string }) => LocalizedString
 		}
 		actions: {
-			/**
-			 * Quit
-			 */
-			quit: () => LocalizedString
 			/**
 			 * Walk to
 			 */

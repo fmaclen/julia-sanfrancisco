@@ -1,5 +1,5 @@
 import { browser } from '$app/environment';
-import type { TranslationFunctions } from '$i18n/i18n-types';
+import type { Translation, TranslationFunctions } from '$i18n/i18n-types';
 import { getRandomValue } from '$lib/helpers';
 import { writable } from 'svelte/store';
 import type { LocalizedString } from 'typesafe-i18n';
@@ -390,7 +390,7 @@ function getLocalizedSuspects(LL: TranslationFunctions): Suspect {
 	const suspects: Suspect[] = [];
 
 	for (const suspectIndex of suspectIndexes) {
-		const validatedSuspectIndex = suspectIndex as keyof typeof LL.suspects;
+		const validatedSuspectIndex = suspectIndex as keyof Translation['suspects'];
 
 		suspects.push({
 			name: LL.suspects[validatedSuspectIndex].name(),
@@ -410,7 +410,7 @@ function getLocalizedAtlases(LL: TranslationFunctions): Atlas[] {
 	const atlases: Atlas[] = [];
 
 	for (const atlasKey of atlaseKeys) {
-		const validKey = atlasKey as keyof typeof LL.atlases;
+		const validKey = atlasKey as keyof Translation['atlases'];
 
 		atlases.push({
 			city: LL.atlases[validKey].city(),
@@ -433,7 +433,7 @@ function getLocalizedPlaces(LL: TranslationFunctions): LocalizedPlace[] {
 	const places: LocalizedPlace[] = [];
 
 	for (const placeKey of placeKeys) {
-		const validKey = placeKey as keyof typeof LL.scenes.places;
+		const validKey = placeKey as keyof Translation['scenes']['places'];
 		const placeIndex = placeKey as keyof typeof Place;
 		places.push({ place: Place[placeIndex], name: LL.scenes.places[validKey]() });
 	}
@@ -491,7 +491,7 @@ function getLocalizedWitnesses(LL: TranslationFunctions, place: Place): Localize
 	const witnessesInPlace: LocalizedWitness[] = [];
 
 	for (const witnessKey of witnessKeys) {
-		const validKey = witnessKey as keyof typeof LL.scenes.witnesses;
+		const validKey = witnessKey as keyof Translation['scenes']['witnesses'];
 		const witnessIndex = witnessKey as keyof typeof Witness;
 		const witness = Witness[witnessIndex];
 
@@ -508,7 +508,7 @@ function getLocalizedFinalRoundClues(LL: TranslationFunctions): string[] {
 	const finalRoundClues: string[] = [];
 
 	for (const finalRoundKey of finalRoundKeys) {
-		const validKey = finalRoundKey as keyof typeof LL.clues.finalRound;
+		const validKey = finalRoundKey as keyof Translation['clues']['finalRound'];
 		finalRoundClues.push(LL.clues.finalRound[validKey]());
 	}
 
@@ -520,7 +520,7 @@ function getLocalizedDecoyClues(LL: TranslationFunctions): string[] {
 	const decoyClues: string[] = [];
 
 	for (const decoyKey of decoyKeys) {
-		const validKey = decoyKey as keyof typeof LL.clues.decoy;
+		const validKey = decoyKey as keyof Translation['clues']['decoy'];
 		decoyClues.push(LL.clues.decoy[validKey]());
 	}
 

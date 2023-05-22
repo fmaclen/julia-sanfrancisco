@@ -1,4 +1,4 @@
-import type { BaseTranslation } from '$i18n-types';
+import type { BaseTranslation } from '$i18n/i18n-types';
 import { argentina } from './atlases/argentina';
 import { australia } from './atlases/australia';
 import { brazil } from './atlases/brazil';
@@ -44,7 +44,7 @@ const en = {
 			content: {
 				line1: 'National treasure stolen from {city:string}.',
 				line2: 'The treasure has been identified as {treasure:string}.',
-				line3: '{sex:string} has been reported at the scene of the crime.'
+				line3: '{sex|{male: A man, female: A woman}} has been reported at the scene of the crime.'
 			}
 		},
 		assignment: {
@@ -88,7 +88,6 @@ const en = {
 			ready: 'Ready for your next case, {rank:string} {name:string}?'
 		},
 		actions: {
-			quit: 'Quit',
 			walk: 'Walk to',
 			fly: 'Fly to'
 		}
