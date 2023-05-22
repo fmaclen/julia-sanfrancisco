@@ -309,13 +309,13 @@
 
 		<Nav>
 			{#if isGameWon}
-				<Button on:click={updateScore}>Continue</Button>
+				<Button on:click={updateScore}>{$LL.components.buttons.continue()}</Button>
 			{:else if isClueVisible}
-				<Button on:click={dismissClue}>Dismiss</Button>
+				<Button on:click={dismissClue}>{$LL.components.buttons.goBack()}</Button>
 			{:else if !isClockTicking}
-				<Button active={isWalking} on:click={walkTo}>Walk to</Button>
-				<Button active={isFlying} on:click={flyTo}>Fly to</Button>
-				<ButtonLink href="/">Quit</ButtonLink>
+				<Button active={isWalking} on:click={walkTo}>{$LL.game.actions.walk()}</Button>
+				<Button active={isFlying} on:click={flyTo}>{$LL.game.actions.fly()}</Button>
+				<ButtonLink href="/">{$LL.components.buttons.quit()}</ButtonLink>
 			{/if}
 		</Nav>
 	{/if}

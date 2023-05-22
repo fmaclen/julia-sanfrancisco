@@ -63,7 +63,9 @@
 				text: $LL.headquarters.newsflash.content.line2({ treasure: $gameStore.stolenTreasure })
 			},
 			{
-				text: $LL.headquarters.newsflash.content.line3({ sex: $gameStore.suspect.sex })
+				text: $LL.headquarters.newsflash.content.line3({
+					sex: $gameStore.suspect.sex.toLowerCase() as 'male' | 'female'
+				})
 			}
 		];
 

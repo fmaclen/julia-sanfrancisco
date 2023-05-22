@@ -90,8 +90,8 @@ const es = {
 			ready: '¿Listo para tu próximo caso, {rank} {name}?'
 		},
 		actions: {
-			walk: 'Caminar hacia',
-			fly: 'Volar hacia'
+			walk: 'Caminar al',
+			fly: 'Volar a'
 		}
 	},
 	atlases: {
@@ -282,6 +282,7 @@ const es = {
 	components: {
 		loading: 'Cargando',
 		buttons: {
+			goBack: 'Volver',
 			continue: 'Continuar',
 			quit: 'Salir'
 		}

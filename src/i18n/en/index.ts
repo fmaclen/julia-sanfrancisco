@@ -298,6 +298,7 @@ const en = {
 	components: {
 		loading: 'Loading',
 		buttons: {
+			goBack: 'Go back',
 			continue: 'Continue',
 			quit: 'Quit'
 		}

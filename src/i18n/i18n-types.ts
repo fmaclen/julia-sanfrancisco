@@ -3764,6 +3764,10 @@ type RootTranslation = {
 		loading: string
 		buttons: {
 			/**
+			 * G​o​ ​b​a​c​k
+			 */
+			goBack: string
+			/**
 			 * C​o​n​t​i​n​u​e
 			 */
 			'continue': string
@@ -7470,6 +7474,10 @@ export type TranslationFunctions = {
 		 */
 		loading: () => LocalizedString
 		buttons: {
+			/**
+			 * Go back
+			 */
+			goBack: () => LocalizedString
 			/**
 			 * Continue
 			 */
