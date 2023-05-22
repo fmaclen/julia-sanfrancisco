@@ -8,12 +8,12 @@
 	import Nav from '$lib/components/Nav.svelte';
 	import P from '$lib/components/P.svelte';
 	import Section from '$lib/components/Section.svelte';
+	import type { TerminalLine } from '$lib/components/Terminal';
+	import Terminal from '$lib/components/Terminal.svelte';
 	import Time from '$lib/components/Time.svelte';
 	import { gameStore, generateGame } from '$lib/game';
 	import { getRank } from '$lib/player';
 	import { playerStore } from '$lib/player';
-	import type { TerminalLine } from '../../lib/components/Terminal';
-	import Terminal from '../../lib/components/Terminal.svelte';
 	import { onMount } from 'svelte';
 
 	let playerName: string;

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { PUBLIC_VERSION } from '$env/static/public';
-	import LL, { setLocale, locale } from '$i18n/i18n-svelte';
+	import LL, { locale } from '$i18n/i18n-svelte';
 	import Button from '$lib/components/Button.svelte';
 	import ButtonLink from '$lib/components/ButtonLink.svelte';
 	import H1 from '$lib/components/H1.svelte';
@@ -9,6 +9,7 @@
 	import Nav from '$lib/components/Nav.svelte';
 	import P from '$lib/components/P.svelte';
 	import Section from '$lib/components/Section.svelte';
+	import { applyLocale, playerStore } from '$lib/player';
 </script>
 
 <Main>
@@ -24,8 +25,12 @@
 
 	<Nav>
 		<Nav>
-			<Button disabled={$locale === 'en'} on:click={() => setLocale('en')}>EN</Button>
-			<Button disabled={$locale === 'es'} on:click={() => setLocale('es')}>ES</Button>
+			<Button disabled={$locale === 'en'} on:click={() => applyLocale('en', playerStore)}>
+				EN
+			</Button>
+			<Button disabled={$locale === 'es'} on:click={() => applyLocale('es', playerStore)}>
+				ES
+			</Button>
 		</Nav>
 		<ButtonLink href="/headquarters/">{$LL.home.newGame()}</ButtonLink>
 	</Nav>

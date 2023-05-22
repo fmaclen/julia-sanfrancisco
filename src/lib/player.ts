@@ -1,13 +1,14 @@
 import { browser } from '$app/environment';
-import { writable } from 'svelte/store';
+import { setLocale } from '$i18n/i18n-svelte';
+import type { Locales } from '$i18n/i18n-types';
+import { loadLocale } from '$i18n/i18n-util.sync';
+import { writable, type Writable } from 'svelte/store';
 
 export interface Player {
 	name: string;
 	score: number;
-	language: Language;
+	locale: Locales;
 }
-
-export type Language = 'en' | 'es';
 
 export enum Rank {
 	ROOKIE, // 0 cases
@@ -56,4 +57,15 @@ export function getCasesUntilPromotion(score: number): number {
 	else return 0;
 
 	return cases;
+}
+
+export function applyLocale(locale: Locales, playerStore: Writable<Player | null>) {
+	loadLocale(locale);
+	setLocale(locale);
+
+	if (playerLocalStorage) {
+		player = JSON.parse(playerLocalStorage) as Player;
+		player.locale = locale;
+		playerStore.set(player);
+	}
 }

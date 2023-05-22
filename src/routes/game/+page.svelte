@@ -9,12 +9,12 @@
 	import Nav from '$lib/components/Nav.svelte';
 	import P from '$lib/components/P.svelte';
 	import Section from '$lib/components/Section.svelte';
+	import type { TerminalLine } from '$lib/components/Terminal';
+	import Terminal from '$lib/components/Terminal.svelte';
 	import Time from '$lib/components/Time.svelte';
 	import { gameStore, type Game, type Atlas, type Round } from '$lib/game';
 	import { getArtworkPath, getRandomValue, redirectTo } from '$lib/helpers';
 	import { playerStore, type Player, getCasesUntilPromotion, getRank } from '$lib/player';
-	import type { TerminalLine } from '../../lib/components/Terminal';
-	import Terminal from '../../lib/components/Terminal.svelte';
 	import { onMount } from 'svelte';
 	import type { LocalizedString } from 'typesafe-i18n';
 
@@ -83,13 +83,24 @@
 			// There should always be a way to return to the round where the suspect trail was lost
 			const anchorDestination = rounds[currentRoundIndex].atlas;
 			if (isDecoyRound) {
+				////////////////////////////////////////////////////////////////////////////
+				////////////////////////////////////////////////////////////////////////////
+				////////////////////////////////////////////////////////////////////////////
+				////////////////////////////////////////////////////////////////////////////
+
 				console.warn('Need to generate decoy round properly');
 				currentRound = {
 					atlas: destination,
 					scenes: [],
 					destinations: []
 				};
+
 				// currentRound = generateDecoyRound(destination, anchorDestination);
+
+				////////////////////////////////////////////////////////////////////////////
+				////////////////////////////////////////////////////////////////////////////
+				////////////////////////////////////////////////////////////////////////////
+				////////////////////////////////////////////////////////////////////////////
 				game.roundDecoy = currentRound;
 			} else {
 				game.roundDecoy = null;

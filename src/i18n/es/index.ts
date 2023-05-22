@@ -1,5 +1,5 @@
+import type { Translation } from '$i18n-types';
 import en from '../en';
-import type { Translation } from '../i18n-types';
 import { argentina } from './atlases/argentina';
 
 const es = {
