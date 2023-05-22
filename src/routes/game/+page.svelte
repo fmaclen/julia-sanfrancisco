@@ -1,6 +1,5 @@
 <script lang="ts">
 	import LL from '$i18n/i18n-svelte';
-	import type { Atlas } from '$lib/atlases';
 	import Clock, { DELAY_IN_MS } from '$lib/clock';
 	import Button from '$lib/components/Button.svelte';
 	import ButtonLink from '$lib/components/ButtonLink.svelte';
@@ -11,10 +10,9 @@
 	import P from '$lib/components/P.svelte';
 	import Section from '$lib/components/Section.svelte';
 	import Time from '$lib/components/Time.svelte';
-	import { gameStore, type Game } from '$lib/game';
+	import { gameStore, type Game, type Atlas, type Round } from '$lib/game';
 	import { getArtworkPath, getRandomValue, redirectTo } from '$lib/helpers';
 	import { playerStore, type Player, getCasesUntilPromotion, getRank } from '$lib/player';
-	import { getDecoyRound, type Round } from '$lib/rounds';
 	import type { TerminalLine } from '../../lib/components/Terminal';
 	import Terminal from '../../lib/components/Terminal.svelte';
 	import { onMount } from 'svelte';

@@ -1,4 +1,14 @@
 import type { BaseTranslation } from '../i18n-types';
+import { argentina } from './atlases/argentina';
+import { australia } from './atlases/australia';
+import { brazil } from './atlases/brazil';
+import { canada } from './atlases/canada';
+import { china } from './atlases/china';
+import { comoros } from './atlases/comoros';
+import { egypt } from './atlases/egypt';
+import { france } from './atlases/france';
+import { greece } from './atlases/greece';
+import { hungary } from './atlases/hungary';
 
 const en = {
 	home: {
@@ -63,6 +73,36 @@ const en = {
 			fly: 'Fly to'
 		}
 	},
+	suspects: {
+		1: {
+			name: 'Julia Sanfrancisco',
+			hobby: 'Mountain climbing',
+			hair: 'Brown',
+			feature: 'Mole on her left cheek',
+			vehicle: 'Convertible',
+			sex: 'Female'
+		},
+		2: {
+			name: 'Pedro Sanantonio',
+			hobby: 'Sailing',
+			hair: 'Black',
+			feature: 'Scar on his right cheek',
+			vehicle: 'Motorcycle',
+			sex: 'Male'
+		}
+	},
+	atlases: {
+		argentina,
+		australia,
+		brazil,
+		china,
+		comoros,
+		canada,
+		egypt,
+		france,
+		greece,
+		hungary
+	},
 	clues: {
 		introduction: [
 			"I saw the person you're looking for and",
@@ -74,7 +114,7 @@ const en = {
 			'A suspicious person was here and',
 			'I heard'
 		],
-		place: [
+		sight: [
 			'{sex:string|{male: he, female: she}} said {sex:string|{male: he, female: she}} wanted to photograph',
 			'{sex:string|{male: he, female: she}} asked for a map of',
 			'{sex:string|{male: he, female: she}} planned to visit',

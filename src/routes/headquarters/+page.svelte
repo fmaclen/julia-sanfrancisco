@@ -16,85 +16,83 @@
 	import Terminal from '../../lib/components/Terminal.svelte';
 	import { onMount } from 'svelte';
 
-	let isLoading: boolean = true;
 	let playerName: string;
+	let playerRank: string = '';
+	let isLoading: boolean = true;
+	let playerLines: TerminalLine[] = [];
+	let gameLines: TerminalLine[] | null = null;
 
 	function setPlayer() {
 		playerStore.set({ name: playerName, score: 0, language: $locale });
 	}
 
 	function setGame() {
-		const newGame = generateGame();
+		const newGame = generateGame($LL);
 		gameStore.set(newGame);
 	}
 
-	let playerLines: TerminalLine[] = [];
-	let gameLines: TerminalLine[] | null = null;
+	$: if ($playerStore) {
+		const playerRankIndex = getRank($playerStore.score);
+		playerRank = $LL.player.ranks[playerRankIndex]();
 
-	$: {
-		if ($playerStore) {
-			const playerRankIndex = getRank($playerStore.score);
-			let playerRank = $LL.player.ranks[playerRankIndex]();
-
-			if ($gameStore) {
-				const newsFlash: TerminalLine[] = [
-					{
-						text: `** ${$LL.headquarters.newsflash.title()} **`,
-						type: 'title'
-					},
-					{
-						text: $LL.headquarters.newsflash.content.line1({
-							city: $gameStore.rounds[0].atlas.city
-						})
-					},
-					{
-						text: $LL.headquarters.newsflash.content.line2({ treasure: $gameStore.stolenTreasure })
-					},
-					{
-						text: $LL.headquarters.newsflash.content.line3({ sex: $gameStore.suspect.sex })
-					}
-				];
-
-				const assignment: TerminalLine[] = [
-					{
-						type: 'line-break'
-					},
-					{
-						text: $LL.headquarters.assignment.title(),
-						type: 'title'
-					},
-					{
-						text: $LL.headquarters.assignment.content.line1({
-							city: $gameStore.rounds[0].atlas.city,
-							sex: $gameStore.suspect.sex.toLowerCase()
-						})
-					},
-					{
-						text: $LL.headquarters.assignment.content.line2()
-					},
-					{
-						text: $LL.headquarters.assignment.content.line3({
-							rank: playerRank,
-							name: $playerStore.name
-						})
-					}
-				];
-
-				gameLines = [...newsFlash, ...assignment];
+		playerLines = [
+			{
+				text: $LL.headquarters.id.indentified({ name: $playerStore.name })
+			},
+			{
+				type: 'line-break'
+			},
+			{
+				text: $LL.headquarters.id.rank({ rank: playerRank.toLowerCase() })
 			}
+		];
+	}
 
-			playerLines = [
-				{
-					text: $LL.headquarters.id.indentified({ name: $playerStore.name })
-				},
-				{
-					type: 'line-break'
-				},
-				{
-					text: $LL.headquarters.id.rank({ rank: playerRank.toLowerCase() })
-				}
-			];
-		}
+	$: if ($playerStore && $gameStore) {
+		const newsFlash: TerminalLine[] = [
+			{
+				text: `** ${$LL.headquarters.newsflash.title()} **`,
+				type: 'title'
+			},
+			{
+				text: $LL.headquarters.newsflash.content.line1({
+					city: $gameStore.rounds[0].atlas.city
+				})
+			},
+			{
+				text: $LL.headquarters.newsflash.content.line2({ treasure: $gameStore.stolenTreasure })
+			},
+			{
+				text: $LL.headquarters.newsflash.content.line3({ sex: $gameStore.suspect.sex })
+			}
+		];
+
+		const assignment: TerminalLine[] = [
+			{
+				type: 'line-break'
+			},
+			{
+				text: $LL.headquarters.assignment.title(),
+				type: 'title'
+			},
+			{
+				text: $LL.headquarters.assignment.content.line1({
+					city: $gameStore.rounds[0].atlas.city,
+					sex: $gameStore.suspect.sex.toLowerCase()
+				})
+			},
+			{
+				text: $LL.headquarters.assignment.content.line2()
+			},
+			{
+				text: $LL.headquarters.assignment.content.line3({
+					rank: playerRank,
+					name: $playerStore.name
+				})
+			}
+		];
+
+		gameLines = [...newsFlash, ...assignment];
 	}
 
 	onMount(() => (isLoading = false));

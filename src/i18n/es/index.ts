@@ -1,5 +1,6 @@
 import en from '../en';
 import type { Translation } from '../i18n-types';
+import { argentina } from './atlases/argentina';
 
 const es = {
 	...(en as Translation), // Fall back to English
@@ -60,6 +61,9 @@ const es = {
 			},
 			ready: '¿Listo para tu próximo caso, {rank} {name}?'
 		}
+	},
+	atlases: {
+		argentina
 	},
 	player: {
 		ranks: {

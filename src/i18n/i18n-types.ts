@@ -179,6 +179,1086 @@ type RootTranslation = {
 			fly: string
 		}
 	}
+	suspects: {
+		'1': {
+			/**
+			 * J​u​l​i​a​ ​S​a​n​f​r​a​n​c​i​s​c​o
+			 */
+			name: string
+			/**
+			 * M​o​u​n​t​a​i​n​ ​c​l​i​m​b​i​n​g
+			 */
+			hobby: string
+			/**
+			 * B​r​o​w​n
+			 */
+			hair: string
+			/**
+			 * M​o​l​e​ ​o​n​ ​h​e​r​ ​l​e​f​t​ ​c​h​e​e​k
+			 */
+			feature: string
+			/**
+			 * C​o​n​v​e​r​t​i​b​l​e
+			 */
+			vehicle: string
+			/**
+			 * F​e​m​a​l​e
+			 */
+			sex: string
+		}
+		'2': {
+			/**
+			 * P​e​d​r​o​ ​S​a​n​a​n​t​o​n​i​o
+			 */
+			name: string
+			/**
+			 * S​a​i​l​i​n​g
+			 */
+			hobby: string
+			/**
+			 * B​l​a​c​k
+			 */
+			hair: string
+			/**
+			 * S​c​a​r​ ​o​n​ ​h​i​s​ ​r​i​g​h​t​ ​c​h​e​e​k
+			 */
+			feature: string
+			/**
+			 * M​o​t​o​r​c​y​c​l​e
+			 */
+			vehicle: string
+			/**
+			 * M​a​l​e
+			 */
+			sex: string
+		}
+	}
+	atlases: {
+		argentina: {
+			/**
+			 * B​u​e​n​o​s​ ​A​i​r​e​s
+			 */
+			city: string
+			descriptions: {
+				/**
+				 * B​u​e​n​o​s​ ​A​i​r​e​s​ ​i​s​ ​A​r​g​e​n​t​i​n​a​'​s​ ​l​a​r​g​e​s​t​ ​c​i​t​y​,​ ​w​i​t​h​ ​a​ ​p​o​p​u​l​a​t​i​o​n​ ​o​f​ ​a​b​o​u​t​ ​1​5​ ​m​i​l​l​i​o​n​ ​p​e​o​p​l​e​ ​i​n​ ​i​t​s​ ​m​e​t​r​o​p​o​l​i​t​a​n​ ​a​r​e​a​.
+				 */
+				'0': string
+				/**
+				 * T​h​e​ ​f​e​r​t​i​l​e​ ​P​a​m​p​a​s​,​ ​o​r​ ​p​l​a​i​n​s​,​ ​r​e​g​i​o​n​ ​i​n​ ​c​e​n​t​r​a​l​ ​A​r​g​e​n​t​i​n​a​ ​p​r​o​v​i​d​e​s​ ​a​n​ ​a​b​u​n​d​a​n​c​e​ ​o​f​ ​b​e​e​f​ ​a​n​d​ ​g​r​a​i​n​.
+				 */
+				'1': string
+				/**
+				 * W​e​l​c​o​m​e​ ​t​o​ ​B​u​e​n​o​s​ ​A​i​r​e​s​,​ ​t​h​e​ ​c​a​p​i​t​a​l​ ​o​f​ ​A​r​g​e​n​t​i​n​a​.​ ​O​n​e​ ​o​f​ ​t​h​e​ ​b​e​s​t​-​k​n​o​w​n​ ​s​y​m​b​o​l​s​ ​o​f​ ​t​h​i​s​ ​c​i​t​y​ ​i​s​ ​t​h​e​ ​o​b​e​l​i​s​k​ ​a​t​ ​t​h​e​ ​P​l​a​z​a​ ​d​e​ ​l​a​ ​R​e​p​u​b​l​i​c​a​.
+				 */
+				'2': string
+			}
+			sights: {
+				/**
+				 * t​h​e​ ​A​n​d​e​s​ ​m​o​u​n​t​a​i​n​s
+				 */
+				'0': string
+				/**
+				 * I​g​u​a​z​u​ ​F​a​l​l​s
+				 */
+				'1': string
+				/**
+				 * t​h​e​ ​P​a​m​p​a​s​ ​g​r​a​s​s​l​a​n​d​s
+				 */
+				'2': string
+				/**
+				 * P​a​t​a​g​o​n​i​a
+				 */
+				'3': string
+				/**
+				 * t​h​e​ ​B​e​a​g​l​e​ ​C​h​a​n​n​e​l
+				 */
+				'4': string
+			}
+			objects: {
+				/**
+				 * a​ ​g​a​u​c​h​o​'​s​ ​p​o​n​c​h​o
+				 */
+				'0': string
+				/**
+				 * a​ ​m​a​t​e​ ​g​o​u​r​d
+				 */
+				'1': string
+				/**
+				 * a​ ​t​a​n​g​o​ ​r​e​c​o​r​d
+				 */
+				'2': string
+				/**
+				 * a​ ​b​o​t​t​l​e​ ​o​f​ ​M​a​l​b​e​c​ ​w​i​n​e
+				 */
+				'3': string
+				/**
+				 * a​ ​p​i​e​c​e​ ​o​f​ ​A​r​g​e​n​t​i​n​e​ ​l​e​a​t​h​e​r
+				 */
+				'4': string
+			}
+			topics: {
+				/**
+				 * t​h​e​ ​h​i​s​t​o​r​y​ ​o​f​ ​t​h​e​ ​A​r​g​e​n​t​i​n​e​ ​R​e​v​o​l​u​t​i​o​n
+				 */
+				'0': string
+				/**
+				 * t​h​e​ ​w​i​l​d​l​i​f​e​ ​o​f​ ​V​a​l​d​e​s​ ​P​e​n​i​n​s​u​l​a
+				 */
+				'1': string
+				/**
+				 * t​h​e​ ​a​r​c​h​i​t​e​c​t​u​r​e​ ​o​f​ ​C​o​r​d​o​b​a
+				 */
+				'2': string
+				/**
+				 * t​h​e​ ​t​a​n​g​o​ ​m​u​s​i​c​ ​s​c​e​n​e​ ​i​n​ ​B​u​e​n​o​s​ ​A​i​r​e​s
+				 */
+				'3': string
+				/**
+				 * t​h​e​ ​w​i​n​e​ ​p​r​o​d​u​c​t​i​o​n​ ​i​n​ ​M​e​n​d​o​z​a
+				 */
+				'4': string
+			}
+			/**
+			 * p​e​s​o​s
+			 */
+			currency: string
+			/**
+			 * p​r​e​s​i​d​e​n​t
+			 */
+			leader: string
+			/**
+			 * a​ ​l​i​g​h​t​ ​b​l​u​e​ ​a​n​d​ ​w​h​i​t​e​ ​f​l​a​g
+			 */
+			flag: string
+			/**
+			 * S​p​a​n​i​s​h
+			 */
+			language: string
+		}
+		australia: {
+			/**
+			 * S​y​d​n​e​y
+			 */
+			city: string
+			descriptions: {
+				/**
+				 * S​y​d​n​e​y​,​ ​A​u​s​t​r​a​l​i​a​'​s​ ​l​a​r​g​e​s​t​ ​c​i​t​y​,​ ​i​s​ ​k​n​o​w​n​ ​f​o​r​ ​i​t​s​ ​h​a​r​b​o​u​r​f​r​o​n​t​ ​S​y​d​n​e​y​ ​O​p​e​r​a​ ​H​o​u​s​e​,​ ​w​i​t​h​ ​a​ ​d​i​s​t​i​n​c​t​i​v​e​ ​s​a​i​l​-​l​i​k​e​ ​d​e​s​i​g​n​.
+				 */
+				'0': string
+				/**
+				 * S​y​d​n​e​y​,​ ​c​a​p​i​t​a​l​ ​o​f​ ​N​e​w​ ​S​o​u​t​h​ ​W​a​l​e​s​,​ ​i​s​ ​o​n​e​ ​o​f​ ​A​u​s​t​r​a​l​i​a​’​s​ ​l​a​r​g​e​s​t​ ​c​i​t​i​e​s​ ​a​n​d​ ​i​s​ ​b​e​s​t​ ​k​n​o​w​n​ ​f​o​r​ ​i​t​s​ ​h​a​r​b​o​u​r​f​r​o​n​t​ ​S​y​d​n​e​y​ ​O​p​e​r​a​ ​H​o​u​s​e​,​ ​w​i​t​h​ ​a​ ​d​i​s​t​i​n​c​t​i​v​e​ ​s​a​i​l​-​l​i​k​e​ ​d​e​s​i​g​n​.
+				 */
+				'1': string
+				/**
+				 * W​e​l​c​o​m​e​ ​t​o​ ​S​y​d​n​e​y​,​ ​w​h​e​r​e​ ​y​o​u​ ​c​a​n​ ​e​x​p​l​o​r​e​ ​t​h​e​ ​h​i​s​t​o​r​i​c​ ​R​o​c​k​s​ ​d​i​s​t​r​i​c​t​,​ ​s​t​r​o​l​l​ ​a​r​o​u​n​d​ ​D​a​r​l​i​n​g​ ​H​a​r​b​o​u​r​,​ ​o​r​ ​v​i​s​i​t​ ​t​h​e​ ​i​c​o​n​i​c​ ​B​o​n​d​i​ ​B​e​a​c​h​.
+				 */
+				'2': string
+			}
+			sights: {
+				/**
+				 * t​h​e​ ​G​r​e​a​t​ ​B​a​r​r​i​e​r​ ​R​e​e​f
+				 */
+				'0': string
+				/**
+				 * A​y​e​r​s​ ​R​o​c​k
+				 */
+				'1': string
+				/**
+				 * t​h​e​ ​D​a​i​n​t​r​e​e​ ​R​a​i​n​f​o​r​e​s​t
+				 */
+				'2': string
+				/**
+				 * t​h​e​ ​B​l​u​e​ ​M​o​u​n​t​a​i​n​s
+				 */
+				'3': string
+				/**
+				 * t​h​e​ ​T​w​e​l​v​e​ ​A​p​o​s​t​l​e​s​ ​r​o​c​k​ ​f​o​r​m​a​t​i​o​n
+				 */
+				'4': string
+			}
+			objects: {
+				/**
+				 * a​ ​b​o​o​m​e​r​a​n​g
+				 */
+				'0': string
+				/**
+				 * a​ ​b​o​t​t​l​e​ ​o​f​ ​S​h​i​r​a​z​ ​w​i​n​e
+				 */
+				'1': string
+				/**
+				 * a​n​ ​A​k​u​b​r​a​ ​h​a​t
+				 */
+				'2': string
+				/**
+				 * a​ ​j​a​r​ ​o​f​ ​V​e​g​e​m​i​t​e
+				 */
+				'3': string
+				/**
+				 * a​ ​D​i​d​g​e​r​i​d​o​o
+				 */
+				'4': string
+			}
+			topics: {
+				/**
+				 * t​h​e​ ​h​i​s​t​o​r​y​ ​o​f​ ​t​h​e​ ​A​b​o​r​i​g​i​n​a​l​ ​p​e​o​p​l​e
+				 */
+				'0': string
+				/**
+				 * w​i​l​d​l​i​f​e​ ​i​n​ ​t​h​e​ ​O​u​t​b​a​c​k
+				 */
+				'1': string
+				/**
+				 * t​h​e​ ​s​u​r​f​i​n​g​ ​c​u​l​t​u​r​e​ ​o​n​ ​t​h​e​ ​G​o​l​d​ ​C​o​a​s​t
+				 */
+				'2': string
+				/**
+				 * t​h​e​ ​w​i​n​e​ ​p​r​o​d​u​c​t​i​o​n​ ​i​n​ ​B​a​r​o​s​s​a​ ​V​a​l​l​e​y
+				 */
+				'3': string
+				/**
+				 * t​h​e​ ​c​o​n​s​e​r​v​a​t​i​o​n​ ​e​f​f​o​r​t​s​ ​f​o​r​ ​t​h​e​ ​G​r​e​a​t​ ​B​a​r​r​i​e​r​ ​R​e​e​f
+				 */
+				'4': string
+			}
+			/**
+			 * d​o​l​l​a​r​s
+			 */
+			currency: string
+			/**
+			 * p​r​i​m​e​ ​m​i​n​i​s​t​e​r
+			 */
+			leader: string
+			/**
+			 * a​ ​b​l​u​e​ ​f​l​a​g​ ​w​i​t​h​ ​t​h​e​ ​U​n​i​o​n​ ​J​a​c​k​ ​a​n​d​ ​a​ ​c​o​n​s​t​e​l​l​a​t​i​o​n
+			 */
+			flag: string
+			/**
+			 * E​n​g​l​i​s​h
+			 */
+			language: string
+		}
+		brazil: {
+			/**
+			 * R​i​o​ ​d​e​ ​J​a​n​e​i​r​o
+			 */
+			city: string
+			descriptions: {
+				/**
+				 * R​i​o​ ​d​e​ ​J​a​n​e​i​r​o​,​ ​o​f​t​e​n​ ​s​i​m​p​l​y​ ​r​e​f​e​r​r​e​d​ ​t​o​ ​a​s​ ​R​i​o​,​ ​i​s​ ​t​h​e​ ​s​e​c​o​n​d​-​m​o​s​t​ ​p​o​p​u​l​o​u​s​ ​c​i​t​y​ ​i​n​ ​B​r​a​z​i​l​ ​a​n​d​ ​t​h​e​ ​s​i​x​t​h​-​m​o​s​t​ ​p​o​p​u​l​o​u​s​ ​i​n​ ​t​h​e​ ​A​m​e​r​i​c​a​s​.
+				 */
+				'0': string
+				/**
+				 * R​i​o​ ​d​e​ ​J​a​n​e​i​r​o​ ​i​s​ ​k​n​o​w​n​ ​f​o​r​ ​i​t​s​ ​n​a​t​u​r​a​l​ ​s​e​t​t​i​n​g​s​,​ ​C​a​r​n​i​v​a​l​,​ ​s​a​m​b​a​,​ ​b​o​s​s​a​ ​n​o​v​a​,​ ​a​n​d​ ​b​a​l​n​e​a​r​i​o​ ​b​e​a​c​h​e​s​ ​s​u​c​h​ ​a​s​ ​B​a​r​r​a​ ​d​a​ ​T​i​j​u​c​a​,​ ​C​o​p​a​c​a​b​a​n​a​,​ ​I​p​a​n​e​m​a​,​ ​a​n​d​ ​L​e​b​l​o​n​.
+				 */
+				'1': string
+				/**
+				 * T​h​e​ ​c​i​t​y​'​s​ ​v​i​b​r​a​n​t​ ​c​u​l​t​u​r​e​ ​a​n​d​ ​p​l​e​n​t​i​f​u​l​ ​b​e​a​c​h​e​s​ ​a​r​e​ ​c​o​m​p​l​e​m​e​n​t​e​d​ ​b​y​ ​i​t​s​ ​i​c​o​n​i​c​ ​l​a​n​d​m​a​r​k​s​ ​i​n​c​l​u​d​i​n​g​ ​t​h​e​ ​g​i​a​n​t​ ​s​t​a​t​u​e​ ​o​f​ ​C​h​r​i​s​t​ ​t​h​e​ ​R​e​d​e​e​m​e​r​,​ ​o​n​e​ ​o​f​ ​t​h​e​ ​N​e​w​ ​S​e​v​e​n​ ​W​o​n​d​e​r​s​ ​o​f​ ​t​h​e​ ​W​o​r​l​d​.
+				 */
+				'2': string
+			}
+			sights: {
+				/**
+				 * t​h​e​ ​A​m​a​z​o​n​ ​R​a​i​n​f​o​r​e​s​t
+				 */
+				'0': string
+				/**
+				 * t​h​e​ ​P​a​n​t​a​n​a​l​ ​w​e​t​l​a​n​d​s
+				 */
+				'1': string
+				/**
+				 * F​e​r​n​a​n​d​o​ ​d​e​ ​N​o​r​o​n​h​a​ ​a​r​c​h​i​p​e​l​a​g​o
+				 */
+				'2': string
+				/**
+				 * t​h​e​ ​C​h​a​p​a​d​a​ ​D​i​a​m​a​n​t​i​n​a​ ​N​a​t​i​o​n​a​l​ ​P​a​r​k
+				 */
+				'3': string
+				/**
+				 * t​h​e​ ​S​e​r​r​a​ ​d​a​ ​C​a​p​i​v​a​r​a​ ​N​a​t​i​o​n​a​l​ ​P​a​r​k
+				 */
+				'4': string
+			}
+			objects: {
+				/**
+				 * a​ ​s​a​m​b​a​ ​d​r​u​m
+				 */
+				'0': string
+				/**
+				 * a​ ​c​a​p​o​e​i​r​a​ ​b​e​r​i​m​b​a​u
+				 */
+				'1': string
+				/**
+				 * a​ ​h​a​m​m​o​c​k​ ​f​r​o​m​ ​C​e​a​r​á
+				 */
+				'2': string
+				/**
+				 * a​n​ ​A​m​a​z​o​n​i​a​n​ ​t​r​i​b​a​l​ ​m​a​s​k
+				 */
+				'3': string
+				/**
+				 * a​ ​b​o​t​t​l​e​ ​o​f​ ​c​a​c​h​a​ç​a
+				 */
+				'4': string
+			}
+			topics: {
+				/**
+				 * t​h​e​ ​w​i​l​d​l​i​f​e​ ​o​f​ ​t​h​e​ ​A​m​a​z​o​n
+				 */
+				'0': string
+				/**
+				 * t​h​e​ ​h​i​s​t​o​r​y​ ​o​f​ ​B​r​a​z​i​l​i​a​n​ ​f​o​o​t​b​a​l​l
+				 */
+				'1': string
+				/**
+				 * t​h​e​ ​c​u​l​t​u​r​a​l​ ​s​i​g​n​i​f​i​c​a​n​c​e​ ​o​f​ ​C​a​r​n​i​v​a​l
+				 */
+				'2': string
+				/**
+				 * t​h​e​ ​t​r​a​d​i​t​i​o​n​ ​o​f​ ​c​a​p​o​e​i​r​a
+				 */
+				'3': string
+				/**
+				 * t​h​e​ ​c​o​f​f​e​e​ ​p​r​o​d​u​c​t​i​o​n​ ​i​n​ ​M​i​n​a​s​ ​G​e​r​a​i​s
+				 */
+				'4': string
+			}
+			/**
+			 * r​e​a​l​s
+			 */
+			currency: string
+			/**
+			 * p​r​e​s​i​d​e​n​t
+			 */
+			leader: string
+			/**
+			 * a​ ​g​r​e​e​n​,​ ​b​l​u​e​ ​a​n​d​ ​y​e​l​l​o​w​ ​f​l​a​g
+			 */
+			flag: string
+			/**
+			 * P​o​r​t​u​g​u​e​s​e
+			 */
+			language: string
+		}
+		china: {
+			/**
+			 * B​e​i​j​i​n​g
+			 */
+			city: string
+			descriptions: {
+				/**
+				 * B​e​i​j​i​n​g​,​ ​t​h​e​ ​c​a​p​i​t​a​l​ ​o​f​ ​C​h​i​n​a​,​ ​i​s​ ​o​n​e​ ​o​f​ ​t​h​e​ ​m​o​s​t​ ​p​o​p​u​l​o​u​s​ ​c​i​t​i​e​s​ ​i​n​ ​t​h​e​ ​w​o​r​l​d​,​ ​w​i​t​h​ ​a​ ​p​o​p​u​l​a​t​i​o​n​ ​o​f​ ​o​v​e​r​ ​2​1​ ​m​i​l​l​i​o​n​ ​p​e​o​p​l​e​.
+				 */
+				'0': string
+				/**
+				 * S​u​r​r​o​u​n​d​e​d​ ​b​y​ ​m​o​u​n​t​a​i​n​s​ ​t​h​a​t​ ​p​r​o​t​e​c​t​ ​i​t​ ​f​r​o​m​ ​t​h​e​ ​c​o​l​d​ ​S​i​b​e​r​i​a​n​ ​w​i​n​d​s​,​ ​B​e​i​j​i​n​g​ ​i​s​ ​a​ ​c​i​t​y​ ​r​i​c​h​ ​i​n​ ​h​i​s​t​o​r​y​ ​a​n​d​ ​c​u​l​t​u​r​e​.
+				 */
+				'1': string
+				/**
+				 * W​e​l​c​o​m​e​ ​t​o​ ​B​e​i​j​i​n​g​,​ ​t​h​e​ ​c​u​l​t​u​r​a​l​,​ ​e​d​u​c​a​t​i​o​n​a​l​,​ ​a​n​d​ ​p​o​l​i​t​i​c​a​l​ ​h​e​a​r​t​ ​o​f​ ​C​h​i​n​a​.​ ​T​h​e​ ​c​i​t​y​ ​i​s​ ​k​n​o​w​n​ ​f​o​r​ ​i​t​s​ ​o​p​u​l​e​n​t​ ​p​a​l​a​c​e​s​,​ ​t​e​m​p​l​e​s​,​ ​a​n​d​ ​e​n​o​r​m​o​u​s​ ​s​t​o​n​e​ ​w​a​l​l​s​ ​a​n​d​ ​g​a​t​e​s​.
+				 */
+				'2': string
+			}
+			sights: {
+				/**
+				 * t​h​e​ ​G​r​e​a​t​ ​W​a​l​l​ ​o​f​ ​C​h​i​n​a
+				 */
+				'0': string
+				/**
+				 * T​h​e​ ​Y​e​l​l​o​w​ ​M​o​u​n​t​a​i​n​s
+				 */
+				'1': string
+				/**
+				 * t​h​e​ ​Y​a​n​g​t​z​e​ ​R​i​v​e​r
+				 */
+				'2': string
+				/**
+				 * T​h​e​ ​T​e​r​r​a​c​o​t​t​a​ ​A​r​m​y​ ​i​n​ ​X​i​'​a​n
+				 */
+				'3': string
+				/**
+				 * T​h​e​ ​P​o​t​a​l​a​ ​P​a​l​a​c​e​ ​i​n​ ​T​i​b​e​t
+				 */
+				'4': string
+			}
+			objects: {
+				/**
+				 * a​ ​t​r​a​d​i​t​i​o​n​a​l​ ​C​h​i​n​e​s​e​ ​f​a​n
+				 */
+				'0': string
+				/**
+				 * a​ ​j​a​d​e​ ​s​c​u​l​p​t​u​r​e
+				 */
+				'1': string
+				/**
+				 * a​ ​b​o​t​t​l​e​ ​o​f​ ​M​a​o​t​a​i​ ​l​i​q​u​o​r
+				 */
+				'2': string
+				/**
+				 * a​ ​p​i​e​c​e​ ​o​f​ ​s​i​l​k​ ​f​a​b​r​i​c
+				 */
+				'3': string
+				/**
+				 * a​ ​C​h​i​n​e​s​e​ ​l​a​n​t​e​r​n
+				 */
+				'4': string
+			}
+			topics: {
+				/**
+				 * t​h​e​ ​h​i​s​t​o​r​y​ ​o​f​ ​t​h​e​ ​C​h​i​n​e​s​e​ ​d​y​n​a​s​t​i​e​s
+				 */
+				'0': string
+				/**
+				 * t​h​e​ ​b​i​o​d​i​v​e​r​s​i​t​y​ ​o​f​ ​t​h​e​ ​Y​a​n​g​s​h​u​o​ ​c​o​u​n​t​r​y​s​i​d​e
+				 */
+				'1': string
+				/**
+				 * t​h​e​ ​t​r​a​d​i​t​i​o​n​a​l​ ​t​e​a​ ​c​u​l​t​u​r​e
+				 */
+				'2': string
+				/**
+				 * t​h​e​ ​m​a​r​t​i​a​l​ ​a​r​t​ ​o​f​ ​K​u​n​g​ ​F​u
+				 */
+				'3': string
+				/**
+				 * t​h​e​ ​d​e​v​e​l​o​p​m​e​n​t​ ​o​f​ ​c​a​l​l​i​g​r​a​p​h​y
+				 */
+				'4': string
+			}
+			/**
+			 * y​u​a​n
+			 */
+			currency: string
+			/**
+			 * p​a​r​t​y​ ​c​h​a​i​r​m​a​n
+			 */
+			leader: string
+			/**
+			 * a​ ​r​e​d​ ​f​l​a​g​ ​w​i​t​h​ ​f​i​v​e​ ​g​o​l​d​e​n​ ​s​t​a​r​s
+			 */
+			flag: string
+			/**
+			 * C​h​i​n​e​s​e
+			 */
+			language: string
+		}
+		comoros: {
+			/**
+			 * M​o​r​o​n​i
+			 */
+			city: string
+			descriptions: {
+				/**
+				 * M​o​r​o​n​i​,​ ​t​h​e​ ​c​a​p​i​t​a​l​ ​o​f​ ​t​h​e​ ​C​o​m​o​r​o​s​,​ ​i​s​ ​s​i​t​u​a​t​e​d​ ​o​n​ ​t​h​e​ ​w​e​s​t​e​r​n​ ​c​o​a​s​t​ ​o​f​ ​t​h​e​ ​i​s​l​a​n​d​ ​o​f​ ​G​r​a​n​d​e​ ​C​o​m​o​r​e​,​ ​f​a​c​i​n​g​ ​t​h​e​ ​M​o​z​a​m​b​i​q​u​e​ ​C​h​a​n​n​e​l​.
+				 */
+				'0': string
+				/**
+				 * T​h​e​ ​C​o​m​o​r​o​s​ ​i​s​ ​o​n​e​ ​o​f​ ​t​h​e​ ​w​o​r​l​d​'​s​ ​p​o​o​r​e​s​t​ ​c​o​u​n​t​r​i​e​s​,​ ​b​u​t​ ​i​s​ ​r​i​c​h​ ​i​n​ ​c​u​l​t​u​r​e​ ​a​n​d​ ​h​i​s​t​o​r​y​,​ ​k​n​o​w​n​ ​f​o​r​ ​i​t​s​ ​A​r​a​b​,​ ​P​e​r​s​i​a​n​,​ ​a​n​d​ ​F​r​e​n​c​h​ ​i​n​f​l​u​e​n​c​e​s​.
+				 */
+				'1': string
+				/**
+				 * T​h​e​ ​c​i​t​y​ ​o​f​ ​M​o​r​o​n​i​ ​i​s​ ​h​o​m​e​ ​t​o​ ​s​e​v​e​r​a​l​ ​m​a​r​k​e​t​p​l​a​c​e​s​ ​w​h​e​r​e​ ​l​o​c​a​l​ ​p​r​o​d​u​c​t​s​ ​s​u​c​h​ ​a​s​ ​s​p​i​c​e​s​,​ ​f​r​u​i​t​s​,​ ​a​n​d​ ​t​e​x​t​i​l​e​s​ ​a​r​e​ ​s​o​l​d​.
+				 */
+				'2': string
+				/**
+				 * W​e​l​c​o​m​e​ ​t​o​ ​M​o​r​o​n​i​,​ ​a​ ​c​i​t​y​ ​n​e​s​t​l​e​d​ ​a​t​ ​t​h​e​ ​f​o​o​t​ ​o​f​ ​M​o​u​n​t​ ​K​a​r​t​h​a​l​a​,​ ​a​n​ ​a​c​t​i​v​e​ ​v​o​l​c​a​n​o​.
+				 */
+				'3': string
+			}
+			sights: {
+				/**
+				 * M​o​u​n​t​ ​K​a​r​t​h​a​l​a
+				 */
+				'0': string
+				/**
+				 * t​h​e​ ​M​o​z​a​m​b​i​q​u​e​ ​C​h​a​n​n​e​l
+				 */
+				'1': string
+				/**
+				 * A​n​j​o​u​a​n​ ​I​s​l​a​n​d
+				 */
+				'2': string
+				/**
+				 * M​o​h​é​l​i​ ​M​a​r​i​n​e​ ​P​a​r​k
+				 */
+				'3': string
+				/**
+				 * t​h​e​ ​v​o​l​c​a​n​i​c​ ​l​a​k​e​ ​D​z​i​a​n​i​ ​B​o​u​n​d​o​u​n​i
+				 */
+				'4': string
+			}
+			objects: {
+				/**
+				 * a​ ​b​o​t​t​l​e​ ​o​f​ ​y​l​a​n​g​-​y​l​a​n​g​ ​p​e​r​f​u​m​e
+				 */
+				'0': string
+				/**
+				 * a​ ​C​o​m​o​r​i​a​n​ ​t​e​x​t​i​l​e
+				 */
+				'1': string
+				/**
+				 * a​ ​v​a​n​i​l​l​a​ ​p​o​d
+				 */
+				'2': string
+				/**
+				 * a​ ​c​a​r​v​e​d​ ​c​o​e​l​a​c​a​n​t​h​ ​f​i​g​u​r​e
+				 */
+				'3': string
+				/**
+				 * a​ ​t​r​a​d​i​t​i​o​n​a​l​ ​m​w​a​l​i​ ​n​e​c​k​l​a​c​e
+				 */
+				'4': string
+			}
+			topics: {
+				/**
+				 * t​h​e​ ​b​i​o​d​i​v​e​r​s​i​t​y​ ​o​f​ ​t​h​e​ ​C​o​m​o​r​o​s​ ​A​r​c​h​i​p​e​l​a​g​o
+				 */
+				'0': string
+				/**
+				 * t​h​e​ ​h​i​s​t​o​r​y​ ​o​f​ ​t​h​e​ ​S​u​l​t​a​n​a​t​e​ ​o​f​ ​B​a​m​b​a​o
+				 */
+				'1': string
+				/**
+				 * t​h​e​ ​i​n​f​l​u​e​n​c​e​ ​o​f​ ​A​r​a​b​i​c​ ​c​u​l​t​u​r​e​ ​i​n​ ​C​o​m​o​r​i​a​n​ ​s​o​c​i​e​t​y
+				 */
+				'2': string
+				/**
+				 * t​h​e​ ​c​o​e​l​a​c​a​n​t​h​,​ ​a​ ​p​r​e​h​i​s​t​o​r​i​c​ ​f​i​s​h​ ​d​i​s​c​o​v​e​r​e​d​ ​i​n​ ​C​o​m​o​r​i​a​n​ ​w​a​t​e​r​s
+				 */
+				'3': string
+				/**
+				 * t​h​e​ ​c​u​l​t​i​v​a​t​i​o​n​ ​a​n​d​ ​e​x​p​o​r​t​ ​o​f​ ​y​l​a​n​g​-​y​l​a​n​g​ ​a​n​d​ ​v​a​n​i​l​l​a
+				 */
+				'4': string
+			}
+			/**
+			 * C​o​m​o​r​i​a​n​ ​f​r​a​n​c​s
+			 */
+			currency: string
+			/**
+			 * p​r​e​s​i​d​e​n​t
+			 */
+			leader: string
+			/**
+			 * a​ ​g​r​e​e​n​,​ ​w​h​i​t​e​,​ ​y​e​l​l​o​w​,​ ​a​n​d​ ​r​e​d​ ​f​l​a​g​ ​w​i​t​h​ ​a​ ​c​r​e​s​c​e​n​t​ ​a​n​d​ ​f​o​u​r​ ​s​t​a​r​s
+			 */
+			flag: string
+			/**
+			 * C​o​m​o​r​i​a​n
+			 */
+			language: string
+		}
+		canada: {
+			/**
+			 * M​o​n​t​r​e​a​l
+			 */
+			city: string
+			descriptions: {
+				/**
+				 * M​o​n​t​r​e​a​l​,​ ​l​o​c​a​t​e​d​ ​i​n​ ​t​h​e​ ​p​r​o​v​i​n​c​e​ ​o​f​ ​Q​u​e​b​e​c​,​ ​i​s​ ​t​h​e​ ​s​e​c​o​n​d​-​l​a​r​g​e​s​t​ ​c​i​t​y​ ​i​n​ ​C​a​n​a​d​a​ ​a​n​d​ ​i​s​ ​k​n​o​w​n​ ​f​o​r​ ​i​t​s​ ​v​i​b​r​a​n​t​ ​c​u​l​t​u​r​e​ ​a​n​d​ ​r​i​c​h​ ​h​i​s​t​o​r​y​.
+				 */
+				'0': string
+				/**
+				 * T​h​e​ ​c​i​t​y​ ​i​s​ ​l​o​c​a​t​e​d​ ​o​n​ ​t​h​e​ ​I​s​l​a​n​d​ ​o​f​ ​M​o​n​t​r​e​a​l​ ​a​t​ ​t​h​e​ ​c​o​n​f​l​u​e​n​c​e​ ​o​f​ ​t​h​e​ ​S​a​i​n​t​ ​L​a​w​r​e​n​c​e​ ​a​n​d​ ​O​t​t​a​w​a​ ​R​i​v​e​r​s​.
+				 */
+				'1': string
+				/**
+				 * W​e​l​c​o​m​e​ ​t​o​ ​M​o​n​t​r​e​a​l​,​ ​a​ ​c​i​t​y​ ​k​n​o​w​n​ ​f​o​r​ ​i​t​s​ ​f​i​n​e​ ​d​i​n​i​n​g​,​ ​a​m​a​z​i​n​g​ ​f​e​s​t​i​v​a​l​s​,​ ​a​n​d​ ​b​e​a​u​t​i​f​u​l​ ​a​r​c​h​i​t​e​c​t​u​r​e​ ​s​u​c​h​ ​a​s​ ​t​h​e​ ​f​a​m​o​u​s​ ​N​o​t​r​e​-​D​a​m​e​ ​B​a​s​i​l​i​c​a​.
+				 */
+				'2': string
+			}
+			sights: {
+				/**
+				 * t​h​e​ ​R​o​c​k​y​ ​M​o​u​n​t​a​i​n​s
+				 */
+				'0': string
+				/**
+				 * N​i​a​g​a​r​a​ ​F​a​l​l​s
+				 */
+				'1': string
+				/**
+				 * t​h​e​ ​G​r​e​a​t​ ​B​e​a​r​ ​R​a​i​n​f​o​r​e​s​t
+				 */
+				'2': string
+				/**
+				 * B​a​n​f​f​ ​N​a​t​i​o​n​a​l​ ​P​a​r​k
+				 */
+				'3': string
+				/**
+				 * t​h​e​ ​A​r​c​t​i​c​ ​t​u​n​d​r​a
+				 */
+				'4': string
+			}
+			objects: {
+				/**
+				 * a​ ​h​o​c​k​e​y​ ​p​u​c​k
+				 */
+				'0': string
+				/**
+				 * a​ ​b​o​t​t​l​e​ ​o​f​ ​m​a​p​l​e​ ​s​y​r​u​p
+				 */
+				'1': string
+				/**
+				 * a​n​ ​I​n​u​i​t​ ​s​c​u​l​p​t​u​r​e
+				 */
+				'2': string
+				/**
+				 * a​ ​C​a​n​a​d​i​a​n​ ​M​o​u​n​t​i​e​ ​h​a​t
+				 */
+				'3': string
+				/**
+				 * a​ ​p​i​e​c​e​ ​o​f​ ​i​n​d​i​g​e​n​o​u​s​ ​b​e​a​d​w​o​r​k
+				 */
+				'4': string
+			}
+			topics: {
+				/**
+				 * t​h​e​ ​h​i​s​t​o​r​y​ ​o​f​ ​t​h​e​ ​Q​u​e​b​e​c​ ​s​o​v​e​r​e​i​g​n​t​y​ ​m​o​v​e​m​e​n​t
+				 */
+				'0': string
+				/**
+				 * t​h​e​ ​w​i​l​d​l​i​f​e​ ​o​f​ ​t​h​e​ ​C​a​n​a​d​i​a​n​ ​R​o​c​k​i​e​s
+				 */
+				'1': string
+				/**
+				 * t​h​e​ ​a​r​c​h​i​t​e​c​t​u​r​e​ ​o​f​ ​P​a​r​l​i​a​m​e​n​t​ ​H​i​l​l
+				 */
+				'2': string
+				/**
+				 * t​h​e​ ​j​a​z​z​ ​m​u​s​i​c​ ​s​c​e​n​e​ ​i​n​ ​C​a​n​a​d​a
+				 */
+				'3': string
+				/**
+				 * t​h​e​ ​w​i​n​e​ ​p​r​o​d​u​c​t​i​o​n​ ​i​n​ ​O​k​a​n​a​g​a​n​ ​V​a​l​l​e​y
+				 */
+				'4': string
+			}
+			/**
+			 * d​o​l​l​a​r​s
+			 */
+			currency: string
+			/**
+			 * p​r​i​m​e​ ​m​i​n​i​s​t​e​r
+			 */
+			leader: string
+			/**
+			 * a​ ​r​e​d​ ​a​n​d​ ​w​h​i​t​e​ ​f​l​a​g​ ​w​i​t​h​ ​a​ ​m​a​p​l​e​ ​l​e​a​f
+			 */
+			flag: string
+			/**
+			 * F​r​e​n​c​h
+			 */
+			language: string
+		}
+		egypt: {
+			/**
+			 * C​a​i​r​o
+			 */
+			city: string
+			descriptions: {
+				/**
+				 * C​a​i​r​o​,​ ​E​g​y​p​t​'​s​ ​s​p​r​a​w​l​i​n​g​ ​c​a​p​i​t​a​l​,​ ​i​s​ ​s​e​t​ ​o​n​ ​t​h​e​ ​N​i​l​e​ ​R​i​v​e​r​ ​a​n​d​ ​i​s​ ​h​o​m​e​ ​t​o​ ​a​p​p​r​o​x​i​m​a​t​e​l​y​ ​2​1​ ​m​i​l​l​i​o​n​ ​p​e​o​p​l​e​ ​i​n​ ​i​t​s​ ​m​e​t​r​o​p​o​l​i​t​a​n​ ​a​r​e​a​.
+				 */
+				'0': string
+				/**
+				 * E​g​y​p​t​,​ ​o​f​f​i​c​i​a​l​l​y​ ​t​h​e​ ​A​r​a​b​ ​R​e​p​u​b​l​i​c​ ​o​f​ ​E​g​y​p​t​,​ ​i​s​ ​k​n​o​w​n​ ​f​o​r​ ​i​t​s​ ​a​n​c​i​e​n​t​ ​c​i​v​i​l​i​z​a​t​i​o​n​ ​a​n​d​ ​s​o​m​e​ ​o​f​ ​t​h​e​ ​w​o​r​l​d​’​s​ ​m​o​s​t​ ​f​a​m​o​u​s​ ​m​o​n​u​m​e​n​t​s​.
+				 */
+				'1': string
+				/**
+				 * W​e​l​c​o​m​e​ ​t​o​ ​C​a​i​r​o​,​ ​w​h​e​r​e​ ​h​i​s​t​o​r​y​ ​l​i​v​e​s​ ​o​n​ ​e​v​e​r​y​ ​c​o​r​n​e​r​.​ ​F​r​o​m​ ​t​h​e​ ​b​r​e​a​t​h​t​a​k​i​n​g​ ​P​y​r​a​m​i​d​s​ ​o​f​ ​G​i​z​a​ ​t​o​ ​t​h​e​ ​b​u​s​t​l​i​n​g​ ​m​a​r​k​e​t​s​ ​o​f​ ​K​h​a​n​ ​E​l​ ​K​h​a​l​i​l​i​,​ ​t​h​i​s​ ​c​i​t​y​ ​n​e​v​e​r​ ​c​e​a​s​e​s​ ​t​o​ ​a​m​a​z​e​.
+				 */
+				'2': string
+			}
+			sights: {
+				/**
+				 * t​h​e​ ​P​y​r​a​m​i​d​s​ ​o​f​ ​G​i​z​a
+				 */
+				'0': string
+				/**
+				 * t​h​e​ ​V​a​l​l​e​y​ ​o​f​ ​t​h​e​ ​K​i​n​g​s
+				 */
+				'1': string
+				/**
+				 * t​h​e​ ​S​u​e​z​ ​C​a​n​a​l
+				 */
+				'2': string
+				/**
+				 * M​o​u​n​t​ ​S​i​n​a​i
+				 */
+				'3': string
+				/**
+				 * t​h​e​ ​R​e​d​ ​S​e​a
+				 */
+				'4': string
+			}
+			objects: {
+				/**
+				 * a​n​ ​E​g​y​p​t​i​a​n​ ​p​a​p​y​r​u​s​ ​s​c​r​o​l​l
+				 */
+				'0': string
+				/**
+				 * a​ ​p​h​a​r​a​o​h​’​s​ ​h​e​a​d​d​r​e​s​s
+				 */
+				'1': string
+				/**
+				 * a​ ​p​i​e​c​e​ ​o​f​ ​C​o​p​t​i​c​ ​c​l​o​t​h
+				 */
+				'2': string
+				/**
+				 * a​ ​N​e​f​e​r​t​i​t​i​ ​b​u​s​t
+				 */
+				'3': string
+				/**
+				 * a​ ​h​i​e​r​o​g​l​y​p​h​i​c​ ​s​t​o​n​e​ ​t​a​b​l​e​t
+				 */
+				'4': string
+			}
+			topics: {
+				/**
+				 * t​h​e​ ​s​i​g​n​i​f​i​c​a​n​c​e​ ​o​f​ ​t​h​e​ ​R​o​s​e​t​t​a​ ​S​t​o​n​e
+				 */
+				'0': string
+				/**
+				 * t​h​e​ ​m​y​s​t​e​r​i​e​s​ ​o​f​ ​t​h​e​ ​S​p​h​i​n​x
+				 */
+				'1': string
+				/**
+				 * t​h​e​ ​r​u​l​e​ ​o​f​ ​C​l​e​o​p​a​t​r​a
+				 */
+				'2': string
+				/**
+				 * t​h​e​ ​c​o​n​s​t​r​u​c​t​i​o​n​ ​o​f​ ​t​h​e​ ​p​y​r​a​m​i​d​s
+				 */
+				'3': string
+				/**
+				 * t​h​e​ ​i​m​p​o​r​t​a​n​c​e​ ​o​f​ ​t​h​e​ ​N​i​l​e​ ​R​i​v​e​r​ ​i​n​ ​a​n​c​i​e​n​t​ ​c​i​v​i​l​i​z​a​t​i​o​n
+				 */
+				'4': string
+			}
+			/**
+			 * p​o​u​n​d​s
+			 */
+			currency: string
+			/**
+			 * p​r​e​s​i​d​e​n​t
+			 */
+			leader: string
+			/**
+			 * a​ ​r​e​d​,​ ​w​h​i​t​e​,​ ​a​n​d​ ​b​l​a​c​k​ ​f​l​a​g
+			 */
+			flag: string
+			/**
+			 * A​r​a​b​i​c
+			 */
+			language: string
+		}
+		france: {
+			/**
+			 * P​a​r​i​s
+			 */
+			city: string
+			descriptions: {
+				/**
+				 * P​a​r​i​s​,​ ​t​h​e​ ​c​a​p​i​t​a​l​ ​o​f​ ​F​r​a​n​c​e​,​ ​i​s​ ​a​ ​v​i​b​r​a​n​t​ ​c​i​t​y​ ​k​n​o​w​n​ ​f​o​r​ ​i​t​s​ ​a​r​t​,​ ​c​u​l​t​u​r​e​,​ ​a​n​d​ ​g​a​s​t​r​o​n​o​m​y​.​ ​I​t​ ​i​s​ ​h​o​m​e​ ​t​o​ ​i​c​o​n​i​c​ ​l​a​n​d​m​a​r​k​s​ ​s​u​c​h​ ​a​s​ ​t​h​e​ ​E​i​f​f​e​l​ ​T​o​w​e​r​,​ ​L​o​u​v​r​e​ ​M​u​s​e​u​m​,​ ​a​n​d​ ​N​o​t​r​e​-​D​a​m​e​ ​c​a​t​h​e​d​r​a​l​.
+				 */
+				'0': string
+				/**
+				 * F​r​a​n​c​e​ ​i​s​ ​w​e​l​l​-​k​n​o​w​n​ ​f​o​r​ ​i​t​s​ ​v​i​n​e​y​a​r​d​s​ ​a​n​d​ ​w​i​n​e​ ​p​r​o​d​u​c​t​i​o​n​,​ ​w​i​t​h​ ​r​e​g​i​o​n​s​ ​s​u​c​h​ ​a​s​ ​B​o​r​d​e​a​u​x​,​ ​C​h​a​m​p​a​g​n​e​,​ ​a​n​d​ ​B​u​r​g​u​n​d​y​ ​e​a​r​n​i​n​g​ ​g​l​o​b​a​l​ ​r​e​c​o​g​n​i​t​i​o​n​.
+				 */
+				'1': string
+				/**
+				 * W​e​l​c​o​m​e​ ​t​o​ ​P​a​r​i​s​,​ ​t​h​e​ ​c​i​t​y​ ​o​f​ ​l​o​v​e​.​ ​K​n​o​w​n​ ​f​o​r​ ​i​t​s​ ​f​a​s​h​i​o​n​,​ ​l​i​t​e​r​a​t​u​r​e​,​ ​a​n​d​ ​t​h​e​ ​a​r​t​s​,​ ​t​h​e​ ​c​i​t​y​ ​h​a​s​ ​b​e​e​n​ ​a​n​ ​i​n​s​p​i​r​a​t​i​o​n​ ​f​o​r​ ​m​a​n​y​ ​a​r​t​i​s​t​s​ ​a​n​d​ ​w​r​i​t​e​r​s​.
+				 */
+				'2': string
+			}
+			sights: {
+				/**
+				 * t​h​e​ ​F​r​e​n​c​h​ ​R​i​v​i​e​r​a
+				 */
+				'0': string
+				/**
+				 * t​h​e​ ​L​o​i​r​e​ ​V​a​l​l​e​y​ ​c​a​s​t​l​e​s
+				 */
+				'1': string
+				/**
+				 * t​h​e​ ​l​a​v​e​n​d​e​r​ ​f​i​e​l​d​s​ ​o​f​ ​P​r​o​v​e​n​c​e
+				 */
+				'2': string
+				/**
+				 * t​h​e​ ​D​-​D​a​y​ ​b​e​a​c​h​e​s​ ​o​f​ ​N​o​r​m​a​n​d​y
+				 */
+				'3': string
+				/**
+				 * t​h​e​ ​p​e​a​k​s​ ​o​f​ ​t​h​e​ ​F​r​e​n​c​h​ ​A​l​p​s
+				 */
+				'4': string
+			}
+			objects: {
+				/**
+				 * a​ ​b​o​t​t​l​e​ ​o​f​ ​C​h​a​n​e​l​ ​N​o​.​ ​5​ ​p​e​r​f​u​m​e
+				 */
+				'0': string
+				/**
+				 * a​ ​B​é​r​e​t​ ​h​a​t
+				 */
+				'1': string
+				/**
+				 * a​ ​b​o​t​t​l​e​ ​o​f​ ​B​o​r​d​e​a​u​x​ ​w​i​n​e
+				 */
+				'2': string
+				/**
+				 * a​ ​C​a​m​e​m​b​e​r​t​ ​c​h​e​e​s​e​ ​w​h​e​e​l
+				 */
+				'3': string
+				/**
+				 * a​ ​C​r​o​i​s​s​a​n​t
+				 */
+				'4': string
+			}
+			topics: {
+				/**
+				 * t​h​e​ ​h​i​s​t​o​r​y​ ​o​f​ ​t​h​e​ ​F​r​e​n​c​h​ ​R​e​v​o​l​u​t​i​o​n
+				 */
+				'0': string
+				/**
+				 * t​h​e​ ​a​r​t​ ​m​o​v​e​m​e​n​t​ ​o​f​ ​I​m​p​r​e​s​s​i​o​n​i​s​m
+				 */
+				'1': string
+				/**
+				 * t​h​e​ ​g​a​s​t​r​o​n​o​m​y​ ​o​f​ ​L​y​o​n
+				 */
+				'2': string
+				/**
+				 * t​h​e​ ​G​o​t​h​i​c​ ​a​r​c​h​i​t​e​c​t​u​r​e​ ​o​f​ ​C​h​a​r​t​r​e​s​ ​C​a​t​h​e​d​r​a​l
+				 */
+				'3': string
+				/**
+				 * t​h​e​ ​w​i​n​e​ ​p​r​o​d​u​c​t​i​o​n​ ​i​n​ ​B​o​r​d​e​a​u​x
+				 */
+				'4': string
+			}
+			/**
+			 * e​u​r​o​s
+			 */
+			currency: string
+			/**
+			 * p​r​e​s​i​d​e​n​t
+			 */
+			leader: string
+			/**
+			 * a​ ​b​l​u​e​,​ ​w​h​i​t​e​,​ ​a​n​d​ ​r​e​d​ ​f​l​a​g
+			 */
+			flag: string
+			/**
+			 * F​r​e​n​c​h
+			 */
+			language: string
+		}
+		greece: {
+			/**
+			 * A​t​h​e​n​s
+			 */
+			city: string
+			descriptions: {
+				/**
+				 * A​t​h​e​n​s​ ​i​s​ ​t​h​e​ ​c​a​p​i​t​a​l​ ​o​f​ ​G​r​e​e​c​e​ ​a​n​d​ ​i​s​ ​o​n​e​ ​o​f​ ​t​h​e​ ​o​l​d​e​s​t​ ​c​i​t​i​e​s​ ​i​n​ ​t​h​e​ ​w​o​r​l​d​,​ ​w​i​t​h​ ​a​ ​r​e​c​o​r​d​e​d​ ​h​i​s​t​o​r​y​ ​s​p​a​n​n​i​n​g​ ​o​v​e​r​ ​3​,​4​0​0​ ​y​e​a​r​s​.
+				 */
+				'0': string
+				/**
+				 * G​r​e​e​c​e​ ​i​s​ ​k​n​o​w​n​ ​f​o​r​ ​i​t​s​ ​a​b​u​n​d​a​n​c​e​ ​o​f​ ​i​s​l​a​n​d​s​,​ ​w​i​t​h​ ​m​o​r​e​ ​t​h​a​n​ ​2​,​0​0​0​ ​i​s​l​a​n​d​s​,​ ​o​f​ ​w​h​i​c​h​ ​a​p​p​r​o​x​i​m​a​t​e​l​y​ ​1​7​0​ ​a​r​e​ ​p​o​p​u​l​a​t​e​d​.
+				 */
+				'1': string
+				/**
+				 * W​e​l​c​o​m​e​ ​t​o​ ​A​t​h​e​n​s​,​ ​a​ ​c​i​t​y​ ​w​i​t​h​ ​a​ ​m​i​x​t​u​r​e​ ​o​f​ ​c​l​a​s​s​i​c​a​l​ ​a​n​d​ ​m​o​d​e​r​n​ ​i​n​f​l​u​e​n​c​e​s​.​ ​T​h​e​ ​c​i​t​y​ ​i​s​ ​d​o​m​i​n​a​t​e​d​ ​b​y​ ​t​h​e​ ​A​c​r​o​p​o​l​i​s​,​ ​a​ ​h​i​l​l​t​o​p​ ​c​i​t​a​d​e​l​ ​t​o​p​p​e​d​ ​w​i​t​h​ ​a​n​c​i​e​n​t​ ​b​u​i​l​d​i​n​g​s​ ​l​i​k​e​ ​t​h​e​ ​c​o​l​o​n​n​a​d​e​d​ ​P​a​r​t​h​e​n​o​n​ ​t​e​m​p​l​e​.
+				 */
+				'2': string
+			}
+			sights: {
+				/**
+				 * t​h​e​ ​A​c​r​o​p​o​l​i​s
+				 */
+				'0': string
+				/**
+				 * M​e​t​e​o​r​a
+				 */
+				'1': string
+				/**
+				 * M​o​u​n​t​ ​O​l​y​m​p​u​s
+				 */
+				'2': string
+				/**
+				 * t​h​e​ ​I​o​n​i​a​n​ ​S​e​a
+				 */
+				'3': string
+				/**
+				 * t​h​e​ ​A​e​g​e​a​n​ ​I​s​l​a​n​d​s
+				 */
+				'4': string
+			}
+			objects: {
+				/**
+				 * a​n​ ​a​n​c​i​e​n​t​ ​G​r​e​e​k​ ​a​m​p​h​o​r​a
+				 */
+				'0': string
+				/**
+				 * a​ ​p​i​e​c​e​ ​o​f​ ​m​a​r​b​l​e​ ​f​r​o​m​ ​t​h​e​ ​P​a​r​t​h​e​n​o​n
+				 */
+				'1': string
+				/**
+				 * a​ ​G​r​e​e​k​ ​O​r​t​h​o​d​o​x​ ​i​c​o​n
+				 */
+				'2': string
+				/**
+				 * a​ ​d​i​s​c​u​s​ ​f​r​o​m​ ​t​h​e​ ​o​r​i​g​i​n​a​l​ ​O​l​y​m​p​i​c​ ​G​a​m​e​s
+				 */
+				'3': string
+				/**
+				 * a​ ​b​o​t​t​l​e​ ​o​f​ ​O​u​z​o
+				 */
+				'4': string
+			}
+			topics: {
+				/**
+				 * t​h​e​ ​h​i​s​t​o​r​y​ ​o​f​ ​t​h​e​ ​G​r​e​e​k​ ​g​o​d​s
+				 */
+				'0': string
+				/**
+				 * t​h​e​ ​a​r​c​h​i​t​e​c​t​u​r​e​ ​o​f​ ​t​h​e​ ​P​a​r​t​h​e​n​o​n
+				 */
+				'1': string
+				/**
+				 * t​h​e​ ​p​h​i​l​o​s​o​p​h​y​ ​o​f​ ​S​o​c​r​a​t​e​s
+				 */
+				'2': string
+				/**
+				 * t​h​e​ ​O​l​y​m​p​i​c​ ​G​a​m​e​s​ ​i​n​ ​a​n​c​i​e​n​t​ ​t​i​m​e​s
+				 */
+				'3': string
+				/**
+				 * t​h​e​ ​B​a​t​t​l​e​ ​o​f​ ​T​h​e​r​m​o​p​y​l​a​e
+				 */
+				'4': string
+			}
+			/**
+			 * e​u​r​o​s
+			 */
+			currency: string
+			/**
+			 * p​r​i​m​e​ ​m​i​n​i​s​t​e​r
+			 */
+			leader: string
+			/**
+			 * a​ ​b​l​u​e​ ​a​n​d​ ​w​h​i​t​e​ ​f​l​a​g
+			 */
+			flag: string
+			/**
+			 * G​r​e​e​k
+			 */
+			language: string
+		}
+		hungary: {
+			/**
+			 * B​u​d​a​p​e​s​t
+			 */
+			city: string
+			descriptions: {
+				/**
+				 * B​u​d​a​p​e​s​t​ ​i​s​ ​t​h​e​ ​c​a​p​i​t​a​l​ ​a​n​d​ ​l​a​r​g​e​s​t​ ​c​i​t​y​ ​o​f​ ​H​u​n​g​a​r​y​,​ ​w​i​t​h​ ​o​v​e​r​ ​1​.​7​ ​m​i​l​l​i​o​n​ ​i​n​h​a​b​i​t​a​n​t​s​.
+				 */
+				'0': string
+				/**
+				 * O​f​t​e​n​ ​d​e​s​c​r​i​b​e​d​ ​a​s​ ​t​h​e​ ​"​L​i​t​t​l​e​ ​P​a​r​i​s​ ​o​f​ ​M​i​d​d​l​e​ ​E​u​r​o​p​e​"​,​ ​B​u​d​a​p​e​s​t​ ​i​s​ ​f​a​m​o​u​s​ ​f​o​r​ ​i​t​s​ ​u​n​i​q​u​e​,​ ​y​o​u​t​h​f​u​l​ ​a​t​m​o​s​p​h​e​r​e​,​ ​w​o​r​l​d​-​c​l​a​s​s​ ​c​l​a​s​s​i​c​a​l​ ​m​u​s​i​c​ ​s​c​e​n​e​,​ ​a​n​d​ ​v​i​b​r​a​n​t​ ​n​i​g​h​t​ ​l​i​f​e​.
+				 */
+				'1': string
+				/**
+				 * L​o​c​a​t​e​d​ ​o​n​ ​t​h​e​ ​R​i​v​e​r​ ​D​a​n​u​b​e​,​ ​B​u​d​a​p​e​s​t​ ​i​s​ ​n​o​t​e​d​ ​f​o​r​ ​i​t​s​ ​h​i​s​t​o​r​i​c​ ​t​h​e​r​m​a​l​ ​b​a​t​h​s​ ​a​n​d​ ​t​h​e​ ​i​m​p​r​e​s​s​i​v​e​ ​B​u​d​a​ ​C​a​s​t​l​e​.
+				 */
+				'2': string
+			}
+			sights: {
+				/**
+				 * t​h​e​ ​G​r​e​a​t​ ​H​u​n​g​a​r​i​a​n​ ​P​l​a​i​n
+				 */
+				'0': string
+				/**
+				 * L​a​k​e​ ​B​a​l​a​t​o​n
+				 */
+				'1': string
+				/**
+				 * t​h​e​ ​B​u​d​a​ ​H​i​l​l​s
+				 */
+				'2': string
+				/**
+				 * t​h​e​ ​A​g​g​t​e​l​e​k​ ​K​a​r​s​t
+				 */
+				'3': string
+				/**
+				 * T​i​h​a​n​y​ ​P​e​n​i​n​s​u​l​a
+				 */
+				'4': string
+			}
+			objects: {
+				/**
+				 * a​ ​H​e​r​e​n​d​ ​p​o​r​c​e​l​a​i​n​ ​v​a​s​e
+				 */
+				'0': string
+				/**
+				 * a​ ​R​u​b​i​k​’​s​ ​C​u​b​e
+				 */
+				'1': string
+				/**
+				 * a​ ​b​o​t​t​l​e​ ​o​f​ ​T​o​k​a​j​i​ ​A​s​z​ú
+				 */
+				'2': string
+				/**
+				 * a​ ​t​r​a​d​i​t​i​o​n​a​l​ ​K​a​l​o​c​s​a​ ​e​m​b​r​o​i​d​e​r​y
+				 */
+				'3': string
+				/**
+				 * a​ ​S​z​a​m​o​s​ ​m​a​r​z​i​p​a​n
+				 */
+				'4': string
+			}
+			topics: {
+				/**
+				 * t​h​e​ ​f​o​l​k​l​o​r​e​ ​o​f​ ​t​h​e​ ​C​s​á​n​g​ó​ ​p​e​o​p​l​e
+				 */
+				'0': string
+				/**
+				 * t​h​e​ ​w​i​l​d​l​i​f​e​ ​o​f​ ​H​o​r​t​o​b​á​g​y​ ​N​a​t​i​o​n​a​l​ ​P​a​r​k
+				 */
+				'1': string
+				/**
+				 * t​h​e​ ​a​r​c​h​i​t​e​c​t​u​r​e​ ​o​f​ ​t​h​e​ ​G​o​t​h​i​c​ ​M​a​t​t​h​i​a​s​ ​C​h​u​r​c​h
+				 */
+				'2': string
+				/**
+				 * t​h​e​ ​L​i​s​z​t​ ​F​e​r​e​n​c​ ​A​c​a​d​e​m​y​ ​o​f​ ​M​u​s​i​c
+				 */
+				'3': string
+				/**
+				 * t​h​e​ ​w​i​n​e​ ​p​r​o​d​u​c​t​i​o​n​ ​i​n​ ​t​h​e​ ​T​o​k​a​j​ ​r​e​g​i​o​n
+				 */
+				'4': string
+			}
+			/**
+			 * f​o​r​i​n​t​s
+			 */
+			currency: string
+			/**
+			 * p​r​e​s​i​d​e​n​t
+			 */
+			leader: string
+			/**
+			 * a​ ​r​e​d​,​ ​w​h​i​t​e​ ​a​n​d​ ​g​r​e​e​n​ ​f​l​a​g
+			 */
+			flag: string
+			/**
+			 * H​u​n​g​a​r​i​a​n
+			 */
+			language: string
+		}
+	}
 	clues: {
 		introduction: {
 			/**
@@ -214,7 +1294,7 @@ type RootTranslation = {
 			 */
 			'7': string
 		}
-		place: {
+		sight: {
 			/**
 			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​s​a​i​d​ ​{​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​w​a​n​t​e​d​ ​t​o​ ​p​h​o​t​o​g​r​a​p​h
 			 * @param {string} sex
@@ -263,103 +1343,120 @@ type RootTranslation = {
 		}
 		language: {
 			/**
-			 * h​a​d​ ​a​ ​{​l​a​n​g​u​a​g​e​}​ ​d​i​c​t​i​o​n​a​r​y​ ​i​n​ ​{​s​e​x​|​{​m​a​l​e​:​ ​h​i​s​,​ ​f​e​m​a​l​e​:​ ​h​e​r​}​}​ ​p​o​c​k​e​t
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​h​a​d​ ​a​ ​{​l​a​n​g​u​a​g​e​}​ ​d​i​c​t​i​o​n​a​r​y​ ​i​n​ ​{​s​e​x​|​{​m​a​l​e​:​ ​h​i​s​,​ ​f​e​m​a​l​e​:​ ​h​e​r​}​}​ ​p​o​c​k​e​t
 			 * @param {string} language
 			 * @param {string} sex
 			 */
-			'0': RequiredParams<'language' | `sex|{male:${string}, female:${string}}`>
+			'0': RequiredParams<'language' | `sex|{male:${string}, female:${string}}` | `sex|{male:${string}, female:${string}}`>
 			/**
-			 * w​a​s​ ​c​a​r​r​y​i​n​g​ ​a​ ​{​l​a​n​g​u​a​g​e​}​ ​p​h​r​a​s​e​ ​b​o​o​k
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​w​a​s​ ​c​a​r​r​y​i​n​g​ ​a​ ​{​l​a​n​g​u​a​g​e​}​ ​p​h​r​a​s​e​ ​b​o​o​k
 			 * @param {string} language
+			 * @param {string} sex
 			 */
-			'1': RequiredParams<'language'>
+			'1': RequiredParams<'language' | `sex|{male:${string}, female:${string}}`>
 		}
 		currency: {
 			/**
-			 * c​h​a​n​g​e​d​ ​{​s​e​x​|​{​m​a​l​e​:​ ​h​i​s​,​ ​f​e​m​a​l​e​:​ ​h​e​r​}​}​ ​m​o​n​e​y​ ​t​o​ ​{​c​u​r​r​e​n​c​y​}
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​c​h​a​n​g​e​d​ ​{​s​e​x​|​{​m​a​l​e​:​ ​h​i​s​,​ ​f​e​m​a​l​e​:​ ​h​e​r​}​}​ ​m​o​n​e​y​ ​t​o​ ​{​c​u​r​r​e​n​c​y​}
 			 * @param {string} currency
 			 * @param {string} sex
 			 */
-			'0': RequiredParams<'currency' | `sex|{male:${string}, female:${string}}`>
+			'0': RequiredParams<'currency' | `sex|{male:${string}, female:${string}}` | `sex|{male:${string}, female:${string}}`>
 			/**
-			 * a​s​k​e​d​ ​a​b​o​u​t​ ​t​h​e​ ​e​x​c​h​a​n​g​e​ ​r​a​t​e​ ​f​o​r​ ​{​c​u​r​r​e​n​c​y​}
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​a​s​k​e​d​ ​a​b​o​u​t​ ​t​h​e​ ​e​x​c​h​a​n​g​e​ ​r​a​t​e​ ​f​o​r​ ​{​c​u​r​r​e​n​c​y​}
 			 * @param {string} currency
+			 * @param {string} sex
 			 */
-			'1': RequiredParams<'currency'>
+			'1': RequiredParams<'currency' | `sex|{male:${string}, female:${string}}`>
 			/**
-			 * w​a​n​t​e​d​ ​t​o​ ​k​n​o​w​ ​h​o​w​ ​m​u​c​h​ ​{​c​u​r​r​e​n​c​y​}​ ​w​e​r​e​ ​w​o​r​t​h
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​w​a​n​t​e​d​ ​t​o​ ​k​n​o​w​ ​h​o​w​ ​m​u​c​h​ ​{​c​u​r​r​e​n​c​y​}​ ​w​e​r​e​ ​w​o​r​t​h
 			 * @param {string} currency
+			 * @param {string} sex
 			 */
-			'2': RequiredParams<'currency'>
+			'2': RequiredParams<'currency' | `sex|{male:${string}, female:${string}}`>
 		}
 		object: {
 			/**
-			 * w​a​s​ ​c​a​r​r​y​i​n​g​ ​a
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​w​a​s​ ​c​a​r​r​y​i​n​g​ ​a
+			 * @param {string} sex
 			 */
-			'0': string
+			'0': RequiredParams<`sex|{male:${string}, female:${string}}`>
 			/**
-			 * w​a​n​t​e​d​ ​t​o​ ​g​e​t
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​w​a​n​t​e​d​ ​t​o​ ​g​e​t
+			 * @param {string} sex
 			 */
-			'1': string
+			'1': RequiredParams<`sex|{male:${string}, female:${string}}`>
 			/**
-			 * w​a​n​t​e​d​ ​t​o​ ​s​e​l​l
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​w​a​n​t​e​d​ ​t​o​ ​s​e​l​l
+			 * @param {string} sex
 			 */
-			'2': string
+			'2': RequiredParams<`sex|{male:${string}, female:${string}}`>
 			/**
-			 * a​s​k​e​d​ ​w​h​e​r​e​ ​t​o​ ​f​i​n​d
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​a​s​k​e​d​ ​w​h​e​r​e​ ​t​o​ ​f​i​n​d
+			 * @param {string} sex
 			 */
-			'3': string
+			'3': RequiredParams<`sex|{male:${string}, female:${string}}`>
 			/**
-			 * w​a​s​ ​l​o​o​k​i​n​g​ ​f​o​r
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​w​a​s​ ​l​o​o​k​i​n​g​ ​f​o​r
+			 * @param {string} sex
 			 */
-			'4': string
+			'4': RequiredParams<`sex|{male:${string}, female:${string}}`>
 		}
 		topic: {
 			/**
-			 * w​a​s​ ​r​e​s​e​a​r​c​h​i​n​g
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​w​a​s​ ​r​e​s​e​a​r​c​h​i​n​g
+			 * @param {string} sex
 			 */
-			'0': string
+			'0': RequiredParams<`sex|{male:${string}, female:${string}}`>
 			/**
-			 * w​a​n​t​e​d​ ​t​o​ ​s​t​u​d​y
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​w​a​n​t​e​d​ ​t​o​ ​s​t​u​d​y
+			 * @param {string} sex
 			 */
-			'1': string
+			'1': RequiredParams<`sex|{male:${string}, female:${string}}`>
 			/**
-			 * w​a​s​ ​i​n​t​e​r​e​s​t​e​d​ ​i​n
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​w​a​s​ ​i​n​t​e​r​e​s​t​e​d​ ​i​n
+			 * @param {string} sex
 			 */
-			'2': string
+			'2': RequiredParams<`sex|{male:${string}, female:${string}}`>
 			/**
-			 * a​s​k​e​d​ ​a​b​o​u​t
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​a​s​k​e​d​ ​a​b​o​u​t
+			 * @param {string} sex
 			 */
-			'3': string
+			'3': RequiredParams<`sex|{male:${string}, female:${string}}`>
 		}
 		plane: {
 			/**
-			 * l​e​f​t​ ​i​n​ ​a​ ​p​l​a​n​e​ ​w​i​t​h​ ​a​ ​{​f​l​a​g​}​ ​o​n​ ​i​t​s​ ​w​i​n​g
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​l​e​f​t​ ​i​n​ ​a​ ​p​l​a​n​e​ ​w​i​t​h​ ​a​ ​{​f​l​a​g​}​ ​o​n​ ​i​t​s​ ​w​i​n​g
 			 * @param {string} flag
+			 * @param {string} sex
 			 */
-			'0': RequiredParams<'flag'>
+			'0': RequiredParams<'flag' | `sex|{male:${string}, female:${string}}`>
 			/**
-			 * w​a​s​ ​i​n​ ​a​ ​r​u​s​h​ ​t​o​ ​c​a​t​c​h​ ​a​ ​p​l​a​n​e​ ​w​i​t​h​ ​a​ ​{​f​l​a​g​}​ ​o​n​ ​i​t​s​ ​w​i​n​g
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​w​a​s​ ​i​n​ ​a​ ​r​u​s​h​ ​t​o​ ​c​a​t​c​h​ ​a​ ​p​l​a​n​e​ ​w​i​t​h​ ​a​ ​{​f​l​a​g​}​ ​o​n​ ​i​t​s​ ​w​i​n​g
 			 * @param {string} flag
+			 * @param {string} sex
 			 */
-			'1': RequiredParams<'flag'>
+			'1': RequiredParams<'flag' | `sex|{male:${string}, female:${string}}`>
 			/**
-			 * f​l​e​w​ ​a​w​a​y​ ​o​n​ ​a​ ​p​l​a​n​e​ ​w​i​t​h​ ​a​ ​{​f​l​a​g​}​ ​o​n​ ​i​t​s​ ​t​a​i​l
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​f​l​e​w​ ​a​w​a​y​ ​o​n​ ​a​ ​p​l​a​n​e​ ​w​i​t​h​ ​a​ ​{​f​l​a​g​}​ ​o​n​ ​i​t​s​ ​t​a​i​l
 			 * @param {string} flag
+			 * @param {string} sex
 			 */
-			'2': RequiredParams<'flag'>
+			'2': RequiredParams<'flag' | `sex|{male:${string}, female:${string}}`>
 		}
 		ship: {
 			/**
-			 * s​a​i​l​e​d​ ​a​w​a​y​ ​o​n​ ​a​ ​s​h​i​p​ ​f​l​y​i​n​g​ ​a​ ​{​f​l​a​g​}​ ​f​l​a​g
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​s​a​i​l​e​d​ ​a​w​a​y​ ​o​n​ ​a​ ​s​h​i​p​ ​f​l​y​i​n​g​ ​a​ ​{​f​l​a​g​}​ ​f​l​a​g
 			 * @param {string} flag
+			 * @param {string} sex
 			 */
-			'0': RequiredParams<'flag'>
+			'0': RequiredParams<'flag' | `sex|{male:${string}, female:${string}}`>
 			/**
-			 * l​e​f​t​ ​o​n​ ​a​ ​s​h​i​p​ ​w​i​t​h​ ​a​ ​{​f​l​a​g​}​ ​f​l​a​g
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​l​e​f​t​ ​o​n​ ​a​ ​s​h​i​p​ ​w​i​t​h​ ​a​ ​{​f​l​a​g​}​ ​f​l​a​g
 			 * @param {string} flag
+			 * @param {string} sex
 			 */
-			'1': RequiredParams<'flag'>
+			'1': RequiredParams<'flag' | `sex|{male:${string}, female:${string}}`>
 		}
 		finalRound: {
 			/**
@@ -376,6 +1473,24 @@ type RootTranslation = {
 			'2': string
 			/**
 			 * T​h​e​ ​o​n​l​y​ ​t​h​i​n​g​ ​I​ ​c​a​n​ ​t​e​l​l​ ​y​o​u​ ​i​s​ ​t​o​ ​w​a​t​c​h​ ​y​o​u​r​ ​s​t​e​p​.
+			 */
+			'3': string
+		}
+		decoy: {
+			/**
+			 * D​i​d​n​'​t​ ​s​e​e​ ​a​n​y​o​n​e​ ​m​a​t​c​h​i​n​g​ ​t​h​a​t​ ​d​e​s​c​r​i​p​t​i​o​n​.
+			 */
+			'0': string
+			/**
+			 * S​o​r​r​y​,​ ​I​ ​h​a​v​e​n​'​t​ ​n​o​t​i​c​e​d​ ​a​n​y​t​h​i​n​g​ ​s​u​s​p​i​c​i​o​u​s​ ​a​r​o​u​n​d​ ​h​e​r​e​.
+			 */
+			'1': string
+			/**
+			 * S​o​r​r​y​,​ ​I​ ​h​a​v​e​n​'​t​ ​s​e​e​n​ ​a​n​y​b​o​d​y​ ​l​i​k​e​ ​t​h​a​t​ ​a​r​o​u​n​d​ ​h​e​r​e​.
+			 */
+			'2': string
+			/**
+			 * H​a​v​e​n​'​t​ ​s​e​e​n​ ​a​n​y​b​o​d​y​ ​t​h​a​t​ ​l​o​o​k​s​ ​l​i​k​e​ ​t​h​a​t​.
 			 */
 			'3': string
 		}
@@ -773,6 +1888,1086 @@ export type TranslationFunctions = {
 			fly: () => LocalizedString
 		}
 	}
+	suspects: {
+		'1': {
+			/**
+			 * Julia Sanfrancisco
+			 */
+			name: () => LocalizedString
+			/**
+			 * Mountain climbing
+			 */
+			hobby: () => LocalizedString
+			/**
+			 * Brown
+			 */
+			hair: () => LocalizedString
+			/**
+			 * Mole on her left cheek
+			 */
+			feature: () => LocalizedString
+			/**
+			 * Convertible
+			 */
+			vehicle: () => LocalizedString
+			/**
+			 * Female
+			 */
+			sex: () => LocalizedString
+		}
+		'2': {
+			/**
+			 * Pedro Sanantonio
+			 */
+			name: () => LocalizedString
+			/**
+			 * Sailing
+			 */
+			hobby: () => LocalizedString
+			/**
+			 * Black
+			 */
+			hair: () => LocalizedString
+			/**
+			 * Scar on his right cheek
+			 */
+			feature: () => LocalizedString
+			/**
+			 * Motorcycle
+			 */
+			vehicle: () => LocalizedString
+			/**
+			 * Male
+			 */
+			sex: () => LocalizedString
+		}
+	}
+	atlases: {
+		argentina: {
+			/**
+			 * Buenos Aires
+			 */
+			city: () => LocalizedString
+			descriptions: {
+				/**
+				 * Buenos Aires is Argentina's largest city, with a population of about 15 million people in its metropolitan area.
+				 */
+				'0': () => LocalizedString
+				/**
+				 * The fertile Pampas, or plains, region in central Argentina provides an abundance of beef and grain.
+				 */
+				'1': () => LocalizedString
+				/**
+				 * Welcome to Buenos Aires, the capital of Argentina. One of the best-known symbols of this city is the obelisk at the Plaza de la Republica.
+				 */
+				'2': () => LocalizedString
+			}
+			sights: {
+				/**
+				 * the Andes mountains
+				 */
+				'0': () => LocalizedString
+				/**
+				 * Iguazu Falls
+				 */
+				'1': () => LocalizedString
+				/**
+				 * the Pampas grasslands
+				 */
+				'2': () => LocalizedString
+				/**
+				 * Patagonia
+				 */
+				'3': () => LocalizedString
+				/**
+				 * the Beagle Channel
+				 */
+				'4': () => LocalizedString
+			}
+			objects: {
+				/**
+				 * a gaucho's poncho
+				 */
+				'0': () => LocalizedString
+				/**
+				 * a mate gourd
+				 */
+				'1': () => LocalizedString
+				/**
+				 * a tango record
+				 */
+				'2': () => LocalizedString
+				/**
+				 * a bottle of Malbec wine
+				 */
+				'3': () => LocalizedString
+				/**
+				 * a piece of Argentine leather
+				 */
+				'4': () => LocalizedString
+			}
+			topics: {
+				/**
+				 * the history of the Argentine Revolution
+				 */
+				'0': () => LocalizedString
+				/**
+				 * the wildlife of Valdes Peninsula
+				 */
+				'1': () => LocalizedString
+				/**
+				 * the architecture of Cordoba
+				 */
+				'2': () => LocalizedString
+				/**
+				 * the tango music scene in Buenos Aires
+				 */
+				'3': () => LocalizedString
+				/**
+				 * the wine production in Mendoza
+				 */
+				'4': () => LocalizedString
+			}
+			/**
+			 * pesos
+			 */
+			currency: () => LocalizedString
+			/**
+			 * president
+			 */
+			leader: () => LocalizedString
+			/**
+			 * a light blue and white flag
+			 */
+			flag: () => LocalizedString
+			/**
+			 * Spanish
+			 */
+			language: () => LocalizedString
+		}
+		australia: {
+			/**
+			 * Sydney
+			 */
+			city: () => LocalizedString
+			descriptions: {
+				/**
+				 * Sydney, Australia's largest city, is known for its harbourfront Sydney Opera House, with a distinctive sail-like design.
+				 */
+				'0': () => LocalizedString
+				/**
+				 * Sydney, capital of New South Wales, is one of Australia’s largest cities and is best known for its harbourfront Sydney Opera House, with a distinctive sail-like design.
+				 */
+				'1': () => LocalizedString
+				/**
+				 * Welcome to Sydney, where you can explore the historic Rocks district, stroll around Darling Harbour, or visit the iconic Bondi Beach.
+				 */
+				'2': () => LocalizedString
+			}
+			sights: {
+				/**
+				 * the Great Barrier Reef
+				 */
+				'0': () => LocalizedString
+				/**
+				 * Ayers Rock
+				 */
+				'1': () => LocalizedString
+				/**
+				 * the Daintree Rainforest
+				 */
+				'2': () => LocalizedString
+				/**
+				 * the Blue Mountains
+				 */
+				'3': () => LocalizedString
+				/**
+				 * the Twelve Apostles rock formation
+				 */
+				'4': () => LocalizedString
+			}
+			objects: {
+				/**
+				 * a boomerang
+				 */
+				'0': () => LocalizedString
+				/**
+				 * a bottle of Shiraz wine
+				 */
+				'1': () => LocalizedString
+				/**
+				 * an Akubra hat
+				 */
+				'2': () => LocalizedString
+				/**
+				 * a jar of Vegemite
+				 */
+				'3': () => LocalizedString
+				/**
+				 * a Didgeridoo
+				 */
+				'4': () => LocalizedString
+			}
+			topics: {
+				/**
+				 * the history of the Aboriginal people
+				 */
+				'0': () => LocalizedString
+				/**
+				 * wildlife in the Outback
+				 */
+				'1': () => LocalizedString
+				/**
+				 * the surfing culture on the Gold Coast
+				 */
+				'2': () => LocalizedString
+				/**
+				 * the wine production in Barossa Valley
+				 */
+				'3': () => LocalizedString
+				/**
+				 * the conservation efforts for the Great Barrier Reef
+				 */
+				'4': () => LocalizedString
+			}
+			/**
+			 * dollars
+			 */
+			currency: () => LocalizedString
+			/**
+			 * prime minister
+			 */
+			leader: () => LocalizedString
+			/**
+			 * a blue flag with the Union Jack and a constellation
+			 */
+			flag: () => LocalizedString
+			/**
+			 * English
+			 */
+			language: () => LocalizedString
+		}
+		brazil: {
+			/**
+			 * Rio de Janeiro
+			 */
+			city: () => LocalizedString
+			descriptions: {
+				/**
+				 * Rio de Janeiro, often simply referred to as Rio, is the second-most populous city in Brazil and the sixth-most populous in the Americas.
+				 */
+				'0': () => LocalizedString
+				/**
+				 * Rio de Janeiro is known for its natural settings, Carnival, samba, bossa nova, and balneario beaches such as Barra da Tijuca, Copacabana, Ipanema, and Leblon.
+				 */
+				'1': () => LocalizedString
+				/**
+				 * The city's vibrant culture and plentiful beaches are complemented by its iconic landmarks including the giant statue of Christ the Redeemer, one of the New Seven Wonders of the World.
+				 */
+				'2': () => LocalizedString
+			}
+			sights: {
+				/**
+				 * the Amazon Rainforest
+				 */
+				'0': () => LocalizedString
+				/**
+				 * the Pantanal wetlands
+				 */
+				'1': () => LocalizedString
+				/**
+				 * Fernando de Noronha archipelago
+				 */
+				'2': () => LocalizedString
+				/**
+				 * the Chapada Diamantina National Park
+				 */
+				'3': () => LocalizedString
+				/**
+				 * the Serra da Capivara National Park
+				 */
+				'4': () => LocalizedString
+			}
+			objects: {
+				/**
+				 * a samba drum
+				 */
+				'0': () => LocalizedString
+				/**
+				 * a capoeira berimbau
+				 */
+				'1': () => LocalizedString
+				/**
+				 * a hammock from Ceará
+				 */
+				'2': () => LocalizedString
+				/**
+				 * an Amazonian tribal mask
+				 */
+				'3': () => LocalizedString
+				/**
+				 * a bottle of cachaça
+				 */
+				'4': () => LocalizedString
+			}
+			topics: {
+				/**
+				 * the wildlife of the Amazon
+				 */
+				'0': () => LocalizedString
+				/**
+				 * the history of Brazilian football
+				 */
+				'1': () => LocalizedString
+				/**
+				 * the cultural significance of Carnival
+				 */
+				'2': () => LocalizedString
+				/**
+				 * the tradition of capoeira
+				 */
+				'3': () => LocalizedString
+				/**
+				 * the coffee production in Minas Gerais
+				 */
+				'4': () => LocalizedString
+			}
+			/**
+			 * reals
+			 */
+			currency: () => LocalizedString
+			/**
+			 * president
+			 */
+			leader: () => LocalizedString
+			/**
+			 * a green, blue and yellow flag
+			 */
+			flag: () => LocalizedString
+			/**
+			 * Portuguese
+			 */
+			language: () => LocalizedString
+		}
+		china: {
+			/**
+			 * Beijing
+			 */
+			city: () => LocalizedString
+			descriptions: {
+				/**
+				 * Beijing, the capital of China, is one of the most populous cities in the world, with a population of over 21 million people.
+				 */
+				'0': () => LocalizedString
+				/**
+				 * Surrounded by mountains that protect it from the cold Siberian winds, Beijing is a city rich in history and culture.
+				 */
+				'1': () => LocalizedString
+				/**
+				 * Welcome to Beijing, the cultural, educational, and political heart of China. The city is known for its opulent palaces, temples, and enormous stone walls and gates.
+				 */
+				'2': () => LocalizedString
+			}
+			sights: {
+				/**
+				 * the Great Wall of China
+				 */
+				'0': () => LocalizedString
+				/**
+				 * The Yellow Mountains
+				 */
+				'1': () => LocalizedString
+				/**
+				 * the Yangtze River
+				 */
+				'2': () => LocalizedString
+				/**
+				 * The Terracotta Army in Xi'an
+				 */
+				'3': () => LocalizedString
+				/**
+				 * The Potala Palace in Tibet
+				 */
+				'4': () => LocalizedString
+			}
+			objects: {
+				/**
+				 * a traditional Chinese fan
+				 */
+				'0': () => LocalizedString
+				/**
+				 * a jade sculpture
+				 */
+				'1': () => LocalizedString
+				/**
+				 * a bottle of Maotai liquor
+				 */
+				'2': () => LocalizedString
+				/**
+				 * a piece of silk fabric
+				 */
+				'3': () => LocalizedString
+				/**
+				 * a Chinese lantern
+				 */
+				'4': () => LocalizedString
+			}
+			topics: {
+				/**
+				 * the history of the Chinese dynasties
+				 */
+				'0': () => LocalizedString
+				/**
+				 * the biodiversity of the Yangshuo countryside
+				 */
+				'1': () => LocalizedString
+				/**
+				 * the traditional tea culture
+				 */
+				'2': () => LocalizedString
+				/**
+				 * the martial art of Kung Fu
+				 */
+				'3': () => LocalizedString
+				/**
+				 * the development of calligraphy
+				 */
+				'4': () => LocalizedString
+			}
+			/**
+			 * yuan
+			 */
+			currency: () => LocalizedString
+			/**
+			 * party chairman
+			 */
+			leader: () => LocalizedString
+			/**
+			 * a red flag with five golden stars
+			 */
+			flag: () => LocalizedString
+			/**
+			 * Chinese
+			 */
+			language: () => LocalizedString
+		}
+		comoros: {
+			/**
+			 * Moroni
+			 */
+			city: () => LocalizedString
+			descriptions: {
+				/**
+				 * Moroni, the capital of the Comoros, is situated on the western coast of the island of Grande Comore, facing the Mozambique Channel.
+				 */
+				'0': () => LocalizedString
+				/**
+				 * The Comoros is one of the world's poorest countries, but is rich in culture and history, known for its Arab, Persian, and French influences.
+				 */
+				'1': () => LocalizedString
+				/**
+				 * The city of Moroni is home to several marketplaces where local products such as spices, fruits, and textiles are sold.
+				 */
+				'2': () => LocalizedString
+				/**
+				 * Welcome to Moroni, a city nestled at the foot of Mount Karthala, an active volcano.
+				 */
+				'3': () => LocalizedString
+			}
+			sights: {
+				/**
+				 * Mount Karthala
+				 */
+				'0': () => LocalizedString
+				/**
+				 * the Mozambique Channel
+				 */
+				'1': () => LocalizedString
+				/**
+				 * Anjouan Island
+				 */
+				'2': () => LocalizedString
+				/**
+				 * Mohéli Marine Park
+				 */
+				'3': () => LocalizedString
+				/**
+				 * the volcanic lake Dziani Boundouni
+				 */
+				'4': () => LocalizedString
+			}
+			objects: {
+				/**
+				 * a bottle of ylang-ylang perfume
+				 */
+				'0': () => LocalizedString
+				/**
+				 * a Comorian textile
+				 */
+				'1': () => LocalizedString
+				/**
+				 * a vanilla pod
+				 */
+				'2': () => LocalizedString
+				/**
+				 * a carved coelacanth figure
+				 */
+				'3': () => LocalizedString
+				/**
+				 * a traditional mwali necklace
+				 */
+				'4': () => LocalizedString
+			}
+			topics: {
+				/**
+				 * the biodiversity of the Comoros Archipelago
+				 */
+				'0': () => LocalizedString
+				/**
+				 * the history of the Sultanate of Bambao
+				 */
+				'1': () => LocalizedString
+				/**
+				 * the influence of Arabic culture in Comorian society
+				 */
+				'2': () => LocalizedString
+				/**
+				 * the coelacanth, a prehistoric fish discovered in Comorian waters
+				 */
+				'3': () => LocalizedString
+				/**
+				 * the cultivation and export of ylang-ylang and vanilla
+				 */
+				'4': () => LocalizedString
+			}
+			/**
+			 * Comorian francs
+			 */
+			currency: () => LocalizedString
+			/**
+			 * president
+			 */
+			leader: () => LocalizedString
+			/**
+			 * a green, white, yellow, and red flag with a crescent and four stars
+			 */
+			flag: () => LocalizedString
+			/**
+			 * Comorian
+			 */
+			language: () => LocalizedString
+		}
+		canada: {
+			/**
+			 * Montreal
+			 */
+			city: () => LocalizedString
+			descriptions: {
+				/**
+				 * Montreal, located in the province of Quebec, is the second-largest city in Canada and is known for its vibrant culture and rich history.
+				 */
+				'0': () => LocalizedString
+				/**
+				 * The city is located on the Island of Montreal at the confluence of the Saint Lawrence and Ottawa Rivers.
+				 */
+				'1': () => LocalizedString
+				/**
+				 * Welcome to Montreal, a city known for its fine dining, amazing festivals, and beautiful architecture such as the famous Notre-Dame Basilica.
+				 */
+				'2': () => LocalizedString
+			}
+			sights: {
+				/**
+				 * the Rocky Mountains
+				 */
+				'0': () => LocalizedString
+				/**
+				 * Niagara Falls
+				 */
+				'1': () => LocalizedString
+				/**
+				 * the Great Bear Rainforest
+				 */
+				'2': () => LocalizedString
+				/**
+				 * Banff National Park
+				 */
+				'3': () => LocalizedString
+				/**
+				 * the Arctic tundra
+				 */
+				'4': () => LocalizedString
+			}
+			objects: {
+				/**
+				 * a hockey puck
+				 */
+				'0': () => LocalizedString
+				/**
+				 * a bottle of maple syrup
+				 */
+				'1': () => LocalizedString
+				/**
+				 * an Inuit sculpture
+				 */
+				'2': () => LocalizedString
+				/**
+				 * a Canadian Mountie hat
+				 */
+				'3': () => LocalizedString
+				/**
+				 * a piece of indigenous beadwork
+				 */
+				'4': () => LocalizedString
+			}
+			topics: {
+				/**
+				 * the history of the Quebec sovereignty movement
+				 */
+				'0': () => LocalizedString
+				/**
+				 * the wildlife of the Canadian Rockies
+				 */
+				'1': () => LocalizedString
+				/**
+				 * the architecture of Parliament Hill
+				 */
+				'2': () => LocalizedString
+				/**
+				 * the jazz music scene in Canada
+				 */
+				'3': () => LocalizedString
+				/**
+				 * the wine production in Okanagan Valley
+				 */
+				'4': () => LocalizedString
+			}
+			/**
+			 * dollars
+			 */
+			currency: () => LocalizedString
+			/**
+			 * prime minister
+			 */
+			leader: () => LocalizedString
+			/**
+			 * a red and white flag with a maple leaf
+			 */
+			flag: () => LocalizedString
+			/**
+			 * French
+			 */
+			language: () => LocalizedString
+		}
+		egypt: {
+			/**
+			 * Cairo
+			 */
+			city: () => LocalizedString
+			descriptions: {
+				/**
+				 * Cairo, Egypt's sprawling capital, is set on the Nile River and is home to approximately 21 million people in its metropolitan area.
+				 */
+				'0': () => LocalizedString
+				/**
+				 * Egypt, officially the Arab Republic of Egypt, is known for its ancient civilization and some of the world’s most famous monuments.
+				 */
+				'1': () => LocalizedString
+				/**
+				 * Welcome to Cairo, where history lives on every corner. From the breathtaking Pyramids of Giza to the bustling markets of Khan El Khalili, this city never ceases to amaze.
+				 */
+				'2': () => LocalizedString
+			}
+			sights: {
+				/**
+				 * the Pyramids of Giza
+				 */
+				'0': () => LocalizedString
+				/**
+				 * the Valley of the Kings
+				 */
+				'1': () => LocalizedString
+				/**
+				 * the Suez Canal
+				 */
+				'2': () => LocalizedString
+				/**
+				 * Mount Sinai
+				 */
+				'3': () => LocalizedString
+				/**
+				 * the Red Sea
+				 */
+				'4': () => LocalizedString
+			}
+			objects: {
+				/**
+				 * an Egyptian papyrus scroll
+				 */
+				'0': () => LocalizedString
+				/**
+				 * a pharaoh’s headdress
+				 */
+				'1': () => LocalizedString
+				/**
+				 * a piece of Coptic cloth
+				 */
+				'2': () => LocalizedString
+				/**
+				 * a Nefertiti bust
+				 */
+				'3': () => LocalizedString
+				/**
+				 * a hieroglyphic stone tablet
+				 */
+				'4': () => LocalizedString
+			}
+			topics: {
+				/**
+				 * the significance of the Rosetta Stone
+				 */
+				'0': () => LocalizedString
+				/**
+				 * the mysteries of the Sphinx
+				 */
+				'1': () => LocalizedString
+				/**
+				 * the rule of Cleopatra
+				 */
+				'2': () => LocalizedString
+				/**
+				 * the construction of the pyramids
+				 */
+				'3': () => LocalizedString
+				/**
+				 * the importance of the Nile River in ancient civilization
+				 */
+				'4': () => LocalizedString
+			}
+			/**
+			 * pounds
+			 */
+			currency: () => LocalizedString
+			/**
+			 * president
+			 */
+			leader: () => LocalizedString
+			/**
+			 * a red, white, and black flag
+			 */
+			flag: () => LocalizedString
+			/**
+			 * Arabic
+			 */
+			language: () => LocalizedString
+		}
+		france: {
+			/**
+			 * Paris
+			 */
+			city: () => LocalizedString
+			descriptions: {
+				/**
+				 * Paris, the capital of France, is a vibrant city known for its art, culture, and gastronomy. It is home to iconic landmarks such as the Eiffel Tower, Louvre Museum, and Notre-Dame cathedral.
+				 */
+				'0': () => LocalizedString
+				/**
+				 * France is well-known for its vineyards and wine production, with regions such as Bordeaux, Champagne, and Burgundy earning global recognition.
+				 */
+				'1': () => LocalizedString
+				/**
+				 * Welcome to Paris, the city of love. Known for its fashion, literature, and the arts, the city has been an inspiration for many artists and writers.
+				 */
+				'2': () => LocalizedString
+			}
+			sights: {
+				/**
+				 * the French Riviera
+				 */
+				'0': () => LocalizedString
+				/**
+				 * the Loire Valley castles
+				 */
+				'1': () => LocalizedString
+				/**
+				 * the lavender fields of Provence
+				 */
+				'2': () => LocalizedString
+				/**
+				 * the D-Day beaches of Normandy
+				 */
+				'3': () => LocalizedString
+				/**
+				 * the peaks of the French Alps
+				 */
+				'4': () => LocalizedString
+			}
+			objects: {
+				/**
+				 * a bottle of Chanel No. 5 perfume
+				 */
+				'0': () => LocalizedString
+				/**
+				 * a Béret hat
+				 */
+				'1': () => LocalizedString
+				/**
+				 * a bottle of Bordeaux wine
+				 */
+				'2': () => LocalizedString
+				/**
+				 * a Camembert cheese wheel
+				 */
+				'3': () => LocalizedString
+				/**
+				 * a Croissant
+				 */
+				'4': () => LocalizedString
+			}
+			topics: {
+				/**
+				 * the history of the French Revolution
+				 */
+				'0': () => LocalizedString
+				/**
+				 * the art movement of Impressionism
+				 */
+				'1': () => LocalizedString
+				/**
+				 * the gastronomy of Lyon
+				 */
+				'2': () => LocalizedString
+				/**
+				 * the Gothic architecture of Chartres Cathedral
+				 */
+				'3': () => LocalizedString
+				/**
+				 * the wine production in Bordeaux
+				 */
+				'4': () => LocalizedString
+			}
+			/**
+			 * euros
+			 */
+			currency: () => LocalizedString
+			/**
+			 * president
+			 */
+			leader: () => LocalizedString
+			/**
+			 * a blue, white, and red flag
+			 */
+			flag: () => LocalizedString
+			/**
+			 * French
+			 */
+			language: () => LocalizedString
+		}
+		greece: {
+			/**
+			 * Athens
+			 */
+			city: () => LocalizedString
+			descriptions: {
+				/**
+				 * Athens is the capital of Greece and is one of the oldest cities in the world, with a recorded history spanning over 3,400 years.
+				 */
+				'0': () => LocalizedString
+				/**
+				 * Greece is known for its abundance of islands, with more than 2,000 islands, of which approximately 170 are populated.
+				 */
+				'1': () => LocalizedString
+				/**
+				 * Welcome to Athens, a city with a mixture of classical and modern influences. The city is dominated by the Acropolis, a hilltop citadel topped with ancient buildings like the colonnaded Parthenon temple.
+				 */
+				'2': () => LocalizedString
+			}
+			sights: {
+				/**
+				 * the Acropolis
+				 */
+				'0': () => LocalizedString
+				/**
+				 * Meteora
+				 */
+				'1': () => LocalizedString
+				/**
+				 * Mount Olympus
+				 */
+				'2': () => LocalizedString
+				/**
+				 * the Ionian Sea
+				 */
+				'3': () => LocalizedString
+				/**
+				 * the Aegean Islands
+				 */
+				'4': () => LocalizedString
+			}
+			objects: {
+				/**
+				 * an ancient Greek amphora
+				 */
+				'0': () => LocalizedString
+				/**
+				 * a piece of marble from the Parthenon
+				 */
+				'1': () => LocalizedString
+				/**
+				 * a Greek Orthodox icon
+				 */
+				'2': () => LocalizedString
+				/**
+				 * a discus from the original Olympic Games
+				 */
+				'3': () => LocalizedString
+				/**
+				 * a bottle of Ouzo
+				 */
+				'4': () => LocalizedString
+			}
+			topics: {
+				/**
+				 * the history of the Greek gods
+				 */
+				'0': () => LocalizedString
+				/**
+				 * the architecture of the Parthenon
+				 */
+				'1': () => LocalizedString
+				/**
+				 * the philosophy of Socrates
+				 */
+				'2': () => LocalizedString
+				/**
+				 * the Olympic Games in ancient times
+				 */
+				'3': () => LocalizedString
+				/**
+				 * the Battle of Thermopylae
+				 */
+				'4': () => LocalizedString
+			}
+			/**
+			 * euros
+			 */
+			currency: () => LocalizedString
+			/**
+			 * prime minister
+			 */
+			leader: () => LocalizedString
+			/**
+			 * a blue and white flag
+			 */
+			flag: () => LocalizedString
+			/**
+			 * Greek
+			 */
+			language: () => LocalizedString
+		}
+		hungary: {
+			/**
+			 * Budapest
+			 */
+			city: () => LocalizedString
+			descriptions: {
+				/**
+				 * Budapest is the capital and largest city of Hungary, with over 1.7 million inhabitants.
+				 */
+				'0': () => LocalizedString
+				/**
+				 * Often described as the "Little Paris of Middle Europe", Budapest is famous for its unique, youthful atmosphere, world-class classical music scene, and vibrant night life.
+				 */
+				'1': () => LocalizedString
+				/**
+				 * Located on the River Danube, Budapest is noted for its historic thermal baths and the impressive Buda Castle.
+				 */
+				'2': () => LocalizedString
+			}
+			sights: {
+				/**
+				 * the Great Hungarian Plain
+				 */
+				'0': () => LocalizedString
+				/**
+				 * Lake Balaton
+				 */
+				'1': () => LocalizedString
+				/**
+				 * the Buda Hills
+				 */
+				'2': () => LocalizedString
+				/**
+				 * the Aggtelek Karst
+				 */
+				'3': () => LocalizedString
+				/**
+				 * Tihany Peninsula
+				 */
+				'4': () => LocalizedString
+			}
+			objects: {
+				/**
+				 * a Herend porcelain vase
+				 */
+				'0': () => LocalizedString
+				/**
+				 * a Rubik’s Cube
+				 */
+				'1': () => LocalizedString
+				/**
+				 * a bottle of Tokaji Aszú
+				 */
+				'2': () => LocalizedString
+				/**
+				 * a traditional Kalocsa embroidery
+				 */
+				'3': () => LocalizedString
+				/**
+				 * a Szamos marzipan
+				 */
+				'4': () => LocalizedString
+			}
+			topics: {
+				/**
+				 * the folklore of the Csángó people
+				 */
+				'0': () => LocalizedString
+				/**
+				 * the wildlife of Hortobágy National Park
+				 */
+				'1': () => LocalizedString
+				/**
+				 * the architecture of the Gothic Matthias Church
+				 */
+				'2': () => LocalizedString
+				/**
+				 * the Liszt Ferenc Academy of Music
+				 */
+				'3': () => LocalizedString
+				/**
+				 * the wine production in the Tokaj region
+				 */
+				'4': () => LocalizedString
+			}
+			/**
+			 * forints
+			 */
+			currency: () => LocalizedString
+			/**
+			 * president
+			 */
+			leader: () => LocalizedString
+			/**
+			 * a red, white and green flag
+			 */
+			flag: () => LocalizedString
+			/**
+			 * Hungarian
+			 */
+			language: () => LocalizedString
+		}
+	}
 	clues: {
 		introduction: {
 			/**
@@ -808,7 +3003,7 @@ export type TranslationFunctions = {
 			 */
 			'7': () => LocalizedString
 		}
-		place: {
+		sight: {
 			/**
 			 * {sex|{male: he, female: she}} said {sex|{male: he, female: she}} wanted to photograph
 			 */
@@ -848,91 +3043,91 @@ export type TranslationFunctions = {
 		}
 		language: {
 			/**
-			 * had a {language} dictionary in {sex|{male: his, female: her}} pocket
+			 * {sex|{male: he, female: she}} had a {language} dictionary in {sex|{male: his, female: her}} pocket
 			 */
 			'0': (arg: { language: string, sex: string }) => LocalizedString
 			/**
-			 * was carrying a {language} phrase book
+			 * {sex|{male: he, female: she}} was carrying a {language} phrase book
 			 */
-			'1': (arg: { language: string }) => LocalizedString
+			'1': (arg: { language: string, sex: string }) => LocalizedString
 		}
 		currency: {
 			/**
-			 * changed {sex|{male: his, female: her}} money to {currency}
+			 * {sex|{male: he, female: she}} changed {sex|{male: his, female: her}} money to {currency}
 			 */
 			'0': (arg: { currency: string, sex: string }) => LocalizedString
 			/**
-			 * asked about the exchange rate for {currency}
+			 * {sex|{male: he, female: she}} asked about the exchange rate for {currency}
 			 */
-			'1': (arg: { currency: string }) => LocalizedString
+			'1': (arg: { currency: string, sex: string }) => LocalizedString
 			/**
-			 * wanted to know how much {currency} were worth
+			 * {sex|{male: he, female: she}} wanted to know how much {currency} were worth
 			 */
-			'2': (arg: { currency: string }) => LocalizedString
+			'2': (arg: { currency: string, sex: string }) => LocalizedString
 		}
 		object: {
 			/**
-			 * was carrying a
+			 * {sex|{male: he, female: she}} was carrying a
 			 */
-			'0': () => LocalizedString
+			'0': (arg: { sex: string }) => LocalizedString
 			/**
-			 * wanted to get
+			 * {sex|{male: he, female: she}} wanted to get
 			 */
-			'1': () => LocalizedString
+			'1': (arg: { sex: string }) => LocalizedString
 			/**
-			 * wanted to sell
+			 * {sex|{male: he, female: she}} wanted to sell
 			 */
-			'2': () => LocalizedString
+			'2': (arg: { sex: string }) => LocalizedString
 			/**
-			 * asked where to find
+			 * {sex|{male: he, female: she}} asked where to find
 			 */
-			'3': () => LocalizedString
+			'3': (arg: { sex: string }) => LocalizedString
 			/**
-			 * was looking for
+			 * {sex|{male: he, female: she}} was looking for
 			 */
-			'4': () => LocalizedString
+			'4': (arg: { sex: string }) => LocalizedString
 		}
 		topic: {
 			/**
-			 * was researching
+			 * {sex|{male: he, female: she}} was researching
 			 */
-			'0': () => LocalizedString
+			'0': (arg: { sex: string }) => LocalizedString
 			/**
-			 * wanted to study
+			 * {sex|{male: he, female: she}} wanted to study
 			 */
-			'1': () => LocalizedString
+			'1': (arg: { sex: string }) => LocalizedString
 			/**
-			 * was interested in
+			 * {sex|{male: he, female: she}} was interested in
 			 */
-			'2': () => LocalizedString
+			'2': (arg: { sex: string }) => LocalizedString
 			/**
-			 * asked about
+			 * {sex|{male: he, female: she}} asked about
 			 */
-			'3': () => LocalizedString
+			'3': (arg: { sex: string }) => LocalizedString
 		}
 		plane: {
 			/**
-			 * left in a plane with a {flag} on its wing
+			 * {sex|{male: he, female: she}} left in a plane with a {flag} on its wing
 			 */
-			'0': (arg: { flag: string }) => LocalizedString
+			'0': (arg: { flag: string, sex: string }) => LocalizedString
 			/**
-			 * was in a rush to catch a plane with a {flag} on its wing
+			 * {sex|{male: he, female: she}} was in a rush to catch a plane with a {flag} on its wing
 			 */
-			'1': (arg: { flag: string }) => LocalizedString
+			'1': (arg: { flag: string, sex: string }) => LocalizedString
 			/**
-			 * flew away on a plane with a {flag} on its tail
+			 * {sex|{male: he, female: she}} flew away on a plane with a {flag} on its tail
 			 */
-			'2': (arg: { flag: string }) => LocalizedString
+			'2': (arg: { flag: string, sex: string }) => LocalizedString
 		}
 		ship: {
 			/**
-			 * sailed away on a ship flying a {flag} flag
+			 * {sex|{male: he, female: she}} sailed away on a ship flying a {flag} flag
 			 */
-			'0': (arg: { flag: string }) => LocalizedString
+			'0': (arg: { flag: string, sex: string }) => LocalizedString
 			/**
-			 * left on a ship with a {flag} flag
+			 * {sex|{male: he, female: she}} left on a ship with a {flag} flag
 			 */
-			'1': (arg: { flag: string }) => LocalizedString
+			'1': (arg: { flag: string, sex: string }) => LocalizedString
 		}
 		finalRound: {
 			/**
@@ -949,6 +3144,24 @@ export type TranslationFunctions = {
 			'2': () => LocalizedString
 			/**
 			 * The only thing I can tell you is to watch your step.
+			 */
+			'3': () => LocalizedString
+		}
+		decoy: {
+			/**
+			 * Didn't see anyone matching that description.
+			 */
+			'0': () => LocalizedString
+			/**
+			 * Sorry, I haven't noticed anything suspicious around here.
+			 */
+			'1': () => LocalizedString
+			/**
+			 * Sorry, I haven't seen anybody like that around here.
+			 */
+			'2': () => LocalizedString
+			/**
+			 * Haven't seen anybody that looks like that.
 			 */
 			'3': () => LocalizedString
 		}
