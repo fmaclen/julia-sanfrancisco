@@ -9,15 +9,17 @@ export default class Clock {
 	currentTime: Date;
 	timerId: NodeJS.Timer | null;
 	tickRate: number;
+	locale: Locale;
 
 	isWalking: boolean;
 	isFlying: boolean;
 	isSleeping: boolean;
 	isTimeUp: boolean;
 
-	constructor() {
+	constructor(locale: Locale) {
 		this.timerId = null;
 		this.tickRate = DELAY_IN_MS / FPS;
+		this.locale = locale;
 
 		this.isWalking = false;
 		this.isFlying = false;
@@ -37,7 +39,8 @@ export default class Clock {
 	};
 
 	public getFormattedTime = (): string => {
-		return format(this.currentTime, 'EEEE h:mm aaa');
+		const formattedTime = format(this.currentTime, 'EEEE h:mm aaa', { locale: this.locale });
+		return formattedTime.charAt(0).toUpperCase() + formattedTime.slice(1);
 	};
 
 	public fastForward = (hours: number): Promise<boolean> => {
