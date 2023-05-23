@@ -1,18 +1,22 @@
 import { browser } from '$app/environment';
-import { writable } from 'svelte/store';
+import { setLocale } from '$i18n/i18n-svelte';
+import type { Locales } from '$i18n/i18n-types';
+import { loadLocale } from '$i18n/i18n-util.sync';
+import { writable, type Writable } from 'svelte/store';
 
 export interface Player {
 	name: string;
 	score: number;
+	locale: Locales;
 }
 
 export enum Rank {
-	ROOKIE = 'Rookie', // 0 cases
-	SLEUTH = 'Sleuth', // 1-3 cases
-	PRIVATE_EYE = 'Private eye', // 4-6 cases
-	INVESTIGATOR = 'Investigator', // 7-9 cases
-	ACE_DETECTIVE = 'Ace detective', // 10-13 cases
-	SUPER_SLEUTH = 'Super sleuth' // 14+ cases
+	ROOKIE, // 0 cases
+	SLEUTH, // 1-3 cases
+	PRIVATE_EYE, // 4-6 cases
+	INVESTIGATOR, // 7-9 cases
+	ACE_DETECTIVE, // 10-13 cases
+	SUPER_SLEUTH // 14+ cases
 }
 
 export function getRank(score: number | undefined) {
@@ -42,15 +46,26 @@ playerStore.subscribe((value) => {
 	}
 });
 
-export function getCasesUntilPromotion(score: number): string {
+export function getCasesUntilPromotion(score: number): number {
 	let cases: number;
+	score += 1; // Add 1 to score to account for the current case
 
 	if (score < 3) cases = 4 - score;
 	else if (score < 6) cases = 7 - score;
 	else if (score < 9) cases = 10 - score;
 	else if (score < 13) cases = 14 - score;
-	else return '';
+	else return 0;
 
-	const caseWord = cases > 1 ? 'cases' : 'case';
-	return `${cases} more ${caseWord} until your next promotion.`;
+	return cases;
+}
+
+export function applyLocale(locale: Locales, playerStore: Writable<Player | null>) {
+	loadLocale(locale);
+	setLocale(locale);
+
+	if (playerLocalStorage) {
+		player = JSON.parse(playerLocalStorage) as Player;
+		player.locale = locale;
+		playerStore.set(player);
+	}
 }

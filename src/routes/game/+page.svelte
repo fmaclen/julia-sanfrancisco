@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Atlas } from '$lib/atlases';
+	import LL, { locale } from '$i18n/i18n-svelte';
 	import Clock, { DELAY_IN_MS } from '$lib/clock';
 	import Button from '$lib/components/Button.svelte';
 	import ButtonLink from '$lib/components/ButtonLink.svelte';
@@ -9,19 +9,23 @@
 	import Nav from '$lib/components/Nav.svelte';
 	import P from '$lib/components/P.svelte';
 	import Section from '$lib/components/Section.svelte';
+	import type { TerminalLine } from '$lib/components/Terminal';
+	import Terminal from '$lib/components/Terminal.svelte';
 	import Time from '$lib/components/Time.svelte';
-	import { gameStore, type Game } from '$lib/game';
-	import { getArtworkPath, getRandomValue, redirectTo } from '$lib/helpers';
-	import { playerStore, type Player, getCasesUntilPromotion } from '$lib/player';
-	import { getDecoyRound, type Round } from '$lib/rounds';
+	import { gameStore, type Game, type Atlas, type Round, generateDecoyRound } from '$lib/game';
+	import { getRandomValue, redirectTo } from '$lib/helpers';
+	import { playerStore, type Player, getCasesUntilPromotion, getRank } from '$lib/player';
+	import enUS from 'date-fns/locale/en-US';
+	import es from 'date-fns/locale/es';
 	import { onMount } from 'svelte';
+	import type { LocalizedString } from 'typesafe-i18n';
 
 	function resetRound(): void {
 		showDescription = true;
 		showPlaces = false;
 		showDestinations = false;
 		currentClueIndex = null;
-		artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
+		artworkPath = currentRound.atlas.artwork;
 		game.currentTime = clock.currentTime;
 
 		// Save the game state to localStorage
@@ -45,7 +49,7 @@
 
 		transitionTo(() => {
 			currentClueIndex = index;
-			if (currentRound) artworkPath = getArtworkPath(currentRound.scenes[index].place, 'places');
+			if (currentRound) artworkPath = currentRound.scenes[index].place.artwork;
 		});
 
 		await clock.fastForward(2);
@@ -58,7 +62,7 @@
 		});
 	}
 
-	async function setRound(destination: Atlas): Promise<void> {
+	async function setRound(currentAtlas: Atlas): Promise<void> {
 		showDestinations = false;
 		showDescription = false;
 		clock.isFlying = true;
@@ -66,10 +70,10 @@
 		transitionTo(() => {
 			const { rounds, currentRoundIndex } = game;
 
-			const isCurrentRound = rounds[currentRoundIndex].atlas === destination;
-			const isNextRound = rounds[currentRoundIndex + 1].atlas === destination;
+			const isCurrentRound = rounds[currentRoundIndex].atlas.city === currentAtlas.city;
+			const isNextRound = rounds[currentRoundIndex + 1].atlas.city === currentAtlas.city;
 			const isPreviousRound =
-				currentRoundIndex > 0 && rounds[currentRoundIndex - 1].atlas === destination;
+				currentRoundIndex > 0 && rounds[currentRoundIndex - 1].atlas.city === currentAtlas.city;
 
 			if (isCurrentRound) currentRound = rounds[currentRoundIndex];
 			if (isNextRound) game.currentRoundIndex += 1;
@@ -79,9 +83,10 @@
 			const isDecoyRound = !isCurrentRound && !isPreviousRound && !isNextRound;
 
 			// There should always be a way to return to the round where the suspect trail was lost
-			const anchorDestination = rounds[currentRoundIndex].atlas;
+			const anchorAtlas = rounds[currentRoundIndex].atlas;
 			if (isDecoyRound) {
-				currentRound = getDecoyRound(destination, anchorDestination);
+				currentRound = generateDecoyRound($LL, currentAtlas, anchorAtlas);
+
 				game.roundDecoy = currentRound;
 			} else {
 				game.roundDecoy = null;
@@ -113,6 +118,30 @@
 		gameStore.set(null);
 	}
 
+	let playerRank: LocalizedString;
+
+	let game: Game;
+	let currentRound: Round;
+	let currentClueIndex: number | null = null;
+
+	let clock = new Clock($locale === 'en' ? enUS : es);
+	let currentTimeFormatted: string;
+
+	let isLoading: boolean = true;
+	let isWalking: boolean;
+	let isFlying: boolean;
+	let isSleeping: boolean;
+	let isTimeUp: boolean;
+	let isGameWon: boolean;
+	let artworkPath: string;
+
+	let showPlaces = false;
+	let showDestinations = false;
+	let showDescription = true;
+
+	let outcomeWon: TerminalLine[] = [];
+	let outcomeTimedUp: TerminalLine[] = [];
+
 	onMount(() => {
 		// Load game state from localStorage
 
@@ -122,6 +151,10 @@
 			redirectTo('/headquarters/');
 			return new Error('No player or game store');
 		}
+
+		// Set the localized rank
+		const playerRankIndex = getRank($playerStore.score);
+		playerRank = $LL.player.ranks[playerRankIndex]();
 
 		// Set game state from localStorage
 		game = $gameStore;
@@ -142,29 +175,68 @@
 		isLoading = false;
 	});
 
-	let game: Game;
-	let currentRound: Round;
-	let currentClueIndex: number | null = null;
-
-	let clock = new Clock();
-	let currentTimeFormatted: string;
-
-	let isLoading: boolean = true;
-	let isWalking: boolean;
-	let isFlying: boolean;
-	let isSleeping: boolean;
-	let isTimeUp: boolean;
-	let isGameWon: boolean;
-	let artworkPath: string;
-
-	let showPlaces = false;
-	let showDestinations = false;
-	let showDescription = true;
-
 	$: if (game) {
 		currentRound = game.roundDecoy ? game.roundDecoy : game.rounds[game.currentRoundIndex];
 		isGameWon = !isTimeUp && game.currentRoundIndex === game.rounds.length - 1;
-		artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
+		artworkPath = currentRound.atlas.artwork;
+
+		outcomeWon = [
+			{
+				text: $LL.game.outcome.title(),
+				type: 'title'
+			},
+			{
+				text: $LL.game.outcome.win.line1()
+			},
+			{
+				text: $LL.game.outcome.win.line2()
+			},
+			{
+				text: $LL.game.outcome.win.line3({
+					city: game.rounds[0].atlas.city,
+					suspect: game.suspect.name
+				})
+			},
+			{
+				text: $LL.game.outcome.win.line4()
+			},
+			{
+				text: $LL.game.outcome.win.line5({
+					cases: getCasesUntilPromotion($playerStore!.score)
+				})
+			},
+			{
+				type: 'line-break'
+			},
+			{
+				text: $LL.game.outcome.ready({
+					rank: playerRank,
+					name: $playerStore!.name
+				})
+			}
+		];
+
+		outcomeTimedUp = [
+			{
+				text: $LL.game.outcome.title(),
+				type: 'title'
+			},
+			{
+				text: $LL.game.outcome.loose.timedOut.line1()
+			},
+			{
+				text: $LL.game.outcome.loose.timedOut.line2({ suspect: game.suspect.name })
+			},
+			{
+				type: 'line-break'
+			},
+			{
+				text: $LL.game.outcome.ready({
+					rank: playerRank,
+					name: $playerStore!.name
+				})
+			}
+		];
 	}
 
 	$: isClockTicking = isSleeping || isWalking || isFlying;
@@ -175,7 +247,7 @@
 <Main>
 	{#if isLoading}
 		<Section>
-			<P>Loading...</P>
+			<P>{$LL.components.loading()}...</P>
 		</Section>
 	{:else if currentRound}
 		<div
@@ -189,42 +261,27 @@
 		<Header>
 			<H1>
 				{isSleeping
-					? 'Sleeping...'
+					? $LL.game.actions.sleeping() + '...'
 					: isFlying
-					? 'Flying...'
+					? $LL.game.actions.flying() + '...'
 					: isWalking
-					? 'Walking...'
+					? $LL.game.actions.walking() + '...'
 					: currentRound.atlas.city}
 			</H1>
 			<Time {isClockTicking} currentTime={currentTimeFormatted} />
 		</Header>
 
 		<Section>
-			{#if isGameWon}
-				<P><strong>Congratulations!</strong> You caught up with the suspect</P>
-				<P>
-					Thanks to your help, the <strong>{game.rounds[0].atlas.city}</strong> police have
-					apprehended <strong>{game.suspect.name}</strong>.
-					<br />
-					<br />
-					<strong>{game.suspect.name}</strong> had the loot, <strong>{game.stolenTreasure}</strong>,
-					which will be returned to the grateful residents of
-					<strong>{game.rounds[0].atlas.city}</strong>.
-					<br />
-					<br />
-					We here at Interpol thank you for your good work on this case. Your success will be noted on
-					your record.
-					<br />
-					<br />
-					{$playerStore ? getCasesUntilPromotion($playerStore.score + 1) : ''}
-					<br />
-					<br />
-					Ready for the next case, {$playerStore?.name}?
-				</P>
-			{:else if showDescription && !isClockTicking}
-				<P>
-					{getRandomValue(currentRound.atlas.descriptions)}
-				</P>
+			{#if !isClockTicking}
+				{#if isGameWon}
+					<Terminal lines={outcomeWon} />
+				{:else if isTimeUp}
+					<Terminal lines={outcomeTimedUp} />
+				{:else if showDescription}
+					<P>
+						{getRandomValue(currentRound.atlas.descriptions)}
+					</P>
+				{/if}
 			{/if}
 		</Section>
 
@@ -232,7 +289,7 @@
 			{#if showPlaces}
 				{#each currentRound.scenes as scene, index}
 					<Button active={currentClueIndex === index} on:click={() => getClue(index)}>
-						{scene.place}
+						{scene.place.name}
 					</Button>
 				{/each}
 			{/if}
@@ -255,14 +312,16 @@
 		</Section>
 
 		<Nav>
-			{#if isGameWon}
-				<Button on:click={updateScore}>Continue</Button>
-			{:else if isClueVisible}
-				<Button on:click={dismissClue}>Dismiss</Button>
-			{:else if !isClockTicking}
-				<Button active={isWalking} on:click={walkTo}>Walk to</Button>
-				<Button active={isFlying} on:click={flyTo}>Fly to</Button>
-				<ButtonLink href="/">Quit</ButtonLink>
+			{#if !isClockTicking}
+				{#if isGameWon}
+					<Button on:click={updateScore}>{$LL.components.buttons.continue()}</Button>
+				{:else if isClueVisible}
+					<Button on:click={dismissClue}>{$LL.components.buttons.goBack()}</Button>
+				{:else}
+					<Button active={isWalking} on:click={walkTo}>{$LL.game.actions.walk()}</Button>
+					<Button active={isFlying} on:click={flyTo}>{$LL.game.actions.fly()}</Button>
+					<ButtonLink href="/">{$LL.components.buttons.quit()}</ButtonLink>
+				{/if}
 			{/if}
 		</Nav>
 	{/if}

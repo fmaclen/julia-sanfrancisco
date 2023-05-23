@@ -1,5 +1,15 @@
-<script>
+<script lang="ts">
 	import { browser } from '$app/environment';
+	import type { Locales } from '$i18n/i18n-types';
+	import { playerStore, applyLocale } from '$lib/player';
+	import { onMount } from 'svelte';
+	import { detectLocale, navigatorDetector } from 'typesafe-i18n/detectors';
+
+	onMount(() => {
+		const locale: Locales =
+			$playerStore?.locale ?? detectLocale('en', ['en', 'es'], navigatorDetector);
+		applyLocale(locale, playerStore);
+	});
 </script>
 
 <svelte:head>

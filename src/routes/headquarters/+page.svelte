@@ -1,4 +1,5 @@
 <script lang="ts">
+	import LL, { locale } from '$i18n/i18n-svelte';
 	import Button from '$lib/components/Button.svelte';
 	import ButtonLink from '$lib/components/ButtonLink.svelte';
 	import H1 from '$lib/components/H1.svelte';
@@ -7,22 +8,93 @@
 	import Nav from '$lib/components/Nav.svelte';
 	import P from '$lib/components/P.svelte';
 	import Section from '$lib/components/Section.svelte';
+	import type { TerminalLine } from '$lib/components/Terminal';
+	import Terminal from '$lib/components/Terminal.svelte';
 	import Time from '$lib/components/Time.svelte';
 	import { gameStore, generateGame } from '$lib/game';
 	import { getRank } from '$lib/player';
 	import { playerStore } from '$lib/player';
 	import { onMount } from 'svelte';
 
-	let isLoading: boolean = true;
 	let playerName: string;
-	let rank = getRank($playerStore?.score);
+	let playerRank: string = '';
+	let isLoading: boolean = true;
+	let playerLines: TerminalLine[] = [];
+	let gameLines: TerminalLine[] | null = null;
 
 	function setPlayer() {
-		playerStore.set({ name: playerName, score: 0 });
+		playerStore.set({ name: playerName, score: 0, locale: $locale });
 	}
 
 	function setGame() {
-		gameStore.set(generateGame());
+		const newGame = generateGame($LL);
+		gameStore.set(newGame);
+	}
+
+	$: if ($playerStore) {
+		const playerRankIndex = getRank($playerStore.score);
+		playerRank = $LL.player.ranks[playerRankIndex]();
+
+		playerLines = [
+			{
+				text: $LL.headquarters.id.indentified({ name: $playerStore.name })
+			},
+			{
+				type: 'line-break'
+			},
+			{
+				text: $LL.headquarters.id.rank({ rank: playerRank.toLowerCase() })
+			}
+		];
+	}
+
+	$: if ($playerStore && $gameStore) {
+		const newsFlash: TerminalLine[] = [
+			{
+				text: `** ${$LL.headquarters.newsflash.title()} **`,
+				type: 'title'
+			},
+			{
+				text: $LL.headquarters.newsflash.content.line1({
+					city: $gameStore.rounds[0].atlas.city
+				})
+			},
+			{
+				text: $LL.headquarters.newsflash.content.line2({ treasure: $gameStore.stolenTreasure })
+			},
+			{
+				text: $LL.headquarters.newsflash.content.line3({
+					sex: $gameStore.suspect.sex.toLowerCase() as 'male' | 'female'
+				})
+			}
+		];
+
+		const assignment: TerminalLine[] = [
+			{
+				type: 'line-break'
+			},
+			{
+				text: $LL.headquarters.assignment.title(),
+				type: 'title'
+			},
+			{
+				text: $LL.headquarters.assignment.content.line1({
+					city: $gameStore.rounds[0].atlas.city,
+					sex: $gameStore.suspect.sex.toLowerCase()
+				})
+			},
+			{
+				text: $LL.headquarters.assignment.content.line2()
+			},
+			{
+				text: $LL.headquarters.assignment.content.line3({
+					rank: playerRank,
+					name: $playerStore.name
+				})
+			}
+		];
+
+		gameLines = [...newsFlash, ...assignment];
 	}
 
 	onMount(() => (isLoading = false));
@@ -30,58 +102,33 @@
 
 <Main>
 	<Header>
-		<H1>Headquarters</H1>
+		<H1>{$LL.headquarters.title()}</H1>
 		<Time />
 	</Header>
 
 	{#if isLoading}
 		<Section>
-			<P>Loading...</P>
+			<P>{$LL.components.loading()}...</P>
 		</Section>
 	{:else if $playerStore}
 		<Section>
-			{#if $gameStore}
-				<P>
-					<strong>Newsflash</strong>
-					<br />
-					National treasure stolen from <strong>{$gameStore.rounds[0].atlas.city}</strong>.
-					<br /><br />
-					The treasure has been identified as <strong>{$gameStore.stolenTreasure}</strong>.
-					<br /><br />
-					<strong>{$gameStore.suspect.sex}</strong> has been reported at the scene of the crime.
-					<br />
-				</P>
-				<P>
-					<strong>Your assignment</strong>
-					<br />
-					Track the thief from <strong>{$gameStore.rounds[0].atlas.city}</strong> to {$gameStore
-						.suspect.pronouns.possessive} hideout and arrest {$gameStore.suspect.pronouns.object}.
-					<br />
-					<br />
-					You must aprehend the thief by <strong>Sunday 5pm</strong>.
-					<br />
-					<br />
-					Good luck, {rank.toLowerCase()}
-					<strong>{$playerStore.name}</strong>.
-				</P>
-			{:else}
-				<P>
-					You have been identified as <strong>{$playerStore.name}</strong>.<br />
-					Your current rank is <strong>{rank}</strong>.
-				</P>
+			<Terminal lines={playerLines} />
+
+			{#if gameLines}
+				<Terminal lines={gameLines} />
 			{/if}
 		</Section>
 
 		<Nav>
 			{#if !$gameStore}
-				<Button on:click={setGame}>Continue</Button>
+				<Button on:click={setGame}>{$LL.components.buttons.continue()}</Button>
 			{:else}
-				<ButtonLink href="/game/">Continue</ButtonLink>
+				<ButtonLink href="/game/">{$LL.components.buttons.continue()}</ButtonLink>
 			{/if}
 		</Nav>
 	{:else}
 		<Section>
-			<P>Detective at keyboard, please identify yourself</P>
+			<P>{$LL.headquarters.id.pending()}</P>
 			<input
 				class="input"
 				type="text"
@@ -91,7 +138,9 @@
 			/>
 		</Section>
 		<Nav>
-			<Button on:click={setPlayer} disabled={!playerName}>Continue</Button>
+			<Button on:click={setPlayer} disabled={!playerName}
+				>{$LL.components.buttons.continue()}</Button
+			>
 		</Nav>
 	{/if}
 </Main>
