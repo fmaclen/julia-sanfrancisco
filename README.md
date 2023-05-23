@@ -15,6 +15,8 @@ This project is meant as a proof-of-concept that leverages generative AI to crea
 
 ### Roadmap
 
+Follow the [current progress here](https://github.com/fmaclen/julia-sanfrancisco/issues).
+
 - Implement the game mechanics from the original game
 - Generate updated clues for the cities featured in the original game
 - Generate new artwork for the cities featured in the original game
