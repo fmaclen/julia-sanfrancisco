@@ -1,15 +1,5 @@
 import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/kit/vite';
-import { readFileSync } from 'fs';
-import { fileURLToPath } from 'url';
-
-// Read the package.json file to get the version
-const file = fileURLToPath(new URL('package.json', import.meta.url));
-const json = readFileSync(file, 'utf8');
-const { version } = JSON.parse(json);
-
-// Set the version as an environment variable
-process.env.PUBLIC_VERSION = version;
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {

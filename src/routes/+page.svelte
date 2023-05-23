@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { PUBLIC_VERSION } from '$env/static/public';
+	import { PUBLIC_GAME_VERSION } from '$env/static/public';
 	import LL, { locale } from '$i18n/i18n-svelte';
 	import Button from '$lib/components/Button.svelte';
 	import ButtonLink from '$lib/components/ButtonLink.svelte';
@@ -35,8 +35,8 @@
 		<ButtonLink href="/headquarters/">{$LL.home.newGame()}</ButtonLink>
 	</Nav>
 
-	<a class="version" href="https://github.com/fmaclen/julia-sanfrancisco/">
-		<code>{PUBLIC_VERSION}</code>
+	<a class="version" href="https://github.com/fmaclen/julia-sanfrancisco/" target="_blank">
+		<code>v{PUBLIC_GAME_VERSION}</code>
 	</a>
 </Main>
 

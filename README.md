@@ -37,7 +37,11 @@ be done.
 
 ### Development
 
-To run the game locally, clone the repository and run:
+To run the development environment locally:
+
+- Clone the repository.
+- Copy `.env.example` and rename it to `.env`.
+- Then run:
 
 ```bash
 npm install
@@ -48,7 +52,7 @@ npm run dev
 npm run dev -- --open
 ```
 
-To create a production version of your app:
+To create a production version of the game:
 
 ```bash
 npm run build

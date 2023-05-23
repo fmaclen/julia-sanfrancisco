@@ -7,6 +7,7 @@ on:
 
 jobs:
   build_and_deploy:
+    name: Build & deploy
     permissions:
       contents: write
 
@@ -25,19 +26,16 @@ jobs:
         run: npm ci
 
       - name: Semantic Release
-        run: npx semantic-release --branches main
+        id: release
+        run: echo "::set-output name=version::$(npx semantic-release --branches main | grep 'Published release' | awk '{print $4}')"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # This pulls the updated package.json with the new version number
-      # which `Build` will use to insert the version in the game.
-      - name: Checkout repository (again)
-        uses: actions/checkout@v2
 
       - name: Build
         run: npm run build
         env:
-          GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
+          PUBLIC_GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
+          PUBLIC_GAME_VERSION: ${{ steps.release.outputs.version }}
 
       - name: Deploy to S3
         uses: jakejarvis/s3-sync-action@master

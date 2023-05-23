@@ -15,7 +15,6 @@
 	import { gameStore, type Game, type Atlas, type Round, generateDecoyRound } from '$lib/game';
 	import { getRandomValue, redirectTo } from '$lib/helpers';
 	import { playerStore, type Player, getCasesUntilPromotion, getRank } from '$lib/player';
-
 	import { onMount } from 'svelte';
 	import type { LocalizedString } from 'typesafe-i18n';
 
@@ -123,7 +122,7 @@
 	let currentRound: Round;
 	let currentClueIndex: number | null = null;
 
-	let clock = new Clock($locale);
+	let clock = new Clock($playerStore?.locale ?? 'en');
 	let currentTimeFormatted: string;
 
 	let isLoading: boolean = true;
