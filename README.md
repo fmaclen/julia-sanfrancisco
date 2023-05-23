@@ -11,7 +11,7 @@ Chase Julia and her accomplices across different countries, unraveling clues, so
 ### About the project
 
 **Julia Sanfrancisco** is a clone of the 80s MS-DOS game [Where in the World is Carmen Sandiego?](https://archive.org/details/msdos_Where_in_the_World_is_Carmen_Sandiego_Enhanced_1989).
-This project is meant as a proof-of-concept that leverages generative AI to create the game and it's assets.
+This project is meant as a proof-of-concept for leveraging generative AI to create the game and it's assets.
 
 ### Short-term roadmap
 
