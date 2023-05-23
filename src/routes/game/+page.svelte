@@ -68,10 +68,10 @@
 		transitionTo(() => {
 			const { rounds, currentRoundIndex } = game;
 
-			const isCurrentRound = rounds[currentRoundIndex].atlas === currentAtlas;
-			const isNextRound = rounds[currentRoundIndex + 1].atlas === currentAtlas;
+			const isCurrentRound = rounds[currentRoundIndex].atlas.city === currentAtlas.city;
+			const isNextRound = rounds[currentRoundIndex + 1].atlas.city === currentAtlas.city;
 			const isPreviousRound =
-				currentRoundIndex > 0 && rounds[currentRoundIndex - 1].atlas === currentAtlas;
+				currentRoundIndex > 0 && rounds[currentRoundIndex - 1].atlas.city === currentAtlas.city;
 
 			if (isCurrentRound) currentRound = rounds[currentRoundIndex];
 			if (isNextRound) game.currentRoundIndex += 1;
@@ -270,14 +270,16 @@
 		</Header>
 
 		<Section>
-			{#if isGameWon}
-				<Terminal lines={outcomeWon} />
-			{:else if isTimeUp}
-				<Terminal lines={outcomeTimedUp} />
-			{:else if showDescription && !isClockTicking}
-				<P>
-					{getRandomValue(currentRound.atlas.descriptions)}
-				</P>
+			{#if !isClockTicking}
+				{#if isGameWon}
+					<Terminal lines={outcomeWon} />
+				{:else if isTimeUp}
+					<Terminal lines={outcomeTimedUp} />
+				{:else if showDescription}
+					<P>
+						{getRandomValue(currentRound.atlas.descriptions)}
+					</P>
+				{/if}
 			{/if}
 		</Section>
 
@@ -308,14 +310,16 @@
 		</Section>
 
 		<Nav>
-			{#if isGameWon}
-				<Button on:click={updateScore}>{$LL.components.buttons.continue()}</Button>
-			{:else if isClueVisible}
-				<Button on:click={dismissClue}>{$LL.components.buttons.goBack()}</Button>
-			{:else if !isClockTicking}
-				<Button active={isWalking} on:click={walkTo}>{$LL.game.actions.walk()}</Button>
-				<Button active={isFlying} on:click={flyTo}>{$LL.game.actions.fly()}</Button>
-				<ButtonLink href="/">{$LL.components.buttons.quit()}</ButtonLink>
+			{#if !isClockTicking}
+				{#if isGameWon}
+					<Button on:click={updateScore}>{$LL.components.buttons.continue()}</Button>
+				{:else if isClueVisible}
+					<Button on:click={dismissClue}>{$LL.components.buttons.goBack()}</Button>
+				{:else}
+					<Button active={isWalking} on:click={walkTo}>{$LL.game.actions.walk()}</Button>
+					<Button active={isFlying} on:click={flyTo}>{$LL.game.actions.fly()}</Button>
+					<ButtonLink href="/">{$LL.components.buttons.quit()}</ButtonLink>
+				{/if}
 			{/if}
 		</Nav>
 	{/if}
