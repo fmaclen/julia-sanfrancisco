@@ -13,6 +13,43 @@
 </script>
 
 <svelte:head>
+	<!-- Primary Meta Tags -->
+	<title
+		>Julia Sanfrancisco: An AI spin on the classic 'Where in the World is Carmen Sandiego?'</title
+	>
+	<meta
+		name="title"
+		content="Julia Sanfrancisco: An AI spin on the classic 'Where in the World is Carmen Sandiego?'"
+	/>
+	<meta
+		name="description"
+		content="Chase Julia and her accomplices across different countries, unraveling clues, solving puzzles, and expanding your geography knowledge in this exciting detective game."
+	/>
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://julia.strictoaster.com/" />
+	<meta
+		property="og:title"
+		content="Julia Sanfrancisco: An AI spin on the classic 'Where in the World is Carmen Sandiego?'"
+	/>
+	<meta
+		property="og:description"
+		content="Chase Julia and her accomplices across different countries, unraveling clues, solving puzzles, and expanding your geography knowledge in this exciting detective game."
+	/>
+	<meta property="og:image" content="https://julia.strictoaster.com/open-graph.png" />
+	<!-- Twitter -->
+	<meta property="twitter:card" content="summary_large_image" />
+	<meta property="twitter:url" content="httpsjulia.strictoaster.com/" />
+	<meta
+		property="twitter:title"
+		content="Julia Sanfrancisco: An AI spin on the classic 'Where in the World is Carmen Sandiego?'"
+	/>
+	<meta
+		property="twitter:description"
+		content="Chase Julia and her accomplices across different countries, unraveling clues, solving puzzles, and expanding your geography knowledge in this exciting detective game."
+	/>
+	<meta property="twitter:image" content="https://julia.strictoaster.com/open-graph.png" />
+
 	{#if PUBLIC_GOOGLE_ANALYTICS_ID}
 		<script async src="https://www.googletagmanager.com/gtag/js?id={PUBLIC_GOOGLE_ANALYTICS_ID}">
 		</script>
