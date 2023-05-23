@@ -90,8 +90,11 @@ const es = {
 			ready: '¿Listo para tu próximo caso, {rank} {name}?'
 		},
 		actions: {
-			walk: 'Caminar al',
-			fly: 'Volar a'
+			walk: 'Caminar a',
+			walking: 'Caminando',
+			fly: 'Volar a',
+			flying: 'Volando',
+			sleeping: 'Durmiendo'
 		}
 	},
 	atlases: {

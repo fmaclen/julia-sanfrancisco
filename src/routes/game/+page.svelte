@@ -13,7 +13,7 @@
 	import Terminal from '$lib/components/Terminal.svelte';
 	import Time from '$lib/components/Time.svelte';
 	import { gameStore, type Game, type Atlas, type Round, generateDecoyRound } from '$lib/game';
-	import { getArtworkPath, getRandomValue, redirectTo } from '$lib/helpers';
+	import { getRandomValue, redirectTo } from '$lib/helpers';
 	import { playerStore, type Player, getCasesUntilPromotion, getRank } from '$lib/player';
 	import { onMount } from 'svelte';
 	import type { LocalizedString } from 'typesafe-i18n';
@@ -23,7 +23,7 @@
 		showPlaces = false;
 		showDestinations = false;
 		currentClueIndex = null;
-		artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
+		artworkPath = currentRound.atlas.artwork;
 		game.currentTime = clock.currentTime;
 
 		// Save the game state to localStorage
@@ -47,7 +47,7 @@
 
 		transitionTo(() => {
 			currentClueIndex = index;
-			if (currentRound) artworkPath = getArtworkPath(currentRound.scenes[index].place, 'places');
+			if (currentRound) artworkPath = currentRound.scenes[index].place.artwork;
 		});
 
 		await clock.fastForward(2);
@@ -176,7 +176,7 @@
 	$: if (game) {
 		currentRound = game.roundDecoy ? game.roundDecoy : game.rounds[game.currentRoundIndex];
 		isGameWon = !isTimeUp && game.currentRoundIndex === game.rounds.length - 1;
-		artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
+		artworkPath = currentRound.atlas.artwork;
 
 		outcomeWon = [
 			{
@@ -245,7 +245,7 @@
 <Main>
 	{#if isLoading}
 		<Section>
-			<P>Loading...</P>
+			<P>{$LL.components.loading()}...</P>
 		</Section>
 	{:else if currentRound}
 		<div
@@ -259,11 +259,11 @@
 		<Header>
 			<H1>
 				{isSleeping
-					? 'Sleeping...'
+					? $LL.game.actions.sleeping() + '...'
 					: isFlying
-					? 'Flying...'
+					? $LL.game.actions.flying() + '...'
 					: isWalking
-					? 'Walking...'
+					? $LL.game.actions.walking() + '...'
 					: currentRound.atlas.city}
 			</H1>
 			<Time {isClockTicking} currentTime={currentTimeFormatted} />
@@ -285,7 +285,7 @@
 			{#if showPlaces}
 				{#each currentRound.scenes as scene, index}
 					<Button active={currentClueIndex === index} on:click={() => getClue(index)}>
-						{scene.place}
+						{scene.place.name}
 					</Button>
 				{/each}
 			{/if}

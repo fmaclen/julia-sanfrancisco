@@ -170,9 +170,21 @@ type RootTranslation = {
 			 */
 			walk: string
 			/**
+			 * W​a​l​k​i​n​g
+			 */
+			walking: string
+			/**
 			 * F​l​y​ ​t​o
 			 */
 			fly: string
+			/**
+			 * F​l​y​i​n​g
+			 */
+			flying: string
+			/**
+			 * S​l​e​e​p​i​n​g
+			 */
+			sleeping: string
 		}
 	}
 	suspects: {
@@ -3558,7 +3570,7 @@ type RootTranslation = {
 			 */
 			'5': string
 			/**
-			 * M​a​r​k​e​t
+			 * M​a​r​k​e​t​p​l​a​c​e
 			 */
 			'6': string
 			/**
@@ -3919,9 +3931,21 @@ export type TranslationFunctions = {
 			 */
 			walk: () => LocalizedString
 			/**
+			 * Walking
+			 */
+			walking: () => LocalizedString
+			/**
 			 * Fly to
 			 */
 			fly: () => LocalizedString
+			/**
+			 * Flying
+			 */
+			flying: () => LocalizedString
+			/**
+			 * Sleeping
+			 */
+			sleeping: () => LocalizedString
 		}
 	}
 	suspects: {
@@ -7269,7 +7293,7 @@ export type TranslationFunctions = {
 			 */
 			'5': () => LocalizedString
 			/**
-			 * Market
+			 * Marketplace
 			 */
 			'6': () => LocalizedString
 			/**

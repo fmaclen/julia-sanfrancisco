@@ -1,6 +1,7 @@
 import { browser } from '$app/environment';
+import en from '$i18n/en';
 import type { Translation, TranslationFunctions } from '$i18n/i18n-types';
-import { getRandomValue } from '$lib/helpers';
+import { getArtworkPath, getRandomValue } from '$lib/helpers';
 import { writable } from 'svelte/store';
 import type { LocalizedString } from 'typesafe-i18n';
 
@@ -82,7 +83,7 @@ enum Witness {
 }
 
 interface Scene {
-	place: string;
+	place: LocalizedPlace;
 	witness: string;
 	clue: string;
 }
@@ -97,6 +98,7 @@ export interface Atlas {
 	sights: string[];
 	objects: string[];
 	topics: string[];
+	artwork: string;
 }
 
 export interface Round {
@@ -141,6 +143,7 @@ export function generateGame(LL: TranslationFunctions): Game {
 interface LocalizedPlace {
 	place: Place;
 	name: string;
+	artwork: string;
 }
 
 interface LocalizedWitness {
@@ -255,7 +258,7 @@ function generateScenes(params: ScenesParams): Scene[] {
 
 		scenes.push({
 			clue,
-			place: place.name,
+			place: place,
 			witness: witness.name
 		});
 	}
@@ -421,7 +424,10 @@ function getLocalizedAtlases(LL: TranslationFunctions): Atlas[] {
 			leader: LL.atlases[validKey].leader(),
 			sights: getTranslationFromArray(LL.atlases[validKey].sights),
 			objects: getTranslationFromArray(LL.atlases[validKey].objects),
-			topics: getTranslationFromArray(LL.atlases[validKey].topics)
+			topics: getTranslationFromArray(LL.atlases[validKey].topics),
+
+			// HACK: We are using the English name of the `city` to get the artwork.
+			artwork: getArtworkPath(en.atlases[validKey].city, 'atlas')
 		});
 	}
 
@@ -435,7 +441,13 @@ function getLocalizedPlaces(LL: TranslationFunctions): LocalizedPlace[] {
 	for (const placeKey of placeKeys) {
 		const validKey = placeKey as keyof Translation['scenes']['places'];
 		const placeIndex = placeKey as keyof typeof Place;
-		places.push({ place: Place[placeIndex], name: LL.scenes.places[validKey]() });
+		places.push({
+			place: Place[placeIndex],
+			name: LL.scenes.places[validKey](),
+
+			// HACK: We are using the English name of the `place` to get the artwork.
+			artwork: getArtworkPath(en.scenes.places[validKey], 'places')
+		});
 	}
 
 	return places;

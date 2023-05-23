@@ -89,7 +89,10 @@ const en = {
 		},
 		actions: {
 			walk: 'Walk to',
-			fly: 'Fly to'
+			walking: 'Walking',
+			fly: 'Fly to',
+			flying: 'Flying',
+			sleeping: 'Sleeping'
 		}
 	},
 	suspects: {
@@ -216,7 +219,7 @@ const en = {
 			3: 'Harbor',
 			4: 'Hotel',
 			5: 'Library',
-			6: 'Market',
+			6: 'Marketplace',
 			7: 'Museum',
 			8: 'Palace',
 			9: 'Riverfront',
