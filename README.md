@@ -4,7 +4,7 @@ Chase Julia and her accomplices across different countries, unraveling clues, so
 
 🕹️ [**Play it now**](https://julia.strictoaster.com) — 💻 [**Devlog on Discord**](https://discord.com/channels/532702198040100874/1108858794831790080)
 
-![Current artwork style](https://github.com/fmaclen/julia-sanfrancisco/assets/1434675/a8e7df0a-6603-4e10-9be7-1d52f1e13d08)
+![Collage of artwork from the game](https://github.com/fmaclen/julia-sanfrancisco/static/open-graph.png)
 
 ---
 
