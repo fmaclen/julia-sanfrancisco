@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
+	import { PUBLIC_GOOGLE_ANALYTICS_ID } from '$env/static/public';
 	import type { Locales } from '$i18n/i18n-types';
 	import { playerStore, applyLocale } from '$lib/player';
 	import { onMount } from 'svelte';
@@ -13,11 +13,8 @@
 </script>
 
 <svelte:head>
-	{#if !browser && process.env.GOOGLE_ANALYTICS_ID}
-		<script
-			async
-			src="https://www.googletagmanager.com/gtag/js?id={process.env.GOOGLE_ANALYTICS_ID}"
-		>
+	{#if PUBLIC_GOOGLE_ANALYTICS_ID}
+		<script async src="https://www.googletagmanager.com/gtag/js?id={PUBLIC_GOOGLE_ANALYTICS_ID}">
 		</script>
 		{@html `<script>${`
 			window.dataLayer = window.dataLayer || [];
@@ -25,7 +22,7 @@
 				dataLayer.push(arguments);
 			}
 			gtag('js', new Date());
-			gtag('config', '${process.env.GOOGLE_ANALYTICS_ID}');
+			gtag('config', '${PUBLIC_GOOGLE_ANALYTICS_ID}');
 		`}</script>`}
 	{/if}
 </svelte:head>

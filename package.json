@@ -1,6 +1,6 @@
 {
 	"name": "julia-sanfrancisco",
-	"version": "0.0.0",
+	"version": "0.0.0-development",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev --host",
