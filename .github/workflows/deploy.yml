@@ -29,6 +29,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # This pulls the updated package.json with the new version number
+      # which `Build` will use to insert the version in the game.
+      - name: Checkout repository (again)
+        uses: actions/checkout@v2
+
       - name: Build
         run: npm run build
         env:

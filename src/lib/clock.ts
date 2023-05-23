@@ -1,4 +1,8 @@
+import type { Locales } from '../i18n/i18n-types';
 import { addDays, addHours, addSeconds, format, isAfter, startOfWeek } from 'date-fns';
+// Need to import the locales like this to avoid a bug during build process
+import enUS from 'date-fns/locale/en-US/index';
+import es from 'date-fns/locale/es/index';
 
 export const DELAY_IN_MS = 500;
 const FPS = 60;
@@ -16,10 +20,10 @@ export default class Clock {
 	isSleeping: boolean;
 	isTimeUp: boolean;
 
-	constructor(locale: Locale) {
+	constructor(locale: Locales) {
 		this.timerId = null;
 		this.tickRate = DELAY_IN_MS / FPS;
-		this.locale = locale;
+		this.locale = locale === 'en' ? enUS : es;
 
 		this.isWalking = false;
 		this.isFlying = false;
