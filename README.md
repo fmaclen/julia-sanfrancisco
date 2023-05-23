@@ -8,7 +8,7 @@ Chase Julia and her accomplices across different countries, unraveling clues, so
 
 ---
 
-### About the project
+## About the project
 
 **Julia Sanfrancisco** is a clone of the 80s MS-DOS game [Where in the World is Carmen Sandiego?](https://archive.org/details/msdos_Where_in_the_World_is_Carmen_Sandiego_Enhanced_1989).
 This project is meant as a proof-of-concept for leveraging generative AI to create the game and it's assets.
@@ -21,6 +21,10 @@ This project is meant as a proof-of-concept for leveraging generative AI to crea
 - Implement a new mobile-based UI with improved UX
 
 Follow the [current progress here](https://github.com/fmaclen/julia-sanfrancisco/issues).
+
+---
+
+## Development
 
 ### Current stack
 
@@ -35,7 +39,9 @@ Follow the [current progress here](https://github.com/fmaclen/julia-sanfrancisco
 The game is currently open for contributions. If you want to help, please join the [Discord server](https://discord.com/channels/532702198040100874/1108858794831790080) and/or check the [issues](https://github.com/fmaclen/julia-sanfrancisco/issues) for tasks that need to
 be done.
 
-### Development
+💵 **I will consider paying for meaninful contributions**, [message me](mailto:hello@fernando.is).
+
+### Environment setup
 
 To run the development environment locally:
 
@@ -58,6 +64,6 @@ To create a production version of the game:
 npm run build
 ```
 
-### References
+## References
 
 - Wikipedia: [Where in the World Is Carmen Sandiego?](<https://en.wikipedia.org/wiki/Where_in_the_World_Is_Carmen_Sandiego%3F_(1985_video_game)>)
