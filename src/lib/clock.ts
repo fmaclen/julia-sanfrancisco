@@ -39,7 +39,10 @@ export default class Clock {
 	};
 
 	public getFormattedTime = (): string => {
+		// Format the time as "Monday 9:00 am" / "Lunes 9:00 am"
 		const formattedTime = format(this.currentTime, 'EEEE h:mm aaa', { locale: this.locale });
+
+		// Capitalize the first letter
 		return formattedTime.charAt(0).toUpperCase() + formattedTime.slice(1);
 	};
 
