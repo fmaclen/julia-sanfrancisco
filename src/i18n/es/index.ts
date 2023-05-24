@@ -94,7 +94,11 @@ const es = {
 			walking: 'Caminando',
 			fly: 'Volar a',
 			flying: 'Volando',
-			sleeping: 'Durmiendo'
+			sleeping: 'Durmiendo',
+			options: 'Opciones',
+			abandon: 'Abandonar partida',
+			confirm: 'Estás a punto de abandonar este juego. ¿Estás seguro?',
+			getWarrant: 'Obtener orden de arresto (Próximamente™)'
 		}
 	},
 	atlases: {
@@ -286,8 +290,7 @@ const es = {
 		loading: 'Cargando',
 		buttons: {
 			goBack: 'Volver',
-			continue: 'Continuar',
-			quit: 'Salir'
+			continue: 'Continuar'
 		}
 	}
 } satisfies Translation;

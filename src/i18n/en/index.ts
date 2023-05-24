@@ -92,7 +92,11 @@ const en = {
 			walking: 'Walking',
 			fly: 'Fly to',
 			flying: 'Flying',
-			sleeping: 'Sleeping'
+			sleeping: 'Sleeping',
+			options: 'Options',
+			abandon: 'Abandon game',
+			confirm: 'Are you sure you want to abandon this game?',
+			getWarrant: 'Get warrant (Soon™)'
 		}
 	},
 	suspects: {
@@ -302,8 +306,7 @@ const en = {
 		loading: 'Loading',
 		buttons: {
 			goBack: 'Go back',
-			continue: 'Continue',
-			quit: 'Quit'
+			continue: 'Continue'
 		}
 	}
 } satisfies BaseTranslation;

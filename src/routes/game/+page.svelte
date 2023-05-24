@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LL, { locale } from '$i18n/i18n-svelte';
+	import LL from '$i18n/i18n-svelte';
 	import Clock, { DELAY_IN_MS } from '$lib/clock';
 	import Button from '$lib/components/Button.svelte';
 	import ButtonLink from '$lib/components/ButtonLink.svelte';
@@ -14,6 +14,9 @@
 	import Time from '$lib/components/Time.svelte';
 	import { gameStore, type Game, type Atlas, type Round, generateDecoyRound } from '$lib/game';
 	import { getRandomValue, redirectTo } from '$lib/helpers';
+	import IconFly from '$lib/icons/Fly.svg.svelte';
+	import IconMenu from '$lib/icons/Menu.svg.svelte';
+	import IconWalk from '$lib/icons/Walk.svg.svelte';
 	import { playerStore, type Player, getCasesUntilPromotion, getRank } from '$lib/player';
 	import { onMount } from 'svelte';
 	import type { LocalizedString } from 'typesafe-i18n';
@@ -21,6 +24,7 @@
 	function resetRound(): void {
 		showDescription = true;
 		showPlaces = false;
+		showOptions = false;
 		showDestinations = false;
 		currentClueIndex = null;
 		artworkPath = currentRound.atlas.artwork;
@@ -38,6 +42,11 @@
 	function walkTo(): void {
 		if (!showPlaces) resetRound();
 		showPlaces = !showPlaces;
+	}
+
+	function toggleOptions(): void {
+		if (!showOptions) resetRound();
+		showOptions = !showOptions;
 	}
 
 	async function getClue(index: number): Promise<void> {
@@ -116,6 +125,13 @@
 		gameStore.set(null);
 	}
 
+	function abandonGame(): void {
+		if (confirm($LL.game.actions.confirm())) {
+			gameStore.set(null);
+			redirectTo('/headquarters/');
+		}
+	}
+
 	let playerRank: LocalizedString;
 
 	let game: Game;
@@ -135,6 +151,7 @@
 
 	let showPlaces = false;
 	let showDestinations = false;
+	let showOptions = false;
 	let showDescription = true;
 
 	let outcomeWon: TerminalLine[] = [];
@@ -307,6 +324,13 @@
 					</Button>
 				{/each}
 			{/if}
+
+			{#if showOptions}
+				<Button on:click={abandonGame}>
+					{$LL.game.actions.abandon()}
+				</Button>
+				<Button disabled={true}>{$LL.game.actions.getWarrant()}</Button>
+			{/if}
 		</Section>
 
 		<Nav>
@@ -316,9 +340,23 @@
 				{:else if isClueVisible}
 					<Button on:click={dismissClue}>{$LL.components.buttons.goBack()}</Button>
 				{:else}
-					<Button active={isWalking} on:click={walkTo}>{$LL.game.actions.walk()}</Button>
-					<Button active={isFlying} on:click={flyTo}>{$LL.game.actions.fly()}</Button>
-					<ButtonLink href="/">{$LL.components.buttons.quit()}</ButtonLink>
+					<Button
+						active={isWalking || showPlaces}
+						title={$LL.game.actions.walk()}
+						on:click={walkTo}
+					>
+						<IconWalk />
+					</Button>
+					<Button
+						active={isFlying || showDestinations}
+						title={$LL.game.actions.fly()}
+						on:click={flyTo}
+					>
+						<IconFly />
+					</Button>
+					<Button title={$LL.game.actions.options()} active={showOptions} on:click={toggleOptions}>
+						<IconMenu />
+					</Button>
 				{/if}
 			{/if}
 		</Nav>

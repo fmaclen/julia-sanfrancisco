@@ -1,9 +1,10 @@
 <script lang="ts">
+	export let title: string | undefined = undefined;
 	export let disabled: boolean = false;
 	export let active: boolean = false;
 </script>
 
-<button class="button {active ? 'button--active' : ''}" {disabled} on:click>
+<button class="button {active ? 'button--active' : ''}" {disabled} {title} on:click>
 	<slot />
 </button>
 
@@ -19,8 +20,8 @@
 		}
 
 		&:disabled {
-			color: var(--color-neutral-300);
-			opacity: 0.66;
+			color: var(--color-neutral-600);
+			background-color: rgba(75, 75, 75, 0.5);
 		}
 
 		&:hover:not(:disabled),
