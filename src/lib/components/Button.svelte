@@ -20,8 +20,9 @@
 		}
 
 		&:disabled {
-			color: var(--color-neutral-600);
-			background-color: rgba(75, 75, 75, 0.5);
+			color: var(--color-neutral-400);
+			background-color: rgba(50, 50, 50, 0.66);
+			cursor: not-allowed;
 		}
 
 		&:hover:not(:disabled),
