@@ -185,6 +185,22 @@ type RootTranslation = {
 			 * S​l​e​e​p​i​n​g
 			 */
 			sleeping: string
+			/**
+			 * O​p​t​i​o​n​s
+			 */
+			options: string
+			/**
+			 * A​b​a​n​d​o​n​ ​g​a​m​e
+			 */
+			abandon: string
+			/**
+			 * A​r​e​ ​y​o​u​ ​s​u​r​e​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​a​b​a​n​d​o​n​ ​t​h​i​s​ ​g​a​m​e​?
+			 */
+			confirm: string
+			/**
+			 * G​e​t​ ​w​a​r​r​a​n​t​ ​(​S​o​o​n​™​)
+			 */
+			getWarrant: string
 		}
 	}
 	suspects: {
@@ -3783,10 +3799,6 @@ type RootTranslation = {
 			 * C​o​n​t​i​n​u​e
 			 */
 			'continue': string
-			/**
-			 * Q​u​i​t
-			 */
-			quit: string
 		}
 	}
 }
@@ -3946,6 +3958,22 @@ export type TranslationFunctions = {
 			 * Sleeping
 			 */
 			sleeping: () => LocalizedString
+			/**
+			 * Options
+			 */
+			options: () => LocalizedString
+			/**
+			 * Abandon game
+			 */
+			abandon: () => LocalizedString
+			/**
+			 * Are you sure you want to abandon this game?
+			 */
+			confirm: () => LocalizedString
+			/**
+			 * Get warrant (Soon™)
+			 */
+			getWarrant: () => LocalizedString
 		}
 	}
 	suspects: {
@@ -7506,10 +7534,6 @@ export type TranslationFunctions = {
 			 * Continue
 			 */
 			'continue': () => LocalizedString
-			/**
-			 * Quit
-			 */
-			quit: () => LocalizedString
 		}
 	}
 }
