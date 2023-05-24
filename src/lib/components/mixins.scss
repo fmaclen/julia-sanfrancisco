@@ -3,7 +3,8 @@
 	padding-block: 16px;
 	border-radius: var(--border-radius-m);
 	color: var(--color-neutral-100);
-	background-color: var(--color-neutral-800);
+	background-color: rgba(0, 0, 0, 0.66);
+	backdrop-filter: blur(8px);
 }
 
 @mixin button {
