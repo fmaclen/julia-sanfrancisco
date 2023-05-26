@@ -14,8 +14,12 @@
 		margin-inline: var(--spacing-xl);
 		gap: var(--spacing-m);
 
+		@media (max-width: 512px) {
+			margin-inline: var(--spacing-l);
+		}
+
 		&--bottom {
-			justify-content: flex-end;
+			margin-top: auto;
 		}
 	}
 </style>

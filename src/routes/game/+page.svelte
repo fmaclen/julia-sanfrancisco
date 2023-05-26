@@ -132,7 +132,7 @@
 	function abandonGame(): void {
 		if (confirm($LL.game.actions.confirm())) {
 			gameStore.set(null);
-			redirectTo('/headquarters/');
+			redirectTo('/');
 		}
 	}
 
@@ -284,7 +284,7 @@
 			<Time {isClockTicking} currentTime={currentTimeFormatted} />
 		</Header>
 
-		<Section>
+		<Section align="bottom">
 			{#if !isClockTicking}
 				{#if isGameWon}
 					<Terminal lines={outcomeWon} />
@@ -294,8 +294,8 @@
 			{/if}
 		</Section>
 
-		<Section align="bottom">
-			{#if showDescription}
+		<Section>
+			{#if !isTimeUp && !isGameWon && !isSleeping && !isClockTicking && showDescription}
 				<P>
 					{getRandomValue(currentRound.atlas.descriptions)}
 				</P>

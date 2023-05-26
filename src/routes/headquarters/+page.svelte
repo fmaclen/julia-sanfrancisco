@@ -110,11 +110,11 @@
 	</Header>
 
 	{#if isLoading}
-		<Section>
+		<Section align="bottom">
 			<P>{$LL.components.loading()}...</P>
 		</Section>
 	{:else if $playerStore}
-		<Section>
+		<Section align="bottom">
 			<Terminal lines={playerLines} />
 
 			{#if gameLines}

@@ -11,8 +11,11 @@
 		width: 100%;
 		height: max-content;
 		gap: var(--spacing-m);
-		margin-top: auto;
 		padding-inline: var(--spacing-xl);
+
+		@media (max-width: 512px) {
+			padding-inline: var(--spacing-l);
+		}
 
 		&:last-child {
 			margin-bottom: var(--spacing-xl);

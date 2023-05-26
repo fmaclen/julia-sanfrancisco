@@ -11,5 +11,9 @@
 		gap: var(--spacing-s);
 		margin-inline: var(--spacing-xl);
 		margin-top: var(--spacing-xl);
+
+		@media (max-width: 512px) {
+			margin-inline: var(--spacing-l);
+		}
 	}
 </style>

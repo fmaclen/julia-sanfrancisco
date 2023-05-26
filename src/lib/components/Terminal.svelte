@@ -45,21 +45,34 @@
 </ul>
 
 <style lang="scss">
+	@import '$lib/components/mixins.scss';
+
 	ul.terminal {
+		@include plate;
 		list-style: none;
 		width: 100%;
-		padding-left: 0;
-		padding-block: 4px;
-		background-color: var(--color-neutral-900);
-		border-radius: var(--border-radius-m);
+		padding: unset;
+		margin: unset;
 	}
 
 	li.terminal__line {
 		font-family: 'Courier New', Courier, monospace;
 		color: var(--color-neutral-100);
-		padding-inline: 24px;
+		padding-inline: var(--spacing-xl);
 		margin-block: 16px;
 		box-sizing: border-box;
+
+		@media (max-width: 512px) {
+			padding-inline: var(--spacing-l);
+		}
+
+		&:first-child {
+			margin-top: 24px;
+		}
+
+		&:last-child {
+			margin-bottom: 24px;
+		}
 
 		&--title {
 			font-weight: bold;
@@ -69,7 +82,7 @@
 		&--line-break {
 			height: 1px;
 			border-top: 1px dashed var(--color-neutral-500);
-			margin-top: 16px;
+			margin-block: 24px;
 		}
 	}
 </style>

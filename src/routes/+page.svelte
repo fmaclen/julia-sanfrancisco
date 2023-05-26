@@ -19,6 +19,7 @@
 	<Header>
 		<H1>{$LL.home.title()}</H1>
 	</Header>
+
 	<Section align="bottom">
 		<P>
 			{$LL.home.introduction()}
@@ -57,14 +58,21 @@
 	footer.footer {
 		display: flex;
 		justify-content: space-between;
+		margin-inline: var(--spacing-xl);
+		margin-bottom: var(--spacing-xl);
+
+		@media (max-width: 512px) {
+			margin-inline: var(--spacing-l);
+		}
 	}
 
 	a.version {
-		margin-inline: var(--spacing-xl);
-		margin-bottom: var(--spacing-xl);
-		text-align: center;
 		color: var(--color-neutral-400);
 		text-decoration: none;
+
+		&:last-child {
+			text-align: right;
+		}
 
 		&:hover {
 			color: var(--color-neutral-200);

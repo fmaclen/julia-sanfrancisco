@@ -30,7 +30,7 @@
 		// Top gradient
 		&::after {
 			top: 0;
-			height: 50%;
+			height: 33%;
 
 			// Eased gradient
 			background: linear-gradient(
@@ -57,7 +57,7 @@
 		// Bottom gradient
 		&::before {
 			bottom: 0;
-			height: 60%;
+			height: 66%;
 
 			// Eased gradient
 			background: linear-gradient(
