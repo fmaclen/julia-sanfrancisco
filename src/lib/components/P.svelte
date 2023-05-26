@@ -6,7 +6,7 @@
 	@import '$lib/components/mixins.scss';
 
 	p.p {
-		font-size: 20px;
+		font-size: 18px;
 		line-height: 150%;
 		margin-block: 1em;
 		width: 100%;

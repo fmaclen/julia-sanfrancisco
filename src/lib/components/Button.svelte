@@ -2,9 +2,15 @@
 	export let title: string | undefined = undefined;
 	export let disabled: boolean = false;
 	export let active: boolean = false;
+	export let compact: boolean = false;
 </script>
 
-<button class="button {active ? 'button--active' : ''}" {disabled} {title} on:click>
+<button
+	class="button {active ? 'button--active' : ''} {compact ? 'button--compact' : ''}"
+	{disabled}
+	{title}
+	on:click
+>
 	<slot />
 </button>
 
@@ -28,6 +34,10 @@
 		&:hover:not(:disabled),
 		&--active {
 			filter: invert(1);
+		}
+
+		&--compact {
+			width: max-content;
 		}
 	}
 </style>

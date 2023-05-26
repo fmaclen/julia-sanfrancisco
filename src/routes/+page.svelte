@@ -19,7 +19,6 @@
 	<Header>
 		<H1>{$LL.home.title()}</H1>
 	</Header>
-
 	<Section align="bottom">
 		<P>
 			{$LL.home.introduction()}
@@ -27,19 +26,42 @@
 	</Section>
 
 	<Nav>
-		<Button disabled={$locale === 'en'} on:click={() => applyLocale('en', playerStore)}>EN</Button>
-		<Button disabled={$locale === 'es'} on:click={() => applyLocale('es', playerStore)}>ES</Button>
+		<Button
+			compact={true}
+			disabled={$locale === 'en'}
+			on:click={() => applyLocale('en', playerStore)}>🇺🇸</Button
+		>
+		<Button
+			compact={true}
+			disabled={$locale === 'es'}
+			on:click={() => applyLocale('es', playerStore)}>🇪🇸</Button
+		>
 		<ButtonLink href="/headquarters/">{$LL.home.newGame()}</ButtonLink>
 	</Nav>
 
-	<a class="version" href="https://github.com/fmaclen/julia-sanfrancisco/" target="_blank">
-		<code>v{PUBLIC_GAME_VERSION}</code>
-	</a>
+	<footer class="footer">
+		<a class="version" href="https://github.com/fmaclen/julia-sanfrancisco/" target="_blank">
+			<code>Source code</code>
+		</a>
+		<a
+			class="version"
+			href="https://github.com/fmaclen/julia-sanfrancisco/releases/"
+			target="_blank"
+		>
+			<code>v{PUBLIC_GAME_VERSION}</code>
+		</a>
+	</footer>
 </Main>
 
 <style lang="scss">
+	footer.footer {
+		display: flex;
+		justify-content: space-between;
+	}
+
 	a.version {
-		padding: var(--spacing-s);
+		margin-inline: var(--spacing-xl);
+		margin-bottom: var(--spacing-xl);
 		text-align: center;
 		color: var(--color-neutral-400);
 		text-decoration: none;

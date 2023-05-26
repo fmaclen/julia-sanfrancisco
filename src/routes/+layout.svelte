@@ -100,7 +100,7 @@
 		font-family: 'Mona Sans';
 		margin: unset;
 		color: var(--color-neutral-100);
-		background-color: var(--color-neutral-1000);
+		background-color: #000;
 
 		display: flex;
 		align-items: center;

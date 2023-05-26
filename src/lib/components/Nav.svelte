@@ -12,7 +12,10 @@
 		height: max-content;
 		gap: var(--spacing-m);
 		margin-top: auto;
-		padding-bottom: var(--spacing-xl);
 		padding-inline: var(--spacing-xl);
+
+		&:last-child {
+			margin-bottom: var(--spacing-xl);
+		}
 	}
 </style>
