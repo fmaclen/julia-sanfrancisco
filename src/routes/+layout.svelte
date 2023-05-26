@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { PUBLIC_GOOGLE_ANALYTICS_ID } from '$env/static/public';
+	import { PUBLIC_GOOGLE_ANALYTICS_ID, PUBLIC_PLAUSIBLE_DOMAIN } from '$env/static/public';
 	import type { Locales } from '$i18n/i18n-types';
 	import { playerStore, applyLocale } from '$lib/player';
 	import { onMount } from 'svelte';
@@ -49,6 +49,11 @@
 		content="Chase Julia and her accomplices across different countries, unraveling clues, solving puzzles, and expanding your geography knowledge in this exciting detective game."
 	/>
 	<meta property="twitter:image" content="https://julia.strictoaster.com/open-graph.png" />
+
+	{#if PUBLIC_PLAUSIBLE_DOMAIN}
+		<script defer data-domain={PUBLIC_PLAUSIBLE_DOMAIN} src="https://plausible.io/js/script.js">
+		</script>
+	{/if}
 
 	{#if PUBLIC_GOOGLE_ANALYTICS_ID}
 		<script async src="https://www.googletagmanager.com/gtag/js?id={PUBLIC_GOOGLE_ANALYTICS_ID}">

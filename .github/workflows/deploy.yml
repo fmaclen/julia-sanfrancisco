@@ -37,6 +37,7 @@ jobs:
         run: npm run build
         env:
           PUBLIC_GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
+          PUBLIC_PLAUSIBLE_DOMAIN: ${{ secrets.PUBLIC_PLAUSIBLE_DOMAIN }}
           PUBLIC_GAME_VERSION: ${{ steps.release.outputs.version }}
 
       - name: Deploy to S3
