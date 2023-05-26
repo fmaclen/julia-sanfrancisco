@@ -17,7 +17,7 @@
 	<Artwork src="/artwork/splash.png" />
 
 	<Header>
-		<H1>{$LL.home.title()}</H1>
+		<H1 hero={true}>{$LL.home.title()}</H1>
 	</Header>
 
 	<Section align="bottom">
