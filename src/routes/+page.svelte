@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { PUBLIC_GAME_VERSION } from '$env/static/public';
 	import LL, { locale } from '$i18n/i18n-svelte';
+	import Artwork from '$lib/components/Artwork.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import ButtonLink from '$lib/components/ButtonLink.svelte';
 	import H1 from '$lib/components/H1.svelte';
@@ -13,6 +14,8 @@
 </script>
 
 <Main>
+	<Artwork src="/artwork/splash.png" />
+
 	<Header>
 		<H1>{$LL.home.title()}</H1>
 	</Header>

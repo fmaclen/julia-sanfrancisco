@@ -1,5 +1,6 @@
 <script lang="ts">
 	import LL, { locale } from '$i18n/i18n-svelte';
+	import Artwork from '$lib/components/Artwork.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import ButtonLink from '$lib/components/ButtonLink.svelte';
 	import H1 from '$lib/components/H1.svelte';
@@ -101,6 +102,8 @@
 </script>
 
 <Main>
+	<Artwork src="/artwork/headquarters.png" />
+
 	<Header>
 		<H1>{$LL.headquarters.title()}</H1>
 		<Time />

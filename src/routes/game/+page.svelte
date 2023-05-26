@@ -1,6 +1,7 @@
 <script lang="ts">
 	import LL, { locale } from '$i18n/i18n-svelte';
 	import Clock, { DELAY_IN_MS } from '$lib/clock';
+	import Artwork from '$lib/components/Artwork.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import ButtonLink from '$lib/components/ButtonLink.svelte';
 	import H1 from '$lib/components/H1.svelte';
@@ -248,13 +249,7 @@
 			<P>{$LL.components.loading()}...</P>
 		</Section>
 	{:else if currentRound}
-		<div
-			class="artwork {isArtworkHidden ? 'artwork--hidden' : ''} {isSleeping
-				? 'artwork--disabled'
-				: ''}"
-		>
-			<img class="artwork__img" src={artworkPath} alt="Illustration of scene" />
-		</div>
+		<Artwork isHidden={isArtworkHidden} isDisabled={isSleeping} src={artworkPath} />
 
 		<Header>
 			<H1>
@@ -325,29 +320,3 @@
 	{/if}
 </Main>
 
-<style lang="scss">
-	div.artwork {
-		position: absolute;
-		z-index: -1;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		opacity: 1;
-		transition: filter 1500ms, opacity 500ms;
-
-		&--hidden {
-			opacity: 0;
-		}
-
-		&--disabled {
-			filter: grayscale(100%) blur(4px);
-		}
-	}
-
-	img.artwork__img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
-</style>
