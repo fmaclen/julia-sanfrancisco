@@ -92,7 +92,8 @@
 		--border-radius-m: 6px;
 		--border-radius-s: 4px;
 
-		--spacing-l: 16px;
+		--spacing-xl: 40px;
+		--spacing-l: 20px;
 		--spacing-m: 8px;
 		--spacing-s: 4px;
 

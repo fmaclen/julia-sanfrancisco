@@ -20,21 +20,15 @@
 		<H1>{$LL.home.title()}</H1>
 	</Header>
 
-	<Section>
+	<Section align="bottom">
 		<P>
 			{$LL.home.introduction()}
 		</P>
 	</Section>
 
 	<Nav>
-		<Nav>
-			<Button disabled={$locale === 'en'} on:click={() => applyLocale('en', playerStore)}>
-				EN
-			</Button>
-			<Button disabled={$locale === 'es'} on:click={() => applyLocale('es', playerStore)}>
-				ES
-			</Button>
-		</Nav>
+		<Button disabled={$locale === 'en'} on:click={() => applyLocale('en', playerStore)}>EN</Button>
+		<Button disabled={$locale === 'es'} on:click={() => applyLocale('es', playerStore)}>ES</Button>
 		<ButtonLink href="/headquarters/">{$LL.home.newGame()}</ButtonLink>
 	</Nav>
 

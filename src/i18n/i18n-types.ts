@@ -3441,7 +3441,7 @@ type RootTranslation = {
 		}
 		object: {
 			/**
-			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​w​a​s​ ​c​a​r​r​y​i​n​g​ ​a
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​w​a​s​ ​c​a​r​r​y​i​n​g
 			 * @param {string} sex
 			 */
 			'0': RequiredParams<`sex|{male:${string}, female:${string}}`>
@@ -7195,7 +7195,7 @@ export type TranslationFunctions = {
 		}
 		object: {
 			/**
-			 * {sex|{male: he, female: she}} was carrying a
+			 * {sex|{male: he, female: she}} was carrying
 			 */
 			'0': (arg: { sex: string }) => LocalizedString
 			/**

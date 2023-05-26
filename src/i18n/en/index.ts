@@ -181,7 +181,7 @@ const en = {
 			'{sex:string|{male: he, female: she}} wanted to know how much {currency:string} were worth'
 		],
 		object: [
-			'{sex:string|{male: he, female: she}} was carrying a',
+			'{sex:string|{male: he, female: she}} was carrying',
 			'{sex:string|{male: he, female: she}} wanted to get',
 			'{sex:string|{male: he, female: she}} wanted to sell',
 			'{sex:string|{male: he, female: she}} asked where to find',

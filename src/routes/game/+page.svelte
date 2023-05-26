@@ -37,16 +37,19 @@
 
 	function flyTo(): void {
 		if (!showDestinations) resetRound();
+		showDescription = !showDescription;
 		showDestinations = !showDestinations;
 	}
 
 	function walkTo(): void {
 		if (!showPlaces) resetRound();
+		showDescription = !showDescription;
 		showPlaces = !showPlaces;
 	}
 
 	function toggleOptions(): void {
 		if (!showOptions) resetRound();
+		showDescription = !showDescription;
 		showOptions = !showOptions;
 	}
 
@@ -287,15 +290,17 @@
 					<Terminal lines={outcomeWon} />
 				{:else if isTimeUp}
 					<Terminal lines={outcomeTimedUp} />
-				{:else if showDescription}
-					<P>
-						{getRandomValue(currentRound.atlas.descriptions)}
-					</P>
 				{/if}
 			{/if}
 		</Section>
 
 		<Section align="bottom">
+			{#if showDescription}
+				<P>
+					{getRandomValue(currentRound.atlas.descriptions)}
+				</P>
+			{/if}
+
 			{#if showPlaces}
 				{#each currentRound.scenes as scene, index}
 					<Button active={currentClueIndex === index} on:click={() => getClue(index)}>
@@ -357,4 +362,3 @@
 		</Nav>
 	{/if}
 </Main>
-

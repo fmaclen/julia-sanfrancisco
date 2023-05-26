@@ -11,7 +11,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		padding-inline: 20px;
+		margin-inline: var(--spacing-xl);
 		gap: var(--spacing-m);
 
 		&--bottom {

@@ -158,7 +158,10 @@
 		font-size: 16px;
 		padding: 16px;
 		line-height: 150%;
-		border: 1px solid var(--color-neutral-500);
+		background-color: rgba(0, 0, 0, 0.95);
+		-webkit-backdrop-filter: blur(8px);
+		backdrop-filter: blur(8px);
+		border: unset;
 		border-radius: var(--border-radius-m);
 		color: var(--color-neutral-100);
 	}

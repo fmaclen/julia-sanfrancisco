@@ -9,9 +9,10 @@
 		display: flex;
 		box-sizing: border-box;
 		width: 100%;
-		margin-top: auto;
 		height: max-content;
-		padding-inline: 20px;
 		gap: var(--spacing-m);
+		margin-top: auto;
+		padding-bottom: var(--spacing-xl);
+		padding-inline: var(--spacing-xl);
 	}
 </style>

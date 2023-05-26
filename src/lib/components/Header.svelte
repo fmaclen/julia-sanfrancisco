@@ -6,10 +6,10 @@
 	@import '$lib/components/mixins.scss';
 
 	header.header {
-		@include plate;
 		display: flex;
 		flex-direction: column;
 		gap: var(--spacing-s);
-		margin-inline: 20px;
+		margin-inline: var(--spacing-xl);
+		margin-top: var(--spacing-xl);
 	}
 </style>

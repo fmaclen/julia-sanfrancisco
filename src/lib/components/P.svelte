@@ -6,11 +6,11 @@
 	@import '$lib/components/mixins.scss';
 
 	p.p {
-		@include plate;
-		font-size: 16px;
+		font-size: 20px;
 		line-height: 150%;
-		margin-block: 0;
+		margin-block: 1em;
 		width: 100%;
 		box-sizing: border-box;
+		color: var(--color-neutral-150);
 	}
 </style>
