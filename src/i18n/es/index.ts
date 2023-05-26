@@ -137,9 +137,9 @@ const es = {
 		introduction: [
 			'Vi a la persona que buscas y',
 			'La persona que estás buscando estuvo aquí y',
-			'Mis fuentes me dicen',
-			'Una fuente confiable me dijo',
-			'Las fuentes me dicen',
+			'Mis fuentes me dicen que',
+			'Una fuente confiable me dijo que',
+			'Las fuentes me dicen que',
 			'Todo lo que sé es que',
 			'Una persona sospechosa estuvo aquí y',
 			'Escuché que'
