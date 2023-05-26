@@ -6,7 +6,7 @@
 	h1.h1 {
 		font-size: 48px;
 		margin-block: 0;
-		transform: translateX(-3px);
+		transform: translateX(-3px); // Aligned visually with `<Time />`
 		letter-spacing: -0.05em;
 	}
 </style>
