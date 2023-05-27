@@ -58,13 +58,9 @@
 	li.terminal__line {
 		font-family: 'Courier New', Courier, monospace;
 		color: var(--color-neutral-100);
-		padding-inline: var(--spacing-xl);
+		padding-inline: var(--spacing-l);
 		margin-block: 16px;
 		box-sizing: border-box;
-
-		@media (max-width: 512px) {
-			padding-inline: var(--spacing-l);
-		}
 
 		&:first-child {
 			margin-top: 24px;
