@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { PUBLIC_GOOGLE_ANALYTICS_ID, PUBLIC_PLAUSIBLE_DOMAIN } from '$env/static/public';
 	import type { Locales } from '$i18n/i18n-types';
+	import Artwork from '$lib/components/Artwork.svelte';
 	import { playerStore, applyLocale } from '$lib/player';
 	import { onMount } from 'svelte';
 	import { detectLocale, navigatorDetector } from 'typesafe-i18n/detectors';
+
+	$: artworkPath = '/artwork/splash.png';
 
 	onMount(() => {
 		const locale: Locales =
@@ -71,6 +74,12 @@
 
 <div class="layout">
 	<slot />
+
+	<!-- {#if artworkPath == '/artwork/splash.png'}
+		<Artwork src="/artwork/splash.png" />
+	{:else}
+		<Artwork src="/artwork/headquarters.png" />
+	{/if} -->
 </div>
 
 <style lang="scss">
@@ -81,12 +90,11 @@
 		--color-neutral-300: #6d7471;
 		--color-neutral-400: #4f5452;
 		--color-neutral-500: #3b3f3e;
-		--color-neutral-600: #2d2f2e;
-		--color-neutral-700: #232424;
-		--color-neutral-800: #1e1e1e;
-		--color-neutral-900: #181818;
-		--color-neutral-950: #141414;
-		--color-neutral-1000: #0f0f0f;
+		--color-neutral-600: #232424;
+		--color-neutral-700: #1e1e1e;
+		--color-neutral-800: #181818;
+		--color-neutral-900: #141414;
+		--color-neutral-950: #0f0f0f;
 
 		--border-radius-l: 8px;
 		--border-radius-m: 6px;
@@ -97,7 +105,16 @@
 		--spacing-m: 8px;
 		--spacing-s: 4px;
 
-		font-family: 'Mona Sans';
+		--font-family-sans: 'Inter', sans-serif;
+		--font-family-sans-light: 200;
+		--font-family-sans-regular: 300;
+		--font-family-sans-bold: 700;
+
+		--font-family-mono: 'JetBrains Mono', monospace;
+		--font-family-mono-regular: 200;
+		--font-family-mono-bold: 700;
+
+		font-family: var(--font-family-sans);
 		margin: unset;
 		color: var(--color-neutral-100);
 		background-color: #000;
@@ -117,6 +134,9 @@
 		width: 100dvw;
 		min-width: 320px;
 		max-width: 512px;
+
+		--layout-inline: 40px;
+		--layout-block: 48px;
 
 		height: 100dvh;
 		max-height: 1024px;

@@ -38,6 +38,8 @@
 
 		&--compact {
 			width: max-content;
+			font-size: 1.5em;
+			padding: 0.5em;
 		}
 	}
 </style>

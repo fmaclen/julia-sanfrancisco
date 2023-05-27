@@ -10,13 +10,12 @@
 
 @mixin button {
 	display: flex;
-	justify-content: center;
 	align-items: center;
 	border: none;
 	color: inherit;
 	text-decoration: none;
 	box-sizing: border-box;
 	width: 100%;
-	font-size: 14px;
-	font-weight: 600;
+	font-weight: var(--font-family-mono-bold);
+	font-family: var(--font-family-mono);
 }

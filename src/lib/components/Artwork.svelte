@@ -1,21 +1,22 @@
 <script lang="ts">
+	import { fade } from 'svelte/transition';
+
 	export let src: string;
 	export let isHidden: boolean = false;
 	export let isDisabled: boolean = false;
 </script>
 
-<div class="artwork {isHidden ? 'artwork--hidden' : ''} {isDisabled ? 'artwork--disabled' : ''}">
+<div
+	class="artwork {isHidden ? 'artwork--hidden' : ''} {isDisabled ? 'artwork--disabled' : ''}"
+	transition:fade
+>
 	<img class="artwork__img" {src} alt="Illustration of scene" />
 </div>
 
 <style lang="scss">
 	div.artwork {
+		z-index: 0;
 		position: absolute;
-		z-index: -1;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
 		opacity: 1;
 		transition: filter 1500ms, opacity 500ms;
 

@@ -9,11 +9,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--spacing-s);
-		margin-inline: var(--spacing-xl);
-		margin-top: var(--spacing-xl);
-
-		@media (max-width: 512px) {
-			margin-inline: var(--spacing-l);
-		}
+		margin-inline: var(--layout-inline);
+		margin-top: var(--layout-block);
 	}
 </style>

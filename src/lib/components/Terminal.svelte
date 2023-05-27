@@ -56,7 +56,7 @@
 	}
 
 	li.terminal__line {
-		font-family: 'Courier New', Courier, monospace;
+		font-family: var(--font-family-mono);
 		color: var(--color-neutral-100);
 		padding-inline: var(--spacing-l);
 		margin-block: 16px;
@@ -71,7 +71,7 @@
 		}
 
 		&--title {
-			font-weight: bold;
+			font-weight: 700;
 			text-transform: uppercase;
 		}
 

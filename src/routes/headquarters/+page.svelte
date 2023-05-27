@@ -5,7 +5,7 @@
 	import ButtonLink from '$lib/components/ButtonLink.svelte';
 	import H1 from '$lib/components/H1.svelte';
 	import Header from '$lib/components/Header.svelte';
-	import Main from '$lib/components/Main.svelte';
+	import MainGrid from '$lib/components/MainGrid.svelte';
 	import Nav from '$lib/components/Nav.svelte';
 	import P from '$lib/components/P.svelte';
 	import Section from '$lib/components/Section.svelte';
@@ -101,52 +101,54 @@
 	onMount(() => (isLoading = false));
 </script>
 
-<Main>
-	<Artwork src="/artwork/headquarters.png" />
-
-	<Header>
+<MainGrid>
+	<Header slot="header">
 		<H1>{$LL.headquarters.title()}</H1>
 		<Time />
 	</Header>
 
-	{#if isLoading}
-		<Section align="bottom">
-			<P>{$LL.components.loading()}...</P>
-		</Section>
-	{:else if $playerStore}
-		<Section align="bottom">
-			<Terminal lines={playerLines} />
+	<Artwork src="/artwork/headquarters.png" />
 
-			{#if gameLines}
-				<Terminal lines={gameLines} />
-			{/if}
-		</Section>
+	<footer slot="footer">
+		{#if isLoading}
+			<Section align="bottom">
+				<P>{$LL.components.loading()}...</P>
+			</Section>
+		{:else if $playerStore}
+			<Section align="bottom">
+				<Terminal lines={playerLines} />
 
-		<Nav>
-			{#if !$gameStore}
-				<Button on:click={setGame}>{$LL.components.buttons.continue()}</Button>
-			{:else}
-				<ButtonLink href="/game/">{$LL.components.buttons.continue()}</ButtonLink>
-			{/if}
-		</Nav>
-	{:else}
-		<Section>
-			<P>{$LL.headquarters.id.pending()}</P>
-			<input
-				class="input"
-				type="text"
-				name="name"
-				placeholder="Your name"
-				bind:value={playerName}
-			/>
-		</Section>
-		<Nav>
-			<Button on:click={setPlayer} disabled={!playerName}
-				>{$LL.components.buttons.continue()}</Button
-			>
-		</Nav>
-	{/if}
-</Main>
+				{#if gameLines}
+					<Terminal lines={gameLines} />
+				{/if}
+			</Section>
+
+			<Nav>
+				{#if !$gameStore}
+					<Button on:click={setGame}>{$LL.components.buttons.continue()}</Button>
+				{:else}
+					<ButtonLink href="/game/">{$LL.components.buttons.continue()}</ButtonLink>
+				{/if}
+			</Nav>
+		{:else}
+			<Section>
+				<P>{$LL.headquarters.id.pending()}</P>
+				<input
+					class="input"
+					type="text"
+					name="name"
+					placeholder="Your name"
+					bind:value={playerName}
+				/>
+			</Section>
+			<Nav>
+				<Button on:click={setPlayer} disabled={!playerName}
+					>{$LL.components.buttons.continue()}</Button
+				>
+			</Nav>
+		{/if}
+	</footer>
+</MainGrid>
 
 <style lang="scss">
 	@import '$lib/components/mixins.scss';
