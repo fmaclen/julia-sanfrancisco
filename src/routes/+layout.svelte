@@ -1,12 +1,9 @@
 <script lang="ts">
 	import { PUBLIC_GOOGLE_ANALYTICS_ID, PUBLIC_PLAUSIBLE_DOMAIN } from '$env/static/public';
 	import type { Locales } from '$i18n/i18n-types';
-	import Artwork from '$lib/components/Artwork.svelte';
 	import { playerStore, applyLocale } from '$lib/player';
 	import { onMount } from 'svelte';
 	import { detectLocale, navigatorDetector } from 'typesafe-i18n/detectors';
-
-	$: artworkPath = '/artwork/splash.png';
 
 	onMount(() => {
 		const locale: Locales =
@@ -74,12 +71,6 @@
 
 <div class="layout">
 	<slot />
-
-	<!-- {#if artworkPath == '/artwork/splash.png'}
-		<Artwork src="/artwork/splash.png" />
-	{:else}
-		<Artwork src="/artwork/headquarters.png" />
-	{/if} -->
 </div>
 
 <style lang="scss">

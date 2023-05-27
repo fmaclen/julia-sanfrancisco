@@ -14,7 +14,7 @@ export type Translation = RootTranslation
 export type Translations = RootTranslation
 
 type RootTranslation = {
-	home: {
+	splash: {
 		/**
 		 * J​u​l​i​a​ ​S​a​n​f​r​a​n​c​i​s​c​o
 		 */
@@ -27,6 +27,10 @@ type RootTranslation = {
 		 * N​e​w​ ​g​a​m​e
 		 */
 		newGame: string
+		/**
+		 * A​b​o​u​t
+		 */
+		about: string
 	}
 	headquarters: {
 		/**
@@ -3804,7 +3808,7 @@ type RootTranslation = {
 }
 
 export type TranslationFunctions = {
-	home: {
+	splash: {
 		/**
 		 * Julia Sanfrancisco
 		 */
@@ -3817,6 +3821,10 @@ export type TranslationFunctions = {
 		 * New game
 		 */
 		newGame: () => LocalizedString
+		/**
+		 * About
+		 */
+		about: () => LocalizedString
 	}
 	headquarters: {
 		/**

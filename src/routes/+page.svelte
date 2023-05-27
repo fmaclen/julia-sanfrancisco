@@ -25,7 +25,7 @@
 
 <MainGrid>
 	<Header slot="header">
-		<H1 hero={true}>{$LL.home.title()}</H1>
+		<H1 hero={true}>{$LL.splash.title()}</H1>
 	</Header>
 
 	<!-- {#each anArtworks as anArtwork, index}
@@ -43,13 +43,13 @@
 	<footer class="footer" slot="footer">
 		<Section>
 			<H2>
-				{$LL.home.introduction()}
+				{$LL.splash.introduction()}
 			</H2>
 		</Section>
 
 		<nav class="splash-nav">
 			<div class="splash-nav__new-game">
-				<ButtonLink href="/headquarters/">{$LL.home.newGame()}</ButtonLink>
+				<ButtonLink href="/headquarters/">{$LL.splash.newGame()}</ButtonLink>
 				<Button
 					compact={true}
 					disabled={$locale === 'en'}
@@ -64,7 +64,7 @@
 
 			<div class="splash-nav__about">
 				<a class="version" href="https://github.com/fmaclen/julia-sanfrancisco/" target="_blank">
-					About
+					{$LL.splash.about()}
 				</a>
 				<a
 					class="version"

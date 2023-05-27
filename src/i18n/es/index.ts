@@ -33,11 +33,12 @@ import { unitedStates } from './atlases/united-states';
 
 const es = {
 	...(en as Translation), // Fall back to English
-	home: {
+	splash: {
 		title: 'Julia Sanfrancisco',
 		introduction:
 			'Persigue a Julia y sus cómplices a través de diferentes países, desentrañando pistas, resolviendo acertijos y ampliando tus conocimientos de geografía en este emocionante juego de detectives.',
-		newGame: 'Nuevo juego'
+		newGame: 'Nuevo juego',
+		about: 'Acerca de'
 	},
 	headquarters: {
 		title: 'Cuartel general',

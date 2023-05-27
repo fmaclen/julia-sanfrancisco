@@ -31,11 +31,12 @@ import { unitedKingdom } from './atlases/united-kingdom';
 import { unitedStates } from './atlases/united-states';
 
 const en = {
-	home: {
+	splash: {
 		title: 'Julia Sanfrancisco',
 		introduction:
 			'Chase Julia and her accomplices across different countries, unraveling clues, solving puzzles, and expanding your geography knowledge in this exciting detective game.',
-		newGame: 'New game'
+		newGame: 'New game',
+		about: 'About'
 	},
 	headquarters: {
 		title: 'Headquarters',
