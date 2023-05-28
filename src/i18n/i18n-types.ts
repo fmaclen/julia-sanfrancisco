@@ -86,6 +86,14 @@ type RootTranslation = {
 		}
 		id: {
 			/**
+			 * A​C​M​E​ ​S​y​s​t​e​m​s
+			 */
+			acmeSystems: string
+			/**
+			 * Y​o​u​r​ ​n​a​m​e
+			 */
+			yourName: string
+			/**
 			 * D​e​t​e​c​t​i​v​e​ ​a​t​ ​k​e​y​b​o​a​r​d​,​ ​p​l​e​a​s​e​ ​i​d​e​n​t​i​f​y​ ​y​o​u​r​s​e​l​f
 			 */
 			pending: string
@@ -3872,6 +3880,14 @@ export type TranslationFunctions = {
 			}
 		}
 		id: {
+			/**
+			 * ACME Systems
+			 */
+			acmeSystems: () => LocalizedString
+			/**
+			 * Your name
+			 */
+			yourName: () => LocalizedString
 			/**
 			 * Detective at keyboard, please identify yourself
 			 */

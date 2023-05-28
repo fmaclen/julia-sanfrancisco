@@ -1,11 +1,11 @@
 @mixin plate {
 	padding-inline: 16px;
 	padding-block: 16px;
-	border-radius: var(--border-radius-m);
+	border-radius: var(--border-radius-l);
 	color: var(--color-neutral-100);
-	background-color: rgba(20, 20, 20, 0.95);
-	-webkit-backdrop-filter: blur(8px);
-	backdrop-filter: blur(8px);
+	background-color: rgba(20, 20, 20, 0.8);
+	-webkit-backdrop-filter: blur(4px);
+	backdrop-filter: blur(4px);
 }
 
 @mixin button {
@@ -16,6 +16,7 @@
 	text-decoration: none;
 	box-sizing: border-box;
 	width: 100%;
+	font-size: 16px;
 	font-weight: var(--font-family-mono-bold);
 	font-family: var(--font-family-mono);
 }

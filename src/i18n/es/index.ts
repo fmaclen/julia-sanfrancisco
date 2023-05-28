@@ -60,6 +60,8 @@ const es = {
 			}
 		},
 		id: {
+			acmeSystems: 'Sistemas ACME',
+			yourName: 'Tu nombre',
 			pending: 'Detective en el teclado, por favor identifícate',
 			indentified: 'Has sido identificado como {name}.',
 			rank: 'Tu rango actual es {rank}.'

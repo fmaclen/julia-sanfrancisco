@@ -58,6 +58,8 @@ const en = {
 			}
 		},
 		id: {
+			acmeSystems: 'ACME Systems',
+			yourName: 'Your name',
 			pending: 'Detective at keyboard, please identify yourself',
 			indentified: 'You have been identified as {name:string}.',
 			rank: 'Your current rank is {rank:string}.'
