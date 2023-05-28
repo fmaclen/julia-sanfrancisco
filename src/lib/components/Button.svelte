@@ -29,7 +29,6 @@
 			color: var(--color-neutral-400);
 			background-color: rgba(75, 75, 75, 0.66);
 			cursor: not-allowed;
-			text-align: left;
 		}
 
 		&:hover:not(:disabled),
