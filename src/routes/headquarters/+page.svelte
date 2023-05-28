@@ -3,7 +3,7 @@
 	import Artwork from '$lib/components/Artwork.svelte';
 	import H1 from '$lib/components/H1.svelte';
 	import Header from '$lib/components/Header.svelte';
-	import MainGrid from '$lib/components/MainGrid.svelte';
+	import Main from '$lib/components/Main.svelte';
 	import type { TerminalLine } from '$lib/components/Terminal';
 	import Terminal from '$lib/components/Terminal.svelte';
 	import Time from '$lib/components/Time.svelte';
@@ -117,7 +117,7 @@
 	}
 </script>
 
-<MainGrid>
+<Main>
 	<Header slot="header">
 		<H1>{$LL.headquarters.title()}</H1>
 		<Time />
@@ -153,7 +153,7 @@
 			</ButtonIcon>
 		</nav>
 	</footer>
-</MainGrid>
+</Main>
 
 <style lang="scss">
 	footer.footer {

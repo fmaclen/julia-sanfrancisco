@@ -8,7 +8,7 @@
 	import Header from '$lib/components/Header.svelte';
 	import Section from '$lib/components/Section.svelte';
 	import { applyLocale, playerStore } from '$lib/player';
-	import MainGrid from '../lib/components/MainGrid.svelte';
+	import Main from '../lib/components/Main.svelte';
 	import P from '../lib/components/P.svelte';
 	import { onMount } from 'svelte';
 
@@ -19,7 +19,7 @@
 	});
 </script>
 
-<MainGrid>
+<Main>
 	<Header slot="header">
 		<H1 hero={true}>{$LL.splash.title()}</H1>
 	</Header>
@@ -65,7 +65,7 @@
 			</nav>
 		{/if}
 	</footer>
-</MainGrid>
+</Main>
 
 <style lang="scss">
 	footer.footer {

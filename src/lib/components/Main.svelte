@@ -1,19 +1,34 @@
 <main class="main">
+	<div class="main__container main__container--header">
+		<slot name="header" />
+	</div>
+
 	<slot />
+
+	<div class="main__container main__container--footer">
+		<slot name="footer" />
+	</div>
 </main>
 
 <style lang="scss">
 	main.main {
 		display: flex;
 		flex-direction: column;
-		box-sizing: border-box;
+		justify-content: space-between;
 		position: relative;
-		gap: var(--spacing-l);
 		height: 100%;
-		width: 100%;
-		z-index: 0;
-		max-height: 100dvh;
-		overflow-y: scroll;
-		background-color: #000;
+	}
+
+	div.main__container {
+		position: relative;
+		z-index: 10;
+
+		&--header {
+			grid-area: header;
+		}
+
+		&--footer {
+			grid-area: footer;
+		}
 	}
 </style>

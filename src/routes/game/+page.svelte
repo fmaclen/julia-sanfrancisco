@@ -17,7 +17,7 @@
 	import IconWalk from '$lib/icons/Walk.svg.svelte';
 	import { playerStore, type Player, getCasesUntilPromotion, getRank } from '$lib/player';
 	import ButtonIcon from '../../lib/components/ButtonIcon.svelte';
-	import MainGrid from '../../lib/components/MainGrid.svelte';
+	import Main from '../../lib/components/Main.svelte';
 	import TerminalGroup from '../../lib/components/TerminalGroup.svelte';
 	import Back from '../../lib/icons/Back.svg.svelte';
 	import Collapse from '../../lib/icons/Collapse.svg.svelte';
@@ -231,7 +231,7 @@
 </script>
 
 {#if !isLoading}
-	<MainGrid>
+	<Main>
 		<Header slot="header">
 			<H1>
 				{isSleeping
@@ -269,7 +269,9 @@
 			{#if !isPostcard}
 				<Section>
 					{#if !isTimeUp && !isGameWon && !isSleeping && !isClockTicking && showDescription}
-						<P>{getRandomValue(currentRound.atlas.descriptions)}</P>
+						<section class="paragraph-group" in:fade>
+							<P>{getRandomValue(currentRound.atlas.descriptions)}</P>
+						</section>
 					{/if}
 
 					{#if showPlaces}
@@ -353,7 +355,7 @@
 				</nav>
 			{/if}
 		</footer>
-	</MainGrid>
+	</Main>
 {/if}
 
 <style lang="scss">
