@@ -55,12 +55,13 @@
 		isLoading = false;
 	});
 
-	let sessionLines: TerminalLine[][] = [];
+	let terminalLines: TerminalLine[][] = [];
 	let linesUnknownPlayer: TerminalLine[] = [];
 	let linesUnknownPlayerInput: TerminalLine[] = [];
 	let linesKnownPlayer: TerminalLine[] = [];
 	let linesNewsFlash: TerminalLine[] = [];
 	let linesAssignment: TerminalLine[] = [];
+	let lastTerminal: HTMLElement;
 
 	if ($playerStore && $gameStore) {
 		step = Step.KNOWN_PLAYER;
@@ -80,32 +81,31 @@
 			const playerRankIndex = getRank($playerStore.score);
 			playerRank = $LL.player.ranks[playerRankIndex]();
 
+			step = Step.KNOWN_PLAYER;
 			linesKnownPlayer = [
-				{ id: Step.KNOWN_PLAYER, text: $LL.headquarters.id.acmeSystems(), type: 'title' },
+				{ id: step, text: $LL.headquarters.id.acmeSystems(), type: 'title' },
 				{ text: $LL.headquarters.id.indentified({ name: $playerStore.name }) },
 				{ text: $LL.headquarters.id.rank({ rank: playerRank.toLowerCase() }) }
 			];
-
-			step = Step.KNOWN_PLAYER;
 		} else if (step !== Step.ASSIGNMENT) {
+			step = Step.NEWS_FLASH;
 			linesNewsFlash = [
-				{ id: Step.NEWS_FLASH, text: $LL.headquarters.newsflash.title(), type: 'title' },
+				{ id: step, text: $LL.headquarters.newsflash.title(), type: 'title' },
 				{ text: $LL.headquarters.newsflash.content.line1({ city: $gameStore.rounds[0].atlas.city }) }, // prettier-ignore
 				{ text: $LL.headquarters.newsflash.content.line2({ treasure: $gameStore.stolenTreasure }) }, // prettier-ignore
 				{ text: $LL.headquarters.newsflash.content.line3({ sex: $gameStore.suspect.sex.toLowerCase() as 'male' | 'female' }) } // prettier-ignore
 			];
-			step = Step.NEWS_FLASH;
 		} else {
+			step = Step.ASSIGNMENT;
 			linesAssignment = [
-				{ id: Step.ASSIGNMENT, text: $LL.headquarters.assignment.title(), type: 'title' },
+				{ id: step, text: $LL.headquarters.assignment.title(), type: 'title' },
 				{ text: $LL.headquarters.assignment.content.line1({ city: $gameStore.rounds[0].atlas.city, sex: $gameStore.suspect.sex.toLowerCase() }) }, // prettier-ignore
 				{ text: $LL.headquarters.assignment.content.line2() },
 				{ text: $LL.headquarters.assignment.content.line3({ rank: playerRank, name: $playerStore.name }) } // prettier-ignore
 			];
-			step = Step.ASSIGNMENT;
 		}
 
-		sessionLines = [
+		terminalLines = [
 			linesUnknownPlayer,
 			linesUnknownPlayerInput,
 			linesKnownPlayer,
@@ -128,8 +128,8 @@
 	<footer class="footer" slot="footer">
 		{#if !isLoading}
 			<TerminalGroup>
-				{#each sessionLines as lines (lines[0].id)}
-					<Terminal {lines}>
+				{#each terminalLines as lines, i (lines[0].id)}
+					<Terminal {lines} autoScroll={i === terminalLines.length - 1}>
 						{#if lines === linesUnknownPlayerInput}
 							<li class="terminal__line">
 								<input
@@ -181,7 +181,7 @@
 		padding: unset;
 		font-size: 16px;
 		font-family: var(--font-family-mono);
-		color: var(--color-green);
+		color: var(--color-accent);
 
 		&::placeholder {
 			color: var(--color-neutral-500);

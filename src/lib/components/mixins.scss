@@ -1,8 +1,4 @@
 @mixin plate {
-	padding-inline: 16px;
-	padding-block: 16px;
-	border-radius: var(--border-radius-l);
-	color: var(--color-neutral-100);
 	background-color: rgba(20, 20, 20, 0.8);
 	-webkit-backdrop-filter: blur(4px);
 	backdrop-filter: blur(4px);
@@ -17,6 +13,10 @@
 	box-sizing: border-box;
 	width: 100%;
 	font-size: 16px;
+	padding-inline: 16px;
+	padding-block: 16px;
+	border-radius: var(--border-radius-l);
+	color: var(--color-neutral-100);
 	font-weight: var(--font-family-mono-bold);
 	font-family: var(--font-family-mono);
 }

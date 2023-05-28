@@ -3,13 +3,11 @@
 </p>
 
 <style lang="scss">
-	@import '$lib/components/mixins.scss';
-
 	p.p {
 		font-size: 18px;
 		line-height: 150%;
 		margin-block: 0.5em;
-		width: 100%;
+		width: 80%; // Looks prettier at this width 🤷‍♂️
 		box-sizing: border-box;
 		color: var(--color-neutral-150);
 

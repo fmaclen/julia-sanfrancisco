@@ -87,7 +87,7 @@
 		--color-neutral-900: #141414;
 		--color-neutral-950: #0f0f0f;
 
-		--color-green: #49b846;
+		--color-accent: #49b846;
 
 		--border-radius-l: 8px;
 		--border-radius-m: 6px;
@@ -115,12 +115,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 100dvw;
-		height: 100dvh;
 
-		@media (min-width: 512px) and (min-height: 1024px) {
-			background-color: var(--color-neutral-950);
-		}
+		width: 100dvw;
+		min-width: 320px;
+
+		height: 100dvh;
 	}
 
 	div.layout {
@@ -134,9 +133,9 @@
 		height: 100dvh;
 		max-height: 1024px;
 
-		@media (min-width: 512px) and (min-height: 1024px) {
-			border-radius: var(--border-radius-l);
-			overflow: hidden;
+		@media (max-width: 512px) {
+			--layout-inline: 24px;
+			--layout-block: 32px;
 		}
 	}
 </style>

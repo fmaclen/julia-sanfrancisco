@@ -8,20 +8,21 @@
 </script>
 
 <div
+	in:fade
 	class="artwork
 		{isHidden ? 'artwork--hidden' : ''}
 		{isDisabled ? 'artwork--disabled' : ''}
 		{isHighContrast ? 'artwork--high-contrast' : ''}
 	"
-	in:fade
 >
 	<img class="artwork__img" {src} alt="Illustration of scene" />
 </div>
 
 <style lang="scss">
 	div.artwork {
-		z-index: 0;
 		position: absolute;
+		inset: 0;
+		z-index: 0;
 		opacity: 1;
 		transition: filter 1500ms, opacity 500ms;
 
@@ -30,9 +31,10 @@
 			content: '';
 			position: absolute;
 			width: 100%;
-			height: 25%;
+			height: 33%;
 			left: 0;
-			opacity: 0.5;
+			right: 0;
+			opacity: 0.65;
 			transition: height 1000ms, opacity 1000ms;
 		}
 
@@ -64,7 +66,7 @@
 
 		// Bottom gradient
 		&::before {
-			bottom: 0;
+			bottom: -1px; // The bottom edge of the gradient glitches when it animates, this fixes it
 
 			// Eased gradient
 			background: linear-gradient(
@@ -98,13 +100,13 @@
 
 		&--high-contrast {
 			&::after {
-				opacity: 1;
-				height: 33%;
+				opacity: 0.85;
+				height: 50%;
 			}
 
 			&::before {
-				opacity: 1;
-				height: 66%;
+				opacity: 0.95;
+				height: 75%;
 			}
 		}
 	}
@@ -119,5 +121,11 @@
 		image-rendering: -webkit-optimize-contrast;
 		image-rendering: crisp-edges;
 		-ms-interpolation-mode: nearest-neighbor;
+
+		@media (max-width: 512px) {
+			border-top-left-radius: 16px;
+			border-top-right-radius: 16px;
+			overflow: hidden;
+		}
 	}
 </style>

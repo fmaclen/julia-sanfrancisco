@@ -5,11 +5,11 @@
 	import Button from '$lib/components/Button.svelte';
 	import ButtonLink from '$lib/components/ButtonLink.svelte';
 	import H1 from '$lib/components/H1.svelte';
-	import H2 from '$lib/components/H2.svelte';
 	import Header from '$lib/components/Header.svelte';
 	import Section from '$lib/components/Section.svelte';
 	import { applyLocale, playerStore } from '$lib/player';
 	import MainGrid from '../lib/components/MainGrid.svelte';
+	import P from '../lib/components/P.svelte';
 	import { onMount } from 'svelte';
 
 	let isLoading = true;
@@ -29,9 +29,9 @@
 	<footer class="footer" slot="footer">
 		{#if !isLoading}
 			<Section>
-				<H2>
+				<P>
 					{$LL.splash.introduction()}
-				</H2>
+				</P>
 			</Section>
 
 			<nav class="splash-nav">
@@ -93,7 +93,7 @@
 
 	div.splash-nav__about {
 		justify-content: space-between;
-		gap: 32px;
+		gap: 8px;
 	}
 
 	a.metadata {
@@ -108,6 +108,10 @@
 
 		&:hover {
 			color: var(--color-neutral-200);
+		}
+
+		@media (max-width: 512px) {
+			font-size: 12px;
 		}
 	}
 </style>

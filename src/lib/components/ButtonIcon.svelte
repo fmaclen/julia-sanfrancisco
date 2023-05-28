@@ -12,6 +12,7 @@
 
 <style lang="scss">
 	button.button {
+		padding: unset;
 		border: unset;
 		background: transparent;
 		transition: opacity 250ms;

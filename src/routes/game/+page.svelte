@@ -3,10 +3,8 @@
 	import Clock, { DELAY_IN_MS } from '$lib/clock';
 	import Artwork from '$lib/components/Artwork.svelte';
 	import Button from '$lib/components/Button.svelte';
-	import ButtonLink from '$lib/components/ButtonLink.svelte';
 	import H1 from '$lib/components/H1.svelte';
 	import Header from '$lib/components/Header.svelte';
-	import Nav from '$lib/components/Nav.svelte';
 	import P from '$lib/components/P.svelte';
 	import Section from '$lib/components/Section.svelte';
 	import type { TerminalLine } from '$lib/components/Terminal';
@@ -19,7 +17,6 @@
 	import IconWalk from '$lib/icons/Walk.svg.svelte';
 	import { playerStore, type Player, getCasesUntilPromotion, getRank } from '$lib/player';
 	import ButtonIcon from '../../lib/components/ButtonIcon.svelte';
-	import H2 from '../../lib/components/H2.svelte';
 	import MainGrid from '../../lib/components/MainGrid.svelte';
 	import TerminalGroup from '../../lib/components/TerminalGroup.svelte';
 	import Back from '../../lib/icons/Back.svg.svelte';
@@ -272,7 +269,7 @@
 			{#if !isPostcard}
 				<Section>
 					{#if !isTimeUp && !isGameWon && !isSleeping && !isClockTicking && showDescription}
-						<H2>{getRandomValue(currentRound.atlas.descriptions)}</H2>
+						<P>{getRandomValue(currentRound.atlas.descriptions)}</P>
 					{/if}
 
 					{#if showPlaces}
@@ -370,7 +367,6 @@
 	nav.game-nav {
 		display: flex;
 		justify-content: space-between;
-		gap: var(--layout-inline);
 		margin-inline: var(--layout-inline);
 	}
 

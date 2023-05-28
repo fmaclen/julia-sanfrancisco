@@ -18,5 +18,13 @@
 			font-size: 56px;
 			margin-block: var(--spacing-l);
 		}
+
+		@media (max-width: 512px) {
+			font-size: 40px;
+
+			&--hero {
+				font-size: 48px;
+			}
+		}
 	}
 </style>
