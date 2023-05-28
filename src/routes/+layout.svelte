@@ -86,6 +86,7 @@
 		--color-neutral-800: #181818;
 		--color-neutral-900: #141414;
 		--color-neutral-950: #0f0f0f;
+		--color-neutral-1000: #000;
 
 		--color-accent: #49b846;
 
@@ -110,7 +111,7 @@
 		font-family: var(--font-family-sans);
 		margin: unset;
 		color: var(--color-neutral-100);
-		background-color: #000;
+		background-color: var(--color-neutral-1000);
 
 		display: flex;
 		align-items: center;
