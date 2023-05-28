@@ -154,8 +154,6 @@
 </MainGrid>
 
 <style lang="scss">
-	@import '$lib/components/mixins.scss';
-
 	footer.footer {
 		display: flex;
 		flex-direction: column;
