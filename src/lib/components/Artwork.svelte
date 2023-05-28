@@ -90,14 +90,6 @@
 			);
 		}
 
-		&--hidden {
-			opacity: 0;
-		}
-
-		&--disabled {
-			filter: grayscale(100%) brightness(0.5) blur(4px);
-		}
-
 		&--high-contrast {
 			&::after {
 				opacity: 0.85;
@@ -108,6 +100,14 @@
 				opacity: 0.95;
 				height: 75%;
 			}
+		}
+
+		&--hidden {
+			opacity: 0;
+		}
+
+		&--disabled {
+			filter: grayscale(100%) brightness(0.5) blur(4px);
 		}
 	}
 
