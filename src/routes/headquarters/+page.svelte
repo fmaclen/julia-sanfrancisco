@@ -11,7 +11,7 @@
 	import { getRank } from '$lib/player';
 	import { playerStore } from '$lib/player';
 	import ButtonIcon from '../../lib/components/ButtonIcon.svelte';
-	import GroupFade from '../../lib/components/GroupFade.svelte';
+	import TerminalGroup from '../../lib/components/TerminalGroup.svelte';
 	import { redirectTo } from '../../lib/helpers';
 	import Continue from '../../lib/icons/Continue.svg.svelte';
 	import { onMount } from 'svelte';
@@ -127,7 +127,7 @@
 
 	<footer class="footer" slot="footer">
 		{#if !isLoading}
-			<section class="terminal-group">
+			<TerminalGroup>
 				{#each sessionLines as lines (lines[0].id)}
 					<Terminal {lines}>
 						{#if lines === linesUnknownPlayerInput}
@@ -144,12 +144,14 @@
 						{/if}
 					</Terminal>
 				{/each}
-			</section>
+			</TerminalGroup>
 		{/if}
 
-		<ButtonIcon on:click={nextStep} title={$LL.components.buttons.continue()} disabled={false}>
-			<Continue />
-		</ButtonIcon>
+		<nav class="headquarters-nav">
+			<ButtonIcon on:click={nextStep} title={$LL.components.buttons.continue()} disabled={false}>
+				<Continue />
+			</ButtonIcon>
+		</nav>
 	</footer>
 </MainGrid>
 
@@ -159,22 +161,15 @@
 		flex-direction: column;
 		gap: var(--layout-block);
 		margin-bottom: var(--layout-block);
+		align-items: flex-start;
 	}
 
-	section.terminal-group {
-		background-color: rgba(20, 20, 20, 0.8);
-		-webkit-backdrop-filter: blur(4px);
-		backdrop-filter: blur(4px);
-
-		padding-inline: unset;
-		max-height: 50dvh;
-		overflow-y: auto;
-
-		--terminal-block: 24px;
-
-		border-radius: var(--border-radius-l);
+	nav.headquarters-nav {
+		display: flex;
+		align-items: flex-end;
+		gap: var(--layout-inline);
 		margin-inline: var(--layout-inline);
-		padding-block: var(--terminal-block);
+		margin-left: auto;
 	}
 
 	input.input {

@@ -21,6 +21,7 @@
 	import ButtonIcon from '../../lib/components/ButtonIcon.svelte';
 	import H2 from '../../lib/components/H2.svelte';
 	import MainGrid from '../../lib/components/MainGrid.svelte';
+	import TerminalGroup from '../../lib/components/TerminalGroup.svelte';
 	import Back from '../../lib/icons/Back.svg.svelte';
 	import Collapse from '../../lib/icons/Collapse.svg.svelte';
 	import Continue from '../../lib/icons/Continue.svg.svelte';
@@ -138,8 +139,6 @@
 			player ? (player.score += 1) : null;
 			return player;
 		});
-
-		gameStore.set(null);
 	}
 
 	function abandonGame(): void {
@@ -257,15 +256,15 @@
 		/>
 
 		<footer class="footer" slot="footer">
-			<Section>
-				{#if !isClockTicking}
+			{#if !isClockTicking && (isGameWon || isTimeUp)}
+				<TerminalGroup>
 					{#if isGameWon}
 						<Terminal lines={outcomeWon} />
 					{:else if isTimeUp}
 						<Terminal lines={outcomeTimedUp} />
 					{/if}
-				{/if}
-			</Section>
+				</TerminalGroup>
+			{/if}
 
 			{#if !isPostcard}
 				<Section>

@@ -1,10 +1,11 @@
 <script lang="ts">
 	import type { TerminalLine } from './Terminal';
+	import { slide } from 'svelte/transition';
 
 	export let lines: TerminalLine[] = [];
 </script>
 
-<ul class="terminal">
+<ul class="terminal" in:slide={{ duration: 1000 }}>
 	{#each lines as line, i}
 		<li
 			class="
