@@ -10,6 +10,13 @@
 	import Section from '$lib/components/Section.svelte';
 	import { applyLocale, playerStore } from '$lib/player';
 	import MainGrid from '../lib/components/MainGrid.svelte';
+	import { onMount } from 'svelte';
+
+	let isLoading = true;
+
+	onMount(() => {
+		isLoading = false;
+	});
 </script>
 
 <MainGrid>
@@ -20,41 +27,43 @@
 	<Artwork src="/artwork/splash.png" />
 
 	<footer class="footer" slot="footer">
-		<Section>
-			<H2>
-				{$LL.splash.introduction()}
-			</H2>
-		</Section>
+		{#if !isLoading}
+			<Section>
+				<H2>
+					{$LL.splash.introduction()}
+				</H2>
+			</Section>
 
-		<nav class="splash-nav">
-			<div class="splash-nav__new-game">
-				<ButtonLink href="/headquarters/">{$LL.splash.newGame()}</ButtonLink>
-				<Button
-					compact={true}
-					disabled={$locale === 'en'}
-					on:click={() => applyLocale('en', playerStore)}>🇺🇸</Button
-				>
-				<Button
-					compact={true}
-					disabled={$locale === 'es'}
-					on:click={() => applyLocale('es', playerStore)}>🇪🇸</Button
-				>
-			</div>
+			<nav class="splash-nav">
+				<div class="splash-nav__new-game">
+					<ButtonLink href="/headquarters/">{$LL.splash.newGame()}</ButtonLink>
+					<Button
+						compact={true}
+						disabled={$locale === 'en'}
+						on:click={() => applyLocale('en', playerStore)}>🇺🇸</Button
+					>
+					<Button
+						compact={true}
+						disabled={$locale === 'es'}
+						on:click={() => applyLocale('es', playerStore)}>🇪🇸</Button
+					>
+				</div>
 
-			<div class="splash-nav__about">
-				<a class="metadata" target="_blank" href="https://github.com/fmaclen/julia-sanfrancisco/">
-					{$LL.splash.about()}
-				</a>
-				<a
-					class="metadata"
-					target="_blank"
-					href="https://github.com/fmaclen/julia-sanfrancisco/releases/"
-				>
-					v{PUBLIC_GAME_VERSION}
-				</a>
-				<a class="metadata" target="_blank" href="https://twitter.com/fmaclen/">Twitter</a>
-			</div>
-		</nav>
+				<div class="splash-nav__about">
+					<a class="metadata" target="_blank" href="https://github.com/fmaclen/julia-sanfrancisco/">
+						{$LL.splash.about()}
+					</a>
+					<a
+						class="metadata"
+						target="_blank"
+						href="https://github.com/fmaclen/julia-sanfrancisco/releases/"
+					>
+						v{PUBLIC_GAME_VERSION}
+					</a>
+					<a class="metadata" target="_blank" href="https://twitter.com/fmaclen/">Twitter</a>
+				</div>
+			</nav>
+		{/if}
 	</footer>
 </MainGrid>
 
