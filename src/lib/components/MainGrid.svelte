@@ -1,8 +1,4 @@
-<script>
-	import { fade } from 'svelte/transition';
-</script>
-
-<main class="main" transition:fade>
+<main class="main">
 	<div class="main__container main__container--header">
 		<slot name="header" />
 	</div>

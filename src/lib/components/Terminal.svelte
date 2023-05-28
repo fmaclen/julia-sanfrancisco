@@ -1,11 +1,10 @@
 <script lang="ts">
 	import type { TerminalLine } from './Terminal';
-	import { slide } from 'svelte/transition';
 
 	export let lines: TerminalLine[] = [];
 </script>
 
-<ul class="terminal" transition:slide>
+<ul class="terminal">
 	{#each lines as line, i}
 		<li
 			class="
@@ -15,59 +14,49 @@
 			{line.text ?? ''}
 		</li>
 	{/each}
-	<li class="terminal__line">
-		<slot />
-	</li>
+
+	<!-- We use this to include an <input> in the "Headquarters" screen -->
+	<slot />
 </ul>
 
 <style lang="scss">
-	/* @import '$lib/components/mixins.scss'; */
-
 	ul.terminal {
-		/* @include plate; */
 		list-style: none;
 		padding: unset;
 		margin-block: unset;
-		/* margin-inline: var(--layout-inline); */
 
 		&:not(ul.terminal:last-child) {
 			border-bottom: 1px dashed var(--color-neutral-500);
-			padding-bottom: 24px;
-			margin-bottom: 24px;
+			padding-bottom: var(--terminal-block);
+			margin-bottom: var(--terminal-block);
 		}
 	}
 
-	li.terminal__line {
+	:global(li.terminal__line) {
 		font-family: var(--font-family-mono);
 		color: var(--color-neutral-200);
 		padding-inline: var(--spacing-l);
-		margin-block: 16px;
+		margin-block: calc(var(--terminal-block) / 2);
 		box-sizing: border-box;
+	}
 
-		/* &:first-child {
-			margin-top: 24px;
+	:global(li.terminal__line:first-child) {
+		margin-top: 0;
+	}
+
+	:global(li.terminal__line:last-child) {
+		margin-bottom: 0;
+	}
+
+	li.terminal__line--title {
+		font-size: 0.8em;
+		letter-spacing: 0.05em;
+		color: var(--color-neutral-50);
+		font-weight: 700;
+		text-transform: uppercase;
+
+		&::before {
+			content: '> ';
 		}
-
-		&:last-child {
-			margin-bottom: 24px;
-		} */
-
-		&--title {
-			font-size: 0.8em;
-			letter-spacing: 0.05em;
-			color: var(--color-neutral-50);
-			font-weight: 700;
-			text-transform: uppercase;
-
-			&::before {
-				content: '> ';
-			}
-		}
-
-		/* &--line-break {
-			height: 1px;
-			border-top: 1px dashed var(--color-neutral-500);
-			margin-block: 24px;
-		} */
 	}
 </style>

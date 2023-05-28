@@ -6,10 +6,7 @@
 	export let isDisabled: boolean = false;
 </script>
 
-<div
-	class="artwork {isHidden ? 'artwork--hidden' : ''} {isDisabled ? 'artwork--disabled' : ''}"
-	transition:fade
->
+<div class="artwork {isHidden ? 'artwork--hidden' : ''} {isDisabled ? 'artwork--disabled' : ''}">
 	<img class="artwork__img" {src} alt="Illustration of scene" />
 </div>
 

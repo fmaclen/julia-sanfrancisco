@@ -87,6 +87,8 @@
 		--color-neutral-900: #141414;
 		--color-neutral-950: #0f0f0f;
 
+		--color-green: #49b846;
+
 		--border-radius-l: 8px;
 		--border-radius-m: 6px;
 		--border-radius-s: 4px;

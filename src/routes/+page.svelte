@@ -7,20 +7,9 @@
 	import H1 from '$lib/components/H1.svelte';
 	import H2 from '$lib/components/H2.svelte';
 	import Header from '$lib/components/Header.svelte';
-	import Main from '$lib/components/Main.svelte';
-	import Nav from '$lib/components/Nav.svelte';
 	import Section from '$lib/components/Section.svelte';
 	import { applyLocale, playerStore } from '$lib/player';
 	import MainGrid from '../lib/components/MainGrid.svelte';
-	import { fade } from 'svelte/transition';
-
-	// const anArtworks = ['/artwork/headquarters.png', '/artwork/splash.png'];
-	// let arworkIndex = 0;
-
-	// $: artworkPath = '/artwork/splash.png';
-	// function toggleArtwork(): void {
-	// 	arworkIndex = arworkIndex === 0 ? 1 : 0;
-	// }
 </script>
 
 <MainGrid>
@@ -28,17 +17,7 @@
 		<H1 hero={true}>{$LL.splash.title()}</H1>
 	</Header>
 
-	<!-- {#each anArtworks as anArtwork, index}
-		{#if index === arworkIndex}
-			<Artwork src={anArtwork} />
-		{/if}
-	{/each} -->
-
 	<Artwork src="/artwork/splash.png" />
-	<!-- {#if artworkPath == '/artwork/splash.png'}
-	{:else}
-		<Artwork src="/artwork/headquarters.png" />
-	{/if} -->
 
 	<footer class="footer" slot="footer">
 		<Section>
@@ -63,17 +42,17 @@
 			</div>
 
 			<div class="splash-nav__about">
-				<a class="version" href="https://github.com/fmaclen/julia-sanfrancisco/" target="_blank">
+				<a class="metadata" target="_blank" href="https://github.com/fmaclen/julia-sanfrancisco/">
 					{$LL.splash.about()}
 				</a>
 				<a
-					class="version"
-					href="https://github.com/fmaclen/julia-sanfrancisco/releases/"
+					class="metadata"
 					target="_blank"
+					href="https://github.com/fmaclen/julia-sanfrancisco/releases/"
 				>
 					v{PUBLIC_GAME_VERSION}
 				</a>
-				<a class="version" href="https://twitter.com/fmaclen/" target="_blank"> Twitter </a>
+				<a class="metadata" target="_blank" href="https://twitter.com/fmaclen/">Twitter</a>
 			</div>
 		</nav>
 	</footer>
@@ -108,7 +87,7 @@
 		gap: 32px;
 	}
 
-	a.version {
+	a.metadata {
 		font-size: 14px;
 		font-family: var(--font-family-mono);
 		color: var(--color-neutral-400);
