@@ -17,6 +17,7 @@
 	import IconWalk from '$lib/icons/Walk.svg.svelte';
 	import { playerStore, type Player, getCasesUntilPromotion, getRank } from '$lib/player';
 	import ButtonIcon from '../../lib/components/ButtonIcon.svelte';
+	import Footer from '../../lib/components/Footer.svelte';
 	import Main from '../../lib/components/Main.svelte';
 	import TerminalGroup from '../../lib/components/TerminalGroup.svelte';
 	import Back from '../../lib/icons/Back.svg.svelte';
@@ -255,7 +256,7 @@
 			src={artworkPath}
 		/>
 
-		<footer class="footer" slot="footer">
+		<Footer slot="footer">
 			{#if !isClockTicking && (isGameWon || isTimeUp)}
 				<TerminalGroup>
 					{#if isGameWon}
@@ -354,18 +355,11 @@
 					{/if}
 				</nav>
 			{/if}
-		</footer>
+		</Footer>
 	</Main>
 {/if}
 
 <style lang="scss">
-	footer.footer {
-		display: flex;
-		flex-direction: column;
-		gap: var(--layout-block);
-		margin-bottom: var(--layout-block);
-	}
-
 	nav.game-nav {
 		display: flex;
 		justify-content: space-between;

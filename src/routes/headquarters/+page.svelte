@@ -11,6 +11,7 @@
 	import { getRank } from '$lib/player';
 	import { playerStore } from '$lib/player';
 	import ButtonIcon from '../../lib/components/ButtonIcon.svelte';
+	import Footer from '../../lib/components/Footer.svelte';
 	import TerminalGroup from '../../lib/components/TerminalGroup.svelte';
 	import { redirectTo } from '../../lib/helpers';
 	import Continue from '../../lib/icons/Continue.svg.svelte';
@@ -125,7 +126,7 @@
 
 	<Artwork src="/artwork/headquarters.png" />
 
-	<footer class="footer" slot="footer">
+	<Footer slot="footer">
 		{#if !isLoading}
 			<TerminalGroup>
 				{#each terminalLines as lines, i (lines[0].id)}
@@ -152,18 +153,10 @@
 				<Continue />
 			</ButtonIcon>
 		</nav>
-	</footer>
+	</Footer>
 </Main>
 
 <style lang="scss">
-	footer.footer {
-		display: flex;
-		flex-direction: column;
-		gap: var(--layout-block);
-		margin-bottom: var(--layout-block);
-		align-items: flex-start;
-	}
-
 	nav.headquarters-nav {
 		display: flex;
 		align-items: flex-end;

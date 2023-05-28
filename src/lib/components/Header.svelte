@@ -3,8 +3,6 @@
 </header>
 
 <style lang="scss">
-	@import '$lib/components/mixins.scss';
-
 	header.header {
 		display: flex;
 		flex-direction: column;

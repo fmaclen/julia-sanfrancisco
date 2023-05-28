@@ -8,6 +8,7 @@
 	import Header from '$lib/components/Header.svelte';
 	import Section from '$lib/components/Section.svelte';
 	import { applyLocale, playerStore } from '$lib/player';
+	import Footer from '../lib/components/Footer.svelte';
 	import Main from '../lib/components/Main.svelte';
 	import P from '../lib/components/P.svelte';
 	import { onMount } from 'svelte';
@@ -26,7 +27,7 @@
 
 	<Artwork src="/artwork/splash.png" />
 
-	<footer class="footer" slot="footer">
+	<Footer slot="footer">
 		{#if !isLoading}
 			<Section>
 				<P>
@@ -64,17 +65,10 @@
 				</div>
 			</nav>
 		{/if}
-	</footer>
+	</Footer>
 </Main>
 
 <style lang="scss">
-	footer.footer {
-		display: flex;
-		flex-direction: column;
-		gap: var(--layout-block);
-		margin-bottom: var(--layout-block);
-	}
-
 	nav.splash-nav {
 		display: flex;
 		flex-direction: column;
