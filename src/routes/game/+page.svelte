@@ -245,7 +245,10 @@
 					? $LL.game.actions.walking() + '...'
 					: currentRound.atlas.city}
 			</H1>
-			<Time isClockTicking={isClockTicking || isPostcard} currentTime={currentTimeFormatted} />
+
+			{#if isClockTicking || !isPostcard}
+				<Time {isClockTicking} currentTime={currentTimeFormatted} />
+			{/if}
 		</Header>
 
 		<Artwork

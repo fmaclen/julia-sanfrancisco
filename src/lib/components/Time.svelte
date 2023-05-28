@@ -1,13 +1,21 @@
 <script lang="ts">
+	import { fly, fade } from 'svelte/transition';
+
 	export let currentTime: string = 'Monday 9:00am';
 	export let isClockTicking: boolean = false;
 </script>
 
-<time class="time {isClockTicking ? 'time--active' : ''}">{currentTime}</time>
+<time
+	class="time {isClockTicking ? 'time--active' : ''}"
+	in:fly={{ y: -24, duration: 750 }}
+	out:fade={{ duration: 1750 }}
+>
+	{currentTime}
+</time>
 
 <style lang="scss">
 	time.time {
-		opacity: 0.33;
+		opacity: 0.5;
 		transition: opacity 250ms;
 
 		&--active {
