@@ -2,9 +2,15 @@
 	export let title: string | undefined = undefined;
 	export let disabled: boolean = false;
 	export let active: boolean = false;
+	export let compact: boolean = false;
 </script>
 
-<button class="button {active ? 'button--active' : ''}" {disabled} {title} on:click>
+<button
+	class="button {active ? 'button--active' : ''} {compact ? 'button--compact' : ''}"
+	{disabled}
+	{title}
+	on:click
+>
 	<slot />
 </button>
 
@@ -21,13 +27,20 @@
 
 		&:disabled {
 			color: var(--color-neutral-400);
-			background-color: rgba(50, 50, 50, 0.66);
+			background-color: rgba(75, 75, 75, 0.66);
 			cursor: not-allowed;
 		}
 
 		&:hover:not(:disabled),
 		&--active {
-			filter: invert(1);
+			color: var(--color-neutral-900);
+			background-color: rgba(255, 255, 255, 0.66);
+		}
+
+		&--compact {
+			width: max-content;
+			font-size: 1.5em;
+			padding: 0.5em;
 		}
 	}
 </style>

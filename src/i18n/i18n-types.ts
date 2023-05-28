@@ -14,7 +14,7 @@ export type Translation = RootTranslation
 export type Translations = RootTranslation
 
 type RootTranslation = {
-	home: {
+	splash: {
 		/**
 		 * J​u​l​i​a​ ​S​a​n​f​r​a​n​c​i​s​c​o
 		 */
@@ -27,6 +27,10 @@ type RootTranslation = {
 		 * N​e​w​ ​g​a​m​e
 		 */
 		newGame: string
+		/**
+		 * A​b​o​u​t
+		 */
+		about: string
 	}
 	headquarters: {
 		/**
@@ -81,6 +85,14 @@ type RootTranslation = {
 			}
 		}
 		id: {
+			/**
+			 * A​C​M​E​ ​S​y​s​t​e​m​s
+			 */
+			acmeSystems: string
+			/**
+			 * Y​o​u​r​ ​n​a​m​e
+			 */
+			yourName: string
 			/**
 			 * D​e​t​e​c​t​i​v​e​ ​a​t​ ​k​e​y​b​o​a​r​d​,​ ​p​l​e​a​s​e​ ​i​d​e​n​t​i​f​y​ ​y​o​u​r​s​e​l​f
 			 */
@@ -3441,7 +3453,7 @@ type RootTranslation = {
 		}
 		object: {
 			/**
-			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​w​a​s​ ​c​a​r​r​y​i​n​g​ ​a
+			 * {​s​e​x​|​{​m​a​l​e​:​ ​h​e​,​ ​f​e​m​a​l​e​:​ ​s​h​e​}​}​ ​w​a​s​ ​c​a​r​r​y​i​n​g
 			 * @param {string} sex
 			 */
 			'0': RequiredParams<`sex|{male:${string}, female:${string}}`>
@@ -3804,7 +3816,7 @@ type RootTranslation = {
 }
 
 export type TranslationFunctions = {
-	home: {
+	splash: {
 		/**
 		 * Julia Sanfrancisco
 		 */
@@ -3817,6 +3829,10 @@ export type TranslationFunctions = {
 		 * New game
 		 */
 		newGame: () => LocalizedString
+		/**
+		 * About
+		 */
+		about: () => LocalizedString
 	}
 	headquarters: {
 		/**
@@ -3864,6 +3880,14 @@ export type TranslationFunctions = {
 			}
 		}
 		id: {
+			/**
+			 * ACME Systems
+			 */
+			acmeSystems: () => LocalizedString
+			/**
+			 * Your name
+			 */
+			yourName: () => LocalizedString
 			/**
 			 * Detective at keyboard, please identify yourself
 			 */
@@ -7195,7 +7219,7 @@ export type TranslationFunctions = {
 		}
 		object: {
 			/**
-			 * {sex|{male: he, female: she}} was carrying a
+			 * {sex|{male: he, female: she}} was carrying
 			 */
 			'0': (arg: { sex: string }) => LocalizedString
 			/**

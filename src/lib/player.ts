@@ -65,6 +65,9 @@ export function applyLocale(locale: Locales, playerStore: Writable<Player | null
 
 	if (playerLocalStorage) {
 		player = JSON.parse(playerLocalStorage) as Player;
+
+		if (!player) return;
+
 		player.locale = locale;
 		playerStore.set(player);
 	}

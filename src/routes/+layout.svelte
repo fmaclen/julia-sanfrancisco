@@ -81,22 +81,34 @@
 		--color-neutral-300: #6d7471;
 		--color-neutral-400: #4f5452;
 		--color-neutral-500: #3b3f3e;
-		--color-neutral-600: #2d2f2e;
-		--color-neutral-700: #232424;
-		--color-neutral-800: #1e1e1e;
-		--color-neutral-900: #181818;
-		--color-neutral-950: #141414;
-		--color-neutral-1000: #0f0f0f;
+		--color-neutral-600: #232424;
+		--color-neutral-700: #1e1e1e;
+		--color-neutral-800: #181818;
+		--color-neutral-900: #141414;
+		--color-neutral-950: #0f0f0f;
+		--color-neutral-1000: #000;
+
+		--color-accent: #49b846;
 
 		--border-radius-l: 8px;
 		--border-radius-m: 6px;
 		--border-radius-s: 4px;
 
-		--spacing-l: 16px;
+		--spacing-xl: 40px;
+		--spacing-l: 20px;
 		--spacing-m: 8px;
 		--spacing-s: 4px;
 
-		font-family: 'Mona Sans';
+		--font-family-sans: 'Inter', sans-serif;
+		--font-family-sans-light: 200;
+		--font-family-sans-regular: 300;
+		--font-family-sans-bold: 700;
+
+		--font-family-mono: 'JetBrains Mono', monospace;
+		--font-family-mono-regular: 200;
+		--font-family-mono-bold: 700;
+
+		font-family: var(--font-family-sans);
 		margin: unset;
 		color: var(--color-neutral-100);
 		background-color: var(--color-neutral-1000);
@@ -104,12 +116,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 100dvw;
-		height: 100dvh;
 
-		@media (min-width: 512px) and (min-height: 1024px) {
-			background-color: var(--color-neutral-950);
-		}
+		width: 100dvw;
+		min-width: 320px;
+
+		height: 100dvh;
 	}
 
 	div.layout {
@@ -117,12 +128,15 @@
 		min-width: 320px;
 		max-width: 512px;
 
+		--layout-inline: 40px;
+		--layout-block: 48px;
+
 		height: 100dvh;
 		max-height: 1024px;
 
-		@media (min-width: 512px) and (min-height: 1024px) {
-			border-radius: var(--border-radius-l);
-			overflow: hidden;
+		@media (max-width: 512px) {
+			--layout-inline: 24px;
+			--layout-block: 32px;
 		}
 	}
 </style>

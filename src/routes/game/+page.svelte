@@ -1,12 +1,10 @@
 <script lang="ts">
 	import LL from '$i18n/i18n-svelte';
 	import Clock, { DELAY_IN_MS } from '$lib/clock';
+	import Artwork from '$lib/components/Artwork.svelte';
 	import Button from '$lib/components/Button.svelte';
-	import ButtonLink from '$lib/components/ButtonLink.svelte';
 	import H1 from '$lib/components/H1.svelte';
 	import Header from '$lib/components/Header.svelte';
-	import Main from '$lib/components/Main.svelte';
-	import Nav from '$lib/components/Nav.svelte';
 	import P from '$lib/components/P.svelte';
 	import Section from '$lib/components/Section.svelte';
 	import type { TerminalLine } from '$lib/components/Terminal';
@@ -18,7 +16,16 @@
 	import IconMenu from '$lib/icons/Menu.svg.svelte';
 	import IconWalk from '$lib/icons/Walk.svg.svelte';
 	import { playerStore, type Player, getCasesUntilPromotion, getRank } from '$lib/player';
+	import ButtonIcon from '../../lib/components/ButtonIcon.svelte';
+	import Footer from '../../lib/components/Footer.svelte';
+	import Main from '../../lib/components/Main.svelte';
+	import TerminalGroup from '../../lib/components/TerminalGroup.svelte';
+	import Back from '../../lib/icons/Back.svg.svelte';
+	import Collapse from '../../lib/icons/Collapse.svg.svelte';
+	import Continue from '../../lib/icons/Continue.svg.svelte';
+	import Expand from '../../lib/icons/Expand.svg.svelte';
 	import { onMount } from 'svelte';
+	import { fade, slide } from 'svelte/transition';
 	import type { LocalizedString } from 'typesafe-i18n';
 
 	function resetRound(): void {
@@ -36,17 +43,24 @@
 
 	function flyTo(): void {
 		if (!showDestinations) resetRound();
+		showDescription = !showDescription;
 		showDestinations = !showDestinations;
 	}
 
 	function walkTo(): void {
 		if (!showPlaces) resetRound();
+		showDescription = !showDescription;
 		showPlaces = !showPlaces;
 	}
 
 	function toggleOptions(): void {
 		if (!showOptions) resetRound();
+		showDescription = !showDescription;
 		showOptions = !showOptions;
+	}
+
+	function togglePostcard(): void {
+		isPostcard = !isPostcard;
 	}
 
 	async function getClue(index: number): Promise<void> {
@@ -70,6 +84,7 @@
 	}
 
 	async function setRound(currentAtlas: Atlas): Promise<void> {
+		isClockTicking = true;
 		showDestinations = false;
 		showDescription = false;
 		clock.isFlying = true;
@@ -100,6 +115,7 @@
 			}
 
 			// Must reset round after transition
+			isPostcard = true;
 			resetRound();
 		});
 
@@ -121,14 +137,12 @@
 			player ? (player.score += 1) : null;
 			return player;
 		});
-
-		gameStore.set(null);
 	}
 
 	function abandonGame(): void {
 		if (confirm($LL.game.actions.confirm())) {
 			gameStore.set(null);
-			redirectTo('/headquarters/');
+			redirectTo('/');
 		}
 	}
 
@@ -141,7 +155,8 @@
 	let clock = new Clock($playerStore?.locale ?? 'en');
 	let currentTimeFormatted: string;
 
-	let isLoading: boolean = true;
+	let isPostcard = true;
+	let isLoading = true;
 	let isWalking: boolean;
 	let isFlying: boolean;
 	let isSleeping: boolean;
@@ -158,8 +173,6 @@
 	let outcomeTimedUp: TerminalLine[] = [];
 
 	onMount(() => {
-		// Load game state from localStorage
-
 		// Can't start the game without $playerStore and $gameStore
 		// Redirect back to HQ to generate them
 		if ($playerStore === null || $gameStore === null) {
@@ -196,61 +209,20 @@
 		artworkPath = currentRound.atlas.artwork;
 
 		outcomeWon = [
-			{
-				text: $LL.game.outcome.title(),
-				type: 'title'
-			},
-			{
-				text: $LL.game.outcome.win.line1()
-			},
-			{
-				text: $LL.game.outcome.win.line2()
-			},
-			{
-				text: $LL.game.outcome.win.line3({
-					city: game.rounds[0].atlas.city,
-					suspect: game.suspect.name
-				})
-			},
-			{
-				text: $LL.game.outcome.win.line4()
-			},
-			{
-				text: $LL.game.outcome.win.line5({
-					cases: getCasesUntilPromotion($playerStore!.score)
-				})
-			},
-			{
-				type: 'line-break'
-			},
-			{
-				text: $LL.game.outcome.ready({
-					rank: playerRank,
-					name: $playerStore!.name
-				})
-			}
+			{ text: $LL.game.outcome.title(), type: 'title' },
+			{ text: $LL.game.outcome.win.line1() },
+			{ text: $LL.game.outcome.win.line2() },
+			{ text: $LL.game.outcome.win.line3({ city: game.rounds[0].atlas.city, suspect: game.suspect.name }) }, // prettier-ignore
+			{ text: $LL.game.outcome.win.line4() },
+			{ text: $LL.game.outcome.win.line5({ cases: getCasesUntilPromotion($playerStore!.score) }) }, // prettier-ignore
+			{ text: $LL.game.outcome.ready({ rank: playerRank, name: $playerStore!.name }) } // prettier-ignore
 		];
 
 		outcomeTimedUp = [
-			{
-				text: $LL.game.outcome.title(),
-				type: 'title'
-			},
-			{
-				text: $LL.game.outcome.loose.timedOut.line1()
-			},
-			{
-				text: $LL.game.outcome.loose.timedOut.line2({ suspect: game.suspect.name })
-			},
-			{
-				type: 'line-break'
-			},
-			{
-				text: $LL.game.outcome.ready({
-					rank: playerRank,
-					name: $playerStore!.name
-				})
-			}
+			{ text: $LL.game.outcome.title(), type: 'title' },
+			{ text: $LL.game.outcome.loose.timedOut.line1() },
+			{ text: $LL.game.outcome.loose.timedOut.line2({ suspect: game.suspect.name }) }, // prettier-ignore
+			{ text: $LL.game.outcome.ready({ rank: playerRank, name: $playerStore!.name }) } // prettier-ignore
 		];
 	}
 
@@ -259,21 +231,9 @@
 	$: isClueVisible = currentClueIndex !== null && !isWalking && !isSleeping;
 </script>
 
-<Main>
-	{#if isLoading}
-		<Section>
-			<P>{$LL.components.loading()}...</P>
-		</Section>
-	{:else if currentRound}
-		<div
-			class="artwork {isArtworkHidden ? 'artwork--hidden' : ''} {isSleeping
-				? 'artwork--disabled'
-				: ''}"
-		>
-			<img class="artwork__img" src={artworkPath} alt="Illustration of scene" />
-		</div>
-
-		<Header>
+{#if !isLoading}
+	<Main>
+		<Header slot="header">
 			<H1>
 				{isSleeping
 					? $LL.game.actions.sleeping() + '...'
@@ -283,109 +243,133 @@
 					? $LL.game.actions.walking() + '...'
 					: currentRound.atlas.city}
 			</H1>
-			<Time {isClockTicking} currentTime={currentTimeFormatted} />
+
+			{#if isClockTicking || !isPostcard}
+				<Time {isClockTicking} currentTime={currentTimeFormatted} />
+			{/if}
 		</Header>
 
-		<Section>
+		<Artwork
+			isHighContrast={!isPostcard}
+			isHidden={isArtworkHidden}
+			isDisabled={isSleeping}
+			src={artworkPath}
+		/>
+
+		<Footer slot="footer">
+			{#if !isClockTicking && (isGameWon || isTimeUp)}
+				<TerminalGroup>
+					{#if isGameWon}
+						<Terminal lines={outcomeWon} />
+					{:else if isTimeUp}
+						<Terminal lines={outcomeTimedUp} />
+					{/if}
+				</TerminalGroup>
+			{/if}
+
+			{#if !isPostcard}
+				<Section>
+					{#if !isTimeUp && !isGameWon && !isSleeping && !isClockTicking && showDescription}
+						<section class="paragraph-group" in:fade>
+							<P>{getRandomValue(currentRound.atlas.descriptions)}</P>
+						</section>
+					{/if}
+
+					{#if showPlaces}
+						<section class="button-group" in:slide>
+							{#each currentRound.scenes as scene, index}
+								<Button active={currentClueIndex === index} on:click={() => getClue(index)}>
+									{scene.place.name}
+								</Button>
+							{/each}
+						</section>
+					{/if}
+
+					{#if isClueVisible && currentClueIndex !== null}
+						<section class="paragraph-group">
+							<P><strong>{currentRound.scenes[currentClueIndex].witness}</strong></P>
+							<P>{currentRound.scenes[currentClueIndex].clue}</P>
+						</section>
+					{/if}
+
+					{#if showDestinations}
+						<section class="button-group" in:slide>
+							{#each Array.from(currentRound.destinations) as destination}
+								<Button on:click={() => setRound(destination)}>
+									{destination.city}
+								</Button>
+							{/each}
+						</section>
+					{/if}
+
+					{#if showOptions}
+						<section class="button-group" in:slide>
+							<Button on:click={abandonGame}>
+								{$LL.game.actions.abandon()}
+							</Button>
+							<Button disabled={true}>{$LL.game.actions.getWarrant()}</Button>
+						</section>
+					{/if}
+				</Section>
+			{/if}
+
 			{#if !isClockTicking}
-				{#if isGameWon}
-					<Terminal lines={outcomeWon} />
-				{:else if isTimeUp}
-					<Terminal lines={outcomeTimedUp} />
-				{:else if showDescription}
-					<P>
-						{getRandomValue(currentRound.atlas.descriptions)}
-					</P>
-				{/if}
+				<nav class="game-nav" transition:fade>
+					{#if isGameWon}
+						<ButtonIcon on:click={updateScore} title={$LL.components.buttons.continue()}>
+							<Continue />
+						</ButtonIcon>
+					{:else if isClueVisible}
+						<ButtonIcon on:click={dismissClue} title={$LL.components.buttons.goBack()}>
+							<Back />
+						</ButtonIcon>
+					{:else if isPostcard}
+						<ButtonIcon on:click={togglePostcard} title="Hide postcard">
+							<Expand />
+						</ButtonIcon>
+					{:else}
+						<ButtonIcon on:click={togglePostcard} title="Show postcard">
+							<Collapse />
+						</ButtonIcon>
+						<ButtonIcon
+							on:click={walkTo}
+							active={isWalking || showPlaces}
+							title={$LL.game.actions.walk()}
+						>
+							<IconWalk />
+						</ButtonIcon>
+						<ButtonIcon
+							on:click={flyTo}
+							active={isFlying || showDestinations}
+							title={$LL.game.actions.fly()}
+						>
+							<IconFly />
+						</ButtonIcon>
+						<ButtonIcon
+							on:click={toggleOptions}
+							title={$LL.game.actions.options()}
+							active={showOptions}
+						>
+							<IconMenu />
+						</ButtonIcon>
+					{/if}
+				</nav>
 			{/if}
-		</Section>
-
-		<Section align="bottom">
-			{#if showPlaces}
-				{#each currentRound.scenes as scene, index}
-					<Button active={currentClueIndex === index} on:click={() => getClue(index)}>
-						{scene.place.name}
-					</Button>
-				{/each}
-			{/if}
-
-			{#if isClueVisible && currentClueIndex !== null}
-				<P>
-					<strong>{currentRound.scenes[currentClueIndex].witness}</strong>
-					<br />
-					{currentRound.scenes[currentClueIndex].clue}
-				</P>
-			{/if}
-
-			{#if showDestinations}
-				{#each Array.from(currentRound.destinations) as destination}
-					<Button on:click={() => setRound(destination)}>
-						{destination.city}
-					</Button>
-				{/each}
-			{/if}
-
-			{#if showOptions}
-				<Button on:click={abandonGame}>
-					{$LL.game.actions.abandon()}
-				</Button>
-				<Button disabled={true}>{$LL.game.actions.getWarrant()}</Button>
-			{/if}
-		</Section>
-
-		<Nav>
-			{#if !isClockTicking}
-				{#if isGameWon}
-					<Button on:click={updateScore}>{$LL.components.buttons.continue()}</Button>
-				{:else if isClueVisible}
-					<Button on:click={dismissClue}>{$LL.components.buttons.goBack()}</Button>
-				{:else}
-					<Button
-						active={isWalking || showPlaces}
-						title={$LL.game.actions.walk()}
-						on:click={walkTo}
-					>
-						<IconWalk />
-					</Button>
-					<Button
-						active={isFlying || showDestinations}
-						title={$LL.game.actions.fly()}
-						on:click={flyTo}
-					>
-						<IconFly />
-					</Button>
-					<Button title={$LL.game.actions.options()} active={showOptions} on:click={toggleOptions}>
-						<IconMenu />
-					</Button>
-				{/if}
-			{/if}
-		</Nav>
-	{/if}
-</Main>
+		</Footer>
+	</Main>
+{/if}
 
 <style lang="scss">
-	div.artwork {
-		position: absolute;
-		z-index: -1;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		opacity: 1;
-		transition: filter 1500ms, opacity 500ms;
-
-		&--hidden {
-			opacity: 0;
-		}
-
-		&--disabled {
-			filter: grayscale(100%) blur(4px);
-		}
+	nav.game-nav {
+		display: flex;
+		justify-content: space-between;
+		margin-inline: var(--layout-inline);
 	}
 
-	img.artwork__img {
+	section.button-group {
+		display: flex;
+		flex-direction: column;
 		width: 100%;
-		height: 100%;
-		object-fit: cover;
+		gap: 4px;
 	}
 </style>

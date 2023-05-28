@@ -1,75 +1,85 @@
 <script lang="ts">
 	import type { TerminalLine } from './Terminal';
+	import { onMount } from 'svelte';
 	import { slide } from 'svelte/transition';
 
 	export let lines: TerminalLine[] = [];
+	export let autoScroll = false;
+	export let isLastTerminal: boolean = false;
+	let scrollToRef: HTMLDivElement;
 
-	// type TypewriterTransition = {
-	// 	duration: number;
-	// 	tick: (t: number) => void;
-	// };
-
-	// function typewriter(node: HTMLElement): TypewriterTransition {
-	// 	const SPEED = 2;
-	// 	const valid = node.childNodes.length === 1 && node.childNodes[0].nodeType === Node.TEXT_NODE;
-
-	// 	if (!valid) {
-	// 		throw new Error(`This transition only works on elements with a single text node child`);
-	// 	}
-
-	// 	const text = node.textContent!;
-	// 	const duration = text.length / (SPEED * 0.01);
-
-	// 	return {
-	// 		duration,
-	// 		tick: (t: number) => {
-	// 			const i = Math.trunc(text.length * t);
-	// 			node.textContent = text.slice(0, i);
-	// 		}
-	// 	};
-	// }
+	onMount(() => {
+		if (autoScroll) {
+			setTimeout(() => {
+				scrollToRef.scrollIntoView({ behavior: 'smooth' });
+			}, 251);
+		}
+	});
 </script>
 
-<ul class="terminal">
+<ul class="terminal" in:slide={{ duration: 250 }}>
 	{#each lines as line, i}
 		<li
-			in:slide={{ delay: i * 10 }}
 			class="
         terminal__line
-        {line.type ? `terminal__line--${line.type}` : ''}"
+        {isLastTerminal ? `terminal__line--last-terminal` : ''}
+        {line.type ? `terminal__line--${line.type}` : ''}
+			"
 		>
-			<!-- <span transition:typewriter>{line.text}</span> -->
 			{line.text ?? ''}
 		</li>
 	{/each}
+
+	<!-- We use this to include an <input> in the "Headquarters" screen -->
+	<slot />
 </ul>
+
+<div bind:this={scrollToRef} />
 
 <style lang="scss">
 	ul.terminal {
+		font-size: 16px;
 		list-style: none;
-		width: 100%;
-		padding-left: 0;
-		padding-block: 4px;
-		background-color: var(--color-neutral-900);
-		border-radius: var(--border-radius-m);
-	}
+		padding: unset;
+		margin-block: unset;
+		min-width: 100%;
 
-	li.terminal__line {
-		font-family: 'Courier New', Courier, monospace;
-		color: var(--color-neutral-100);
-		padding-inline: 24px;
-		margin-block: 16px;
-		box-sizing: border-box;
-
-		&--title {
-			font-weight: bold;
-			text-transform: uppercase;
+		@media (max-width: 512px) {
+			font-size: 14px;
 		}
 
-		&--line-break {
-			height: 1px;
-			border-top: 1px dashed var(--color-neutral-500);
-			margin-top: 16px;
+		&:not(ul.terminal:last-of-type) {
+			border-bottom: 1px dashed var(--color-neutral-500);
+			padding-bottom: var(--terminal-block);
+			margin-bottom: var(--terminal-block);
+		}
+	}
+
+	:global(li.terminal__line) {
+		font-family: var(--font-family-mono);
+		color: var(--color-neutral-200);
+		padding-inline: var(--spacing-l);
+		margin-block: calc(var(--terminal-block) / 2);
+		box-sizing: border-box;
+	}
+
+	:global(li.terminal__line:first-child) {
+		margin-top: 0;
+	}
+
+	:global(li.terminal__line:last-child) {
+		margin-bottom: 0;
+	}
+
+	li.terminal__line--title {
+		font-size: 0.8em;
+		letter-spacing: 0.05em;
+		color: var(--color-neutral-50);
+		font-weight: 700;
+		text-transform: uppercase;
+
+		&::before {
+			content: '> ';
 		}
 	}
 </style>

@@ -1,162 +1,183 @@
 <script lang="ts">
 	import LL, { locale } from '$i18n/i18n-svelte';
-	import Button from '$lib/components/Button.svelte';
-	import ButtonLink from '$lib/components/ButtonLink.svelte';
+	import Artwork from '$lib/components/Artwork.svelte';
 	import H1 from '$lib/components/H1.svelte';
 	import Header from '$lib/components/Header.svelte';
 	import Main from '$lib/components/Main.svelte';
-	import Nav from '$lib/components/Nav.svelte';
-	import P from '$lib/components/P.svelte';
-	import Section from '$lib/components/Section.svelte';
 	import type { TerminalLine } from '$lib/components/Terminal';
 	import Terminal from '$lib/components/Terminal.svelte';
 	import Time from '$lib/components/Time.svelte';
 	import { gameStore, generateGame } from '$lib/game';
 	import { getRank } from '$lib/player';
 	import { playerStore } from '$lib/player';
+	import ButtonIcon from '../../lib/components/ButtonIcon.svelte';
+	import Footer from '../../lib/components/Footer.svelte';
+	import TerminalGroup from '../../lib/components/TerminalGroup.svelte';
+	import { redirectTo } from '../../lib/helpers';
+	import Continue from '../../lib/icons/Continue.svg.svelte';
 	import { onMount } from 'svelte';
 
+	// Headquarters always starts a new game
+	gameStore.set(null);
+
+	enum Step {
+		UNKNOWN_PLAYER,
+		KNOWN_PLAYER,
+		NEWS_FLASH,
+		ASSIGNMENT
+	}
+
+	let isLoading = true;
+	let step: Step;
 	let playerName: string;
-	let playerRank: string = '';
-	let isLoading: boolean = true;
-	let playerLines: TerminalLine[] = [];
-	let gameLines: TerminalLine[] | null = null;
+	let playerRank: string;
 
 	function setPlayer() {
 		playerStore.set({ name: playerName, score: 0, locale: $locale });
 	}
 
-	function setGame() {
-		const newGame = generateGame($LL);
-		gameStore.set(newGame);
+	function nextStep() {
+		if (!$playerStore) {
+			setPlayer();
+		} else if (!$gameStore) {
+			const newGame = generateGame($LL);
+			gameStore.set(newGame);
+			step = Step.NEWS_FLASH;
+		} else if (step === Step.KNOWN_PLAYER) {
+			step = Step.NEWS_FLASH;
+		} else if (step === Step.NEWS_FLASH) {
+			step = Step.ASSIGNMENT;
+		} else if (step === Step.ASSIGNMENT) {
+			redirectTo('/game');
+		}
 	}
 
-	$: if ($playerStore) {
-		const playerRankIndex = getRank($playerStore.score);
-		playerRank = $LL.player.ranks[playerRankIndex]();
+	onMount(() => {
+		isLoading = false;
+	});
 
-		playerLines = [
-			{
-				text: $LL.headquarters.id.indentified({ name: $playerStore.name })
-			},
-			{
-				type: 'line-break'
-			},
-			{
-				text: $LL.headquarters.id.rank({ rank: playerRank.toLowerCase() })
-			}
-		];
+	let terminalLines: TerminalLine[][] = [];
+	let linesUnknownPlayer: TerminalLine[] = [];
+	let linesUnknownPlayerInput: TerminalLine[] = [];
+	let linesKnownPlayer: TerminalLine[] = [];
+	let linesNewsFlash: TerminalLine[] = [];
+	let linesAssignment: TerminalLine[] = [];
+	let lastTerminal: HTMLElement;
+
+	if ($playerStore && $gameStore) {
+		step = Step.KNOWN_PLAYER;
 	}
 
-	$: if ($playerStore && $gameStore) {
-		const newsFlash: TerminalLine[] = [
-			{
-				text: `** ${$LL.headquarters.newsflash.title()} **`,
-				type: 'title'
-			},
-			{
-				text: $LL.headquarters.newsflash.content.line1({
-					city: $gameStore.rounds[0].atlas.city
-				})
-			},
-			{
-				text: $LL.headquarters.newsflash.content.line2({ treasure: $gameStore.stolenTreasure })
-			},
-			{
-				text: $LL.headquarters.newsflash.content.line3({
-					sex: $gameStore.suspect.sex.toLowerCase() as 'male' | 'female'
-				})
-			}
-		];
+	$: {
+		if (!$playerStore) {
+			linesUnknownPlayer = [
+				{ id: Step.UNKNOWN_PLAYER, text: $LL.headquarters.id.acmeSystems(), type: 'title' },
+				{ text: $LL.headquarters.id.pending() }
+			];
 
-		const assignment: TerminalLine[] = [
-			{
-				type: 'line-break'
-			},
-			{
-				text: $LL.headquarters.assignment.title(),
-				type: 'title'
-			},
-			{
-				text: $LL.headquarters.assignment.content.line1({
-					city: $gameStore.rounds[0].atlas.city,
-					sex: $gameStore.suspect.sex.toLowerCase()
-				})
-			},
-			{
-				text: $LL.headquarters.assignment.content.line2()
-			},
-			{
-				text: $LL.headquarters.assignment.content.line3({
-					rank: playerRank,
-					name: $playerStore.name
-				})
-			}
-		];
+			linesUnknownPlayerInput = [{ text: $LL.headquarters.id.yourName(), type: 'title' }];
 
-		gameLines = [...newsFlash, ...assignment];
+			step = Step.UNKNOWN_PLAYER;
+		} else if (!$gameStore) {
+			const playerRankIndex = getRank($playerStore.score);
+			playerRank = $LL.player.ranks[playerRankIndex]();
+
+			step = Step.KNOWN_PLAYER;
+			linesKnownPlayer = [
+				{ id: step, text: $LL.headquarters.id.acmeSystems(), type: 'title' },
+				{ text: $LL.headquarters.id.indentified({ name: $playerStore.name }) },
+				{ text: $LL.headquarters.id.rank({ rank: playerRank.toLowerCase() }) }
+			];
+		} else if (step !== Step.ASSIGNMENT) {
+			step = Step.NEWS_FLASH;
+			linesNewsFlash = [
+				{ id: step, text: $LL.headquarters.newsflash.title(), type: 'title' },
+				{ text: $LL.headquarters.newsflash.content.line1({ city: $gameStore.rounds[0].atlas.city }) }, // prettier-ignore
+				{ text: $LL.headquarters.newsflash.content.line2({ treasure: $gameStore.stolenTreasure }) }, // prettier-ignore
+				{ text: $LL.headquarters.newsflash.content.line3({ sex: $gameStore.suspect.sex.toLowerCase() as 'male' | 'female' }) } // prettier-ignore
+			];
+		} else {
+			step = Step.ASSIGNMENT;
+			linesAssignment = [
+				{ id: step, text: $LL.headquarters.assignment.title(), type: 'title' },
+				{ text: $LL.headquarters.assignment.content.line1({ city: $gameStore.rounds[0].atlas.city, sex: $gameStore.suspect.sex.toLowerCase() }) }, // prettier-ignore
+				{ text: $LL.headquarters.assignment.content.line2() },
+				{ text: $LL.headquarters.assignment.content.line3({ rank: playerRank, name: $playerStore.name }) } // prettier-ignore
+			];
+		}
+
+		terminalLines = [
+			linesUnknownPlayer,
+			linesUnknownPlayerInput,
+			linesKnownPlayer,
+			linesNewsFlash,
+			linesAssignment
+		].filter(
+			(lines) => lines.length > 0
+		); // prettier-ignore
 	}
-
-	onMount(() => (isLoading = false));
 </script>
 
 <Main>
-	<Header>
+	<Header slot="header">
 		<H1>{$LL.headquarters.title()}</H1>
 		<Time />
 	</Header>
 
-	{#if isLoading}
-		<Section>
-			<P>{$LL.components.loading()}...</P>
-		</Section>
-	{:else if $playerStore}
-		<Section>
-			<Terminal lines={playerLines} />
+	<Artwork src="/artwork/headquarters.png" />
 
-			{#if gameLines}
-				<Terminal lines={gameLines} />
-			{/if}
-		</Section>
+	<Footer slot="footer">
+		{#if !isLoading}
+			<TerminalGroup>
+				{#each terminalLines as lines, i (lines[0].id)}
+					<Terminal {lines} autoScroll={i === terminalLines.length - 1}>
+						{#if lines === linesUnknownPlayerInput}
+							<li class="terminal__line">
+								<input
+									class="input"
+									type="text"
+									name="name"
+									placeholder="Sleazy McSleazebag"
+									disabled={step !== Step.UNKNOWN_PLAYER}
+									bind:value={playerName}
+								/>
+							</li>
+						{/if}
+					</Terminal>
+				{/each}
+			</TerminalGroup>
+		{/if}
 
-		<Nav>
-			{#if !$gameStore}
-				<Button on:click={setGame}>{$LL.components.buttons.continue()}</Button>
-			{:else}
-				<ButtonLink href="/game/">{$LL.components.buttons.continue()}</ButtonLink>
-			{/if}
-		</Nav>
-	{:else}
-		<Section>
-			<P>{$LL.headquarters.id.pending()}</P>
-			<input
-				class="input"
-				type="text"
-				name="name"
-				placeholder="Your name"
-				bind:value={playerName}
-			/>
-		</Section>
-		<Nav>
-			<Button on:click={setPlayer} disabled={!playerName}
-				>{$LL.components.buttons.continue()}</Button
-			>
-		</Nav>
-	{/if}
+		<nav class="headquarters-nav">
+			<ButtonIcon on:click={nextStep} title={$LL.components.buttons.continue()} disabled={false}>
+				<Continue />
+			</ButtonIcon>
+		</nav>
+	</Footer>
 </Main>
 
 <style lang="scss">
-	@import '$lib/components/mixins.scss';
+	nav.headquarters-nav {
+		display: flex;
+		align-items: flex-end;
+		gap: var(--layout-inline);
+		margin-inline: var(--layout-inline);
+		margin-left: auto;
+	}
 
 	input.input {
 		width: 100%;
 		box-sizing: border-box;
 		background: transparent;
+		border: unset;
+		outline: none;
+		padding: unset;
 		font-size: 16px;
-		padding: 16px;
-		line-height: 150%;
-		border: 1px solid var(--color-neutral-500);
-		border-radius: var(--border-radius-m);
-		color: var(--color-neutral-100);
+		font-family: var(--font-family-mono);
+		color: var(--color-accent);
+
+		&::placeholder {
+			color: var(--color-neutral-500);
+		}
 	}
 </style>

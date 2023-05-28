@@ -31,11 +31,12 @@ import { unitedKingdom } from './atlases/united-kingdom';
 import { unitedStates } from './atlases/united-states';
 
 const en = {
-	home: {
+	splash: {
 		title: 'Julia Sanfrancisco',
 		introduction:
 			'Chase Julia and her accomplices across different countries, unraveling clues, solving puzzles, and expanding your geography knowledge in this exciting detective game.',
-		newGame: 'New game'
+		newGame: 'New game',
+		about: 'About'
 	},
 	headquarters: {
 		title: 'Headquarters',
@@ -57,6 +58,8 @@ const en = {
 			}
 		},
 		id: {
+			acmeSystems: 'ACME Systems',
+			yourName: 'Your name',
 			pending: 'Detective at keyboard, please identify yourself',
 			indentified: 'You have been identified as {name:string}.',
 			rank: 'Your current rank is {rank:string}.'
@@ -181,7 +184,7 @@ const en = {
 			'{sex:string|{male: he, female: she}} wanted to know how much {currency:string} were worth'
 		],
 		object: [
-			'{sex:string|{male: he, female: she}} was carrying a',
+			'{sex:string|{male: he, female: she}} was carrying',
 			'{sex:string|{male: he, female: she}} wanted to get',
 			'{sex:string|{male: he, female: she}} wanted to sell',
 			'{sex:string|{male: he, female: she}} asked where to find',

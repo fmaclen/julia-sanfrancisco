@@ -33,11 +33,12 @@ import { unitedStates } from './atlases/united-states';
 
 const es = {
 	...(en as Translation), // Fall back to English
-	home: {
+	splash: {
 		title: 'Julia Sanfrancisco',
 		introduction:
 			'Persigue a Julia y sus cómplices a través de diferentes países, desentrañando pistas, resolviendo acertijos y ampliando tus conocimientos de geografía en este emocionante juego de detectives.',
-		newGame: 'Nuevo juego'
+		newGame: 'Nuevo juego',
+		about: 'Acerca de'
 	},
 	headquarters: {
 		title: 'Cuartel general',
@@ -59,6 +60,8 @@ const es = {
 			}
 		},
 		id: {
+			acmeSystems: 'Sistemas ACME',
+			yourName: 'Tu nombre',
 			pending: 'Detective en el teclado, por favor identifícate',
 			indentified: 'Has sido identificado como {name}.',
 			rank: 'Tu rango actual es {rank}.'
@@ -137,9 +140,9 @@ const es = {
 		introduction: [
 			'Vi a la persona que buscas y',
 			'La persona que estás buscando estuvo aquí y',
-			'Mis fuentes me dicen',
-			'Una fuente confiable me dijo',
-			'Las fuentes me dicen',
+			'Mis fuentes me dicen que',
+			'Una fuente confiable me dijo que',
+			'Las fuentes me dicen que',
 			'Todo lo que sé es que',
 			'Una persona sospechosa estuvo aquí y',
 			'Escuché que'
