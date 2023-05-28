@@ -1,4 +1,8 @@
-<h2 class="h2">
+<script>
+	import { fade } from 'svelte/transition';
+</script>
+
+<h2 class="h2" in:fade>
 	<slot />
 </h2>
 

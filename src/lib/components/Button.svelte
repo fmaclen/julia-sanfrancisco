@@ -26,6 +26,8 @@
 		}
 
 		&:disabled {
+			filter: grayscale(1);
+			opacity: 0.5;
 			color: var(--color-neutral-400);
 			background-color: rgba(50, 50, 50, 0.66);
 			cursor: not-allowed;
@@ -33,7 +35,8 @@
 
 		&:hover:not(:disabled),
 		&--active {
-			filter: invert(1);
+			color: var(--color-neutral-900);
+			background-color: rgba(255, 255, 255, 0.66);
 		}
 
 		&--compact {

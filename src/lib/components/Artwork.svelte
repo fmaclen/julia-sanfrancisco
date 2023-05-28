@@ -4,9 +4,17 @@
 	export let src: string;
 	export let isHidden: boolean = false;
 	export let isDisabled: boolean = false;
+	export let isHighContrast: boolean = true;
 </script>
 
-<div class="artwork {isHidden ? 'artwork--hidden' : ''} {isDisabled ? 'artwork--disabled' : ''}">
+<div
+	class="artwork
+		{isHidden ? 'artwork--hidden' : ''}
+		{isDisabled ? 'artwork--disabled' : ''}
+		{isHighContrast ? 'artwork--high-contrast' : ''}
+	"
+	in:fade
+>
 	<img class="artwork__img" {src} alt="Illustration of scene" />
 </div>
 
@@ -22,13 +30,15 @@
 			content: '';
 			position: absolute;
 			width: 100%;
+			height: 25%;
 			left: 0;
+			opacity: 0.5;
+			transition: height 1000ms, opacity 1000ms;
 		}
 
 		// Top gradient
 		&::after {
 			top: 0;
-			height: 33%;
 
 			// Eased gradient
 			background: linear-gradient(
@@ -55,7 +65,6 @@
 		// Bottom gradient
 		&::before {
 			bottom: 0;
-			height: 66%;
 
 			// Eased gradient
 			background: linear-gradient(
@@ -84,7 +93,19 @@
 		}
 
 		&--disabled {
-			filter: grayscale(100%) blur(4px);
+			filter: grayscale(100%) brightness(0.5) blur(4px);
+		}
+
+		&--high-contrast {
+			&::after {
+				opacity: 1;
+				height: 33%;
+			}
+
+			&::before {
+				opacity: 1;
+				height: 66%;
+			}
 		}
 	}
 
