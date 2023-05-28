@@ -122,9 +122,11 @@
 		image-rendering: crisp-edges;
 		-ms-interpolation-mode: nearest-neighbor;
 
+		border-radius: 16px;
+
 		@media (max-width: 512px) {
-			border-top-left-radius: 16px;
-			border-top-right-radius: 16px;
+			border-bottom-left-radius: unset;
+			border-bottom-right-radius: unset;
 			overflow: hidden;
 		}
 	}
