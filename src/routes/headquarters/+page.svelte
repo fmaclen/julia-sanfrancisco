@@ -62,7 +62,6 @@
 	let linesKnownPlayer: TerminalLine[] = [];
 	let linesNewsFlash: TerminalLine[] = [];
 	let linesAssignment: TerminalLine[] = [];
-	let lastTerminal: HTMLElement;
 
 	if ($playerStore && $gameStore) {
 		step = Step.KNOWN_PLAYER;
@@ -137,7 +136,7 @@
 									class="input"
 									type="text"
 									name="name"
-									placeholder="Sleazy McSleazebag"
+									placeholder="Dexter Colt"
 									disabled={step !== Step.UNKNOWN_PLAYER}
 									bind:value={playerName}
 								/>

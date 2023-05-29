@@ -306,6 +306,7 @@ const en = {
 		}
 	},
 	components: {
+		startTime: 'Monday 9:00am',
 		loading: 'Loading',
 		buttons: {
 			goBack: 'Go back',
