@@ -413,21 +413,21 @@ function getLocalizedAtlases(LL: TranslationFunctions): Atlas[] {
 	const atlases: Atlas[] = [];
 
 	for (const atlasKey of atlaseKeys) {
-		const validKey = atlasKey as keyof Translation['atlases'];
+		const translationKey = atlasKey as keyof Translation['atlases'];
 
 		atlases.push({
-			city: LL.atlases[validKey].city(),
-			descriptions: getTranslationFromArray(LL.atlases[validKey].descriptions),
-			currency: LL.atlases[validKey].currency(),
-			language: LL.atlases[validKey].language(),
-			flag: LL.atlases[validKey].flag(),
-			leader: LL.atlases[validKey].leader(),
-			sights: getTranslationFromArray(LL.atlases[validKey].sights),
-			objects: getTranslationFromArray(LL.atlases[validKey].objects),
-			topics: getTranslationFromArray(LL.atlases[validKey].topics),
+			city: LL.atlases[translationKey].city(),
+			descriptions: getTranslationFromArray(LL.atlases[translationKey].descriptions),
+			currency: LL.atlases[translationKey].currency(),
+			language: LL.atlases[translationKey].language(),
+			flag: LL.atlases[translationKey].flag(),
+			leader: LL.atlases[translationKey].leader(),
+			sights: getTranslationFromArray(LL.atlases[translationKey].sights),
+			objects: getTranslationFromArray(LL.atlases[translationKey].objects),
+			topics: getTranslationFromArray(LL.atlases[translationKey].topics),
 
 			// HACK: We are using the English name of the `city` to get the artwork.
-			artwork: getArtworkPath(en.atlases[validKey].city, 'atlas')
+			artwork: getArtworkPath(en.atlases[translationKey].city, 'atlas')
 		});
 	}
 
@@ -502,12 +502,12 @@ function getLocalizedWitnesses(LL: TranslationFunctions, place: Place): Localize
 	const witnessesInPlace: LocalizedWitness[] = [];
 
 	for (const witnessKey of witnessKeys) {
-		const validKey = witnessKey as keyof Translation['scenes']['witnesses'];
+		const translationKey = witnessKey as keyof Translation['scenes']['witnesses'];
 		const witnessIndex = witnessKey as keyof typeof Witness;
 		const witness = Witness[witnessIndex];
 
 		if (possibleWitnesses.map((key) => Witness[key]).includes(witness.toString())) {
-			witnessesInPlace.push({ witness, name: LL.scenes.witnesses[validKey]() });
+			witnessesInPlace.push({ witness, name: LL.scenes.witnesses[translationKey]() });
 		}
 	}
 
@@ -519,8 +519,8 @@ function getLocalizedFinalRoundClues(LL: TranslationFunctions): string[] {
 	const finalRoundClues: string[] = [];
 
 	for (const finalRoundKey of finalRoundKeys) {
-		const validKey = finalRoundKey as keyof Translation['clues']['finalRound'];
-		finalRoundClues.push(LL.clues.finalRound[validKey]());
+		const translationKey = finalRoundKey as keyof Translation['clues']['finalRound'];
+		finalRoundClues.push(LL.clues.finalRound[translationKey]());
 	}
 
 	return finalRoundClues;
@@ -531,8 +531,8 @@ function getLocalizedDecoyClues(LL: TranslationFunctions): string[] {
 	const decoyClues: string[] = [];
 
 	for (const decoyKey of decoyKeys) {
-		const validKey = decoyKey as keyof Translation['clues']['decoy'];
-		decoyClues.push(LL.clues.decoy[validKey]());
+		const translationKey = decoyKey as keyof Translation['clues']['decoy'];
+		decoyClues.push(LL.clues.decoy[translationKey]());
 	}
 
 	return decoyClues;
