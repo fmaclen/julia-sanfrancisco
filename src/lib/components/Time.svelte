@@ -1,7 +1,8 @@
 <script lang="ts">
+	import LL from '$i18n/i18n-svelte';
 	import { fly, fade } from 'svelte/transition';
 
-	export let currentTime: string = 'Monday 9:00am';
+	export let currentTime: string = $LL.components.startTime();
 	export let isClockTicking: boolean = false;
 </script>
 

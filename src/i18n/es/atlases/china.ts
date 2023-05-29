@@ -1,33 +1,33 @@
 export const china = {
-	city: 'Beijing',
+	city: 'Pekín',
 	descriptions: [
-		'Beijing, the capital of China, is one of the most populous cities in the world, with a population of over 21 million people.',
-		'Surrounded by mountains that protect it from the cold Siberian winds, Beijing is a city rich in history and culture.',
-		'Welcome to Beijing, the cultural, educational, and political heart of China. The city is known for its opulent palaces, temples, and enormous stone walls and gates.'
+		'Pekín, la capital de China, es una de las ciudades más pobladas del mundo, con una población de más de 21 millones de personas.',
+		'Rodeada de montañas que la protegen de los fríos vientos siberianos, Pekín es una ciudad rica en historia y cultura.',
+		'Bienvenido a Pekín, el corazón cultural, educativo y político de China. La ciudad es conocida por sus opulentos palacios, templos y enormes murallas y puertas de piedra.'
 	],
 	sights: [
-		'the Great Wall of China',
-		'The Yellow Mountains',
-		'the Yangtze River',
-		"The Terracotta Army in Xi'an",
-		'The Potala Palace in Tibet'
+		'la Gran Muralla China',
+		'Las Montañas Amarillas',
+		'el Río Yangtsé',
+		"El Ejército de Terracota en Xi'an",
+		'El Palacio de Potala en el Tíbet'
 	],
 	objects: [
-		'a traditional Chinese fan',
-		'a jade sculpture',
-		'a bottle of Maotai liquor',
-		'a piece of silk fabric',
-		'a Chinese lantern'
+		'un abanico tradicional chino',
+		'una escultura de jade',
+		'una botella de licor Maotai',
+		'una pieza de tela de seda',
+		'una linterna china'
 	],
 	topics: [
-		'the history of the Chinese dynasties',
-		'the biodiversity of the Yangshuo countryside',
-		'the traditional tea culture',
-		'the martial art of Kung Fu',
-		'the development of calligraphy'
+		'la historia de las dinastías chinas',
+		'la biodiversidad del campo de Yangshuo',
+		'la cultura tradicional del té',
+		'el arte marcial del Kung Fu',
+		'el desarrollo de la caligrafía'
 	],
 	currency: 'yuan',
-	leader: 'party chairman',
-	flag: 'a red flag with five golden stars',
-	language: 'Chinese'
+	leader: 'presidente del partido',
+	flag: 'una bandera roja con cinco estrellas doradas',
+	language: 'chino'
 };

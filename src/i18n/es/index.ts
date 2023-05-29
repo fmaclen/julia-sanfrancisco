@@ -290,6 +290,7 @@ const es = {
 		}
 	},
 	components: {
+		startTime: 'Lunes 9:00am',
 		loading: 'Cargando',
 		buttons: {
 			goBack: 'Volver',
