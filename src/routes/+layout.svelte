@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { PUBLIC_GOOGLE_ANALYTICS_ID, PUBLIC_PLAUSIBLE_DOMAIN } from '$env/static/public';
+	import { PUBLIC_PLAUSIBLE_DOMAIN } from '$env/static/public';
 	import type { Locales } from '$i18n/i18n-types';
 	import { playerStore, applyLocale } from '$lib/player';
 	import { onMount } from 'svelte';
@@ -53,19 +53,6 @@
 	{#if PUBLIC_PLAUSIBLE_DOMAIN}
 		<script defer data-domain={PUBLIC_PLAUSIBLE_DOMAIN} src="https://plausible.io/js/script.js">
 		</script>
-	{/if}
-
-	{#if PUBLIC_GOOGLE_ANALYTICS_ID}
-		<script async src="https://www.googletagmanager.com/gtag/js?id={PUBLIC_GOOGLE_ANALYTICS_ID}">
-		</script>
-		{@html `<script>${`
-			window.dataLayer = window.dataLayer || [];
-			function gtag() {
-				dataLayer.push(arguments);
-			}
-			gtag('js', new Date());
-			gtag('config', '${PUBLIC_GOOGLE_ANALYTICS_ID}');
-		`}</script>`}
 	{/if}
 </svelte:head>
 
