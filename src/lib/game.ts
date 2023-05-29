@@ -2,7 +2,6 @@ import { browser } from '$app/environment';
 import en from '$i18n/en';
 import type { Translation, TranslationFunctions } from '$i18n/i18n-types';
 import { getArtworkPath, getRandomValue } from '$lib/helpers';
-import { th } from 'date-fns/locale';
 import { writable } from 'svelte/store';
 import type { LocalizedString } from 'typesafe-i18n';
 
