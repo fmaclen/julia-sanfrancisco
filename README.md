@@ -36,8 +36,7 @@ Follow the [current progress here](https://github.com/fmaclen/julia-sanfrancisco
 
 ### Contribute
 
-The game is currently open for contributions. If you want to help, please join the [Discord server](https://discord.com/channels/532702198040100874/1108858794831790080) and/or check the [issues](https://github.com/fmaclen/julia-sanfrancisco/issues) for tasks that need to
-be done.
+The game is currently open for contributions. If you want to help, please join the [Discord server](https://discord.com/channels/532702198040100874/1108858794831790080) and/or check the [issues](https://github.com/fmaclen/julia-sanfrancisco/issues) for tasks that need to be done.
 
 💵 **I will consider paying for meaninful contributions**, [message me](mailto:hello@fernando.is).
 
@@ -52,10 +51,7 @@ To run the development environment locally:
 ```bash
 npm install
 
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+npm run start
 ```
 
 To create a production version of the game:
