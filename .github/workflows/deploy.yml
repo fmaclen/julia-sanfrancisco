@@ -25,6 +25,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Generate i18n files
+        run: npx typesafe-i18n
+
       - name: Semantic Release
         id: release
         run: |
