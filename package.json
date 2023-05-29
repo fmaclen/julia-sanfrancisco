@@ -3,6 +3,7 @@
 	"version": "0.0.0-development",
 	"private": true,
 	"scripts": {
+		"start": "concurrently \"typesafe-i18n\" \"npm run dev\"",
 		"dev": "vite dev --host",
 		"build": "vite build",
 		"preview": "vite preview",
@@ -21,6 +22,7 @@
 		"@trivago/prettier-plugin-sort-imports": "^4.1.1",
 		"@typescript-eslint/eslint-plugin": "^5.45.0",
 		"@typescript-eslint/parser": "^5.45.0",
+		"concurrently": "^8.0.1",
 		"date-fns": "^2.29.3",
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
