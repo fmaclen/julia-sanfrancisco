@@ -2,6 +2,7 @@ import { browser } from '$app/environment';
 import en from '$i18n/en';
 import type { Translation, TranslationFunctions } from '$i18n/i18n-types';
 import { getArtworkPath, getRandomValue } from '$lib/helpers';
+import { th } from 'date-fns/locale';
 import { writable } from 'svelte/store';
 import type { LocalizedString } from 'typesafe-i18n';
 
@@ -449,6 +450,7 @@ function getLocalizedPlaces(LL: TranslationFunctions): LocalizedPlace[] {
 			artwork: getArtworkPath(en.scenes.places[translationKey], 'places')
 		});
 	}
+
 	return places;
 }
 
@@ -494,9 +496,13 @@ function getLocalizedWitnesses(LL: TranslationFunctions, place: Place): Localize
 			possibleWitnesses = [Witness.BARTENDER, Witness.TENNIS_PRO, Witness.WAITER];
 			break;
 		case Place.STOCK_EXCHANGE:
-		default:
 			possibleWitnesses = [Witness.ANALYST, Witness.MESSENGER, Witness.TRADER];
+			break;
+		default:
+			possibleWitnesses = [];
 	}
+
+	if (possibleWitnesses.length === 0) throw new Error('No witnesses found for this place.');
 
 	const witnessKeys = Object.keys(LL.scenes.witnesses);
 	const witnessesInPlace: LocalizedWitness[] = [];
