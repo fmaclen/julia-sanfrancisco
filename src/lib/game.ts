@@ -439,17 +439,16 @@ function getLocalizedPlaces(LL: TranslationFunctions): LocalizedPlace[] {
 	const places: LocalizedPlace[] = [];
 
 	for (const placeKey of placeKeys) {
-		const validKey = placeKey as keyof Translation['scenes']['places'];
-		const placeIndex = placeKey as keyof typeof Place;
+		const translationKey = placeKey as keyof Translation['scenes']['places'];
+
 		places.push({
-			place: Place[placeIndex],
-			name: LL.scenes.places[validKey](),
+			place: parseInt(placeKey),
+			name: LL.scenes.places[translationKey](),
 
 			// HACK: We are using the English name of the `place` to get the artwork.
-			artwork: getArtworkPath(en.scenes.places[validKey], 'places')
+			artwork: getArtworkPath(en.scenes.places[translationKey], 'places')
 		});
 	}
-
 	return places;
 }
 
