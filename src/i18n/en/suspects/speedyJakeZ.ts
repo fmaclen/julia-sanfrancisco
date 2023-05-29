@@ -1,10 +1,18 @@
 export const speedyJakeZ = {
 	name: 'Speedy Jake Z',
 	sex: 'Male',
-	occupation: 'World-class pickleball player',
+	occupation: 'Quant Research Analyst',
 	hobby: 'Pickleball',
 	hair: 'Jet black',
-	auto: 'Sun-powered drone',
-	feature: 'Always wears a lightning bolt lapel pin at the scene of his exploits',
-	other: 'Speedy Jake Z is a sharp-dressed global traveler and has a weakness for Thai food'
+	auto: 'Custom-built e-bike',
+	feature: 'Has an unusual scar on his right forearm',
+	other: 'Has a soft spot for vintage comic books',
+	clues: {
+		1: 'It looked like his steering wheel had come off.',
+		2: 'His hair was black.',
+		3: 'He tried to hide a scar.',
+		4: 'I heard he spent all day looking at spreadsheets.',
+		5: 'He was carrying comic books.',
+		6: 'He had a small paddle strapped to his backpack.'
+	}
 };
