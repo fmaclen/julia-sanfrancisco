@@ -11,3 +11,6 @@ vite.config.ts.timestamp-*
 
 # Visual Studio Code
 .vscode
+
+# typesafe-18n
+/src/i18n/i18n-types.ts
