@@ -11,7 +11,7 @@ export const simonSimonski = {
 		1: 'Llegó en un jet privado, un testimonio de su riqueza.',
 		2: 'Su cabello rubio sobresalía entre la multitud.',
 		3: 'Tenía un misterioso tatuaje en su hombro.',
-		4: 'Lo escuché hablar sobre private-keys.',
+		4: 'Lo escuché hablar sobre "private keys".',
 		5: 'Su caddie también estaba allí.',
 		6: 'Parecía que sabía mucho sobre la fabricación de aviones.'
 	}

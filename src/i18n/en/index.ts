@@ -124,6 +124,52 @@ const en = {
 		sparkleLily,
 		speedyJakeZ
 	},
+	warrants: {
+		unknown: 'Unknown',
+		sex: 'Sex',
+		hobby: {
+			field: 'Hobby',
+			hiking: 'Hiking',
+			tennis: 'Tennis',
+			biking: 'Biking',
+			guitar: 'Guitar',
+			golf: 'Golf',
+			gambler: 'Gambler',
+			pickleball: 'Pickleball'
+		},
+		hair: {
+			field: 'Hair',
+			black: 'Black',
+			brown: 'Brown',
+			red: 'Red',
+			blond: 'Blond'
+		},
+		feature: {
+			field: 'Feature',
+			glasses: 'Glasses',
+			tattoo: 'Tattoo',
+			birthmark: 'Birthmark',
+			ring: 'Ring',
+			necklace: 'Necklace'
+		},
+		vehicle: {
+			field: 'Vehicle',
+			motorcycle: 'Motorcycle',
+			hoverboard: 'Hoverboard',
+			exotic: 'Exotic car',
+			convertible: 'Convertible',
+			limousine: 'Limousine',
+			transit: 'Public transit'
+		},
+		compute: 'Compute',
+		provideDetails: 'Please provide suspect details to obtain a warrant.',
+		suspectMatch: 'Suspect match',
+		haveWarrant: 'You now have a warrant to arrest {suspect:string}.',
+		possibleSuspects: 'Possible suspects',
+		noSuspectsFound: 'No suspects found',
+		noPossibleSuspects: 'The information provided eliminates all possible suspects.',
+		noWarrantIssued: 'No warrant has been issued.'
+	},
 	atlases: {
 		argentina,
 		australia,

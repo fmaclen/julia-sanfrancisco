@@ -1,8 +1,8 @@
 export const sparkleLily = {
 	name: 'Sparkle Lily',
 	sex: 'Female',
-	occupation: 'Smoothie bar owner',
-	hobby: 'Badminton',
+	occupation: 'Restaurant franchise owner',
+	hobby: 'Gambler',
 	hair: 'Blond',
 	vehicle: 'Cybertruck limousine',
 	feature: 'Rumor has it she has a hidden tattoo',
@@ -13,6 +13,6 @@ export const sparkleLily = {
 		3: "She kept saying she didn't have tattoo.",
 		4: 'I heard she complained about condiments in her meal.',
 		5: 'She was carrying a badminton racquet.',
-		6: 'Was trying to sell a smoothie franchise.'
+		6: 'Was trying to sell a restaurant franchise.'
 	}
 };

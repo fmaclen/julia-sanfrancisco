@@ -82,19 +82,6 @@ enum Witness {
 	TRADER
 }
 
-enum Suspect {
-	JULIA_SANFRANCISCO = 'juliaSanfrancisco',
-	CHRIS_LUNCHTIME = 'chrisLunchtime',
-	DANIELLE_SPLASH = 'danielleSplash',
-	DUCHESS_ISABELLA = 'duchessIsabella',
-	HUGH_MASS = 'hughMass',
-	MARK_FADENOTT = 'markFadenott',
-	RENA_STONE = 'renaStone',
-	SIMON_SIMONSKI = 'simonSimonski',
-	SPARKLE_LILY = 'sparkleLily',
-	SPEEDY_JAKE_Z = 'speedyJakeZ'
-}
-
 interface Scene {
 	place: LocalizedPlace;
 	witness: string;
@@ -121,6 +108,69 @@ export interface Round {
 	destinations: Atlas[]; // Would have used a Set<Atlas>, but we can't save that object type to localStorage
 }
 
+enum Suspect {
+	JULIA_SANFRANCISCO = 'juliaSanfrancisco',
+	CHRIS_LUNCHTIME = 'chrisLunchtime',
+	DANIELLE_SPLASH = 'danielleSplash',
+	DUCHESS_ISABELLA = 'duchessIsabella',
+	HUGH_MASS = 'hughMass',
+	MARK_FADENOTT = 'markFadenott',
+	RENA_STONE = 'renaStone',
+	SIMON_SIMONSKI = 'simonSimonski',
+	SPARKLE_LILY = 'sparkleLily',
+	SPEEDY_JAKE_Z = 'speedyJakeZ'
+}
+
+enum SuspectSex {
+	MALE = 'male',
+	FEMALE = 'female'
+}
+
+enum SuspectHobby {
+	HIKING = 'hiking',
+	TENNIS = 'tennis',
+	BIKING = 'biking',
+	GUITAR = 'guitar',
+	GOLF = 'golf',
+	GAMBLER = 'gambler',
+	PICKLEBALL = 'pickleball'
+}
+
+enum SuspectHair {
+	BLACK = 'black',
+	BROWN = 'brown',
+	BLOND = 'blond',
+	RED = 'red'
+}
+
+enum SuspectFeature {
+	SCAR = 'scar',
+	GLASSES = 'glasses',
+	TATTOO = 'tattoo',
+	BIRTHMARK = 'birthmark',
+	RING = 'ring',
+	NECKLACE = 'necklace'
+}
+
+enum SuspectVehicle {
+	BIKE = 'bike',
+	MOTORCYCLE = 'motorcycle',
+	HOVERBOARD = 'hoverboard',
+	EXOTIC = 'exoticCar',
+	CONVERTIBLE = 'convertible',
+	LIMOUSINE = 'limousine',
+	TRANSIT = 'publicTransit',
+	JET = 'jet'
+}
+
+interface WarrantKeys {
+	sex: SuspectSex;
+	hobby: SuspectHobby;
+	hair: SuspectHair;
+	feature: SuspectFeature;
+	vehicle: SuspectVehicle;
+}
+
 interface LocalizedSuspect {
 	suspect: Suspect;
 	name: string;
@@ -128,8 +178,8 @@ interface LocalizedSuspect {
 	hair: string;
 	feature: string;
 	vehicle: string;
-	sex: string;
 	clues: string[];
+	warrantKeys: WarrantKeys;
 }
 
 export interface Game {
@@ -336,7 +386,7 @@ function generateClues(params: ScenesParams, place: LocalizedPlace): string[] {
 			currency: params.nextRoundAtlas?.currency.toLowerCase(),
 			language: params.nextRoundAtlas?.language.toLowerCase(),
 			flag: params.nextRoundAtlas?.flag.toLowerCase(),
-			sex: params.suspect?.sex.toLowerCase()
+			sex: params.suspect?.warrantKeys.sex
 		};
 
 		const localizedClues: string[] = [];
@@ -421,23 +471,112 @@ function setDecoyDestinations(
 
 function getLocalizedSuspects(LL: TranslationFunctions): LocalizedSuspect {
 	const suspects: Suspect[] = Object.values(Suspect);
-	const suspectKey = getRandomValue(suspects);
+	const suspect = getRandomValue(suspects);
 
-	const translationKey = suspectKey as keyof Translation['suspects'];
+	const translationKey = suspect as keyof Translation['suspects'];
 
 	const localizedSuspect: LocalizedSuspect = {
-		suspect: suspectKey,
+		suspect,
 		name: LL.suspects[translationKey].name(),
 		hobby: LL.suspects[translationKey].hobby(),
 		hair: LL.suspects[translationKey].hair(),
 		feature: LL.suspects[translationKey].feature(),
 		vehicle: LL.suspects[translationKey].vehicle(),
-		sex: LL.suspects[translationKey].sex(),
-		clues: getTranslationFromArray(LL.suspects[translationKey].clues)
+		clues: getTranslationFromArray(LL.suspects[translationKey].clues),
+		warrantKeys: getSuspectWarrantKeyss(suspect)
 	};
 
 	return localizedSuspect;
 }
+
+function getSuspectWarrantKeyss(suspect: Suspect): WarrantKeys {
+	switch (suspect) {
+		case Suspect.CHRIS_LUNCHTIME:
+			return {
+				sex: SuspectSex.MALE,
+				hobby: SuspectHobby.GAMBLER,
+				hair: SuspectHair.BLACK,
+				feature: SuspectFeature.GLASSES,
+				vehicle: SuspectVehicle.MOTORCYCLE
+			};
+		case Suspect.DANIELLE_SPLASH:
+			return {
+				sex: SuspectSex.FEMALE,
+				hobby: SuspectHobby.HIKING,
+				hair: SuspectHair.BROWN,
+				feature: SuspectFeature.BIRTHMARK,
+				vehicle: SuspectVehicle.HOVERBOARD
+			};
+		case Suspect.DUCHESS_ISABELLA:
+			return {
+				sex: SuspectSex.FEMALE,
+				hobby: SuspectHobby.TENNIS,
+				hair: SuspectHair.RED,
+				feature: SuspectFeature.RING,
+				vehicle: SuspectVehicle.EXOTIC
+			};
+		case Suspect.HUGH_MASS:
+			return {
+				sex: SuspectSex.MALE,
+				hobby: SuspectHobby.HIKING,
+				hair: SuspectHair.RED,
+				feature: SuspectFeature.TATTOO,
+				vehicle: SuspectVehicle.CONVERTIBLE
+			};
+		case Suspect.JULIA_SANFRANCISCO:
+			return {
+				sex: SuspectSex.FEMALE,
+				hobby: SuspectHobby.BIKING,
+				hair: SuspectHair.BLOND,
+				feature: SuspectFeature.NECKLACE,
+				vehicle: SuspectVehicle.CONVERTIBLE
+			};
+		case Suspect.MARK_FADENOTT:
+			return {
+				sex: SuspectSex.MALE,
+				hobby: SuspectHobby.GUITAR,
+				hair: SuspectHair.BLOND,
+				feature: SuspectFeature.RING,
+				vehicle: SuspectVehicle.LIMOUSINE
+			};
+		case Suspect.RENA_STONE:
+			return {
+				sex: SuspectSex.FEMALE,
+				hobby: SuspectHobby.BIKING,
+				hair: SuspectHair.BROWN,
+				feature: SuspectFeature.GLASSES,
+				vehicle: SuspectVehicle.TRANSIT
+			};
+		case Suspect.SIMON_SIMONSKI:
+			return {
+				sex: SuspectSex.MALE,
+				hobby: SuspectHobby.GOLF,
+				hair: SuspectHair.BLACK,
+				feature: SuspectFeature.TATTOO,
+				vehicle: SuspectVehicle.JET
+			};
+		case Suspect.SPARKLE_LILY:
+			return {
+				sex: SuspectSex.FEMALE,
+				hair: SuspectHair.BLOND,
+				hobby: SuspectHobby.GAMBLER,
+				feature: SuspectFeature.TATTOO,
+				vehicle: SuspectVehicle.LIMOUSINE
+			};
+		case Suspect.SPEEDY_JAKE_Z:
+			return {
+				sex: SuspectSex.MALE,
+				hobby: SuspectHobby.PICKLEBALL,
+				hair: SuspectHair.BLACK,
+				feature: SuspectFeature.SCAR,
+				vehicle: SuspectVehicle.BIKE
+			};
+		default:
+			throw new Error('No warrant found for this suspect.');
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////
 
 function getLocalizedAtlases(LL: TranslationFunctions): Atlas[] {
 	const atlaseKeys = Object.keys(LL.atlases);

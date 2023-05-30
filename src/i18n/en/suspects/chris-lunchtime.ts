@@ -1,18 +1,18 @@
 export const chrisLunchtime = {
 	name: 'Chris Lunchtime',
 	sex: 'Male',
-	occupation: 'Retired detective turned game critic',
-	hobby: 'Hiking',
+	occupation: 'Retired detective turned PC gamer',
+	hobby: 'Gambler',
 	hair: 'Jet black',
 	vehicle: 'Midnight Rider motorcycle',
-	feature: 'Wears a leather jacket and a wide-brimmed hat, has green eyes and a goatee',
+	feature: 'Has a goatee and wears glasses',
 	other: 'He likes to host LAN parties',
 	clues: {
 		1: 'He arrived at the scene on a loud motorcycle.',
 		2: 'His hair was as black as the night.',
-		3: 'He had quite the goatee.',
-		4: 'He defintitely had green eyes.',
-		5: 'I overheard him arguing FlappyBird is underated.',
-		6: 'He was looking for an ethernet cable.'
+		3: 'He looked like Gordon Freeman.',
+		4: 'He looked smart with those glasses.',
+		5: 'He showed me photos of his mechanical keyboard collection.',
+		6: 'He asked me for an ethernet cable.'
 	}
 };

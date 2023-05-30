@@ -5,14 +5,14 @@ export const danielleSplash = {
 	hobby: 'Senderismo',
 	hair: 'Marrón castaño',
 	vehicle: 'Hoverboard Futuro-5000',
-	feature: 'Tiene un tatuaje de un delfín en su tobillo derecho',
+	feature: 'Tiene una marca de nacimiento notable en el cuello',
 	other: 'Conocedora de sushi',
 	clues: {
 		1: 'Pasó zumbando por nosotros en una especie de tabla futurista.',
-		2: 'Tenía un tatuaje feo.',
-		3: 'Su cabello era mayormente marrón.',
+		2: 'Tenía una gran marca de nacimiento en el cuello.',
+		3: 'Su cabello era marrón.',
 		4: 'Oí que se quejaba del sashimi.',
 		5: 'Llevaba botas de montaña.',
-		6: 'Se jactaba de haber ganado alguna copa.'
+		6: 'Se jactaba de haber ganado una carrera.'
 	}
 };

@@ -1,19 +1,18 @@
 export const chrisLunchtime = {
 	name: 'Chris Lunchtime',
 	sex: 'Hombre',
-	occupation: 'Detective jubilado convertido en crítico de juegos',
-	hobby: 'Senderismo',
+	occupation: 'Detective jubilado, ahora fanático de juegos de PC',
+	hobby: 'Jugador compulsivo',
 	hair: 'Negro azabache',
 	vehicle: 'Moto Midnight Rider',
-	feature:
-		'Lleva una chaqueta de cuero y un sombrero de ala ancha, tiene ojos verdes y una perilla',
+	feature: 'Tiene una barba candado y usa anteojos',
 	other: 'Le gusta organizar fiestas LAN',
 	clues: {
 		1: 'Llegó a la escena en una moto ruidosa.',
 		2: 'Su cabello era negro como la noche.',
-		3: 'Tenía una perilla bastante notable.',
-		4: 'Definitivamente tenía ojos verdes.',
-		5: 'Escuché que argumentaba que FlappyBird está infravalorado.',
-		6: 'Estaba buscando un cable de ethernet.'
+		3: 'Era bastante parecido a Gordon Freeman.',
+		4: 'Se veía inteligente con esos anteojos.',
+		5: 'Me mostro fotos de su colección de teclados mecánicos.',
+		6: 'Me pidió un cable ethernet.'
 	}
 };
