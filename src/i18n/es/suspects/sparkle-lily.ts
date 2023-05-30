@@ -2,7 +2,7 @@ export const sparkleLily = {
 	name: 'Sparkle Lily',
 	sex: 'Mujer',
 	occupation: 'Dueña de una franquicia de restaurantes',
-	hobby: 'Jugadora compulsiva',
+	hobby: 'Apostadora',
 	hair: 'Rubio',
 	vehicle: 'Limusina Cybertruck',
 	feature: 'Se rumorea que tiene un tatuaje oculto',

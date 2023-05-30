@@ -312,7 +312,7 @@
 							<Button on:click={abandonGame}>
 								{$LL.game.actions.abandon()}
 							</Button>
-							<Button disabled={true}>{$LL.game.actions.getWarrant()}</Button>
+							<Button disabled={true}>{$LL.warrants.getWarrant()}</Button>
 						</section>
 					{/if}
 				</Section>

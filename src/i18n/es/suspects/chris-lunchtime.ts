@@ -2,7 +2,7 @@ export const chrisLunchtime = {
 	name: 'Chris Lunchtime',
 	sex: 'Hombre',
 	occupation: 'Detective jubilado, ahora fanático de juegos de PC',
-	hobby: 'Jugador compulsivo',
+	hobby: 'Apostador',
 	hair: 'Negro azabache',
 	vehicle: 'Moto Midnight Rider',
 	feature: 'Tiene una barba candado y usa anteojos',

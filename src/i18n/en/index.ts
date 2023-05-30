@@ -108,8 +108,7 @@ const en = {
 			sleeping: 'Sleeping',
 			options: 'Options',
 			abandon: 'Abandon game',
-			confirm: 'Are you sure you want to abandon this game?',
-			getWarrant: 'Get warrant (Soon™)'
+			confirm: 'Are you sure you want to abandon this game?'
 		}
 	},
 	suspects: {
@@ -161,6 +160,9 @@ const en = {
 			limousine: 'Limousine',
 			transit: 'Public transit'
 		},
+		dossiers: 'Dossiers',
+		suspectDossiers: 'Suspect dossiers',
+		getWarrant: 'Get warrant (Soon™)',
 		compute: 'Compute',
 		provideDetails: 'Please provide suspect details to obtain a warrant.',
 		suspectMatch: 'Suspect match',
