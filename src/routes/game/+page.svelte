@@ -286,9 +286,14 @@
 					{/if}
 
 					{#if isClueVisible && currentClueIndex !== null}
+						{@const suspectClue = currentRound.scenes[currentClueIndex].suspectClue}
 						<section class="paragraph-group">
 							<P><strong>{currentRound.scenes[currentClueIndex].witness}</strong></P>
 							<P>{currentRound.scenes[currentClueIndex].clue}</P>
+
+							{#if suspectClue}
+								<P>{suspectClue}</P>
+							{/if}
 						</section>
 					{/if}
 

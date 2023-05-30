@@ -82,10 +82,24 @@ enum Witness {
 	TRADER
 }
 
+enum Suspect {
+	JULIA_SANFRANCISCO = 'juliaSanFrancisco',
+	CHRIS_LUNCHTIME = 'chrisLunchtime',
+	DANIELLE_SPLASH = 'danielleSplash',
+	DUCHESS_ISABELLA = 'duchessIsabella',
+	HUGH_MASS = 'hughMass',
+	MARK_FADENOTT = 'markFadenott',
+	RENA_STONE = 'renaStone',
+	SIMON_SIMONSKI = 'simonSimonski',
+	SPARKLE_LILY = 'sparkleLily',
+	SPEEDY_JAKE_Z = 'speedyJakeZ'
+}
+
 interface Scene {
 	place: LocalizedPlace;
 	witness: string;
 	clue: string;
+	suspectClue?: string;
 }
 
 export interface Atlas {
@@ -107,13 +121,15 @@ export interface Round {
 	destinations: Atlas[]; // Would have used a Set<Atlas>, but we can't save that object type to localStorage
 }
 
-interface Suspect {
+interface LocalizedSuspect {
+	suspect: Suspect;
 	name: string;
 	hobby: string;
 	hair: string;
 	feature: string;
 	vehicle: string;
 	sex: string;
+	clues: string[];
 }
 
 export interface Game {
@@ -122,7 +138,7 @@ export interface Game {
 	roundDecoy: Round | null;
 	rounds: Round[];
 	stolenTreasure: string;
-	suspect: Suspect;
+	suspect: LocalizedSuspect;
 }
 
 export function generateGame(LL: TranslationFunctions): Game {
@@ -151,7 +167,7 @@ interface LocalizedWitness {
 	name: string;
 }
 
-function generateRounds(LL: TranslationFunctions, suspect: Suspect): Round[] {
+function generateRounds(LL: TranslationFunctions, suspect: LocalizedSuspect): Round[] {
 	const NUMBER_OF_ROUNDS = 6;
 
 	const atlases = getLocalizedAtlases(LL);
@@ -220,7 +236,7 @@ export function generateDecoyRound(
 interface ScenesParams {
 	LL: TranslationFunctions;
 	nextRoundAtlas?: Atlas;
-	suspect?: Suspect;
+	suspect?: LocalizedSuspect;
 	isRoundFinal?: boolean;
 	isRoundDecoy?: boolean;
 }
@@ -255,9 +271,23 @@ function generateScenes(params: ScenesParams): Scene[] {
 
 		const clue = Array.from(cluesSet)[i];
 		const witness = getLocalizedWitnesses(LL, place.place);
+		let suspectClue: string | undefined = undefined;
+
+		// We don't want to always include a suspect clue
+		if (suspect) {
+			const ODDS_OF_NO_CLUE = 10;
+			const possibleSuspectClues: (string | undefined)[] = [...suspect.clues];
+
+			for (let i = 0; i < ODDS_OF_NO_CLUE; i++) {
+				possibleSuspectClues.push(undefined);
+			}
+
+			suspectClue = getRandomValue(possibleSuspectClues);
+		}
 
 		scenes.push({
 			clue,
+			suspectClue,
 			place: place,
 			witness: witness.name
 		});
@@ -388,24 +418,24 @@ function setDecoyDestinations(
 	}
 }
 
-function getLocalizedSuspects(LL: TranslationFunctions): Suspect {
-	const suspectIndexes = Object.keys(LL.suspects);
-	const suspects: Suspect[] = [];
+function getLocalizedSuspects(LL: TranslationFunctions): LocalizedSuspect {
+	const suspects: Suspect[] = Object.values(Suspect);
+	const suspectKey = getRandomValue(suspects);
 
-	for (const suspectIndex of suspectIndexes) {
-		const validatedSuspectIndex = suspectIndex as keyof Translation['suspects'];
+	const translationKey = suspectKey as keyof Translation['suspects'];
 
-		suspects.push({
-			name: LL.suspects[validatedSuspectIndex].name(),
-			hobby: LL.suspects[validatedSuspectIndex].hobby(),
-			hair: LL.suspects[validatedSuspectIndex].hair(),
-			feature: LL.suspects[validatedSuspectIndex].feature(),
-			vehicle: LL.suspects[validatedSuspectIndex].vehicle(),
-			sex: LL.suspects[validatedSuspectIndex].sex()
-		});
-	}
+	const localizedSuspect: LocalizedSuspect = {
+		suspect: suspectKey,
+		name: LL.suspects[translationKey].name(),
+		hobby: LL.suspects[translationKey].hobby(),
+		hair: LL.suspects[translationKey].hair(),
+		feature: LL.suspects[translationKey].feature(),
+		vehicle: LL.suspects[translationKey].vehicle(),
+		sex: LL.suspects[translationKey].sex(),
+		clues: getTranslationFromArray(LL.suspects[translationKey].clues)
+	};
 
-	return getRandomValue(suspects);
+	return localizedSuspect;
 }
 
 function getLocalizedAtlases(LL: TranslationFunctions): Atlas[] {
