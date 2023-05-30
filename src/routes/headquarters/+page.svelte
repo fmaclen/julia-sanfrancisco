@@ -93,13 +93,13 @@
 				{ id: step, text: $LL.headquarters.newsflash.title(), type: 'title' },
 				{ text: $LL.headquarters.newsflash.content.line1({ city: $gameStore.rounds[0].atlas.city }) }, // prettier-ignore
 				{ text: $LL.headquarters.newsflash.content.line2({ treasure: $gameStore.stolenTreasure }) }, // prettier-ignore
-				{ text: $LL.headquarters.newsflash.content.line3({ sex: $gameStore.suspect.sex.toLowerCase() as 'male' | 'female' }) } // prettier-ignore
+				{ text: $LL.headquarters.newsflash.content.line3({ sex: $gameStore.suspect.warrantKeys.sex }) } // prettier-ignore
 			];
 		} else {
 			step = Step.ASSIGNMENT;
 			linesAssignment = [
 				{ id: step, text: $LL.headquarters.assignment.title(), type: 'title' },
-				{ text: $LL.headquarters.assignment.content.line1({ city: $gameStore.rounds[0].atlas.city, sex: $gameStore.suspect.sex.toLowerCase() }) }, // prettier-ignore
+				{ text: $LL.headquarters.assignment.content.line1({ city: $gameStore.rounds[0].atlas.city, sex: $gameStore.suspect.warrantKeys.sex }) }, // prettier-ignore
 				{ text: $LL.headquarters.assignment.content.line2() },
 				{ text: $LL.headquarters.assignment.content.line3({ rank: playerRank, name: $playerStore.name }) } // prettier-ignore
 			];
