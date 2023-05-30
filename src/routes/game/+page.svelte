@@ -10,12 +10,20 @@
 	import type { TerminalLine } from '$lib/components/Terminal';
 	import Terminal from '$lib/components/Terminal.svelte';
 	import Time from '$lib/components/Time.svelte';
-	import { gameStore, type Game, type Atlas, type Round, generateDecoyRound } from '$lib/game';
+	import {
+		gameStore,
+		type Game,
+		type Atlas,
+		type Round,
+		generateDecoyRound,
+		Suspect
+	} from '$lib/game';
 	import { getRandomValue, redirectTo } from '$lib/helpers';
 	import IconFly from '$lib/icons/Fly.svg.svelte';
 	import IconMenu from '$lib/icons/Menu.svg.svelte';
 	import IconWalk from '$lib/icons/Walk.svg.svelte';
 	import { playerStore, type Player, getCasesUntilPromotion, getRank } from '$lib/player';
+	import type { Translation } from '../../i18n/i18n-types';
 	import ButtonIcon from '../../lib/components/ButtonIcon.svelte';
 	import Footer from '../../lib/components/Footer.svelte';
 	import Main from '../../lib/components/Main.svelte';
@@ -29,16 +37,18 @@
 	import type { LocalizedString } from 'typesafe-i18n';
 
 	function resetRound(): void {
-		showDescription = true;
-		showPlaces = false;
-		showOptions = false;
-		showDestinations = false;
 		currentClueIndex = null;
 		artworkPath = currentRound.atlas.artwork;
 		game.currentTime = clock.currentTime;
 
-		// Save the game state to localStorage
-		gameStore.set(game);
+		showDescription = true;
+		showPlaces = false;
+		showOptions = false;
+		showDestinations = false;
+		showDossiers = false;
+		showSuspectDossier = undefined;
+
+		gameStore.set(game); // Save the game state to localStorage
 	}
 
 	function flyTo(): void {
@@ -61,6 +71,17 @@
 
 	function togglePostcard(): void {
 		isPostcard = !isPostcard;
+	}
+
+	function seeDossiers(): void {
+		showOptions = false;
+		showSuspectDossier = undefined;
+		showDossiers = true;
+	}
+
+	function seeDossier(suspect: Suspect): void {
+		showDossiers = false;
+		showSuspectDossier = suspect;
 	}
 
 	async function getClue(index: number): Promise<void> {
@@ -155,7 +176,7 @@
 	let clock = new Clock($playerStore?.locale ?? 'en');
 	let currentTimeFormatted: string;
 
-	let isPostcard = true;
+	let isPostcard = false; // REVERT
 	let isLoading = true;
 	let isWalking: boolean;
 	let isFlying: boolean;
@@ -168,6 +189,8 @@
 	let showDestinations = false;
 	let showOptions = false;
 	let showDescription = true;
+	let showDossiers = false;
+	let showSuspectDossier: keyof Translation['suspects'] | undefined;
 
 	let outcomeWon: TerminalLine[] = [];
 	let outcomeTimedUp: TerminalLine[] = [];
@@ -312,8 +335,94 @@
 							<Button on:click={abandonGame}>
 								{$LL.game.actions.abandon()}
 							</Button>
+							<Button on:click={seeDossiers}>{$LL.warrants.suspectDossiers()}</Button>
 							<Button disabled={true}>{$LL.warrants.getWarrant()}</Button>
 						</section>
+					{/if}
+
+					{#if showDossiers}
+						<section class="button-group" in:slide>
+							{#each Object.values(Suspect) as suspectKey}
+								<Button on:click={() => seeDossier(suspectKey)}>
+									{$LL.suspects[suspectKey].name()}
+								</Button>
+							{/each}
+						</section>
+					{/if}
+
+					{#if showSuspectDossier}
+						{@const suspect = $LL.suspects[showSuspectDossier]}
+						{@const warrants = $LL.warrants}
+						<TerminalGroup>
+							<Terminal
+								lines={[
+									{ type: 'title', text: 'World Police: Dossier' },
+									{
+										type: 'input',
+										label: warrants.labels.name(),
+										text: suspect.name()
+									},
+									{
+										type: 'input',
+										name: 'sex',
+										label: warrants.labels.sex(),
+										text: suspect.sex()
+									},
+									{
+										type: 'input',
+										name: 'occupation',
+										label: warrants.labels.occupation(),
+										text: suspect.occupation()
+									},
+									{
+										type: 'input',
+										name: 'hobby',
+										label: warrants.labels.hobby(),
+										text: suspect.hobby()
+									},
+									{
+										type: 'input',
+										name: 'hair',
+										label: warrants.labels.hair(),
+										text: suspect.hair()
+									},
+									{
+										type: 'input',
+										name: 'vehicle',
+										label: warrants.labels.vehicle(),
+										text: suspect.vehicle()
+									},
+									{
+										type: 'input',
+										name: 'feature',
+										label: warrants.labels.feature(),
+										text: suspect.feature()
+									},
+									{
+										type: 'input',
+										name: 'other',
+										label: warrants.labels.other(),
+										text: suspect.other()
+									}
+								]}
+							/>
+							<!-- <div>
+								<fiedlset>
+									<label>
+										<p>{warrants.name()}</p>
+										<input type="text" name="name" value={suspect.name()} disabled />
+									</label>
+									<label>
+										<p>{warrants.sex()}</p>
+										<input type="text" name="sex" value={suspect.sex()} disabled />
+									</label>
+									<label>
+										<p>{warrants.occupation()}</p>
+										<input type="text" name="occupation" value={suspect.occupation()} disabled />
+									</label>
+								</fiedlset>
+							</div> -->
+						</TerminalGroup>
 					{/if}
 				</Section>
 			{/if}
@@ -326,6 +435,14 @@
 						</ButtonIcon>
 					{:else if isClueVisible}
 						<ButtonIcon on:click={dismissClue} title={$LL.components.buttons.goBack()}>
+							<Back />
+						</ButtonIcon>
+					{:else if showDossiers}
+						<ButtonIcon on:click={toggleOptions} title={$LL.components.buttons.goBack()}>
+							<Back />
+						</ButtonIcon>
+					{:else if showSuspectDossier}
+						<ButtonIcon on:click={seeDossiers} title={$LL.components.buttons.goBack()}>
 							<Back />
 						</ButtonIcon>
 					{:else if isPostcard}
@@ -376,5 +493,7 @@
 		flex-direction: column;
 		width: 100%;
 		gap: 4px;
+		max-height: 45dvh;
+		overflow-y: auto;
 	}
 </style>

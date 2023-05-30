@@ -124,10 +124,18 @@ const en = {
 		speedyJakeZ
 	},
 	warrants: {
-		unknown: 'Unknown',
-		sex: 'Sex',
+		labels: {
+			unknown: 'Unknown',
+			sex: 'Sex',
+			name: 'Name',
+			occupation: 'Occupation',
+			other: 'Other',
+			hobby: 'Hobby',
+			hair: 'Hair',
+			feature: 'Feature',
+			vehicle: 'Vehicle'
+		},
 		hobby: {
-			field: 'Hobby',
 			hiking: 'Hiking',
 			tennis: 'Tennis',
 			biking: 'Biking',
@@ -137,14 +145,12 @@ const en = {
 			pickleball: 'Pickleball'
 		},
 		hair: {
-			field: 'Hair',
 			black: 'Black',
 			brown: 'Brown',
 			red: 'Red',
 			blond: 'Blond'
 		},
 		feature: {
-			field: 'Feature',
 			glasses: 'Glasses',
 			tattoo: 'Tattoo',
 			birthmark: 'Birthmark',
@@ -152,7 +158,6 @@ const en = {
 			necklace: 'Necklace'
 		},
 		vehicle: {
-			field: 'Vehicle',
 			motorcycle: 'Motorcycle',
 			hoverboard: 'Hoverboard',
 			exotic: 'Exotic car',

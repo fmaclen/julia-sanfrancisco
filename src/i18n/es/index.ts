@@ -125,56 +125,6 @@ const es = {
 		sparkleLily,
 		speedyJakeZ
 	},
-	warrants: {
-		unknown: 'Desconocido',
-		sex: 'Sexo',
-		hobby: {
-			field: 'Pasatiempo',
-			hiking: 'Senderismo',
-			tennis: 'Tenis',
-			biking: 'Ciclismo',
-			guitar: 'Guitarra',
-			golf: 'Golf',
-			gambler: 'Apostador',
-			pickleball: 'Pickleball'
-		},
-		hair: {
-			field: 'Cabello',
-			black: 'Negro',
-			brown: 'Castaño',
-			red: 'Rojo',
-			blond: 'Rubio'
-		},
-		feature: {
-			field: 'Característica',
-			glasses: 'Anteojos',
-			tattoo: 'Tatuaje',
-			birthmark: 'Marca de nacimiento',
-			ring: 'Anillo',
-			necklace: 'Collar'
-		},
-		vehicle: {
-			field: 'Vehículo',
-			motorcycle: 'Motocicleta',
-			hoverboard: 'Monopatín eléctrico',
-			exotic: 'Auto exótico',
-			convertible: 'Descapotable',
-			limousine: 'Limusina',
-			transit: 'Transporte público'
-		},
-		dossiers: 'Expedientes',
-		suspectDossiers: 'Expedientes de sospechosos',
-		getWarrant: 'Obtener orden de arresto (Próximamente™)',
-		compute: 'Calcular',
-		provideDetails:
-			'Por favor, proporciona los detalles del sospechoso para obtener una orden de arresto.',
-		suspectMatch: 'Coincidencia con el sospechoso',
-		haveWarrant: 'Ahora tienes una orden de arresto para detener a {suspect}.',
-		possibleSuspects: 'Sospechosos posibles',
-		noSuspectsFound: 'No se encontraron sospechosos',
-		noPossibleSuspects: 'La información proporcionada elimina a todos los sospechosos posibles.',
-		noWarrantIssued: 'No se ha emitido una orden de arresto.'
-	},
 	atlases: {
 		argentina,
 		australia,

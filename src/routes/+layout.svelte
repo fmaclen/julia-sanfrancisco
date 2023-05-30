@@ -75,7 +75,7 @@
 		--color-neutral-950: #0f0f0f;
 		--color-neutral-1000: #000;
 
-		--color-accent: #49b846;
+		--color-accent: #0bbc79;
 
 		--border-radius-l: 8px;
 		--border-radius-m: 6px;

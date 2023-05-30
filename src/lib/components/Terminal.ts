@@ -1,5 +1,7 @@
 export interface TerminalLine {
 	id?: number;
 	text?: string;
-	type?: 'title';
+	name?: string;
+	label?: string;
+	type?: 'title' | 'input' | 'select';
 }

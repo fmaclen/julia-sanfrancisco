@@ -108,7 +108,7 @@ export interface Round {
 	destinations: Atlas[]; // Would have used a Set<Atlas>, but we can't save that object type to localStorage
 }
 
-enum Suspect {
+export enum Suspect {
 	JULIA_SANFRANCISCO = 'juliaSanfrancisco',
 	CHRIS_LUNCHTIME = 'chrisLunchtime',
 	DANIELLE_SPLASH = 'danielleSplash',
