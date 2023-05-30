@@ -83,7 +83,7 @@ enum Witness {
 }
 
 enum Suspect {
-	JULIA_SANFRANCISCO = 'juliaSanFrancisco',
+	JULIA_SANFRANCISCO = 'juliaSanfrancisco',
 	CHRIS_LUNCHTIME = 'chrisLunchtime',
 	DANIELLE_SPLASH = 'danielleSplash',
 	DUCHESS_ISABELLA = 'duchessIsabella',
@@ -278,6 +278,7 @@ function generateScenes(params: ScenesParams): Scene[] {
 			const ODDS_OF_NO_CLUE = 10;
 			const possibleSuspectClues: (string | undefined)[] = [...suspect.clues];
 
+			// We fill the array with `undefined` values to increase the odds of not having a clue
 			for (let i = 0; i < ODDS_OF_NO_CLUE; i++) {
 				possibleSuspectClues.push(undefined);
 			}
