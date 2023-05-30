@@ -4,7 +4,7 @@ export const danielleSplash = {
 	occupation: 'Hoverboard racing champion',
 	hobby: 'Hiking',
 	hair: 'Chestnut brown',
-	auto: 'Futuro-5000 hoverboard',
+	vehicle: 'Futuro-5000 hoverboard',
 	feature: 'Has a tattoo of a dolphin on her right ankle',
 	other: 'Sushi connoisseur',
 	clues: {

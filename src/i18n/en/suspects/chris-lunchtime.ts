@@ -4,7 +4,7 @@ export const chrisLunchtime = {
 	occupation: 'Retired detective turned game critic',
 	hobby: 'Hiking',
 	hair: 'Jet black',
-	auto: 'Midnight Rider motorcycle',
+	vehicle: 'Midnight Rider motorcycle',
 	feature: 'Wears a leather jacket and a wide-brimmed hat, has green eyes and a goatee',
 	other: 'He likes to host LAN parties',
 	clues: {

@@ -29,6 +29,16 @@ import { thailand } from './atlases/thailand';
 import { turkey } from './atlases/turkey';
 import { unitedKingdom } from './atlases/united-kingdom';
 import { unitedStates } from './atlases/united-states';
+import { chrisLunchtime } from './suspects/chris-lunchtime';
+import { danielleSplash } from './suspects/danielle-splash';
+import { duchessIsabella } from './suspects/duchess-isabella';
+import { hughMass } from './suspects/hugh-mass';
+import { juliaSanfrancisco } from './suspects/julia-sanfrancisco';
+import { markFadenott } from './suspects/mark-fadenott';
+import { renaStone } from './suspects/rena-stone';
+import { simonSimonski } from './suspects/simon-simonski';
+import { sparkleLily } from './suspects/sparkle-lily';
+import { speedyJakeZ } from './suspects/speedy-jake-z';
 
 const en = {
 	splash: {
@@ -103,22 +113,16 @@ const en = {
 		}
 	},
 	suspects: {
-		1: {
-			name: 'Julia Sanfrancisco',
-			hobby: 'Mountain climbing',
-			hair: 'Brown',
-			feature: 'Mole on her left cheek',
-			vehicle: 'Convertible',
-			sex: 'Female'
-		},
-		2: {
-			name: 'Pedro Sanantonio',
-			hobby: 'Sailing',
-			hair: 'Black',
-			feature: 'Scar on his right cheek',
-			vehicle: 'Motorcycle',
-			sex: 'Male'
-		}
+		chrisLunchtime,
+		danielleSplash,
+		duchessIsabella,
+		hughMass,
+		juliaSanfrancisco,
+		markFadenott,
+		renaStone,
+		simonSimonski,
+		sparkleLily,
+		speedyJakeZ
 	},
 	atlases: {
 		argentina,

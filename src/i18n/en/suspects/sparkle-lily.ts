@@ -4,7 +4,7 @@ export const sparkleLily = {
 	occupation: 'Smoothie bar owner',
 	hobby: 'Badminton',
 	hair: 'Blond',
-	auto: 'Cybertruck limousine',
+	vehicle: 'Cybertruck limousine',
 	feature: 'Rumor has it she has a hidden tattoo',
 	other: 'Likes plain burgers, just meat cheese and bun',
 	clues: {

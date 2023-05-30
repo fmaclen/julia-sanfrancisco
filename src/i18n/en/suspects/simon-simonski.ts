@@ -4,7 +4,7 @@ export const simonSimonski = {
 	occupation: 'Heir to the Simonski Aircraft Corporation',
 	hobby: 'Golf',
 	hair: 'Blonde',
-	auto: 'Private jet',
+	vehicle: 'Private jet',
 	feature: 'Mysterious Slavic tattoo on left shoulder',
 	other: 'Insists he is Satoshi Nakamoto',
 	clues: {

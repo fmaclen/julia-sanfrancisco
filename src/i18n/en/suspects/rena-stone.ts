@@ -4,7 +4,7 @@ export const renaStone = {
 	occupation: 'Independent yoga instructor',
 	hobby: 'Rock climbing',
 	hair: 'Brunette',
-	auto: 'Public transportation',
+	vehicle: 'Public transportation',
 	feature: 'Obsessed with collecting vintage jewelry',
 	other: 'Ungrounded power outlets are very annoying to her',
 	clues: {
