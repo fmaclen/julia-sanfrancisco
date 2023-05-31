@@ -2,7 +2,7 @@ export const renaStone = {
 	name: 'Rena Stone',
 	sex: 'Female',
 	occupation: 'Independent yoga instructor',
-	hobby: 'Mountain biking',
+	hobby: 'Mountain cycling',
 	hair: 'Brunette',
 	vehicle: 'Public transportation',
 	feature: 'Obsessed with collecting vintage jewelry, wears glasses',

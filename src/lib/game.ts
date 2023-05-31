@@ -2,6 +2,7 @@ import { browser } from '$app/environment';
 import en from '$i18n/en';
 import type { Translation, TranslationFunctions } from '$i18n/i18n-types';
 import { getArtworkPath, getRandomValue } from '$lib/helpers';
+import { getSuspectWarrantKeys, Suspect, type WarrantKeys } from './suspects';
 import { writable } from 'svelte/store';
 import type { LocalizedString } from 'typesafe-i18n';
 
@@ -106,69 +107,6 @@ export interface Round {
 	atlas: Atlas;
 	scenes: Scene[];
 	destinations: Atlas[]; // Would have used a Set<Atlas>, but we can't save that object type to localStorage
-}
-
-export enum Suspect {
-	JULIA_SANFRANCISCO = 'juliaSanfrancisco',
-	CHRIS_LUNCHTIME = 'chrisLunchtime',
-	DANIELLE_SPLASH = 'danielleSplash',
-	DUCHESS_ISABELLA = 'duchessIsabella',
-	HUGH_MASS = 'hughMass',
-	MARK_FADENOTT = 'markFadenott',
-	RENA_STONE = 'renaStone',
-	SIMON_SIMONSKI = 'simonSimonski',
-	SPARKLE_LILY = 'sparkleLily',
-	SPEEDY_JAKE_Z = 'speedyJakeZ'
-}
-
-enum SuspectSex {
-	MALE = 'male',
-	FEMALE = 'female'
-}
-
-enum SuspectHobby {
-	HIKING = 'hiking',
-	TENNIS = 'tennis',
-	BIKING = 'biking',
-	GUITAR = 'guitar',
-	GOLF = 'golf',
-	GAMBLER = 'gambler',
-	PICKLEBALL = 'pickleball'
-}
-
-enum SuspectHair {
-	BLACK = 'black',
-	BROWN = 'brown',
-	BLOND = 'blond',
-	RED = 'red'
-}
-
-enum SuspectFeature {
-	SCAR = 'scar',
-	GLASSES = 'glasses',
-	TATTOO = 'tattoo',
-	BIRTHMARK = 'birthmark',
-	RING = 'ring',
-	NECKLACE = 'necklace'
-}
-
-enum SuspectVehicle {
-	BIKE = 'bike',
-	MOTORCYCLE = 'motorcycle',
-	HOVERBOARD = 'hoverboard',
-	EXOTIC = 'exoticCar',
-	CONVERTIBLE = 'convertible',
-	LIMOUSINE = 'limousine',
-	TRANSIT = 'publicTransit',
-	JET = 'jet'
-}
-
-interface WarrantKeys {
-	sex: SuspectSex;
-	hobby: SuspectHobby;
-	hair: SuspectHair;
-	feature: SuspectFeature;
-	vehicle: SuspectVehicle;
 }
 
 interface LocalizedSuspect {
@@ -483,97 +421,10 @@ function getLocalizedSuspects(LL: TranslationFunctions): LocalizedSuspect {
 		feature: LL.suspects[translationKey].feature(),
 		vehicle: LL.suspects[translationKey].vehicle(),
 		clues: getTranslationFromArray(LL.suspects[translationKey].clues),
-		warrantKeys: getSuspectWarrantKeyss(suspect)
+		warrantKeys: getSuspectWarrantKeys(suspect)
 	};
 
 	return localizedSuspect;
-}
-
-function getSuspectWarrantKeyss(suspect: Suspect): WarrantKeys {
-	switch (suspect) {
-		case Suspect.CHRIS_LUNCHTIME:
-			return {
-				sex: SuspectSex.MALE,
-				hobby: SuspectHobby.GAMBLER,
-				hair: SuspectHair.BLACK,
-				feature: SuspectFeature.GLASSES,
-				vehicle: SuspectVehicle.MOTORCYCLE
-			};
-		case Suspect.DANIELLE_SPLASH:
-			return {
-				sex: SuspectSex.FEMALE,
-				hobby: SuspectHobby.HIKING,
-				hair: SuspectHair.BROWN,
-				feature: SuspectFeature.BIRTHMARK,
-				vehicle: SuspectVehicle.HOVERBOARD
-			};
-		case Suspect.DUCHESS_ISABELLA:
-			return {
-				sex: SuspectSex.FEMALE,
-				hobby: SuspectHobby.TENNIS,
-				hair: SuspectHair.RED,
-				feature: SuspectFeature.RING,
-				vehicle: SuspectVehicle.EXOTIC
-			};
-		case Suspect.HUGH_MASS:
-			return {
-				sex: SuspectSex.MALE,
-				hobby: SuspectHobby.HIKING,
-				hair: SuspectHair.RED,
-				feature: SuspectFeature.TATTOO,
-				vehicle: SuspectVehicle.CONVERTIBLE
-			};
-		case Suspect.JULIA_SANFRANCISCO:
-			return {
-				sex: SuspectSex.FEMALE,
-				hobby: SuspectHobby.BIKING,
-				hair: SuspectHair.BLOND,
-				feature: SuspectFeature.NECKLACE,
-				vehicle: SuspectVehicle.CONVERTIBLE
-			};
-		case Suspect.MARK_FADENOTT:
-			return {
-				sex: SuspectSex.MALE,
-				hobby: SuspectHobby.GUITAR,
-				hair: SuspectHair.BLOND,
-				feature: SuspectFeature.RING,
-				vehicle: SuspectVehicle.LIMOUSINE
-			};
-		case Suspect.RENA_STONE:
-			return {
-				sex: SuspectSex.FEMALE,
-				hobby: SuspectHobby.BIKING,
-				hair: SuspectHair.BROWN,
-				feature: SuspectFeature.GLASSES,
-				vehicle: SuspectVehicle.TRANSIT
-			};
-		case Suspect.SIMON_SIMONSKI:
-			return {
-				sex: SuspectSex.MALE,
-				hobby: SuspectHobby.GOLF,
-				hair: SuspectHair.BLACK,
-				feature: SuspectFeature.TATTOO,
-				vehicle: SuspectVehicle.JET
-			};
-		case Suspect.SPARKLE_LILY:
-			return {
-				sex: SuspectSex.FEMALE,
-				hair: SuspectHair.BLOND,
-				hobby: SuspectHobby.GAMBLER,
-				feature: SuspectFeature.TATTOO,
-				vehicle: SuspectVehicle.LIMOUSINE
-			};
-		case Suspect.SPEEDY_JAKE_Z:
-			return {
-				sex: SuspectSex.MALE,
-				hobby: SuspectHobby.PICKLEBALL,
-				hair: SuspectHair.BLACK,
-				feature: SuspectFeature.SCAR,
-				vehicle: SuspectVehicle.BIKE
-			};
-		default:
-			throw new Error('No warrant found for this suspect.');
-	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////

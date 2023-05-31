@@ -7,33 +7,33 @@
 	import Header from '$lib/components/Header.svelte';
 	import P from '$lib/components/P.svelte';
 	import Section from '$lib/components/Section.svelte';
-	import type { TerminalLine, TerminalRow } from '$lib/components/Terminal';
-	import Terminal from '$lib/components/Terminal.svelte';
+	import type { TerminalRow } from '$lib/components/Terminal';
 	import Time from '$lib/components/Time.svelte';
-	import {
-		gameStore,
-		type Game,
-		type Atlas,
-		type Round,
-		generateDecoyRound,
-		Suspect
-	} from '$lib/game';
+	import { gameStore, type Game, type Atlas, type Round, generateDecoyRound } from '$lib/game';
 	import { getRandomValue, redirectTo } from '$lib/helpers';
 	import IconFly from '$lib/icons/Fly.svg.svelte';
 	import IconMenu from '$lib/icons/Menu.svg.svelte';
 	import IconWalk from '$lib/icons/Walk.svg.svelte';
 	import { playerStore, type Player, getCasesUntilPromotion, getRank } from '$lib/player';
+	import {
+		Suspect,
+		WarrantSex,
+		WarrantHobby,
+		WarrantHair,
+		WarrantFeature,
+		WarrantVehicle,
+		findSuspect
+	} from '$lib/suspects';
 	import type { Translation } from '../../i18n/i18n-types';
 	import ButtonIcon from '../../lib/components/ButtonIcon.svelte';
 	import Footer from '../../lib/components/Footer.svelte';
 	import Main from '../../lib/components/Main.svelte';
 	import TerminalForm from '../../lib/components/TerminalForm.svelte';
-	import TerminalFormInput from '../../lib/components/TerminalFormInput.svelte';
+	import TerminalFormSelect from '../../lib/components/TerminalFormSelect.svelte';
 	import TerminalGroup from '../../lib/components/TerminalGroup.svelte';
 	import TerminalParagraph from '../../lib/components/TerminalParagraph.svelte';
 	import TerminalRows from '../../lib/components/TerminalRows.svelte';
 	import TerminalTitle from '../../lib/components/TerminalTitle.svelte';
-	import H3 from '../../lib/components/TerminalTitle.svelte';
 	import Back from '../../lib/icons/Back.svg.svelte';
 	import Collapse from '../../lib/icons/Collapse.svg.svelte';
 	import Continue from '../../lib/icons/Continue.svg.svelte';
@@ -52,6 +52,7 @@
 		showOptions = false;
 		showDestinations = false;
 		showDossiers = false;
+		showWarrant = false;
 		showSuspectDossier = undefined;
 
 		gameStore.set(game); // Save the game state to localStorage
@@ -88,6 +89,22 @@
 	function seeDossier(suspect: Suspect): void {
 		showDossiers = false;
 		showSuspectDossier = suspect;
+	}
+
+	function getWarrant(): void {
+		showOptions = false;
+		showWarrant = true;
+	}
+
+	function computeWarrant(): void {
+		possibleSuspects = [];
+		possibleSuspects = findSuspect(
+			warrantSex,
+			warrantHobby,
+			warrantHair,
+			warrantFeature,
+			warrantVehicle
+		);
 	}
 
 	async function getClue(index: number): Promise<void> {
@@ -198,6 +215,7 @@
 	let showOptions = false;
 	let showDescription = true;
 	let showDossiers = false;
+	let showWarrant = false;
 	let showSuspectDossier: keyof Translation['suspects'] | undefined;
 
 	let outcomeWon: TerminalRow[] = [];
@@ -262,6 +280,17 @@
 	$: isClockTicking = isSleeping || isWalking || isFlying;
 	$: isArtworkHidden = isClockTicking && !isSleeping;
 	$: isClueVisible = currentClueIndex !== null && !isWalking && !isSleeping;
+
+	let possibleSuspects: Suspect[] = [];
+	let warrantSex: WarrantSex | undefined;
+	let warrantHobby: WarrantHobby | undefined;
+	let warrantHair: WarrantHair | undefined;
+	let warrantFeature: WarrantFeature | undefined;
+	let warrantVehicle: WarrantVehicle | undefined;
+	$: canComputeWarrant =
+		warrantSex || warrantHobby || warrantHair || warrantFeature || warrantVehicle;
+
+	$: console.log(possibleSuspects);
 </script>
 
 {#if !isLoading}
@@ -299,42 +328,6 @@
 			{#if isGameLost}
 				<TerminalGroup>
 					<TerminalRows lines={outcomeTimedUp} bind:isAnimating />
-				</TerminalGroup>
-			{/if}
-
-			{#if showSuspectDossier}
-				{@const suspect = $LL.suspects[showSuspectDossier]}
-				{@const warrants = $LL.warrants}
-				<TerminalGroup>
-					<TerminalForm>
-						<TerminalTitle>World Police: Dossier</TerminalTitle>
-					</TerminalForm>
-
-					<TerminalForm>
-						<TerminalTitle>{warrants.labels.name()}</TerminalTitle>
-						<TerminalParagraph>{suspect.name()}</TerminalParagraph>
-
-						<TerminalTitle>{warrants.labels.sex()}</TerminalTitle>
-						<TerminalParagraph>{suspect.sex()}</TerminalParagraph>
-
-						<TerminalTitle>{warrants.labels.occupation()}</TerminalTitle>
-						<TerminalParagraph>{suspect.occupation()}</TerminalParagraph>
-
-						<TerminalTitle>{warrants.labels.hobby()}</TerminalTitle>
-						<TerminalParagraph>{suspect.hobby()}</TerminalParagraph>
-
-						<TerminalTitle>{warrants.labels.hair()}</TerminalTitle>
-						<TerminalParagraph>{suspect.hair()}</TerminalParagraph>
-
-						<TerminalTitle>{warrants.labels.vehicle()}</TerminalTitle>
-						<TerminalParagraph>{suspect.vehicle()}</TerminalParagraph>
-
-						<TerminalTitle>{warrants.labels.feature()}</TerminalTitle>
-						<TerminalParagraph>{suspect.feature()}</TerminalParagraph>
-
-						<TerminalTitle>{warrants.labels.other()}</TerminalTitle>
-						<TerminalParagraph>{suspect.other()}</TerminalParagraph>
-					</TerminalForm>
 				</TerminalGroup>
 			{/if}
 
@@ -388,11 +381,9 @@
 				{#if showOptions}
 					<Section>
 						<section class="button-group" in:slide>
-							<Button on:click={abandonGame}>
-								{$LL.game.actions.abandon()}
-							</Button>
+							<Button on:click={abandonGame}>{$LL.game.actions.abandon()}</Button>
 							<Button on:click={seeDossiers}>{$LL.warrants.suspectDossiers()}</Button>
-							<Button disabled={true}>{$LL.warrants.getWarrant()}</Button>
+							<Button on:click={getWarrant}>{$LL.warrants.getWarrant()}</Button>
 						</section>
 					</Section>
 				{/if}
@@ -406,6 +397,115 @@
 								</Button>
 							{/each}
 						</section>
+					</Section>
+				{/if}
+
+				{#if showSuspectDossier}
+					{@const suspect = $LL.suspects[showSuspectDossier]}
+					{@const warrants = $LL.warrants}
+					<TerminalGroup>
+						<TerminalForm>
+							<TerminalTitle>{warrants.labels.name()}</TerminalTitle>
+							<TerminalParagraph>{suspect.name()}</TerminalParagraph>
+
+							<TerminalTitle>{warrants.labels.sex()}</TerminalTitle>
+							<TerminalParagraph>{suspect.sex()}</TerminalParagraph>
+
+							<TerminalTitle>{warrants.labels.occupation()}</TerminalTitle>
+							<TerminalParagraph>{suspect.occupation()}</TerminalParagraph>
+
+							<TerminalTitle>{warrants.labels.hobby()}</TerminalTitle>
+							<TerminalParagraph>{suspect.hobby()}</TerminalParagraph>
+
+							<TerminalTitle>{warrants.labels.hair()}</TerminalTitle>
+							<TerminalParagraph>{suspect.hair()}</TerminalParagraph>
+
+							<TerminalTitle>{warrants.labels.vehicle()}</TerminalTitle>
+							<TerminalParagraph>{suspect.vehicle()}</TerminalParagraph>
+
+							<TerminalTitle>{warrants.labels.feature()}</TerminalTitle>
+							<TerminalParagraph>{suspect.feature()}</TerminalParagraph>
+
+							<TerminalTitle>{warrants.labels.other()}</TerminalTitle>
+							<TerminalParagraph>{suspect.other()}</TerminalParagraph>
+						</TerminalForm>
+					</TerminalGroup>
+				{/if}
+
+				{#if showWarrant}
+					{@const warrants = $LL.warrants}
+					<TerminalGroup>
+						<TerminalRows
+							lines={[
+								{ text: 'World Police: Warrants', isTitle: true },
+								{ text: warrants.provideDetails() }
+							]}
+						/>
+
+						<TerminalForm>
+							<TerminalTitle>{warrants.labels.sex()}</TerminalTitle>
+							<TerminalFormSelect bind:value={warrantSex}>
+								{#each Object.values(WarrantSex) as sex}
+									<option value={sex}>{warrants.sex[sex]()}</option>
+								{/each}
+							</TerminalFormSelect>
+
+							<TerminalTitle>{warrants.labels.hobby()}</TerminalTitle>
+							<TerminalFormSelect bind:value={warrantHobby}>
+								{#each Object.values(WarrantHobby) as hobby}
+									<option value={hobby}>{warrants.hobby[hobby]()}</option>
+								{/each}
+							</TerminalFormSelect>
+
+							<TerminalTitle>{warrants.labels.hair()}</TerminalTitle>
+							<TerminalFormSelect bind:value={warrantHair}>
+								{#each Object.values(WarrantHair) as hair}
+									<option value={hair}>{warrants.hair[hair]()}</option>
+								{/each}
+							</TerminalFormSelect>
+
+							<TerminalTitle>{warrants.labels.feature()}</TerminalTitle>
+							<TerminalFormSelect bind:value={warrantFeature}>
+								{#each Object.values(WarrantFeature) as feature}
+									<option value={feature}>{warrants.feature[feature]()}</option>
+								{/each}
+							</TerminalFormSelect>
+
+							<TerminalTitle>{warrants.labels.vehicle()}</TerminalTitle>
+							<TerminalFormSelect bind:value={warrantVehicle}>
+								{#each Object.values(WarrantVehicle) as vehicle}
+									<option value={vehicle}>{warrants.vehicle[vehicle]()}</option>
+								{/each}
+							</TerminalFormSelect>
+						</TerminalForm>
+
+						{#if possibleSuspects.length > 1}
+							<TerminalRows
+								lines={[
+									{ text: warrants.possibleSuspects(), isTitle: true },
+									...possibleSuspects.map((suspect) => ({
+										text: $LL.suspects[suspect].name()
+									}))
+								]}
+							/>
+						{:else if possibleSuspects.length > 0}
+							<TerminalRows
+								lines={[
+									{ text: warrants.suspectMatch(), isTitle: true },
+									{
+										text: warrants.haveWarrant({
+											suspect: $LL.suspects[possibleSuspects[0]].name()
+										})
+									}
+								]}
+							/>
+						{/if}
+					</TerminalGroup>
+
+					<Section>
+						<Button on:click={computeWarrant} disabled={!canComputeWarrant}>
+							{warrants.compute()}
+						</Button>
 					</Section>
 				{/if}
 			{/if}
@@ -426,6 +526,10 @@
 						</ButtonIcon>
 					{:else if showSuspectDossier}
 						<ButtonIcon on:click={seeDossiers} title={$LL.components.buttons.goBack()}>
+							<Back />
+						</ButtonIcon>
+					{:else if showWarrant}
+						<ButtonIcon on:click={toggleOptions} title={$LL.components.buttons.goBack()}>
 							<Back />
 						</ButtonIcon>
 					{:else if showPostcard}
@@ -476,7 +580,7 @@
 		flex-direction: column;
 		width: 100%;
 		gap: 4px;
-		max-height: 45dvh;
+		max-height: 50dvh;
 		overflow-y: auto;
 	}
 </style>

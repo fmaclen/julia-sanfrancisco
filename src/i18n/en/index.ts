@@ -135,10 +135,14 @@ const en = {
 			feature: 'Feature',
 			vehicle: 'Vehicle'
 		},
+		sex: {
+			male: 'Male',
+			female: 'Female'
+		},
 		hobby: {
 			hiking: 'Hiking',
 			tennis: 'Tennis',
-			biking: 'Biking',
+			cycling: 'Cycling',
 			guitar: 'Guitar',
 			golf: 'Golf',
 			gambler: 'Gambler',
@@ -151,6 +155,7 @@ const en = {
 			blond: 'Blond'
 		},
 		feature: {
+			scar: 'Scar',
 			glasses: 'Glasses',
 			tattoo: 'Tattoo',
 			birthmark: 'Birthmark',
@@ -158,16 +163,18 @@ const en = {
 			necklace: 'Necklace'
 		},
 		vehicle: {
+			bike: 'Bicycle',
 			motorcycle: 'Motorcycle',
 			hoverboard: 'Hoverboard',
 			exotic: 'Exotic car',
 			convertible: 'Convertible',
 			limousine: 'Limousine',
-			transit: 'Public transit'
+			transit: 'Public transit',
+			jet: 'Jet'
 		},
 		dossiers: 'Dossiers',
 		suspectDossiers: 'Suspect dossiers',
-		getWarrant: 'Get warrant (Soon™)',
+		getWarrant: 'Get warrant',
 		compute: 'Compute',
 		provideDetails: 'Please provide suspect details to obtain a warrant.',
 		suspectMatch: 'Suspect match',
