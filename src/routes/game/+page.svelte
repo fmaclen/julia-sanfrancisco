@@ -7,7 +7,7 @@
 	import Header from '$lib/components/Header.svelte';
 	import P from '$lib/components/P.svelte';
 	import Section from '$lib/components/Section.svelte';
-	import type { TerminalLine } from '$lib/components/Terminal';
+	import type { TerminalLine, TerminalRow } from '$lib/components/Terminal';
 	import Terminal from '$lib/components/Terminal.svelte';
 	import Time from '$lib/components/Time.svelte';
 	import {
@@ -27,7 +27,13 @@
 	import ButtonIcon from '../../lib/components/ButtonIcon.svelte';
 	import Footer from '../../lib/components/Footer.svelte';
 	import Main from '../../lib/components/Main.svelte';
+	import TerminalForm from '../../lib/components/TerminalForm.svelte';
+	import TerminalFormInput from '../../lib/components/TerminalFormInput.svelte';
 	import TerminalGroup from '../../lib/components/TerminalGroup.svelte';
+	import TerminalParagraph from '../../lib/components/TerminalParagraph.svelte';
+	import TerminalRows from '../../lib/components/TerminalRows.svelte';
+	import TerminalTitle from '../../lib/components/TerminalTitle.svelte';
+	import H3 from '../../lib/components/TerminalTitle.svelte';
 	import Back from '../../lib/icons/Back.svg.svelte';
 	import Collapse from '../../lib/icons/Collapse.svg.svelte';
 	import Continue from '../../lib/icons/Continue.svg.svelte';
@@ -70,7 +76,7 @@
 	}
 
 	function togglePostcard(): void {
-		isPostcard = !isPostcard;
+		showPostcard = !showPostcard;
 	}
 
 	function seeDossiers(): void {
@@ -136,7 +142,7 @@
 			}
 
 			// Must reset round after transition
-			isPostcard = true;
+			showPostcard = true;
 			resetRound();
 		});
 
@@ -172,19 +178,21 @@
 	let game: Game;
 	let currentRound: Round;
 	let currentClueIndex: number | null = null;
+	let artworkPath: string;
 
 	let clock = new Clock($playerStore?.locale ?? 'en');
 	let currentTimeFormatted: string;
 
-	let isPostcard = false; // REVERT
 	let isLoading = true;
+	let isAnimating: boolean;
 	let isWalking: boolean;
 	let isFlying: boolean;
 	let isSleeping: boolean;
 	let isTimeUp: boolean;
 	let isGameWon: boolean;
-	let artworkPath: string;
+	let isGameLost: boolean;
 
+	let showPostcard = false; // DEBUG: REVERTME BEFORE MERGING
 	let showPlaces = false;
 	let showDestinations = false;
 	let showOptions = false;
@@ -192,8 +200,8 @@
 	let showDossiers = false;
 	let showSuspectDossier: keyof Translation['suspects'] | undefined;
 
-	let outcomeWon: TerminalLine[] = [];
-	let outcomeTimedUp: TerminalLine[] = [];
+	let outcomeWon: TerminalRow[] = [];
+	let outcomeTimedUp: TerminalRow[] = [];
 
 	onMount(() => {
 		// Can't start the game without $playerStore and $gameStore
@@ -228,11 +236,13 @@
 
 	$: if (game) {
 		currentRound = game.roundDecoy ? game.roundDecoy : game.rounds[game.currentRoundIndex];
-		isGameWon = !isTimeUp && game.currentRoundIndex === game.rounds.length - 1;
 		artworkPath = currentRound.atlas.artwork;
 
+		isGameWon = !isClockTicking && !isTimeUp && game.currentRoundIndex === game.rounds.length - 1;
+		isGameLost = !isClockTicking && isTimeUp && game.currentRoundIndex !== game.rounds.length - 1;
+
 		outcomeWon = [
-			{ text: $LL.game.outcome.title(), type: 'title' },
+			{ text: $LL.game.outcome.title(), isTitle: true },
 			{ text: $LL.game.outcome.win.line1() },
 			{ text: $LL.game.outcome.win.line2() },
 			{ text: $LL.game.outcome.win.line3({ city: game.rounds[0].atlas.city, suspect: game.suspect.name }) }, // prettier-ignore
@@ -242,7 +252,7 @@
 		];
 
 		outcomeTimedUp = [
-			{ text: $LL.game.outcome.title(), type: 'title' },
+			{ text: $LL.game.outcome.title(), isTitle: true },
 			{ text: $LL.game.outcome.loose.timedOut.line1() },
 			{ text: $LL.game.outcome.loose.timedOut.line2({ suspect: game.suspect.name }) }, // prettier-ignore
 			{ text: $LL.game.outcome.ready({ rank: playerRank, name: $playerStore!.name }) } // prettier-ignore
@@ -267,38 +277,78 @@
 					: currentRound.atlas.city}
 			</H1>
 
-			{#if isClockTicking || !isPostcard}
+			{#if isClockTicking || !showPostcard}
 				<Time {isClockTicking} currentTime={currentTimeFormatted} />
 			{/if}
 		</Header>
 
 		<Artwork
-			isHighContrast={!isPostcard}
+			isHighContrast={!showPostcard}
 			isHidden={isArtworkHidden}
 			isDisabled={isSleeping}
 			src={artworkPath}
 		/>
 
 		<Footer slot="footer">
-			{#if !isClockTicking && (isGameWon || isTimeUp)}
+			{#if isGameWon}
 				<TerminalGroup>
-					{#if isGameWon}
-						<Terminal lines={outcomeWon} />
-					{:else if isTimeUp}
-						<Terminal lines={outcomeTimedUp} />
-					{/if}
+					<TerminalRows lines={outcomeWon} bind:isAnimating />
 				</TerminalGroup>
 			{/if}
 
-			{#if !isPostcard}
-				<Section>
-					{#if !isTimeUp && !isGameWon && !isSleeping && !isClockTicking && showDescription}
+			{#if isGameLost}
+				<TerminalGroup>
+					<TerminalRows lines={outcomeTimedUp} bind:isAnimating />
+				</TerminalGroup>
+			{/if}
+
+			{#if showSuspectDossier}
+				{@const suspect = $LL.suspects[showSuspectDossier]}
+				{@const warrants = $LL.warrants}
+				<TerminalGroup>
+					<TerminalForm>
+						<TerminalTitle>World Police: Dossier</TerminalTitle>
+					</TerminalForm>
+
+					<TerminalForm>
+						<TerminalTitle>{warrants.labels.name()}</TerminalTitle>
+						<TerminalParagraph>{suspect.name()}</TerminalParagraph>
+
+						<TerminalTitle>{warrants.labels.sex()}</TerminalTitle>
+						<TerminalParagraph>{suspect.sex()}</TerminalParagraph>
+
+						<TerminalTitle>{warrants.labels.occupation()}</TerminalTitle>
+						<TerminalParagraph>{suspect.occupation()}</TerminalParagraph>
+
+						<TerminalTitle>{warrants.labels.hobby()}</TerminalTitle>
+						<TerminalParagraph>{suspect.hobby()}</TerminalParagraph>
+
+						<TerminalTitle>{warrants.labels.hair()}</TerminalTitle>
+						<TerminalParagraph>{suspect.hair()}</TerminalParagraph>
+
+						<TerminalTitle>{warrants.labels.vehicle()}</TerminalTitle>
+						<TerminalParagraph>{suspect.vehicle()}</TerminalParagraph>
+
+						<TerminalTitle>{warrants.labels.feature()}</TerminalTitle>
+						<TerminalParagraph>{suspect.feature()}</TerminalParagraph>
+
+						<TerminalTitle>{warrants.labels.other()}</TerminalTitle>
+						<TerminalParagraph>{suspect.other()}</TerminalParagraph>
+					</TerminalForm>
+				</TerminalGroup>
+			{/if}
+
+			{#if !showPostcard}
+				{#if !isTimeUp && !isGameWon && !isSleeping && !isClockTicking && showDescription}
+					<Section>
 						<section class="paragraph-group" in:fade>
 							<P>{getRandomValue(currentRound.atlas.descriptions)}</P>
 						</section>
-					{/if}
+					</Section>
+				{/if}
 
-					{#if showPlaces}
+				{#if showPlaces}
+					<Section>
 						<section class="button-group" in:slide>
 							{#each currentRound.scenes as scene, index}
 								<Button active={currentClueIndex === index} on:click={() => getClue(index)}>
@@ -306,10 +356,12 @@
 								</Button>
 							{/each}
 						</section>
-					{/if}
+					</Section>
+				{/if}
 
-					{#if isClueVisible && currentClueIndex !== null}
-						{@const suspectClue = currentRound.scenes[currentClueIndex].suspectClue}
+				{#if isClueVisible && currentClueIndex !== null}
+					{@const suspectClue = currentRound.scenes[currentClueIndex].suspectClue}
+					<Section>
 						<section class="paragraph-group">
 							<P><strong>{currentRound.scenes[currentClueIndex].witness}</strong></P>
 							<P>{currentRound.scenes[currentClueIndex].clue}</P>
@@ -318,9 +370,11 @@
 								<P>{suspectClue}</P>
 							{/if}
 						</section>
-					{/if}
+					</Section>
+				{/if}
 
-					{#if showDestinations}
+				{#if showDestinations}
+					<Section>
 						<section class="button-group" in:slide>
 							{#each Array.from(currentRound.destinations) as destination}
 								<Button on:click={() => setRound(destination)}>
@@ -328,9 +382,11 @@
 								</Button>
 							{/each}
 						</section>
-					{/if}
+					</Section>
+				{/if}
 
-					{#if showOptions}
+				{#if showOptions}
+					<Section>
 						<section class="button-group" in:slide>
 							<Button on:click={abandonGame}>
 								{$LL.game.actions.abandon()}
@@ -338,9 +394,11 @@
 							<Button on:click={seeDossiers}>{$LL.warrants.suspectDossiers()}</Button>
 							<Button disabled={true}>{$LL.warrants.getWarrant()}</Button>
 						</section>
-					{/if}
+					</Section>
+				{/if}
 
-					{#if showDossiers}
+				{#if showDossiers}
+					<Section>
 						<section class="button-group" in:slide>
 							{#each Object.values(Suspect) as suspectKey}
 								<Button on:click={() => seeDossier(suspectKey)}>
@@ -348,83 +406,8 @@
 								</Button>
 							{/each}
 						</section>
-					{/if}
-
-					{#if showSuspectDossier}
-						{@const suspect = $LL.suspects[showSuspectDossier]}
-						{@const warrants = $LL.warrants}
-						<TerminalGroup>
-							<Terminal
-								lines={[
-									{ type: 'title', text: 'World Police: Dossier' },
-									{
-										type: 'input',
-										label: warrants.labels.name(),
-										text: suspect.name()
-									},
-									{
-										type: 'input',
-										name: 'sex',
-										label: warrants.labels.sex(),
-										text: suspect.sex()
-									},
-									{
-										type: 'input',
-										name: 'occupation',
-										label: warrants.labels.occupation(),
-										text: suspect.occupation()
-									},
-									{
-										type: 'input',
-										name: 'hobby',
-										label: warrants.labels.hobby(),
-										text: suspect.hobby()
-									},
-									{
-										type: 'input',
-										name: 'hair',
-										label: warrants.labels.hair(),
-										text: suspect.hair()
-									},
-									{
-										type: 'input',
-										name: 'vehicle',
-										label: warrants.labels.vehicle(),
-										text: suspect.vehicle()
-									},
-									{
-										type: 'input',
-										name: 'feature',
-										label: warrants.labels.feature(),
-										text: suspect.feature()
-									},
-									{
-										type: 'input',
-										name: 'other',
-										label: warrants.labels.other(),
-										text: suspect.other()
-									}
-								]}
-							/>
-							<!-- <div>
-								<fiedlset>
-									<label>
-										<p>{warrants.name()}</p>
-										<input type="text" name="name" value={suspect.name()} disabled />
-									</label>
-									<label>
-										<p>{warrants.sex()}</p>
-										<input type="text" name="sex" value={suspect.sex()} disabled />
-									</label>
-									<label>
-										<p>{warrants.occupation()}</p>
-										<input type="text" name="occupation" value={suspect.occupation()} disabled />
-									</label>
-								</fiedlset>
-							</div> -->
-						</TerminalGroup>
-					{/if}
-				</Section>
+					</Section>
+				{/if}
 			{/if}
 
 			{#if !isClockTicking}
@@ -445,7 +428,7 @@
 						<ButtonIcon on:click={seeDossiers} title={$LL.components.buttons.goBack()}>
 							<Back />
 						</ButtonIcon>
-					{:else if isPostcard}
+					{:else if showPostcard}
 						<ButtonIcon on:click={togglePostcard} title="Hide postcard">
 							<Expand />
 						</ButtonIcon>

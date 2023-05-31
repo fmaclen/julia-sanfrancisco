@@ -11,13 +11,14 @@
 	import { playerStore } from '$lib/player';
 	import ButtonIcon from '../../lib/components/ButtonIcon.svelte';
 	import Footer from '../../lib/components/Footer.svelte';
-	import H3 from '../../lib/components/H3.svelte';
+	import TerminalForm from '../../lib/components/TerminalForm.svelte';
+	import TerminalFormInput from '../../lib/components/TerminalFormInput.svelte';
 	import TerminalGroup from '../../lib/components/TerminalGroup.svelte';
 	import TerminalRows from '../../lib/components/TerminalRows.svelte';
+	import TerminalTitle from '../../lib/components/TerminalTitle.svelte';
 	import { getRandomValue, redirectTo } from '../../lib/helpers';
 	import Continue from '../../lib/icons/Continue.svg.svelte';
 	import { onMount } from 'svelte';
-	import { slide } from 'svelte/transition';
 
 	// Headquarters always starts a new game
 	gameStore.set(null);
@@ -127,38 +128,16 @@
 				{#if !isKnownPlayer}
 					<TerminalRows lines={linesUnknownPlayer} bind:isAnimating />
 
-					{#if !isAnimating}
-						<section class="terminal-form" in:slide={{ duration: 500, delay: 500 }}>
-							<!-- <label class="terminal-form__label"> -->
-							<H3>
-								{linesUnknownPlayerInput[0].text}
-							</H3>
-							<input
-								class="terminal-form__input"
-								type="text"
-								name="name"
-								placeholder={getRandomValue(['Olivia Starling', 'Rupert Westington'])}
-								disabled={step !== Step.UNKNOWN_PLAYER}
-								bind:value={playerName}
-							/>
-							<!-- <H3>Hair</H3>
-						<select>
-							<option value="1">Blond</option>
-							<option value="2">Red</option>
-						</select>
-						<H3>Vehicle</H3>
-						<select>
-							<option value="1">Convertible</option>
-							<option value="2">Red</option>
-						</select>
-						<H3>Feature</H3>
-						<select>
-							<option value="1">Tattoo</option>
-							<option value="2">Red</option>
-						</select> -->
-							<!-- </label> -->
-						</section>
-					{/if}
+					<TerminalForm>
+						<TerminalTitle>
+							{linesUnknownPlayerInput[0].text}
+						</TerminalTitle>
+						<TerminalFormInput
+							placeholder={getRandomValue(['Olivia Starling', 'Rupert Westington'])}
+							disabled={step !== Step.UNKNOWN_PLAYER}
+							bind:value={playerName}
+						/>
+					</TerminalForm>
 				{/if}
 
 				{#if isKnownPlayer}
@@ -188,50 +167,6 @@
 </Main>
 
 <style lang="scss">
-	/* fieldset.terminal-form__fieldset {
-		border: unset;
-		margin: unset;
-		padding-block: unset;
-		padding-inline: var(--terminal-inline);
-	} */
-
-	section.terminal-form {
-		display: grid;
-		align-items: center;
-		grid-template-columns: repeat(2, auto);
-		gap: var(--terminal-inline);
-		padding-block: var(--terminal-block);
-		padding-inline: var(--terminal-inline);
-
-		&:last-child {
-			padding-bottom: unset;
-		}
-	}
-
-	select,
-	input.terminal-form__input {
-		display: block;
-		box-sizing: border-box;
-		background: transparent;
-		border: unset;
-		outline: none;
-		padding: unset;
-		width: 100%;
-		font-size: 16px;
-		font-family: var(--font-family-mono);
-		color: var(--color-accent);
-
-		@media (max-width: 512px) {
-			font-size: 14px;
-		}
-
-		&::placeholder {
-			color: var(--color-neutral-500);
-		}
-	}
-
-	//////////////////////////////////////////////////////////////////////////
-
 	nav.headquarters-nav {
 		display: flex;
 		align-items: flex-end;
