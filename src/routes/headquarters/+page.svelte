@@ -4,18 +4,20 @@
 	import H1 from '$lib/components/H1.svelte';
 	import Header from '$lib/components/Header.svelte';
 	import Main from '$lib/components/Main.svelte';
-	import type { TerminalLine } from '$lib/components/Terminal';
-	import Terminal from '$lib/components/Terminal.svelte';
+	import type { TerminalRow } from '$lib/components/Terminal';
 	import Time from '$lib/components/Time.svelte';
 	import { gameStore, generateGame } from '$lib/game';
 	import { getRank } from '$lib/player';
 	import { playerStore } from '$lib/player';
 	import ButtonIcon from '../../lib/components/ButtonIcon.svelte';
 	import Footer from '../../lib/components/Footer.svelte';
+	import H3 from '../../lib/components/H3.svelte';
 	import TerminalGroup from '../../lib/components/TerminalGroup.svelte';
-	import { redirectTo } from '../../lib/helpers';
+	import TerminalRows from '../../lib/components/TerminalRows.svelte';
+	import { getRandomValue, redirectTo } from '../../lib/helpers';
 	import Continue from '../../lib/icons/Continue.svg.svelte';
 	import { onMount } from 'svelte';
+	import { slide } from 'svelte/transition';
 
 	// Headquarters always starts a new game
 	gameStore.set(null);
@@ -28,6 +30,7 @@
 	}
 
 	let isLoading = true;
+	let isAnimating = false;
 	let step: Step;
 	let playerName: string;
 	let playerRank: string;
@@ -56,12 +59,11 @@
 		isLoading = false;
 	});
 
-	let terminalLines: TerminalLine[][] = [];
-	let linesUnknownPlayer: TerminalLine[] = [];
-	let linesUnknownPlayerInput: TerminalLine[] = [];
-	let linesKnownPlayer: TerminalLine[] = [];
-	let linesNewsFlash: TerminalLine[] = [];
-	let linesAssignment: TerminalLine[] = [];
+	let linesUnknownPlayer: TerminalRow[] = [];
+	let linesUnknownPlayerInput: TerminalRow[] = [];
+	let linesKnownPlayer: TerminalRow[] = [];
+	let linesNewsFlash: TerminalRow[] = [];
+	let linesAssignment: TerminalRow[] = [];
 
 	if ($playerStore && $gameStore) {
 		step = Step.KNOWN_PLAYER;
@@ -70,11 +72,11 @@
 	$: {
 		if (!$playerStore) {
 			linesUnknownPlayer = [
-				{ id: Step.UNKNOWN_PLAYER, text: $LL.headquarters.id.acmeSystems(), type: 'title' },
+				{ id: Step.UNKNOWN_PLAYER, text: $LL.headquarters.id.acmeSystems(), isTitle: true },
 				{ text: $LL.headquarters.id.pending() }
 			];
 
-			linesUnknownPlayerInput = [{ text: $LL.headquarters.id.yourName(), type: 'title' }];
+			linesUnknownPlayerInput = [{ text: $LL.headquarters.id.yourName(), isTitle: true }];
 
 			step = Step.UNKNOWN_PLAYER;
 		} else if (!$gameStore) {
@@ -83,14 +85,14 @@
 
 			step = Step.KNOWN_PLAYER;
 			linesKnownPlayer = [
-				{ id: step, text: $LL.headquarters.id.acmeSystems(), type: 'title' },
+				{ id: step, text: $LL.headquarters.id.acmeSystems(), isTitle: true },
 				{ text: $LL.headquarters.id.indentified({ name: $playerStore.name }) },
 				{ text: $LL.headquarters.id.rank({ rank: playerRank.toLowerCase() }) }
 			];
 		} else if (step !== Step.ASSIGNMENT) {
 			step = Step.NEWS_FLASH;
 			linesNewsFlash = [
-				{ id: step, text: $LL.headquarters.newsflash.title(), type: 'title' },
+				{ id: step, text: $LL.headquarters.newsflash.title(), isTitle: true },
 				{ text: $LL.headquarters.newsflash.content.line1({ city: $gameStore.rounds[0].atlas.city }) }, // prettier-ignore
 				{ text: $LL.headquarters.newsflash.content.line2({ treasure: $gameStore.stolenTreasure }) }, // prettier-ignore
 				{ text: $LL.headquarters.newsflash.content.line3({ sex: $gameStore.suspect.warrantKeys.sex }) } // prettier-ignore
@@ -98,23 +100,17 @@
 		} else {
 			step = Step.ASSIGNMENT;
 			linesAssignment = [
-				{ id: step, text: $LL.headquarters.assignment.title(), type: 'title' },
+				{ id: step, text: $LL.headquarters.assignment.title(), isTitle: true },
 				{ text: $LL.headquarters.assignment.content.line1({ city: $gameStore.rounds[0].atlas.city, sex: $gameStore.suspect.warrantKeys.sex }) }, // prettier-ignore
 				{ text: $LL.headquarters.assignment.content.line2() },
 				{ text: $LL.headquarters.assignment.content.line3({ rank: playerRank, name: $playerStore.name }) } // prettier-ignore
 			];
 		}
-
-		terminalLines = [
-			linesUnknownPlayer,
-			linesUnknownPlayerInput,
-			linesKnownPlayer,
-			linesNewsFlash,
-			linesAssignment
-		].filter(
-			(lines) => lines.length > 0
-		); // prettier-ignore
 	}
+
+	$: isKnownPlayer = [Step.KNOWN_PLAYER, Step.NEWS_FLASH, Step.ASSIGNMENT].includes(step);
+	$: showNewsFlash = [Step.NEWS_FLASH, Step.ASSIGNMENT].includes(step);
+	$: showAssignment = step === Step.ASSIGNMENT;
 </script>
 
 <Main>
@@ -128,27 +124,63 @@
 	<Footer slot="footer">
 		{#if !isLoading}
 			<TerminalGroup>
-				{#each terminalLines as lines, i (lines[0].id)}
-					<Terminal {lines} autoScroll={i === terminalLines.length - 1}>
-						{#if lines === linesUnknownPlayerInput}
-							<li class="terminal__line">
-								<input
-									class="input"
-									type="text"
-									name="name"
-									placeholder="Dexter Colt"
-									disabled={step !== Step.UNKNOWN_PLAYER}
-									bind:value={playerName}
-								/>
-							</li>
-						{/if}
-					</Terminal>
-				{/each}
+				{#if !isKnownPlayer}
+					<TerminalRows lines={linesUnknownPlayer} bind:isAnimating />
+
+					{#if !isAnimating}
+						<section class="terminal-form" in:slide={{ duration: 500, delay: 500 }}>
+							<!-- <label class="terminal-form__label"> -->
+							<H3>
+								{linesUnknownPlayerInput[0].text}
+							</H3>
+							<input
+								class="terminal-form__input"
+								type="text"
+								name="name"
+								placeholder={getRandomValue(['Olivia Starling', 'Rupert Westington'])}
+								disabled={step !== Step.UNKNOWN_PLAYER}
+								bind:value={playerName}
+							/>
+							<!-- <H3>Hair</H3>
+						<select>
+							<option value="1">Blond</option>
+							<option value="2">Red</option>
+						</select>
+						<H3>Vehicle</H3>
+						<select>
+							<option value="1">Convertible</option>
+							<option value="2">Red</option>
+						</select>
+						<H3>Feature</H3>
+						<select>
+							<option value="1">Tattoo</option>
+							<option value="2">Red</option>
+						</select> -->
+							<!-- </label> -->
+						</section>
+					{/if}
+				{/if}
+
+				{#if isKnownPlayer}
+					<TerminalRows lines={linesKnownPlayer} bind:isAnimating />
+				{/if}
+
+				{#if showNewsFlash}
+					<TerminalRows lines={linesNewsFlash} bind:isAnimating />
+				{/if}
+
+				{#if showAssignment}
+					<TerminalRows lines={linesAssignment} bind:isAnimating />
+				{/if}
 			</TerminalGroup>
 		{/if}
 
 		<nav class="headquarters-nav">
-			<ButtonIcon on:click={nextStep} title={$LL.components.buttons.continue()} disabled={false}>
+			<ButtonIcon
+				on:click={nextStep}
+				title={$LL.components.buttons.continue()}
+				disabled={isLoading || isAnimating}
+			>
 				<Continue />
 			</ButtonIcon>
 		</nav>
@@ -156,27 +188,55 @@
 </Main>
 
 <style lang="scss">
+	/* fieldset.terminal-form__fieldset {
+		border: unset;
+		margin: unset;
+		padding-block: unset;
+		padding-inline: var(--terminal-inline);
+	} */
+
+	section.terminal-form {
+		display: grid;
+		align-items: center;
+		grid-template-columns: repeat(2, auto);
+		gap: var(--terminal-inline);
+		padding-block: var(--terminal-block);
+		padding-inline: var(--terminal-inline);
+
+		&:last-child {
+			padding-bottom: unset;
+		}
+	}
+
+	select,
+	input.terminal-form__input {
+		display: block;
+		box-sizing: border-box;
+		background: transparent;
+		border: unset;
+		outline: none;
+		padding: unset;
+		width: 100%;
+		font-size: 16px;
+		font-family: var(--font-family-mono);
+		color: var(--color-accent);
+
+		@media (max-width: 512px) {
+			font-size: 14px;
+		}
+
+		&::placeholder {
+			color: var(--color-neutral-500);
+		}
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+
 	nav.headquarters-nav {
 		display: flex;
 		align-items: flex-end;
 		gap: var(--layout-inline);
 		margin-inline: var(--layout-inline);
 		margin-left: auto;
-	}
-
-	input.input {
-		width: 100%;
-		box-sizing: border-box;
-		background: transparent;
-		border: unset;
-		outline: none;
-		padding: unset;
-		font-size: 16px;
-		font-family: var(--font-family-mono);
-		color: var(--color-accent);
-
-		&::placeholder {
-			color: var(--color-neutral-500);
-		}
 	}
 </style>
