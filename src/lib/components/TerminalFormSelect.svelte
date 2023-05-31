@@ -37,6 +37,7 @@
 		font-size: 16px;
 		font-family: var(--font-family-mono);
 		color: var(--color-accent);
+		cursor: pointer;
 
 		@media (max-width: 512px) {
 			font-size: 14px;
