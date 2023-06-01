@@ -126,6 +126,67 @@ const es = {
 		sparkleLily,
 		speedyJakeZ
 	},
+	warrants: {
+		labels: {
+			unknown: 'Desconocido',
+			sex: 'Sexo',
+			name: 'Nombre',
+			occupation: 'Ocupación',
+			other: 'Otro',
+			hobby: 'Afición',
+			hair: 'Cabello',
+			feature: 'Característica',
+			vehicle: 'Vehículo'
+		},
+		sex: {
+			male: 'Masculino',
+			female: 'Femenino'
+		},
+		hobby: {
+			hiking: 'Senderismo',
+			tennis: 'Tenis',
+			cycling: 'Ciclismo',
+			guitar: 'Guitarra',
+			golf: 'Golf',
+			gambler: 'Apostador',
+			pickleball: 'Pickleball'
+		},
+		hair: {
+			black: 'Negro',
+			brown: 'Marrón',
+			red: 'Rojo',
+			blond: 'Rubio'
+		},
+		feature: {
+			scar: 'Cicatriz',
+			glasses: 'Gafas',
+			tattoo: 'Tatuaje',
+			birthmark: 'Marca de nacimiento',
+			ring: 'Anillo',
+			necklace: 'Collar'
+		},
+		vehicle: {
+			bike: 'Bicicleta',
+			motorcycle: 'Motocicleta',
+			hoverboard: 'Hoverboard',
+			exotic: 'Coche exótico',
+			convertible: 'Descapotable',
+			limousine: 'Limusina',
+			transit: 'Transporte público',
+			jet: 'Jet'
+		},
+		dossiers: 'Expedientes',
+		suspectDossiers: 'Expedientes de sospechosos',
+		getWarrant: 'Obtener orden de detención',
+		compute: 'Calcular',
+		provideDetails: 'Por favor, proporciona detalles del sospechoso para obtener una orden.',
+		suspectMatch: 'Coincidencia con el sospechoso',
+		haveWarrant: 'Ahora tienes una orden para arrestar a {suspect}.',
+		possibleSuspects: 'Posibles sospechosos',
+		noSuspectsFound: 'No se encontraron sospechosos',
+		noPossibleSuspects: 'La información proporcionada elimina a todos los posibles sospechosos.',
+		noWarrantIssued: 'No se ha emitido ninguna orden.'
+	},
 	atlases: {
 		argentina,
 		australia,
