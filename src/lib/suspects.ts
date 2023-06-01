@@ -148,7 +148,7 @@ export function getSuspectWarrantKeys(suspect: Suspect): WarrantKeys {
 	}
 }
 
-export function findSuspect(
+export function findSuspects(
 	sex?: WarrantSex,
 	hobby?: WarrantHobby,
 	hair?: WarrantHair,

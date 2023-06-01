@@ -36,7 +36,7 @@
 		WarrantHair,
 		WarrantFeature,
 		WarrantVehicle,
-		findSuspect
+		findSuspects
 	} from '$lib/suspects';
 	import { onDestroy, onMount } from 'svelte';
 	import { fade, slide } from 'svelte/transition';
@@ -152,7 +152,7 @@
 
 	function computeWarrant(): void {
 		warrants = [];
-		warrants = findSuspect(warrantSex, warrantHobby, warrantHair, warrantFeature, warrantVehicle);
+		warrants = findSuspects(warrantSex, warrantHobby, warrantHair, warrantFeature, warrantVehicle);
 	}
 
 	async function getClue(index: number): Promise<void> {
