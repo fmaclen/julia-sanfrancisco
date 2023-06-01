@@ -11,18 +11,9 @@
 		margin-block: unset;
 		font-family: var(--font-family-mono);
 		color: var(--color-neutral-50);
-		/* padding-inline: var(--spacing-l); */
 
 		&::before {
 			content: '> ';
 		}
 	}
-
-	/* :global(h3.terminal-rows__h3:first-child) {
-		margin-top: 0;
-	}
-
-	:global(h3.terminal-rows__h3:last-child) {
-		margin-bottom: 0;
-	} */
 </style>

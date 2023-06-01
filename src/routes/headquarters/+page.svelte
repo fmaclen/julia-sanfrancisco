@@ -1,23 +1,23 @@
 <script lang="ts">
 	import LL, { locale } from '$i18n/i18n-svelte';
 	import Artwork from '$lib/components/Artwork.svelte';
+	import ButtonIcon from '$lib/components/ButtonIcon.svelte';
+	import Footer from '$lib/components/Footer.svelte';
 	import H1 from '$lib/components/H1.svelte';
 	import Header from '$lib/components/Header.svelte';
 	import Main from '$lib/components/Main.svelte';
 	import type { TerminalRow } from '$lib/components/Terminal';
+	import TerminalForm from '$lib/components/TerminalForm.svelte';
+	import TerminalFormInput from '$lib/components/TerminalFormInput.svelte';
+	import TerminalGroup from '$lib/components/TerminalGroup.svelte';
+	import TerminalRows from '$lib/components/TerminalRows.svelte';
+	import TerminalTitle from '$lib/components/TerminalTitle.svelte';
 	import Time from '$lib/components/Time.svelte';
 	import { gameStore, generateGame } from '$lib/game';
+	import { getRandomValue, redirectTo } from '$lib/helpers';
+	import Continue from '$lib/icons/Continue.svg.svelte';
 	import { getRank } from '$lib/player';
 	import { playerStore } from '$lib/player';
-	import ButtonIcon from '../../lib/components/ButtonIcon.svelte';
-	import Footer from '../../lib/components/Footer.svelte';
-	import TerminalForm from '../../lib/components/TerminalForm.svelte';
-	import TerminalFormInput from '../../lib/components/TerminalFormInput.svelte';
-	import TerminalGroup from '../../lib/components/TerminalGroup.svelte';
-	import TerminalRows from '../../lib/components/TerminalRows.svelte';
-	import TerminalTitle from '../../lib/components/TerminalTitle.svelte';
-	import { getRandomValue, redirectTo } from '../../lib/helpers';
-	import Continue from '../../lib/icons/Continue.svg.svelte';
 	import { onMount } from 'svelte';
 
 	// Headquarters always starts a new game

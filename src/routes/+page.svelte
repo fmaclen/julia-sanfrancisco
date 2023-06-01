@@ -4,13 +4,13 @@
 	import Artwork from '$lib/components/Artwork.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import ButtonLink from '$lib/components/ButtonLink.svelte';
+	import Footer from '$lib/components/Footer.svelte';
 	import H1 from '$lib/components/H1.svelte';
 	import Header from '$lib/components/Header.svelte';
+	import Main from '$lib/components/Main.svelte';
+	import P from '$lib/components/P.svelte';
 	import Section from '$lib/components/Section.svelte';
 	import { applyLocale, playerStore } from '$lib/player';
-	import Footer from '../lib/components/Footer.svelte';
-	import Main from '../lib/components/Main.svelte';
-	import P from '../lib/components/P.svelte';
 	import { onMount } from 'svelte';
 
 	let isLoading = true;
