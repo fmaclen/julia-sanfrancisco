@@ -288,8 +288,8 @@
 		suspectGotAway = !isClockTicking && isTimeUp && !isLastRound;
 
 		outcomeSuspectCaughtWithWarrant = [
-			[{ text: $LL.game.outcome.title(), isTitle: true }],
 			[
+				{ text: $LL.game.outcome.title(), isTitle: true },
 				{ text: $LL.game.outcome.caughtWithWarrant[0]({ city: game.rounds[0].atlas.city, suspect: game.suspect.name }) }, // prettier-ignore
 				{ text: $LL.game.outcome.caughtWithWarrant[1]({ suspect: game.suspect.name, stolenTreasure: game.stolenTreasure, city: game.rounds[0].atlas.city }) } // prettier-ignore
 			],
@@ -302,8 +302,8 @@
 		];
 
 		outcomeSuspectCaughtWithWrongWarrant = [
-			[{ text: $LL.game.outcome.title(), isTitle: true }],
 			[
+				{ text: $LL.game.outcome.title(), isTitle: true },
 				{ text: $LL.game.outcome.caughtWithWrongWarrant[0]({ suspect: game.suspect.name }) }, // prettier-ignore
 				{ text: $LL.game.outcome.caughtWithWrongWarrant[1]({ suspect: $LL.suspects[possibleSuspects[0]].name() }) } // prettier-ignore
 			],
@@ -315,8 +315,8 @@
 		];
 
 		outcomeSuspectCaughtWithoutWarrant = [
-			[{ text: $LL.game.outcome.title(), isTitle: true }],
 			[
+				{ text: $LL.game.outcome.title(), isTitle: true },
 				{ text: $LL.game.outcome.caughtWithoutWarrant[0]({ suspect: game.suspect.name }) }, // prettier-ignore
 				{ text: $LL.game.outcome.caughtWithoutWarrant[1]() }
 			],
@@ -325,8 +325,8 @@
 		];
 
 		outcomeSuspectGotAway = [
-			[{ text: $LL.game.outcome.title(), isTitle: true }],
 			[
+				{ text: $LL.game.outcome.title(), isTitle: true },
 				{ text: $LL.game.outcome.gotAway[0]() },
 				{ text: $LL.game.outcome.gotAway[1]({ suspect: game.suspect.name }) }
 			],
