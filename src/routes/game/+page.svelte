@@ -38,7 +38,7 @@
 		WarrantVehicle,
 		findSuspect
 	} from '$lib/suspects';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { fade, slide } from 'svelte/transition';
 	import type { LocalizedString } from 'typesafe-i18n';
 
@@ -49,6 +49,7 @@
 	let currentClueIndex: number | null = null;
 	let artworkPath: string;
 
+	let gameLoop: NodeJS.Timer;
 	let clock = new Clock($playerStore?.locale ?? 'en');
 	let currentTimeFormatted: string;
 
@@ -264,7 +265,7 @@
 		clock.start();
 
 		// Game loop
-		setInterval(() => {
+		gameLoop = setInterval(() => {
 			currentTimeFormatted = clock.getFormattedTime();
 			isWalking = clock.isWalking;
 			isFlying = clock.isFlying;
@@ -273,6 +274,10 @@
 		}, clock.tickRate);
 
 		isLoading = false;
+	});
+
+	onDestroy(() => {
+		clearInterval(gameLoop);
 	});
 
 	$: if (game) {
