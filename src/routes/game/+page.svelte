@@ -1,16 +1,30 @@
 <script lang="ts">
 	import LL from '$i18n/i18n-svelte';
+	import type { Translation } from '$i18n/i18n-types';
 	import Clock, { DELAY_IN_MS } from '$lib/clock';
 	import Artwork from '$lib/components/Artwork.svelte';
 	import Button from '$lib/components/Button.svelte';
+	import ButtonIcon from '$lib/components/ButtonIcon.svelte';
+	import Footer from '$lib/components/Footer.svelte';
 	import H1 from '$lib/components/H1.svelte';
 	import Header from '$lib/components/Header.svelte';
+	import Main from '$lib/components/Main.svelte';
 	import P from '$lib/components/P.svelte';
 	import Section from '$lib/components/Section.svelte';
 	import type { TerminalRow } from '$lib/components/Terminal';
+	import TerminalForm from '$lib/components/TerminalForm.svelte';
+	import TerminalFormSelect from '$lib/components/TerminalFormSelect.svelte';
+	import TerminalGroup from '$lib/components/TerminalGroup.svelte';
+	import TerminalParagraph from '$lib/components/TerminalParagraph.svelte';
+	import TerminalRows from '$lib/components/TerminalRows.svelte';
+	import TerminalTitle from '$lib/components/TerminalTitle.svelte';
 	import Time from '$lib/components/Time.svelte';
 	import { gameStore, type Game, type Atlas, type Round, generateDecoyRound } from '$lib/game';
 	import { getRandomValue, redirectTo } from '$lib/helpers';
+	import Back from '$lib/icons/Back.svg.svelte';
+	import Collapse from '$lib/icons/Collapse.svg.svelte';
+	import Continue from '$lib/icons/Continue.svg.svelte';
+	import Expand from '$lib/icons/Expand.svg.svelte';
 	import IconFly from '$lib/icons/Fly.svg.svelte';
 	import IconMenu from '$lib/icons/Menu.svg.svelte';
 	import IconWalk from '$lib/icons/Walk.svg.svelte';
@@ -24,20 +38,6 @@
 		WarrantVehicle,
 		findSuspect
 	} from '$lib/suspects';
-	import type { Translation } from '../../i18n/i18n-types';
-	import ButtonIcon from '../../lib/components/ButtonIcon.svelte';
-	import Footer from '../../lib/components/Footer.svelte';
-	import Main from '../../lib/components/Main.svelte';
-	import TerminalForm from '../../lib/components/TerminalForm.svelte';
-	import TerminalFormSelect from '../../lib/components/TerminalFormSelect.svelte';
-	import TerminalGroup from '../../lib/components/TerminalGroup.svelte';
-	import TerminalParagraph from '../../lib/components/TerminalParagraph.svelte';
-	import TerminalRows from '../../lib/components/TerminalRows.svelte';
-	import TerminalTitle from '../../lib/components/TerminalTitle.svelte';
-	import Back from '../../lib/icons/Back.svg.svelte';
-	import Collapse from '../../lib/icons/Collapse.svg.svelte';
-	import Continue from '../../lib/icons/Continue.svg.svelte';
-	import Expand from '../../lib/icons/Expand.svg.svelte';
 	import { onMount } from 'svelte';
 	import { fade, slide } from 'svelte/transition';
 	import type { LocalizedString } from 'typesafe-i18n';

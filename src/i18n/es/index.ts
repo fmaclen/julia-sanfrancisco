@@ -78,8 +78,30 @@ const es = {
 	},
 	game: {
 		outcome: {
-			title: 'Policía Mundial: Recibiendo mensaje',
-			ready: '¿Listo para tu próximo caso, {rank} {name}?'
+			title: 'Policía Mundial: Mensaje entrante',
+			ready: 'Listo para tu próximo caso, {rank} {name}?',
+			caughtWithWarrant: {
+				0: 'Gracias a tu ayuda, la policía de {city} ha aprehendido a {suspect}.',
+				1: '{suspect} tenía el botín, {stolenTreasure}, que será devuelto a los agradecidos residentes de {city}.',
+				2: 'Aquí en la Policía Mundial te agradecemos por tu buen trabajo en este caso.',
+				3: 'Tu éxito será anotado en tu expediente.',
+				4: '{cases} caso{{cases:s}} más hasta tu próxima promoción.'
+			},
+			caughtWithWrongWarrant: {
+				0: 'Has rastreado correctamente a {suspect}.',
+				1: 'Desafortunadamente, tienes una orden para {suspect}.',
+				2: '¡Cuidado, todos podríamos ser demandados por arresto falso!',
+				3: 'Esperamos que lo hagas mejor en tu próximo caso.'
+			},
+			caughtWithoutWarrant: {
+				0: 'Has alcanzado a {suspect}.',
+				1: 'Sin embargo, sin una orden no podemos hacer un arresto legal.',
+				2: '¡Parece que la pandilla de Julia se ha salido con la suya otra vez!'
+			},
+			gotAway: {
+				0: 'Malas noticias...',
+				1: '¡Acabamos de recibir la noticia de que {suspect} se te escapó porque tu investigación tardó demasiado!'
+			}
 		},
 		actions: {
 			walk: 'Caminar a',
