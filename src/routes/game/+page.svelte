@@ -78,7 +78,7 @@
 	let showWarrant = false;
 	let showSuspectDossier: keyof Translation['suspects'] | undefined;
 
-	let possibleSuspects: Suspect[] = [];
+	let warrants: Suspect[] = [];
 	let warrantSex: WarrantSex | undefined;
 	let warrantHobby: WarrantHobby | undefined;
 	let warrantHair: WarrantHair | undefined;
@@ -151,14 +151,8 @@
 	}
 
 	function computeWarrant(): void {
-		possibleSuspects = [];
-		possibleSuspects = findSuspect(
-			warrantSex,
-			warrantHobby,
-			warrantHair,
-			warrantFeature,
-			warrantVehicle
-		);
+		warrants = [];
+		warrants = findSuspect(warrantSex, warrantHobby, warrantHair, warrantFeature, warrantVehicle);
 	}
 
 	async function getClue(index: number): Promise<void> {
@@ -285,11 +279,11 @@
 		if (currentClueIndex === null) artworkPath = currentRound.atlas.artwork;
 
 		isLastRound = game.currentRoundIndex === game.rounds.length - 1;
-		hasWarrant = possibleSuspects.length === 1;
+		hasWarrant = warrants.length === 1;
 		suspectCaught = !isClockTicking && !isTimeUp && isLastRound && currentClueIndex === game.suspect.lastRoundHidingPlace; // prettier-ignore
-		suspectCaughtWithWarrant = suspectCaught && hasWarrant && possibleSuspects[0] === game.suspect.key; // prettier-ignore
-		suspectCaughtWithWrongWarrant = suspectCaught && hasWarrant && possibleSuspects[0] !== game.suspect.key; // prettier-ignore
-		suspectCaughtWithoutWarrant = suspectCaught && !hasWarrant && possibleSuspects[0] !== game.suspect.key; // prettier-ignore
+		suspectCaughtWithWarrant = suspectCaught && hasWarrant && warrants[0] === game.suspect.key; // prettier-ignore
+		suspectCaughtWithWrongWarrant = suspectCaught && hasWarrant && warrants[0] !== game.suspect.key; // prettier-ignore
+		suspectCaughtWithoutWarrant = suspectCaught && !hasWarrant && warrants[0] !== game.suspect.key; // prettier-ignore
 		suspectGotAway = !isClockTicking && isTimeUp && !isLastRound;
 
 		outcomeSuspectCaughtWithWarrant = [
@@ -310,7 +304,7 @@
 			[
 				{ text: $LL.game.outcome.title(), isTitle: true },
 				{ text: $LL.game.outcome.caughtWithWrongWarrant[0]({ suspect: game.suspect.name }) }, // prettier-ignore
-				{ text: $LL.game.outcome.caughtWithWrongWarrant[1]({ suspect: $LL.suspects[possibleSuspects[0]].name() }) } // prettier-ignore
+				{ text: $LL.game.outcome.caughtWithWrongWarrant[1]({ suspect: $LL.suspects[warrants[0]].name() }) } // prettier-ignore
 			],
 			[
 				{ text: $LL.game.outcome.caughtWithWrongWarrant[2]() },
@@ -503,68 +497,67 @@
 				{/if}
 
 				{#if showWarrant}
-					{@const warrants = $LL.warrants}
 					<TerminalGroup>
 						<TerminalRows
 							lines={[
 								{ text: 'World Police: Warrants', isTitle: true },
-								{ text: warrants.provideDetails() }
+								{ text: $LL.warrants.provideDetails() }
 							]}
 						/>
 
 						<TerminalForm>
-							<TerminalTitle>{warrants.labels.sex()}</TerminalTitle>
+							<TerminalTitle>{$LL.warrants.labels.sex()}</TerminalTitle>
 							<TerminalFormSelect bind:value={warrantSex}>
 								{#each Object.values(WarrantSex) as sex}
-									<option value={sex}>{warrants.sex[sex]()}</option>
+									<option value={sex}>{$LL.warrants.sex[sex]()}</option>
 								{/each}
 							</TerminalFormSelect>
 
-							<TerminalTitle>{warrants.labels.hobby()}</TerminalTitle>
+							<TerminalTitle>{$LL.warrants.labels.hobby()}</TerminalTitle>
 							<TerminalFormSelect bind:value={warrantHobby}>
 								{#each Object.values(WarrantHobby) as hobby}
-									<option value={hobby}>{warrants.hobby[hobby]()}</option>
+									<option value={hobby}>{$LL.warrants.hobby[hobby]()}</option>
 								{/each}
 							</TerminalFormSelect>
 
-							<TerminalTitle>{warrants.labels.hair()}</TerminalTitle>
+							<TerminalTitle>{$LL.warrants.labels.hair()}</TerminalTitle>
 							<TerminalFormSelect bind:value={warrantHair}>
 								{#each Object.values(WarrantHair) as hair}
-									<option value={hair}>{warrants.hair[hair]()}</option>
+									<option value={hair}>{$LL.warrants.hair[hair]()}</option>
 								{/each}
 							</TerminalFormSelect>
 
-							<TerminalTitle>{warrants.labels.feature()}</TerminalTitle>
+							<TerminalTitle>{$LL.warrants.labels.feature()}</TerminalTitle>
 							<TerminalFormSelect bind:value={warrantFeature}>
 								{#each Object.values(WarrantFeature) as feature}
-									<option value={feature}>{warrants.feature[feature]()}</option>
+									<option value={feature}>{$LL.warrants.feature[feature]()}</option>
 								{/each}
 							</TerminalFormSelect>
 
-							<TerminalTitle>{warrants.labels.vehicle()}</TerminalTitle>
+							<TerminalTitle>{$LL.warrants.labels.vehicle()}</TerminalTitle>
 							<TerminalFormSelect bind:value={warrantVehicle}>
 								{#each Object.values(WarrantVehicle) as vehicle}
-									<option value={vehicle}>{warrants.vehicle[vehicle]()}</option>
+									<option value={vehicle}>{$LL.warrants.vehicle[vehicle]()}</option>
 								{/each}
 							</TerminalFormSelect>
 						</TerminalForm>
 
-						{#if possibleSuspects.length > 1}
+						{#if warrants.length > 1}
 							<TerminalRows
 								lines={[
-									{ text: warrants.possibleSuspects(), isTitle: true },
-									...possibleSuspects.map((suspect) => ({
+									{ text: $LL.warrants.possibleSuspects(), isTitle: true },
+									...warrants.map((suspect) => ({
 										text: $LL.suspects[suspect].name()
 									}))
 								]}
 							/>
-						{:else if possibleSuspects.length > 0}
+						{:else if warrants.length > 0}
 							<TerminalRows
 								lines={[
-									{ text: warrants.suspectMatch(), isTitle: true },
+									{ text: $LL.warrants.suspectMatch(), isTitle: true },
 									{
-										text: warrants.haveWarrant({
-											suspect: $LL.suspects[possibleSuspects[0]].name()
+										text: $LL.warrants.haveWarrant({
+											suspect: $LL.suspects[warrants[0]].name()
 										})
 									}
 								]}
@@ -574,7 +567,7 @@
 
 					<Section>
 						<Button on:click={computeWarrant} disabled={!canComputeWarrant}>
-							{warrants.compute()}
+							{$LL.warrants.compute()}
 						</Button>
 					</Section>
 				{/if}
