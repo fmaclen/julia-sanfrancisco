@@ -1,20 +1,23 @@
 <script lang="ts">
 	import LL, { locale } from '$i18n/i18n-svelte';
 	import Artwork from '$lib/components/Artwork.svelte';
+	import ButtonIcon from '$lib/components/ButtonIcon.svelte';
+	import Footer from '$lib/components/Footer.svelte';
 	import H1 from '$lib/components/H1.svelte';
 	import Header from '$lib/components/Header.svelte';
 	import Main from '$lib/components/Main.svelte';
-	import type { TerminalLine } from '$lib/components/Terminal';
-	import Terminal from '$lib/components/Terminal.svelte';
+	import type { TerminalRow } from '$lib/components/Terminal';
+	import TerminalForm from '$lib/components/TerminalForm.svelte';
+	import TerminalFormInput from '$lib/components/TerminalFormInput.svelte';
+	import TerminalGroup from '$lib/components/TerminalGroup.svelte';
+	import TerminalRows from '$lib/components/TerminalRows.svelte';
+	import TerminalTitle from '$lib/components/TerminalTitle.svelte';
 	import Time from '$lib/components/Time.svelte';
 	import { gameStore, generateGame } from '$lib/game';
+	import { getRandomValue, redirectTo } from '$lib/helpers';
+	import Continue from '$lib/icons/Continue.svg.svelte';
 	import { getRank } from '$lib/player';
 	import { playerStore } from '$lib/player';
-	import ButtonIcon from '../../lib/components/ButtonIcon.svelte';
-	import Footer from '../../lib/components/Footer.svelte';
-	import TerminalGroup from '../../lib/components/TerminalGroup.svelte';
-	import { redirectTo } from '../../lib/helpers';
-	import Continue from '../../lib/icons/Continue.svg.svelte';
 	import { onMount } from 'svelte';
 
 	// Headquarters always starts a new game
@@ -28,6 +31,7 @@
 	}
 
 	let isLoading = true;
+	let isAnimating = false;
 	let step: Step;
 	let playerName: string;
 	let playerRank: string;
@@ -56,12 +60,11 @@
 		isLoading = false;
 	});
 
-	let terminalLines: TerminalLine[][] = [];
-	let linesUnknownPlayer: TerminalLine[] = [];
-	let linesUnknownPlayerInput: TerminalLine[] = [];
-	let linesKnownPlayer: TerminalLine[] = [];
-	let linesNewsFlash: TerminalLine[] = [];
-	let linesAssignment: TerminalLine[] = [];
+	let linesUnknownPlayer: TerminalRow[] = [];
+	let linesUnknownPlayerInput: TerminalRow[] = [];
+	let linesKnownPlayer: TerminalRow[] = [];
+	let linesNewsFlash: TerminalRow[] = [];
+	let linesAssignment: TerminalRow[] = [];
 
 	if ($playerStore && $gameStore) {
 		step = Step.KNOWN_PLAYER;
@@ -70,11 +73,11 @@
 	$: {
 		if (!$playerStore) {
 			linesUnknownPlayer = [
-				{ id: Step.UNKNOWN_PLAYER, text: $LL.headquarters.id.acmeSystems(), type: 'title' },
+				{ id: Step.UNKNOWN_PLAYER, text: $LL.headquarters.id.acmeSystems(), isTitle: true },
 				{ text: $LL.headquarters.id.pending() }
 			];
 
-			linesUnknownPlayerInput = [{ text: $LL.headquarters.id.yourName(), type: 'title' }];
+			linesUnknownPlayerInput = [{ text: $LL.headquarters.id.yourName(), isTitle: true }];
 
 			step = Step.UNKNOWN_PLAYER;
 		} else if (!$gameStore) {
@@ -83,38 +86,32 @@
 
 			step = Step.KNOWN_PLAYER;
 			linesKnownPlayer = [
-				{ id: step, text: $LL.headquarters.id.acmeSystems(), type: 'title' },
+				{ id: step, text: $LL.headquarters.id.acmeSystems(), isTitle: true },
 				{ text: $LL.headquarters.id.indentified({ name: $playerStore.name }) },
 				{ text: $LL.headquarters.id.rank({ rank: playerRank.toLowerCase() }) }
 			];
 		} else if (step !== Step.ASSIGNMENT) {
 			step = Step.NEWS_FLASH;
 			linesNewsFlash = [
-				{ id: step, text: $LL.headquarters.newsflash.title(), type: 'title' },
-				{ text: $LL.headquarters.newsflash.content.line1({ city: $gameStore.rounds[0].atlas.city }) }, // prettier-ignore
-				{ text: $LL.headquarters.newsflash.content.line2({ treasure: $gameStore.stolenTreasure }) }, // prettier-ignore
-				{ text: $LL.headquarters.newsflash.content.line3({ sex: $gameStore.suspect.sex.toLowerCase() as 'male' | 'female' }) } // prettier-ignore
+				{ id: step, text: $LL.headquarters.newsflash.title(), isTitle: true },
+				{ text: $LL.headquarters.newsflash.lines[0]({ city: $gameStore.rounds[0].atlas.city }) }, // prettier-ignore
+				{ text: $LL.headquarters.newsflash.lines[1]({ treasure: $gameStore.stolenTreasure }) }, // prettier-ignore
+				{ text: $LL.headquarters.newsflash.lines[2]({ sex: $gameStore.suspect.warrantKeys.sex }) } // prettier-ignore
 			];
 		} else {
 			step = Step.ASSIGNMENT;
 			linesAssignment = [
-				{ id: step, text: $LL.headquarters.assignment.title(), type: 'title' },
-				{ text: $LL.headquarters.assignment.content.line1({ city: $gameStore.rounds[0].atlas.city, sex: $gameStore.suspect.sex.toLowerCase() }) }, // prettier-ignore
-				{ text: $LL.headquarters.assignment.content.line2() },
-				{ text: $LL.headquarters.assignment.content.line3({ rank: playerRank, name: $playerStore.name }) } // prettier-ignore
+				{ id: step, text: $LL.headquarters.assignment.title(), isTitle: true },
+				{ text: $LL.headquarters.assignment.lines[0]({ city: $gameStore.rounds[0].atlas.city, sex: $gameStore.suspect.warrantKeys.sex }) }, // prettier-ignore
+				{ text: $LL.headquarters.assignment.lines[1]() },
+				{ text: $LL.headquarters.assignment.lines[2]({ rank: playerRank, name: $playerStore.name }) } // prettier-ignore
 			];
 		}
-
-		terminalLines = [
-			linesUnknownPlayer,
-			linesUnknownPlayerInput,
-			linesKnownPlayer,
-			linesNewsFlash,
-			linesAssignment
-		].filter(
-			(lines) => lines.length > 0
-		); // prettier-ignore
 	}
+
+	$: isKnownPlayer = [Step.KNOWN_PLAYER, Step.NEWS_FLASH, Step.ASSIGNMENT].includes(step);
+	$: showNewsFlash = [Step.NEWS_FLASH, Step.ASSIGNMENT].includes(step);
+	$: showAssignment = step === Step.ASSIGNMENT;
 </script>
 
 <Main>
@@ -128,27 +125,41 @@
 	<Footer slot="footer">
 		{#if !isLoading}
 			<TerminalGroup>
-				{#each terminalLines as lines, i (lines[0].id)}
-					<Terminal {lines} autoScroll={i === terminalLines.length - 1}>
-						{#if lines === linesUnknownPlayerInput}
-							<li class="terminal__line">
-								<input
-									class="input"
-									type="text"
-									name="name"
-									placeholder="Dexter Colt"
-									disabled={step !== Step.UNKNOWN_PLAYER}
-									bind:value={playerName}
-								/>
-							</li>
-						{/if}
-					</Terminal>
-				{/each}
+				{#if !isKnownPlayer}
+					<TerminalRows lines={linesUnknownPlayer} bind:isAnimating />
+
+					<TerminalForm>
+						<TerminalTitle>
+							{linesUnknownPlayerInput[0].text}
+						</TerminalTitle>
+						<TerminalFormInput
+							placeholder={getRandomValue(['Olivia Starling', 'Rupert Westington'])}
+							disabled={step !== Step.UNKNOWN_PLAYER}
+							bind:value={playerName}
+						/>
+					</TerminalForm>
+				{/if}
+
+				{#if isKnownPlayer}
+					<TerminalRows lines={linesKnownPlayer} bind:isAnimating />
+				{/if}
+
+				{#if showNewsFlash}
+					<TerminalRows lines={linesNewsFlash} bind:isAnimating />
+				{/if}
+
+				{#if showAssignment}
+					<TerminalRows lines={linesAssignment} bind:isAnimating />
+				{/if}
 			</TerminalGroup>
 		{/if}
 
 		<nav class="headquarters-nav">
-			<ButtonIcon on:click={nextStep} title={$LL.components.buttons.continue()} disabled={false}>
+			<ButtonIcon
+				on:click={nextStep}
+				title={$LL.components.buttons.continue()}
+				disabled={isLoading || isAnimating}
+			>
 				<Continue />
 			</ButtonIcon>
 		</nav>
@@ -162,21 +173,5 @@
 		gap: var(--layout-inline);
 		margin-inline: var(--layout-inline);
 		margin-left: auto;
-	}
-
-	input.input {
-		width: 100%;
-		box-sizing: border-box;
-		background: transparent;
-		border: unset;
-		outline: none;
-		padding: unset;
-		font-size: 16px;
-		font-family: var(--font-family-mono);
-		color: var(--color-accent);
-
-		&::placeholder {
-			color: var(--color-neutral-500);
-		}
 	}
 </style>

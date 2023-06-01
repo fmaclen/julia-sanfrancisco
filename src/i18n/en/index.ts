@@ -29,6 +29,16 @@ import { thailand } from './atlases/thailand';
 import { turkey } from './atlases/turkey';
 import { unitedKingdom } from './atlases/united-kingdom';
 import { unitedStates } from './atlases/united-states';
+import { chrisLunchtime } from './suspects/chris-lunchtime';
+import { danielleSplash } from './suspects/danielle-splash';
+import { duchessIsabella } from './suspects/duchess-isabella';
+import { hughMass } from './suspects/hugh-mass';
+import { juliaSanfrancisco } from './suspects/julia-sanfrancisco';
+import { markFadenott } from './suspects/mark-fadenott';
+import { renaStone } from './suspects/rena-stone';
+import { simonSimonski } from './suspects/simon-simonski';
+import { sparkleLily } from './suspects/sparkle-lily';
+import { speedyJakeZ } from './suspects/speedy-jake-z';
 
 const en = {
 	splash: {
@@ -42,19 +52,18 @@ const en = {
 		title: 'Headquarters',
 		newsflash: {
 			title: 'Newsflash',
-			content: {
-				line1: 'National treasure stolen from {city:string}.',
-				line2: 'The treasure has been identified as {treasure:string}.',
-				line3: '{sex|{male: A man, female: A woman}} has been reported at the scene of the crime.'
+			lines: {
+				0: 'National treasure stolen from {city:string}.',
+				1: 'The treasure has been identified as {treasure:string}.',
+				2: '{sex|{male: A man, female: A woman}} has been reported at the scene of the crime.'
 			}
 		},
 		assignment: {
 			title: 'Your assignment',
-			content: {
-				line1:
-					'Track the thief from {city:string} to {sex:string|{male: his, female: her}} hideout and arrest {sex:string|{male: him, female: her}}.',
-				line2: 'You must apprehend the thief by Sunday 5pm.',
-				line3: 'Good luck, {rank:string} {name:string}.'
+			lines: {
+				0: 'Track the thief from {city:string} to {sex:string|{male: his, female: her}} hideout and arrest {sex:string|{male: him, female: her}}.',
+				1: 'You must apprehend the thief by Sunday 5pm.',
+				2: 'Good luck, {rank:string} {name:string}.'
 			}
 		},
 		id: {
@@ -67,28 +76,30 @@ const en = {
 	},
 	game: {
 		outcome: {
-			title: 'Message from Interpol',
-			win: {
-				line1: 'Congratulations!',
-				line2: 'You caught up with the suspect.',
-				line3: 'Thanks to your help, the {city:string} police have apprehended {suspect:string}.',
-				line4:
-					'We thank you for your good work on this case. Your success will be noted on your record.',
-				line5: '{cases:number} more case{{cases:s}} until your next promotion.'
+			title: 'World Police: Incoming message',
+			ready: 'Ready for your next case, {rank:string} {name:string}?',
+			caughtWithWarrant: {
+				0: 'Thaks to your help, the {city:string} police have apprehended {suspect:string}.',
+				1: '{suspect:string} had the loot, {stolenTreasure:string}, wich will be returned to the grateful residents of {city:string}.',
+				2: 'We here at the World Police thank you for your good work on this case.',
+				3: 'Your success will be noted on your record.',
+				4: '{cases:number} more case{{cases:s}} until your next promotion.'
 			},
-			loose: {
-				timedOut: {
-					line1: 'Bad news...',
-					line2:
-						'Looks like {suspect:string} slipped through your fingers because your investigation took too long!'
-				},
-				noWarrant: {
-					line1: 'You caught up with suspect {suspect:string}!',
-					line2: 'However, without a warrant the {city:string} police cannot make an arrest.',
-					line3: "It looks like Julia's gang has gotten away with another caper."
-				}
+			caughtWithWrongWarrant: {
+				0: 'You have trailed {suspect:string} correctly.',
+				1: 'Unfortunately, you have a warrant for {suspect:string}.',
+				2: 'Be careful, we could all be sued for false arrest!',
+				3: 'We hope you do better on your next case.'
 			},
-			ready: 'Ready for your next case, {rank:string} {name:string}?'
+			caughtWithoutWarrant: {
+				0: 'You have caught up with {suspect:string}.',
+				1: 'However, without a warrant we cannot make a legal arrest.',
+				2: "It looks like Julia's gang has gotten away with another caper!"
+			},
+			gotAway: {
+				0: 'Bad news...',
+				1: "We've just received word that {suspect:string} slipped through your fingers because your investigation took too long!"
+			}
 		},
 		actions: {
 			walk: 'Walk to',
@@ -98,27 +109,81 @@ const en = {
 			sleeping: 'Sleeping',
 			options: 'Options',
 			abandon: 'Abandon game',
-			confirm: 'Are you sure you want to abandon this game?',
-			getWarrant: 'Get warrant (Soon™)'
+			confirm: 'Are you sure you want to abandon this game?'
 		}
 	},
 	suspects: {
-		1: {
-			name: 'Julia Sanfrancisco',
-			hobby: 'Mountain climbing',
-			hair: 'Brown',
-			feature: 'Mole on her left cheek',
-			vehicle: 'Convertible',
-			sex: 'Female'
+		chrisLunchtime,
+		danielleSplash,
+		duchessIsabella,
+		hughMass,
+		juliaSanfrancisco,
+		markFadenott,
+		renaStone,
+		simonSimonski,
+		sparkleLily,
+		speedyJakeZ
+	},
+	warrants: {
+		labels: {
+			unknown: 'Unknown',
+			sex: 'Sex',
+			name: 'Name',
+			occupation: 'Occupation',
+			other: 'Other',
+			hobby: 'Hobby',
+			hair: 'Hair',
+			feature: 'Feature',
+			vehicle: 'Vehicle'
 		},
-		2: {
-			name: 'Pedro Sanantonio',
-			hobby: 'Sailing',
-			hair: 'Black',
-			feature: 'Scar on his right cheek',
-			vehicle: 'Motorcycle',
-			sex: 'Male'
-		}
+		sex: {
+			male: 'Male',
+			female: 'Female'
+		},
+		hobby: {
+			hiking: 'Hiking',
+			tennis: 'Tennis',
+			cycling: 'Cycling',
+			guitar: 'Guitar',
+			golf: 'Golf',
+			gambler: 'Gambler',
+			pickleball: 'Pickleball'
+		},
+		hair: {
+			black: 'Black',
+			brown: 'Brown',
+			red: 'Red',
+			blond: 'Blond'
+		},
+		feature: {
+			scar: 'Scar',
+			glasses: 'Glasses',
+			tattoo: 'Tattoo',
+			birthmark: 'Birthmark',
+			ring: 'Ring',
+			necklace: 'Necklace'
+		},
+		vehicle: {
+			bike: 'Bicycle',
+			motorcycle: 'Motorcycle',
+			hoverboard: 'Hoverboard',
+			exotic: 'Exotic car',
+			convertible: 'Convertible',
+			limousine: 'Limousine',
+			transit: 'Public transit',
+			jet: 'Jet'
+		},
+		dossiers: 'Dossiers',
+		suspectDossiers: 'Suspect dossiers',
+		getWarrant: 'Get warrant',
+		compute: 'Compute',
+		provideDetails: 'Please provide suspect details to obtain a warrant.',
+		suspectMatch: 'Suspect match',
+		haveWarrant: 'You now have a warrant to arrest {suspect:string}.',
+		possibleSuspects: 'Possible suspects',
+		noSuspectsFound: 'No suspects found',
+		noPossibleSuspects: 'The information provided eliminates all possible suspects.',
+		noWarrantIssued: 'No warrant has been issued.'
 	},
 	atlases: {
 		argentina,

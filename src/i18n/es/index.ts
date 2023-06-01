@@ -30,6 +30,16 @@ import { thailand } from './atlases/thailand';
 import { turkey } from './atlases/turkey';
 import { unitedKingdom } from './atlases/united-kingdom';
 import { unitedStates } from './atlases/united-states';
+import { chrisLunchtime } from './suspects/chris-lunchtime';
+import { danielleSplash } from './suspects/danielle-splash';
+import { duchessIsabella } from './suspects/duchess-isabella';
+import { hughMass } from './suspects/hugh-mass';
+import { juliaSanfrancisco } from './suspects/julia-sanfrancisco';
+import { markFadenott } from './suspects/mark-fadenott';
+import { renaStone } from './suspects/rena-stone';
+import { simonSimonski } from './suspects/simon-simonski';
+import { sparkleLily } from './suspects/sparkle-lily';
+import { speedyJakeZ } from './suspects/speedy-jake-z';
 
 const es = {
 	...(en as Translation), // Fall back to English
@@ -44,19 +54,18 @@ const es = {
 		title: 'Cuartel general',
 		newsflash: {
 			title: 'Flash de noticias',
-			content: {
-				line1: 'Tesoro nacional robado de {city}.',
-				line2: 'El tesoro ha sido identificado como {treasure}.',
-				line3: '{sex|{male: Un hombre, female: Una mujer}} ha sido visto en la escena del crimen.'
+			lines: {
+				0: 'Tesoro nacional robado de {city}.',
+				1: 'El tesoro ha sido identificado como {treasure}.',
+				2: '{sex|{male: Un hombre, female: Una mujer}} ha sido visto en la escena del crimen.'
 			}
 		},
 		assignment: {
 			title: 'Tu misión',
-			content: {
-				line1:
-					'Sigue {sex|{male: al ladrón, female: a la ladrona}} desde {city} hasta su escondite y {sex|{male: arréstalo, female: arréstala}}.',
-				line2: 'Debes capturar al malechor antes de las 5 p.m. del domingo.',
-				line3: 'Buena suerte, {rank} {name}.'
+			lines: {
+				0: 'Sigue {sex|{male: al ladrón, female: a la ladrona}} desde {city} hasta su escondite y {sex|{male: arréstalo, female: arréstala}}.',
+				1: 'Debes capturar al malechor antes de las 5 p.m. del domingo.',
+				2: 'Buena suerte, {rank} {name}.'
 			}
 		},
 		id: {
@@ -69,28 +78,30 @@ const es = {
 	},
 	game: {
 		outcome: {
-			title: 'Mensaje de Interpol',
-			win: {
-				line1: '¡Felicitaciones!',
-				line2: 'Lograste alcanzar al sospechoso.',
-				line3: 'Gracias a tu ayuda, la policía de {city} ha detenido a {suspect}.',
-				line4: 'Agradecemos tu buen trabajo en este caso. Tu éxito se registrará en tu expediente.',
-				line5: '{cases} caso{{cases:s}} más hasta tu próxima promoción.'
+			title: 'Policía Mundial: Mensaje entrante',
+			ready: 'Listo para tu próximo caso, {rank} {name}?',
+			caughtWithWarrant: {
+				0: 'Gracias a tu ayuda, la policía de {city} ha aprehendido a {suspect}.',
+				1: '{suspect} tenía el botín, {stolenTreasure}, que será devuelto a los agradecidos residentes de {city}.',
+				2: 'Aquí en la Policía Mundial te agradecemos por tu buen trabajo en este caso.',
+				3: 'Tu éxito será anotado en tu expediente.',
+				4: '{cases} caso{{cases:s}} más hasta tu próxima promoción.'
 			},
-			loose: {
-				timedOut: {
-					line1: 'Malas noticias...',
-					line2:
-						'¡Parece que {suspect} se escapó de tus manos porque tu investigación tomó demasiado tiempo!'
-				},
-				noWarrant: {
-					line1: '¡Atrapaste al sospechoso {suspect}!',
-					line2:
-						'Sin embargo, sin una orden de arresto, la policía de {city} no puede hacer una detención.',
-					line3: 'Parece que la banda de Julia se ha salido con la suya en otro golpe.'
-				}
+			caughtWithWrongWarrant: {
+				0: 'Has rastreado correctamente a {suspect}.',
+				1: 'Desafortunadamente, tienes una orden para {suspect}.',
+				2: '¡Cuidado, todos podríamos ser demandados por arresto falso!',
+				3: 'Esperamos que lo hagas mejor en tu próximo caso.'
 			},
-			ready: '¿Listo para tu próximo caso, {rank} {name}?'
+			caughtWithoutWarrant: {
+				0: 'Has alcanzado a {suspect}.',
+				1: 'Sin embargo, sin una orden no podemos hacer un arresto legal.',
+				2: '¡Parece que la pandilla de Julia se ha salido con la suya otra vez!'
+			},
+			gotAway: {
+				0: 'Malas noticias...',
+				1: '¡Acabamos de recibir la noticia de que {suspect} se te escapó porque tu investigación tardó demasiado!'
+			}
 		},
 		actions: {
 			walk: 'Caminar a',
@@ -100,9 +111,81 @@ const es = {
 			sleeping: 'Durmiendo',
 			options: 'Opciones',
 			abandon: 'Abandonar partida',
-			confirm: 'Estás a punto de abandonar este juego. ¿Estás seguro?',
-			getWarrant: 'Obtener orden de arresto (Próximamente™)'
+			confirm: 'Estás a punto de abandonar este juego. ¿Estás seguro?'
 		}
+	},
+	suspects: {
+		chrisLunchtime,
+		danielleSplash,
+		duchessIsabella,
+		hughMass,
+		juliaSanfrancisco,
+		markFadenott,
+		renaStone,
+		simonSimonski,
+		sparkleLily,
+		speedyJakeZ
+	},
+	warrants: {
+		labels: {
+			unknown: 'Desconocido',
+			sex: 'Sexo',
+			name: 'Nombre',
+			occupation: 'Ocupación',
+			other: 'Otro',
+			hobby: 'Afición',
+			hair: 'Cabello',
+			feature: 'Característica',
+			vehicle: 'Vehículo'
+		},
+		sex: {
+			male: 'Masculino',
+			female: 'Femenino'
+		},
+		hobby: {
+			hiking: 'Senderismo',
+			tennis: 'Tenis',
+			cycling: 'Ciclismo',
+			guitar: 'Guitarra',
+			golf: 'Golf',
+			gambler: 'Apostador',
+			pickleball: 'Pickleball'
+		},
+		hair: {
+			black: 'Negro',
+			brown: 'Marrón',
+			red: 'Rojo',
+			blond: 'Rubio'
+		},
+		feature: {
+			scar: 'Cicatriz',
+			glasses: 'Gafas',
+			tattoo: 'Tatuaje',
+			birthmark: 'Marca de nacimiento',
+			ring: 'Anillo',
+			necklace: 'Collar'
+		},
+		vehicle: {
+			bike: 'Bicicleta',
+			motorcycle: 'Motocicleta',
+			hoverboard: 'Hoverboard',
+			exotic: 'Coche exótico',
+			convertible: 'Descapotable',
+			limousine: 'Limusina',
+			transit: 'Transporte público',
+			jet: 'Jet'
+		},
+		dossiers: 'Expedientes',
+		suspectDossiers: 'Expedientes de sospechosos',
+		getWarrant: 'Obtener orden de detención',
+		compute: 'Calcular',
+		provideDetails: 'Por favor, proporciona detalles del sospechoso para obtener una orden.',
+		suspectMatch: 'Coincidencia con el sospechoso',
+		haveWarrant: 'Ahora tienes una orden para arrestar a {suspect}.',
+		possibleSuspects: 'Posibles sospechosos',
+		noSuspectsFound: 'No se encontraron sospechosos',
+		noPossibleSuspects: 'La información proporcionada elimina a todos los posibles sospechosos.',
+		noWarrantIssued: 'No se ha emitido ninguna orden.'
 	},
 	atlases: {
 		argentina,

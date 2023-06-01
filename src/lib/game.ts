@@ -2,6 +2,7 @@ import { browser } from '$app/environment';
 import en from '$i18n/en';
 import type { Translation, TranslationFunctions } from '$i18n/i18n-types';
 import { getArtworkPath, getRandomValue } from '$lib/helpers';
+import { getSuspectWarrantKeys, Suspect, type WarrantKeys } from './suspects';
 import { writable } from 'svelte/store';
 import type { LocalizedString } from 'typesafe-i18n';
 
@@ -86,6 +87,7 @@ interface Scene {
 	place: LocalizedPlace;
 	witness: string;
 	clue: string;
+	suspectClue?: string;
 }
 
 export interface Atlas {
@@ -107,13 +109,16 @@ export interface Round {
 	destinations: Atlas[]; // Would have used a Set<Atlas>, but we can't save that object type to localStorage
 }
 
-interface Suspect {
+interface LocalizedSuspect {
+	key: Suspect;
 	name: string;
 	hobby: string;
 	hair: string;
 	feature: string;
 	vehicle: string;
-	sex: string;
+	clues: string[];
+	warrantKeys: WarrantKeys;
+	lastRoundHidingPlace: number;
 }
 
 export interface Game {
@@ -122,7 +127,7 @@ export interface Game {
 	roundDecoy: Round | null;
 	rounds: Round[];
 	stolenTreasure: string;
-	suspect: Suspect;
+	suspect: LocalizedSuspect;
 }
 
 export function generateGame(LL: TranslationFunctions): Game {
@@ -151,7 +156,7 @@ interface LocalizedWitness {
 	name: string;
 }
 
-function generateRounds(LL: TranslationFunctions, suspect: Suspect): Round[] {
+function generateRounds(LL: TranslationFunctions, suspect: LocalizedSuspect): Round[] {
 	const NUMBER_OF_ROUNDS = 6;
 
 	const atlases = getLocalizedAtlases(LL);
@@ -220,7 +225,7 @@ export function generateDecoyRound(
 interface ScenesParams {
 	LL: TranslationFunctions;
 	nextRoundAtlas?: Atlas;
-	suspect?: Suspect;
+	suspect?: LocalizedSuspect;
 	isRoundFinal?: boolean;
 	isRoundDecoy?: boolean;
 }
@@ -255,9 +260,24 @@ function generateScenes(params: ScenesParams): Scene[] {
 
 		const clue = Array.from(cluesSet)[i];
 		const witness = getLocalizedWitnesses(LL, place.place);
+		let suspectClue: string | undefined = undefined;
+
+		// We don't want to always include a suspect clue
+		if (!isRoundFinal && !isRoundDecoy && suspect) {
+			const ODDS_OF_NO_CLUE = 10;
+			const possibleSuspectClues: (string | undefined)[] = [...suspect.clues];
+
+			// We fill the array with `undefined` values to increase the odds of not having a clue
+			for (let i = 0; i < ODDS_OF_NO_CLUE; i++) {
+				possibleSuspectClues.push(undefined);
+			}
+
+			suspectClue = getRandomValue(possibleSuspectClues);
+		}
 
 		scenes.push({
 			clue,
+			suspectClue,
 			place: place,
 			witness: witness.name
 		});
@@ -305,7 +325,7 @@ function generateClues(params: ScenesParams, place: LocalizedPlace): string[] {
 			currency: params.nextRoundAtlas?.currency.toLowerCase(),
 			language: params.nextRoundAtlas?.language.toLowerCase(),
 			flag: params.nextRoundAtlas?.flag.toLowerCase(),
-			sex: params.suspect?.sex.toLowerCase()
+			sex: params.suspect?.warrantKeys.sex
 		};
 
 		const localizedClues: string[] = [];
@@ -388,25 +408,27 @@ function setDecoyDestinations(
 	}
 }
 
-function getLocalizedSuspects(LL: TranslationFunctions): Suspect {
-	const suspectIndexes = Object.keys(LL.suspects);
-	const suspects: Suspect[] = [];
+function getLocalizedSuspects(LL: TranslationFunctions): LocalizedSuspect {
+	const suspects: Suspect[] = Object.values(Suspect);
+	const suspect = getRandomValue(suspects);
+	const translationKey = suspect as keyof Translation['suspects'];
 
-	for (const suspectIndex of suspectIndexes) {
-		const validatedSuspectIndex = suspectIndex as keyof Translation['suspects'];
+	const localizedSuspect: LocalizedSuspect = {
+		key: suspect,
+		name: LL.suspects[translationKey].name(),
+		hobby: LL.suspects[translationKey].hobby(),
+		hair: LL.suspects[translationKey].hair(),
+		feature: LL.suspects[translationKey].feature(),
+		vehicle: LL.suspects[translationKey].vehicle(),
+		clues: getTranslationFromArray(LL.suspects[translationKey].clues),
+		warrantKeys: getSuspectWarrantKeys(suspect),
+		lastRoundHidingPlace: getRandomValue([0, 1, 2]) // Pick a random place to hide for the last round
+	};
 
-		suspects.push({
-			name: LL.suspects[validatedSuspectIndex].name(),
-			hobby: LL.suspects[validatedSuspectIndex].hobby(),
-			hair: LL.suspects[validatedSuspectIndex].hair(),
-			feature: LL.suspects[validatedSuspectIndex].feature(),
-			vehicle: LL.suspects[validatedSuspectIndex].vehicle(),
-			sex: LL.suspects[validatedSuspectIndex].sex()
-		});
-	}
-
-	return getRandomValue(suspects);
+	return localizedSuspect;
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 function getLocalizedAtlases(LL: TranslationFunctions): Atlas[] {
 	const atlaseKeys = Object.keys(LL.atlases);

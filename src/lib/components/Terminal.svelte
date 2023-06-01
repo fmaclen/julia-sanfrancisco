@@ -6,6 +6,7 @@
 	export let lines: TerminalLine[] = [];
 	export let autoScroll = false;
 	export let isLastTerminal: boolean = false;
+	export let isAnimating: boolean = false;
 	let scrollToRef: HTMLDivElement;
 
 	onMount(() => {
