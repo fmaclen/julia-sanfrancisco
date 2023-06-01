@@ -55,18 +55,17 @@ const es = {
 		newsflash: {
 			title: 'Flash de noticias',
 			content: {
-				line1: 'Tesoro nacional robado de {city}.',
-				line2: 'El tesoro ha sido identificado como {treasure}.',
-				line3: '{sex|{male: Un hombre, female: Una mujer}} ha sido visto en la escena del crimen.'
+				0: 'Tesoro nacional robado de {city}.',
+				1: 'El tesoro ha sido identificado como {treasure}.',
+				2: '{sex|{male: Un hombre, female: Una mujer}} ha sido visto en la escena del crimen.'
 			}
 		},
 		assignment: {
 			title: 'Tu misión',
 			content: {
-				line1:
-					'Sigue {sex|{male: al ladrón, female: a la ladrona}} desde {city} hasta su escondite y {sex|{male: arréstalo, female: arréstala}}.',
-				line2: 'Debes capturar al malechor antes de las 5 p.m. del domingo.',
-				line3: 'Buena suerte, {rank} {name}.'
+				0: 'Sigue {sex|{male: al ladrón, female: a la ladrona}} desde {city} hasta su escondite y {sex|{male: arréstalo, female: arréstala}}.',
+				1: 'Debes capturar al malechor antes de las 5 p.m. del domingo.',
+				2: 'Buena suerte, {rank} {name}.'
 			}
 		},
 		id: {
@@ -79,27 +78,7 @@ const es = {
 	},
 	game: {
 		outcome: {
-			title: 'Mensaje de Interpol',
-			win: {
-				line1: '¡Felicitaciones!',
-				line2: 'Lograste alcanzar al sospechoso.',
-				line3: 'Gracias a tu ayuda, la policía de {city} ha detenido a {suspect}.',
-				line4: 'Agradecemos tu buen trabajo en este caso. Tu éxito se registrará en tu expediente.',
-				line5: '{cases} caso{{cases:s}} más hasta tu próxima promoción.'
-			},
-			loose: {
-				timedOut: {
-					line1: 'Malas noticias...',
-					line2:
-						'¡Parece que {suspect} se escapó de tus manos porque tu investigación tomó demasiado tiempo!'
-				},
-				noWarrant: {
-					line1: '¡Atrapaste al sospechoso {suspect}!',
-					line2:
-						'Sin embargo, sin una orden de arresto, la policía de {city} no puede hacer una detención.',
-					line3: 'Parece que la banda de Julia se ha salido con la suya en otro golpe.'
-				}
-			},
+			title: 'Policía Mundial: Recibiendo mensaje',
 			ready: '¿Listo para tu próximo caso, {rank} {name}?'
 		},
 		actions: {

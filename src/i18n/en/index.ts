@@ -53,18 +53,17 @@ const en = {
 		newsflash: {
 			title: 'Newsflash',
 			content: {
-				line1: 'National treasure stolen from {city:string}.',
-				line2: 'The treasure has been identified as {treasure:string}.',
-				line3: '{sex|{male: A man, female: A woman}} has been reported at the scene of the crime.'
+				0: 'National treasure stolen from {city:string}.',
+				1: 'The treasure has been identified as {treasure:string}.',
+				2: '{sex|{male: A man, female: A woman}} has been reported at the scene of the crime.'
 			}
 		},
 		assignment: {
 			title: 'Your assignment',
 			content: {
-				line1:
-					'Track the thief from {city:string} to {sex:string|{male: his, female: her}} hideout and arrest {sex:string|{male: him, female: her}}.',
-				line2: 'You must apprehend the thief by Sunday 5pm.',
-				line3: 'Good luck, {rank:string} {name:string}.'
+				0: 'Track the thief from {city:string} to {sex:string|{male: his, female: her}} hideout and arrest {sex:string|{male: him, female: her}}.',
+				1: 'You must apprehend the thief by Sunday 5pm.',
+				2: 'Good luck, {rank:string} {name:string}.'
 			}
 		},
 		id: {
@@ -77,28 +76,30 @@ const en = {
 	},
 	game: {
 		outcome: {
-			title: 'Message from Interpol',
-			win: {
-				line1: 'Congratulations!',
-				line2: 'You caught up with the suspect.',
-				line3: 'Thanks to your help, the {city:string} police have apprehended {suspect:string}.',
-				line4:
-					'We thank you for your good work on this case. Your success will be noted on your record.',
-				line5: '{cases:number} more case{{cases:s}} until your next promotion.'
+			title: 'World Police: Incoming message',
+			ready: 'Ready for your next case, {rank:string} {name:string}?',
+			caughtWithWarrant: {
+				0: 'Thaks to your help, the {city:string} police have apprehended {suspect:string}.',
+				1: '{suspect:string} had the loot, {stolenTreasure:string}, wich will be returned to the grateful residents of {city:string}.',
+				2: 'We here at the World Police thank you for your good work on this case.',
+				3: 'Your success will be noted on your record.',
+				4: '{cases:number} more case{{cases:s}} until your next promotion.'
 			},
-			loose: {
-				timedOut: {
-					line1: 'Bad news...',
-					line2:
-						'Looks like {suspect:string} slipped through your fingers because your investigation took too long!'
-				},
-				noWarrant: {
-					line1: 'You caught up with suspect {suspect:string}!',
-					line2: 'However, without a warrant the {city:string} police cannot make an arrest.',
-					line3: "It looks like Julia's gang has gotten away with another caper."
-				}
+			caughtWithWrongWarrant: {
+				0: 'You have trailed {suspect:string} correctly.',
+				1: 'Unfortunately, you have a warrant for {suspect:string}.',
+				2: 'Be careful, we could all be sued for false arrest!',
+				3: 'We hope you do better on your next case.'
 			},
-			ready: 'Ready for your next case, {rank:string} {name:string}?'
+			caughtWithoutWarrant: {
+				0: 'You have caught up with {suspect:string}.',
+				1: 'However, without a warrant we cannot make a legal arrest.',
+				2: "It looks like Julia's gang has gotten away with another caper!"
+			},
+			gotAway: {
+				0: 'Bad news...',
+				1: "We've just received word that {suspect:string} slipped through your fingers because your investigation took too long!"
+			}
 		},
 		actions: {
 			walk: 'Walk to',

@@ -110,7 +110,7 @@ export interface Round {
 }
 
 interface LocalizedSuspect {
-	suspect: Suspect;
+	key: Suspect;
 	name: string;
 	hobby: string;
 	hair: string;
@@ -118,6 +118,7 @@ interface LocalizedSuspect {
 	vehicle: string;
 	clues: string[];
 	warrantKeys: WarrantKeys;
+	lastRoundHidingPlace: number;
 }
 
 export interface Game {
@@ -262,7 +263,7 @@ function generateScenes(params: ScenesParams): Scene[] {
 		let suspectClue: string | undefined = undefined;
 
 		// We don't want to always include a suspect clue
-		if (suspect) {
+		if (!isRoundFinal && !isRoundDecoy && suspect) {
 			const ODDS_OF_NO_CLUE = 10;
 			const possibleSuspectClues: (string | undefined)[] = [...suspect.clues];
 
@@ -410,18 +411,18 @@ function setDecoyDestinations(
 function getLocalizedSuspects(LL: TranslationFunctions): LocalizedSuspect {
 	const suspects: Suspect[] = Object.values(Suspect);
 	const suspect = getRandomValue(suspects);
-
 	const translationKey = suspect as keyof Translation['suspects'];
 
 	const localizedSuspect: LocalizedSuspect = {
-		suspect,
+		key: suspect,
 		name: LL.suspects[translationKey].name(),
 		hobby: LL.suspects[translationKey].hobby(),
 		hair: LL.suspects[translationKey].hair(),
 		feature: LL.suspects[translationKey].feature(),
 		vehicle: LL.suspects[translationKey].vehicle(),
 		clues: getTranslationFromArray(LL.suspects[translationKey].clues),
-		warrantKeys: getSuspectWarrantKeys(suspect)
+		warrantKeys: getSuspectWarrantKeys(suspect),
+		lastRoundHidingPlace: getRandomValue([0, 1, 2]) // Pick a random place to hide for the last round
 	};
 
 	return localizedSuspect;

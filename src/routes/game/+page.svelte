@@ -175,12 +175,14 @@
 	}
 
 	function updateScore(): void {
-		redirectTo('/headquarters/');
+		if (suspectCaughtWithWarrant) {
+			playerStore.update((player: Player | null) => {
+				player ? (player.score += 1) : null;
+				return player;
+			});
+		}
 
-		playerStore.update((player: Player | null) => {
-			player ? (player.score += 1) : null;
-			return player;
-		});
+		redirectTo('/headquarters/');
 	}
 
 	function abandonGame(): void {
@@ -206,8 +208,15 @@
 	let isFlying: boolean;
 	let isSleeping: boolean;
 	let isTimeUp: boolean;
-	let isGameWon: boolean;
-	let isGameLost: boolean;
+	let isLastRound: boolean;
+	let isGameOver: boolean;
+
+	let hasWarrant: boolean;
+	let suspectCaught: boolean;
+	let suspectCaughtWithWarrant: boolean;
+	let suspectCaughtWithWrongWarrant: boolean;
+	let suspectCaughtWithoutWarrant: boolean;
+	let suspectGotAway: boolean;
 
 	let showPostcard = false; // DEBUG: REVERTME BEFORE MERGING
 	let showPlaces = false;
@@ -218,8 +227,10 @@
 	let showWarrant = false;
 	let showSuspectDossier: keyof Translation['suspects'] | undefined;
 
-	let outcomeWon: TerminalRow[] = [];
-	let outcomeTimedUp: TerminalRow[] = [];
+	let outcomeSuspectCaughtWithWarrant: TerminalRow[][] = [];
+	let outcomeSuspectCaughtWithWrongWarrant: TerminalRow[][] = [];
+	let outcomeSuspectCaughtWithoutWarrant: TerminalRow[][] = [];
+	let outcomeSuspectGotAway: TerminalRow[][] = [];
 
 	onMount(() => {
 		// Can't start the game without $playerStore and $gameStore
@@ -256,30 +267,65 @@
 		currentRound = game.roundDecoy ? game.roundDecoy : game.rounds[game.currentRoundIndex];
 		artworkPath = currentRound.atlas.artwork;
 
-		isGameWon = !isClockTicking && !isTimeUp && game.currentRoundIndex === game.rounds.length - 1;
-		isGameLost = !isClockTicking && isTimeUp && game.currentRoundIndex !== game.rounds.length - 1;
+		isLastRound = game.currentRoundIndex === game.rounds.length - 1;
+		hasWarrant = possibleSuspects.length === 1;
+		suspectCaught = !isClockTicking && !isTimeUp && isLastRound && currentClueIndex === game.suspect.lastRoundHidingPlace; // prettier-ignore
+		suspectCaughtWithWarrant = suspectCaught && hasWarrant && possibleSuspects[0] === game.suspect.key; // prettier-ignore
+		suspectCaughtWithWrongWarrant = suspectCaught && hasWarrant && possibleSuspects[0] !== game.suspect.key; // prettier-ignore
+		suspectCaughtWithoutWarrant = suspectCaught && !hasWarrant && possibleSuspects[0] !== game.suspect.key; // prettier-ignore
+		suspectGotAway = !isClockTicking && isTimeUp && !isLastRound;
 
-		outcomeWon = [
-			{ text: $LL.game.outcome.title(), isTitle: true },
-			{ text: $LL.game.outcome.win.line1() },
-			{ text: $LL.game.outcome.win.line2() },
-			{ text: $LL.game.outcome.win.line3({ city: game.rounds[0].atlas.city, suspect: game.suspect.name }) }, // prettier-ignore
-			{ text: $LL.game.outcome.win.line4() },
-			{ text: $LL.game.outcome.win.line5({ cases: getCasesUntilPromotion($playerStore!.score) }) }, // prettier-ignore
-			{ text: $LL.game.outcome.ready({ rank: playerRank, name: $playerStore!.name }) } // prettier-ignore
+		outcomeSuspectCaughtWithWarrant = [
+			[{ text: $LL.game.outcome.title(), isTitle: true }],
+			[
+				{ text: $LL.game.outcome.caughtWithWarrant[0]({ city: game.rounds[0].atlas.city, suspect: game.suspect.name }) }, // prettier-ignore
+				{ text: $LL.game.outcome.caughtWithWarrant[1]({ suspect: game.suspect.name, stolenTreasure: game.stolenTreasure, city: game.rounds[0].atlas.city }) } // prettier-ignore
+			],
+			[
+				{ text: $LL.game.outcome.caughtWithWarrant[2]() },
+				{ text: $LL.game.outcome.caughtWithWarrant[3]() },
+				{ text: $LL.game.outcome.caughtWithWarrant[4]({ cases: getCasesUntilPromotion($playerStore!.score) }) } // prettier-ignore
+			],
+			[{ text: $LL.game.outcome.ready({ rank: playerRank, name: $playerStore!.name }) }]
 		];
 
-		outcomeTimedUp = [
-			{ text: $LL.game.outcome.title(), isTitle: true },
-			{ text: $LL.game.outcome.loose.timedOut.line1() },
-			{ text: $LL.game.outcome.loose.timedOut.line2({ suspect: game.suspect.name }) }, // prettier-ignore
-			{ text: $LL.game.outcome.ready({ rank: playerRank, name: $playerStore!.name }) } // prettier-ignore
+		outcomeSuspectCaughtWithWrongWarrant = [
+			[{ text: $LL.game.outcome.title(), isTitle: true }],
+			[
+				{ text: $LL.game.outcome.caughtWithWrongWarrant[0]({ suspect: game.suspect.name }) }, // prettier-ignore
+				{ text: $LL.game.outcome.caughtWithWrongWarrant[1]({ suspect: $LL.suspects[possibleSuspects[0]].name() }) } // prettier-ignore
+			],
+			[
+				{ text: $LL.game.outcome.caughtWithWrongWarrant[2]() },
+				{ text: $LL.game.outcome.caughtWithWrongWarrant[3]() }
+			],
+			[{ text: $LL.game.outcome.ready({ rank: playerRank, name: $playerStore!.name }) }]
+		];
+
+		outcomeSuspectCaughtWithoutWarrant = [
+			[{ text: $LL.game.outcome.title(), isTitle: true }],
+			[
+				{ text: $LL.game.outcome.caughtWithoutWarrant[0]({ suspect: game.suspect.name }) }, // prettier-ignore
+				{ text: $LL.game.outcome.caughtWithoutWarrant[1]() }
+			],
+			[{ text: $LL.game.outcome.caughtWithoutWarrant[2]() }],
+			[{ text: $LL.game.outcome.ready({ rank: playerRank, name: $playerStore!.name }) }]
+		];
+
+		outcomeSuspectGotAway = [
+			[{ text: $LL.game.outcome.title(), isTitle: true }],
+			[
+				{ text: $LL.game.outcome.gotAway[0]() },
+				{ text: $LL.game.outcome.gotAway[1]({ suspect: game.suspect.name }) }
+			],
+			[{ text: $LL.game.outcome.ready({ rank: playerRank, name: $playerStore!.name }) }]
 		];
 	}
 
 	$: isClockTicking = isSleeping || isWalking || isFlying;
 	$: isArtworkHidden = isClockTicking && !isSleeping;
-	$: isClueVisible = currentClueIndex !== null && !isWalking && !isSleeping;
+	$: isClueVisible = currentClueIndex !== null && !isWalking && !isSleeping && !isGameOver;
+	$: isGameOver = suspectCaughtWithWarrant || suspectCaughtWithWrongWarrant || suspectCaughtWithoutWarrant || suspectGotAway; // prettier-ignore
 
 	let possibleSuspects: Suspect[] = [];
 	let warrantSex: WarrantSex | undefined;
@@ -289,8 +335,6 @@
 	let warrantVehicle: WarrantVehicle | undefined;
 	$: canComputeWarrant =
 		warrantSex || warrantHobby || warrantHair || warrantFeature || warrantVehicle;
-
-	$: console.log(possibleSuspects);
 </script>
 
 {#if !isLoading}
@@ -319,20 +363,43 @@
 		/>
 
 		<Footer slot="footer">
-			{#if isGameWon}
+			{#if suspectCaughtWithWarrant}
 				<TerminalGroup>
-					<TerminalRows lines={outcomeWon} bind:isAnimating />
+					<TerminalRows lines={outcomeSuspectCaughtWithWarrant[0]} bind:isAnimating />
+					<TerminalRows lines={outcomeSuspectCaughtWithWarrant[1]} bind:isAnimating />
+					<TerminalRows lines={outcomeSuspectCaughtWithWarrant[2]} bind:isAnimating />
+					<TerminalRows lines={outcomeSuspectCaughtWithWarrant[3]} bind:isAnimating />
 				</TerminalGroup>
 			{/if}
 
-			{#if isGameLost}
+			{#if suspectCaughtWithWrongWarrant}
 				<TerminalGroup>
-					<TerminalRows lines={outcomeTimedUp} bind:isAnimating />
+					<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[0]} bind:isAnimating />
+					<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[1]} bind:isAnimating />
+					<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[2]} bind:isAnimating />
+					<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[3]} bind:isAnimating />
+				</TerminalGroup>
+			{/if}
+
+			{#if suspectCaughtWithoutWarrant}
+				<TerminalGroup>
+					<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[0]} bind:isAnimating />
+					<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[1]} bind:isAnimating />
+					<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[2]} bind:isAnimating />
+					<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[3]} bind:isAnimating />
+				</TerminalGroup>
+			{/if}
+
+			{#if suspectGotAway}
+				<TerminalGroup>
+					<TerminalRows lines={outcomeSuspectGotAway[0]} bind:isAnimating />
+					<TerminalRows lines={outcomeSuspectGotAway[1]} bind:isAnimating />
+					<TerminalRows lines={outcomeSuspectGotAway[2]} bind:isAnimating />
 				</TerminalGroup>
 			{/if}
 
 			{#if !showPostcard}
-				{#if !isTimeUp && !isGameWon && !isSleeping && !isClockTicking && showDescription}
+				{#if !isTimeUp && !suspectCaughtWithWarrant && !isSleeping && !isClockTicking && showDescription}
 					<Section>
 						<section class="paragraph-group" in:fade>
 							<P>{getRandomValue(currentRound.atlas.descriptions)}</P>
@@ -512,7 +579,7 @@
 
 			{#if !isClockTicking}
 				<nav class="game-nav" transition:fade>
-					{#if isGameWon}
+					{#if isGameOver}
 						<ButtonIcon on:click={updateScore} title={$LL.components.buttons.continue()}>
 							<Continue />
 						</ButtonIcon>
