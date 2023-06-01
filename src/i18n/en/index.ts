@@ -52,7 +52,7 @@ const en = {
 		title: 'Headquarters',
 		newsflash: {
 			title: 'Newsflash',
-			content: {
+			lines: {
 				0: 'National treasure stolen from {city:string}.',
 				1: 'The treasure has been identified as {treasure:string}.',
 				2: '{sex|{male: A man, female: A woman}} has been reported at the scene of the crime.'
@@ -60,7 +60,7 @@ const en = {
 		},
 		assignment: {
 			title: 'Your assignment',
-			content: {
+			lines: {
 				0: 'Track the thief from {city:string} to {sex:string|{male: his, female: her}} hideout and arrest {sex:string|{male: him, female: her}}.',
 				1: 'You must apprehend the thief by Sunday 5pm.',
 				2: 'Good luck, {rank:string} {name:string}.'

@@ -54,7 +54,7 @@ const es = {
 		title: 'Cuartel general',
 		newsflash: {
 			title: 'Flash de noticias',
-			content: {
+			lines: {
 				0: 'Tesoro nacional robado de {city}.',
 				1: 'El tesoro ha sido identificado como {treasure}.',
 				2: '{sex|{male: Un hombre, female: Una mujer}} ha sido visto en la escena del crimen.'
@@ -62,7 +62,7 @@ const es = {
 		},
 		assignment: {
 			title: 'Tu misión',
-			content: {
+			lines: {
 				0: 'Sigue {sex|{male: al ladrón, female: a la ladrona}} desde {city} hasta su escondite y {sex|{male: arréstalo, female: arréstala}}.',
 				1: 'Debes capturar al malechor antes de las 5 p.m. del domingo.',
 				2: 'Buena suerte, {rank} {name}.'
