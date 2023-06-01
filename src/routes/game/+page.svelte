@@ -42,6 +42,59 @@
 	import { fade, slide } from 'svelte/transition';
 	import type { LocalizedString } from 'typesafe-i18n';
 
+	let playerRank: LocalizedString;
+
+	let game: Game;
+	let currentRound: Round;
+	let currentClueIndex: number | null = null;
+	let artworkPath: string;
+
+	let clock = new Clock($playerStore?.locale ?? 'en');
+	let currentTimeFormatted: string;
+
+	let isLoading = true;
+	let isAnimating: boolean;
+	let isWalking: boolean;
+	let isFlying: boolean;
+	let isSleeping: boolean;
+	let isTimeUp: boolean;
+	let isLastRound: boolean;
+	let isGameOver: boolean;
+
+	let hasWarrant: boolean;
+	let suspectCaught: boolean;
+	let suspectCaughtWithWarrant: boolean;
+	let suspectCaughtWithWrongWarrant: boolean;
+	let suspectCaughtWithoutWarrant: boolean;
+	let suspectGotAway: boolean;
+
+	let showPostcard = true;
+	let showPlaces = false;
+	let showDestinations = false;
+	let showOptions = false;
+	let showDescription = true;
+	let showDossiers = false;
+	let showWarrant = false;
+	let showSuspectDossier: keyof Translation['suspects'] | undefined;
+
+	let possibleSuspects: Suspect[] = [];
+	let warrantSex: WarrantSex | undefined;
+	let warrantHobby: WarrantHobby | undefined;
+	let warrantHair: WarrantHair | undefined;
+	let warrantFeature: WarrantFeature | undefined;
+	let warrantVehicle: WarrantVehicle | undefined;
+
+	let outcomeSuspectCaughtWithWarrant: TerminalRow[][] = [];
+	let outcomeSuspectCaughtWithWrongWarrant: TerminalRow[][] = [];
+	let outcomeSuspectCaughtWithoutWarrant: TerminalRow[][] = [];
+	let outcomeSuspectGotAway: TerminalRow[][] = [];
+
+	$: isClockTicking = isSleeping || isWalking || isFlying;
+	$: isArtworkHidden = isClockTicking && !isSleeping;
+	$: isClueVisible = currentClueIndex !== null && !isWalking && !isSleeping && !isGameOver;
+	$: isGameOver = suspectCaughtWithWarrant || suspectCaughtWithWrongWarrant || suspectCaughtWithoutWarrant || suspectGotAway; // prettier-ignore
+	$: canComputeWarrant = warrantSex || warrantHobby || warrantHair || warrantFeature || warrantVehicle; // prettier-ignore
+
 	function resetRound(): void {
 		currentClueIndex = null;
 		artworkPath = currentRound.atlas.artwork;
@@ -152,7 +205,6 @@
 			const anchorAtlas = rounds[currentRoundIndex].atlas;
 			if (isDecoyRound) {
 				currentRound = generateDecoyRound($LL, currentAtlas, anchorAtlas);
-
 				game.roundDecoy = currentRound;
 			} else {
 				game.roundDecoy = null;
@@ -192,46 +244,6 @@
 		}
 	}
 
-	let playerRank: LocalizedString;
-
-	let game: Game;
-	let currentRound: Round;
-	let currentClueIndex: number | null = null;
-	let artworkPath: string;
-
-	let clock = new Clock($playerStore?.locale ?? 'en');
-	let currentTimeFormatted: string;
-
-	let isLoading = true;
-	let isAnimating: boolean;
-	let isWalking: boolean;
-	let isFlying: boolean;
-	let isSleeping: boolean;
-	let isTimeUp: boolean;
-	let isLastRound: boolean;
-	let isGameOver: boolean;
-
-	let hasWarrant: boolean;
-	let suspectCaught: boolean;
-	let suspectCaughtWithWarrant: boolean;
-	let suspectCaughtWithWrongWarrant: boolean;
-	let suspectCaughtWithoutWarrant: boolean;
-	let suspectGotAway: boolean;
-
-	let showPostcard = false; // DEBUG: REVERTME BEFORE MERGING
-	let showPlaces = false;
-	let showDestinations = false;
-	let showOptions = false;
-	let showDescription = true;
-	let showDossiers = false;
-	let showWarrant = false;
-	let showSuspectDossier: keyof Translation['suspects'] | undefined;
-
-	let outcomeSuspectCaughtWithWarrant: TerminalRow[][] = [];
-	let outcomeSuspectCaughtWithWrongWarrant: TerminalRow[][] = [];
-	let outcomeSuspectCaughtWithoutWarrant: TerminalRow[][] = [];
-	let outcomeSuspectGotAway: TerminalRow[][] = [];
-
 	onMount(() => {
 		// Can't start the game without $playerStore and $gameStore
 		// Redirect back to HQ to generate them
@@ -265,7 +277,7 @@
 
 	$: if (game) {
 		currentRound = game.roundDecoy ? game.roundDecoy : game.rounds[game.currentRoundIndex];
-		artworkPath = currentRound.atlas.artwork;
+		if (currentClueIndex === null) artworkPath = currentRound.atlas.artwork;
 
 		isLastRound = game.currentRoundIndex === game.rounds.length - 1;
 		hasWarrant = possibleSuspects.length === 1;
@@ -321,20 +333,6 @@
 			[{ text: $LL.game.outcome.ready({ rank: playerRank, name: $playerStore!.name }) }]
 		];
 	}
-
-	$: isClockTicking = isSleeping || isWalking || isFlying;
-	$: isArtworkHidden = isClockTicking && !isSleeping;
-	$: isClueVisible = currentClueIndex !== null && !isWalking && !isSleeping && !isGameOver;
-	$: isGameOver = suspectCaughtWithWarrant || suspectCaughtWithWrongWarrant || suspectCaughtWithoutWarrant || suspectGotAway; // prettier-ignore
-
-	let possibleSuspects: Suspect[] = [];
-	let warrantSex: WarrantSex | undefined;
-	let warrantHobby: WarrantHobby | undefined;
-	let warrantHair: WarrantHair | undefined;
-	let warrantFeature: WarrantFeature | undefined;
-	let warrantVehicle: WarrantVehicle | undefined;
-	$: canComputeWarrant =
-		warrantSex || warrantHobby || warrantHair || warrantFeature || warrantVehicle;
 </script>
 
 {#if !isLoading}
