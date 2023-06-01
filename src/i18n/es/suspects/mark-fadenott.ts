@@ -11,7 +11,7 @@ export const markFadenott = {
 		1: 'Realmente era difícil ver dentro de su limo.',
 		2: 'Su pelo parecía teñido.',
 		3: 'El anillo que tenía era demasiado grande para su meñique.',
-		4: 'Llevaba un mazo de croquet.',
+		4: 'Preguntó sobre la vida nocturna local.',
 		5: 'Dejó caer una púa de guitarra.',
 		6: 'Tuve que mirar hacia arriba cuando vi a su asistente.'
 	}
