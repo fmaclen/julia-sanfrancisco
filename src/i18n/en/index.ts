@@ -104,13 +104,11 @@ const en = {
 		trailingSuspect: {
 			0: 'A {sex:string|{male: henchman, female: henchwoman}}!',
 			1: 'You must be on the right track.',
-			2: 'Not so fast!',
+			2: 'Suspect appears to be nearby.',
 			3: 'Getting closer...',
-			4: 'Just missed {sex:string|{male: him, female: her}}...',
-			5: "Can't escape forever!",
-			6: '{sex:string|{male: His, female: Her}} luck is ought to run out soon...',
-			7: 'There {sex:string|{male: he, female: she}} goes...',
-			8: 'Capture in progress...'
+			4: '{sex:string|{male: His, female: Her}} luck is ought to run out soon...',
+			5: 'There {sex:string|{male: he, female: she}} goes...',
+			6: 'Capture in progress...'
 		},
 		actions: {
 			walk: 'Walk to',

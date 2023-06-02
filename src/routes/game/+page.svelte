@@ -60,9 +60,13 @@
 	let isFlying: boolean;
 	let isSleeping: boolean;
 	let isTimeUp: boolean;
+	let isFirstRound: boolean;
 	let isLastRound: boolean;
 	let isGameOver: boolean;
-	let isTrailingSuspect: boolean = true;
+
+	let isTrailingSuspect: boolean;
+	let trailingSceneInRoundSeen: boolean;
+	let trailingSuspectScene: keyof Translation['game']['trailingSuspect'] = '0';
 
 	let hasWarrant: boolean;
 	let suspectCaught: boolean;
@@ -162,9 +166,40 @@
 		showDescription = false;
 		clock.isWalking = true;
 
-		transitionTo(() => {
-			currentClueIndex = index;
-			if (currentRound) artworkPath = currentRound.scenes[index].place.artwork;
+		await new Promise<void>((resolve) => {
+			transitionTo(() => {
+				if (!trailingSceneInRoundSeen && !isFirstRound) {
+					isTrailingSuspect = true;
+
+					setTimeout(() => {
+						trailingSuspectScene = (
+							parseInt(trailingSuspectScene) + 1
+						).toString() as keyof Translation['game']['trailingSuspect']; // HACK
+						isTrailingSuspect = false;
+						trailingSceneInRoundSeen = true;
+
+						if (trailingSuspectScene === '5') {
+							setTimeout(() => {
+								trailingSuspectScene = (
+									parseInt(trailingSuspectScene) + 1
+								).toString() as keyof Translation['game']['trailingSuspect']; // HACK
+
+								// Resolve after the timeout
+								resolve();
+							}, 4000);
+						} else {
+							// Resolve after the timeout
+							resolve();
+						}
+					}, 4000);
+				} else {
+					// Resolve immediately if the trailing scene was already shown
+					resolve();
+				}
+
+				currentClueIndex = index;
+				if (currentRound) artworkPath = currentRound.scenes[index].place.artwork;
+			});
 		});
 
 		await clock.fastForward(2);
@@ -204,6 +239,7 @@
 				currentRound = generateDecoyRound($LL, currentAtlas, anchorAtlas);
 				game.roundDecoy = currentRound;
 			} else {
+				trailingSceneInRoundSeen = false;
 				game.roundDecoy = null;
 			}
 
@@ -217,10 +253,7 @@
 
 	function transitionTo(callback: Function) {
 		isArtworkHidden = true;
-
-		setTimeout(() => {
-			callback();
-		}, DELAY_IN_MS);
+		setTimeout(() => callback(), DELAY_IN_MS);
 	}
 
 	function updateScore(): void {
@@ -280,6 +313,7 @@
 		currentRound = game.roundDecoy ? game.roundDecoy : game.rounds[game.currentRoundIndex];
 		if (currentClueIndex === null) artworkPath = currentRound.atlas.artwork;
 
+		isFirstRound = game.currentRoundIndex === 0;
 		isLastRound = game.currentRoundIndex === game.rounds.length - 1;
 		hasWarrant = warrants.length === 1;
 		suspectCaught = !isClockTicking && !isTimeUp && isLastRound && currentClueIndex === game.suspect.lastRoundHidingPlace; // prettier-ignore
@@ -334,14 +368,20 @@
 			[{ text: $LL.game.outcome.ready({ rank: playerRank, name: $playerStore!.name }) }]
 		];
 	}
-</script>
 
-<!-- {#if game && isTrailingSuspect}
-	<TrailingSuspect sceneIndex={0} sex={game.suspect.warrantKeys.sex} />
-{/if} -->
+	$: {
+		console.log('isTrailingSuspect', isTrailingSuspect);
+		console.log('trailingSceneInRoundSeen', trailingSceneInRoundSeen);
+		console.log('trailingSuspectScene', trailingSuspectScene);
+	}
+</script>
 
 {#if !isLoading}
 	<Main>
+		{#if isTrailingSuspect}
+			<TrailingSuspect sceneIndex={trailingSuspectScene} sex={game.suspect.warrantKeys.sex} />
+		{/if}
+
 		<Header slot="header">
 			<H1>
 				{isSleeping

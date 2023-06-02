@@ -1,6 +1,7 @@
 <script lang="ts">
 	import LL from '$i18n/i18n-svelte';
 	import H1 from '$lib/components/H1.svelte';
+	import type { Translation } from '../../i18n/i18n-types';
 	import SuspectFall from '../icons/SuspectFall.svg.svelte';
 	import SuspectFingerprint from '../icons/SuspectFingerprint.svg.svelte';
 	import SuspectHacker from '../icons/SuspectHacker.svg.svelte';
@@ -10,17 +11,19 @@
 	import SuspectRun from '../icons/SuspectRun.svg.svelte';
 	import SuspectSki from '../icons/SuspectSki.svg.svelte';
 	import type { WarrantSex } from '../suspects';
+	import { fade } from 'svelte/transition';
 
 	export let sex: WarrantSex;
-	export let sceneIndex: number = 0;
+	export let sceneIndex: keyof Translation['game']['trailingSuspect'];
 </script>
 
 <main
-	class="trailing-suspect {sceneIndex === 6 ? 'trailing-suspect--danger' : ''} {sceneIndex === 7
+	class="trailing-suspect {sceneIndex === '5' ? 'trailing-suspect--danger' : ''} {sceneIndex === '6'
 		? 'trailing-suspect--capture'
 		: ''}"
+	transition:fade
 >
-	{#if sceneIndex === 0}
+	{#if sceneIndex === '0'}
 		<div class="trailing-suspect__icons">
 			<SuspectRappel />
 			<SuspectRappel />
@@ -33,16 +36,16 @@
 		<H1>{$LL.game.trailingSuspect[1]()}</H1>
 	{/if}
 
-	{#if sceneIndex === 1}
+	{#if sceneIndex === '1'}
 		<div class="trailing-suspect__icons">
-			<SuspectFall />
-			<SuspectFall />
-			<SuspectFall />
+			<SuspectFingerprint />
+			<SuspectFingerprint />
+			<SuspectFingerprint />
 		</div>
 		<H1>{$LL.game.trailingSuspect[2]()}</H1>
 	{/if}
 
-	{#if sceneIndex === 2}
+	{#if sceneIndex === '2'}
 		<div class="trailing-suspect__icons">
 			<SuspectHacker />
 			<SuspectHacker />
@@ -51,7 +54,7 @@
 		<H1>{$LL.game.trailingSuspect[3]()}</H1>
 	{/if}
 
-	{#if sceneIndex === 3}
+	{#if sceneIndex === '3'}
 		<div class="trailing-suspect__icons">
 			<SuspectSki />
 			<SuspectSki />
@@ -60,7 +63,7 @@
 		<H1>{$LL.game.trailingSuspect[4]({ sex })}</H1>
 	{/if}
 
-	{#if sceneIndex === 4}
+	{#if sceneIndex === '4'}
 		<div class="trailing-suspect__icons">
 			<SuspectKick />
 			<SuspectKick />
@@ -69,16 +72,7 @@
 		<H1>{$LL.game.trailingSuspect[5]()}</H1>
 	{/if}
 
-	{#if sceneIndex === 5}
-		<div class="trailing-suspect__icons">
-			<SuspectFingerprint />
-			<SuspectFingerprint />
-			<SuspectFingerprint />
-		</div>
-		<H1>{$LL.game.trailingSuspect[6]({ sex })}</H1>
-	{/if}
-
-	{#if sceneIndex === 6}
+	{#if sceneIndex === '5'}
 		<div class="trailing-suspect__icons">
 			<SuspectRun />
 			<SuspectRun />
@@ -87,7 +81,7 @@
 		<H1>{$LL.game.trailingSuspect[7]({ sex })}</H1>
 	{/if}
 
-	{#if sceneIndex === 7}
+	{#if sceneIndex === '6'}
 		<div class="trailing-suspect__icons">
 			<SuspectPolice />
 			<SuspectPolice />
@@ -99,6 +93,8 @@
 
 <style lang="scss">
 	main.trailing-suspect {
+		z-index: 10;
+		position: absolute;
 		height: 100%;
 		width: 100%;
 		display: flex;
@@ -108,7 +104,9 @@
 		text-align: center;
 		gap: 16px;
 		box-sizing: border-box;
+		border-radius: 16px;
 		padding-inline: var(--layout-inline);
+		background-color: var(--color-neutral-900);
 
 		&--danger {
 			background-color: var(--color-danger);
@@ -127,7 +125,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		gap: 24px;
+		gap: 32px;
 		margin-bottom: 16px;
 
 		> svg {
