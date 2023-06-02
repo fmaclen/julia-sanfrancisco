@@ -101,13 +101,13 @@ const en = {
 				1: "We've just received word that {suspect:string} slipped through your fingers because your investigation took too long!"
 			}
 		},
-		trailing: {
+		trailingSuspect: {
 			0: 'A {sex:string|{male: henchman, female: henchwoman}}!',
 			1: 'You must be on the right track.',
 			2: 'Not so fast!',
 			3: 'Getting closer...',
 			4: 'Just missed {sex:string|{male: him, female: her}}...',
-			5: "Can't escape forever",
+			5: "Can't escape forever!",
 			6: '{sex:string|{male: His, female: Her}} luck is ought to run out soon...',
 			7: 'There {sex:string|{male: he, female: she}} goes...',
 			8: 'Capture in progress...'

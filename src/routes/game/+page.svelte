@@ -38,6 +38,7 @@
 		WarrantVehicle,
 		findSuspects
 	} from '$lib/suspects';
+	import TrailingSuspect from '../../lib/components/TrailingSuspect.svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { fade, slide } from 'svelte/transition';
 	import type { LocalizedString } from 'typesafe-i18n';
@@ -61,6 +62,7 @@
 	let isTimeUp: boolean;
 	let isLastRound: boolean;
 	let isGameOver: boolean;
+	let isTrailingSuspect: boolean = true;
 
 	let hasWarrant: boolean;
 	let suspectCaught: boolean;
@@ -333,6 +335,10 @@
 		];
 	}
 </script>
+
+<!-- {#if game && isTrailingSuspect}
+	<TrailingSuspect sceneIndex={0} sex={game.suspect.warrantKeys.sex} />
+{/if} -->
 
 {#if !isLoading}
 	<Main>
