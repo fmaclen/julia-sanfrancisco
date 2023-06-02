@@ -42,7 +42,7 @@ import { sparkleLily } from './suspects/sparkle-lily';
 import { speedyJakeZ } from './suspects/speedy-jake-z';
 
 const es = {
-	...(en as Translation), // Fall back to English
+	...en, // Fall back to English
 	splash: {
 		title: 'Julia Sanfrancisco',
 		introduction:
