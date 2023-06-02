@@ -2,7 +2,6 @@
 	import LL from '$i18n/i18n-svelte';
 	import H1 from '$lib/components/H1.svelte';
 	import type { Translation } from '../../i18n/i18n-types';
-	import SuspectFall from '../icons/SuspectFall.svg.svelte';
 	import SuspectFingerprint from '../icons/SuspectFingerprint.svg.svelte';
 	import SuspectHacker from '../icons/SuspectHacker.svg.svelte';
 	import SuspectKick from '../icons/SuspectKick.svg.svelte';

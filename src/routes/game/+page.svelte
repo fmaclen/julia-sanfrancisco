@@ -172,22 +172,15 @@
 		if (!trailingSceneInRoundSeen && !isFirstRound) {
 			isTrailingSuspect = true;
 
-			if (trailingSuspectScene === '5') {
-				await delay(4000);
-				trailingSuspectScene = '6';
-
-				await delay(4000);
-				isTrailingSuspect = false;
-				trailingSceneInRoundSeen = true;
-			} else {
+			// Need to only run the transition to scene 5 and 6 when suspectCaught
+			if (trailingSuspectScene !== '5') {
 				await delay(4000);
 				trailingSuspectScene = (
 					parseInt(trailingSuspectScene) + 1
 				).toString() as keyof Translation['game']['trailingSuspect'];
-				
-				isTrailingSuspect = false;
-				trailingSceneInRoundSeen = true;
 			}
+			isTrailingSuspect = false;
+			trailingSceneInRoundSeen = true;
 		}
 
 		transitionTo(() => {
@@ -197,6 +190,19 @@
 
 		await clock.fastForward(2);
 	}
+
+	async function setSuspectCaughtScene() {
+		isTrailingSuspect = true;
+
+		await delay(4000);
+		trailingSuspectScene = '6';
+
+		await delay(4000);
+		isTrailingSuspect = false;
+		trailingSceneInRoundSeen = true;
+	}
+
+	$: if (suspectCaught) setSuspectCaughtScene();
 
 	function dismissClue(): void {
 		transitionTo(() => {
@@ -361,12 +367,6 @@
 			[{ text: $LL.game.outcome.ready({ rank: playerRank, name: $playerStore!.name }) }]
 		];
 	}
-
-	$: {
-		console.log('isTrailingSuspect', isTrailingSuspect);
-		console.log('trailingSceneInRoundSeen', trailingSceneInRoundSeen);
-		console.log('trailingSuspectScene', trailingSuspectScene);
-	}
 </script>
 
 {#if !isLoading}
@@ -399,31 +399,33 @@
 		/>
 
 		<Footer slot="footer">
-			{#if suspectCaughtWithWarrant}
-				<TerminalGroup>
-					<TerminalRows lines={outcomeSuspectCaughtWithWarrant[0]} bind:isAnimating />
-					<TerminalRows lines={outcomeSuspectCaughtWithWarrant[1]} bind:isAnimating />
-					<TerminalRows lines={outcomeSuspectCaughtWithWarrant[2]} bind:isAnimating />
-					<TerminalRows lines={outcomeSuspectCaughtWithWarrant[3]} bind:isAnimating />
-				</TerminalGroup>
-			{/if}
+			{#if !isTrailingSuspect && trailingSceneInRoundSeen}
+				{#if suspectCaughtWithWarrant}
+					<TerminalGroup>
+						<TerminalRows lines={outcomeSuspectCaughtWithWarrant[0]} bind:isAnimating />
+						<TerminalRows lines={outcomeSuspectCaughtWithWarrant[1]} bind:isAnimating />
+						<TerminalRows lines={outcomeSuspectCaughtWithWarrant[2]} bind:isAnimating />
+						<TerminalRows lines={outcomeSuspectCaughtWithWarrant[3]} bind:isAnimating />
+					</TerminalGroup>
+				{/if}
 
-			{#if suspectCaughtWithWrongWarrant}
-				<TerminalGroup>
-					<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[0]} bind:isAnimating />
-					<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[1]} bind:isAnimating />
-					<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[2]} bind:isAnimating />
-					<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[3]} bind:isAnimating />
-				</TerminalGroup>
-			{/if}
+				{#if suspectCaughtWithWrongWarrant}
+					<TerminalGroup>
+						<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[0]} bind:isAnimating />
+						<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[1]} bind:isAnimating />
+						<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[2]} bind:isAnimating />
+						<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[3]} bind:isAnimating />
+					</TerminalGroup>
+				{/if}
 
-			{#if suspectCaughtWithoutWarrant}
-				<TerminalGroup>
-					<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[0]} bind:isAnimating />
-					<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[1]} bind:isAnimating />
-					<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[2]} bind:isAnimating />
-					<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[3]} bind:isAnimating />
-				</TerminalGroup>
+				{#if suspectCaughtWithoutWarrant}
+					<TerminalGroup>
+						<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[0]} bind:isAnimating />
+						<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[1]} bind:isAnimating />
+						<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[2]} bind:isAnimating />
+						<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[3]} bind:isAnimating />
+					</TerminalGroup>
+				{/if}
 			{/if}
 
 			{#if suspectGotAway}
@@ -615,9 +617,11 @@
 			{#if !isClockTicking}
 				<nav class="game-nav" transition:fade>
 					{#if isGameOver}
-						<ButtonIcon on:click={updateScore} title={$LL.components.buttons.continue()}>
-							<Continue />
-						</ButtonIcon>
+						{#if !isTrailingSuspect && trailingSceneInRoundSeen}
+							<ButtonIcon on:click={updateScore} title={$LL.components.buttons.continue()}>
+								<Continue />
+							</ButtonIcon>
+						{/if}
 					{:else if isClueVisible}
 						<ButtonIcon on:click={dismissClue} title={$LL.components.buttons.goBack()}>
 							<Back />
