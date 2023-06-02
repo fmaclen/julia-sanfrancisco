@@ -66,7 +66,7 @@
 
 	let isTrailingSuspect: boolean;
 	let trailingSceneInRoundSeen: boolean;
-	let trailingSuspectScene: keyof Translation['game']['trailingSuspect'] = '0';
+	let trailingSuspectScene: keyof Translation['game']['trailingSuspect'] = '5';
 
 	let hasWarrant: boolean;
 	let suspectCaught: boolean;
@@ -161,45 +161,38 @@
 		warrants = findSuspects(warrantSex, warrantHobby, warrantHair, warrantFeature, warrantVehicle);
 	}
 
+	// Utility function for promise-based setTimeout
+	const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 	async function getClue(index: number): Promise<void> {
 		showPlaces = false;
 		showDescription = false;
 		clock.isWalking = true;
 
-		await new Promise<void>((resolve) => {
-			transitionTo(() => {
-				if (!trailingSceneInRoundSeen && !isFirstRound) {
-					isTrailingSuspect = true;
+		if (!trailingSceneInRoundSeen && !isFirstRound) {
+			isTrailingSuspect = true;
 
-					setTimeout(() => {
-						trailingSuspectScene = (
-							parseInt(trailingSuspectScene) + 1
-						).toString() as keyof Translation['game']['trailingSuspect']; // HACK
-						isTrailingSuspect = false;
-						trailingSceneInRoundSeen = true;
+			if (trailingSuspectScene === '5') {
+				await delay(4000);
+				trailingSuspectScene = '6';
 
-						if (trailingSuspectScene === '5') {
-							setTimeout(() => {
-								trailingSuspectScene = (
-									parseInt(trailingSuspectScene) + 1
-								).toString() as keyof Translation['game']['trailingSuspect']; // HACK
+				await delay(4000);
+				isTrailingSuspect = false;
+				trailingSceneInRoundSeen = true;
+			} else {
+				await delay(4000);
+				trailingSuspectScene = (
+					parseInt(trailingSuspectScene) + 1
+				).toString() as keyof Translation['game']['trailingSuspect'];
+				
+				isTrailingSuspect = false;
+				trailingSceneInRoundSeen = true;
+			}
+		}
 
-								// Resolve after the timeout
-								resolve();
-							}, 4000);
-						} else {
-							// Resolve after the timeout
-							resolve();
-						}
-					}, 4000);
-				} else {
-					// Resolve immediately if the trailing scene was already shown
-					resolve();
-				}
-
-				currentClueIndex = index;
-				if (currentRound) artworkPath = currentRound.scenes[index].place.artwork;
-			});
+		transitionTo(() => {
+			currentClueIndex = index;
+			if (currentRound) artworkPath = currentRound.scenes[index].place.artwork;
 		});
 
 		await clock.fastForward(2);

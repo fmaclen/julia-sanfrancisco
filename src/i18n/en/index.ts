@@ -106,9 +106,10 @@ const en = {
 			1: 'You must be on the right track.',
 			2: 'Suspect appears to be nearby.',
 			3: 'Getting closer...',
-			4: '{sex:string|{male: His, female: Her}} luck is ought to run out soon...',
-			5: 'There {sex:string|{male: he, female: she}} goes...',
-			6: 'Capture in progress...'
+			4: 'Suspect is in sight!',
+			5: '{sex:string|{male: His, female: Her}} luck is ought to run out soon...',
+			6: 'There {sex:string|{male: he, female: she}} goes...',
+			7: 'Capture in progress...'
 		},
 		actions: {
 			walk: 'Walk to',

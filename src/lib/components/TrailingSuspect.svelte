@@ -11,85 +11,96 @@
 	import SuspectRun from '../icons/SuspectRun.svg.svelte';
 	import SuspectSki from '../icons/SuspectSki.svg.svelte';
 	import type { WarrantSex } from '../suspects';
+	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 
 	export let sex: WarrantSex;
 	export let sceneIndex: keyof Translation['game']['trailingSuspect'];
+
+	let isLoading: boolean = true;
+
+	onMount(() => {
+		isLoading = false;
+	});
 </script>
 
-<main
-	class="trailing-suspect {sceneIndex === '5' ? 'trailing-suspect--danger' : ''} {sceneIndex === '6'
-		? 'trailing-suspect--capture'
-		: ''}"
-	transition:fade
->
-	{#if sceneIndex === '0'}
-		<div class="trailing-suspect__icons">
-			<SuspectRappel />
-			<SuspectRappel />
-			<SuspectRappel />
-		</div>
+{#if !isLoading}
+	<main
+		class="
+    trailing-suspect
+    {sceneIndex === '5' ? 'trailing-suspect--danger' : ''}
+    {sceneIndex === '6' ? 'trailing-suspect--capture' : ''}
+  "
+		transition:fade
+	>
+		{#if sceneIndex === '0'}
+			<div class="trailing-suspect__icons">
+				<SuspectRappel />
+				<SuspectRappel />
+				<SuspectRappel />
+			</div>
 
-		<span class="trailing-suspect__suspect">
-			<H1>{$LL.game.trailingSuspect[0]({ sex })}</H1>
-		</span>
-		<H1>{$LL.game.trailingSuspect[1]()}</H1>
-	{/if}
+			<span class="trailing-suspect__suspect">
+				<H1>{$LL.game.trailingSuspect[0]({ sex })}</H1>
+			</span>
+			<H1>{$LL.game.trailingSuspect[1]()}</H1>
+		{/if}
 
-	{#if sceneIndex === '1'}
-		<div class="trailing-suspect__icons">
-			<SuspectFingerprint />
-			<SuspectFingerprint />
-			<SuspectFingerprint />
-		</div>
-		<H1>{$LL.game.trailingSuspect[2]()}</H1>
-	{/if}
+		{#if sceneIndex === '1'}
+			<div class="trailing-suspect__icons">
+				<SuspectFingerprint />
+				<SuspectFingerprint />
+				<SuspectFingerprint />
+			</div>
+			<H1>{$LL.game.trailingSuspect[2]()}</H1>
+		{/if}
 
-	{#if sceneIndex === '2'}
-		<div class="trailing-suspect__icons">
-			<SuspectHacker />
-			<SuspectHacker />
-			<SuspectHacker />
-		</div>
-		<H1>{$LL.game.trailingSuspect[3]()}</H1>
-	{/if}
+		{#if sceneIndex === '2'}
+			<div class="trailing-suspect__icons">
+				<SuspectHacker />
+				<SuspectHacker />
+				<SuspectHacker />
+			</div>
+			<H1>{$LL.game.trailingSuspect[3]()}</H1>
+		{/if}
 
-	{#if sceneIndex === '3'}
-		<div class="trailing-suspect__icons">
-			<SuspectSki />
-			<SuspectSki />
-			<SuspectSki />
-		</div>
-		<H1>{$LL.game.trailingSuspect[4]({ sex })}</H1>
-	{/if}
+		{#if sceneIndex === '3'}
+			<div class="trailing-suspect__icons">
+				<SuspectSki />
+				<SuspectSki />
+				<SuspectSki />
+			</div>
+			<H1>{$LL.game.trailingSuspect[4]({ sex })}</H1>
+		{/if}
 
-	{#if sceneIndex === '4'}
-		<div class="trailing-suspect__icons">
-			<SuspectKick />
-			<SuspectKick />
-			<SuspectKick />
-		</div>
-		<H1>{$LL.game.trailingSuspect[5]()}</H1>
-	{/if}
+		{#if sceneIndex === '4'}
+			<div class="trailing-suspect__icons">
+				<SuspectKick />
+				<SuspectKick />
+				<SuspectKick />
+			</div>
+			<H1>{$LL.game.trailingSuspect[5]()}</H1>
+		{/if}
 
-	{#if sceneIndex === '5'}
-		<div class="trailing-suspect__icons">
-			<SuspectRun />
-			<SuspectRun />
-			<SuspectRun />
-		</div>
-		<H1>{$LL.game.trailingSuspect[7]({ sex })}</H1>
-	{/if}
+		{#if sceneIndex === '5'}
+			<div class="trailing-suspect__icons">
+				<SuspectRun />
+				<SuspectRun />
+				<SuspectRun />
+			</div>
+			<H1>{$LL.game.trailingSuspect[6]({ sex })}</H1>
+		{/if}
 
-	{#if sceneIndex === '6'}
-		<div class="trailing-suspect__icons">
-			<SuspectPolice />
-			<SuspectPolice />
-			<SuspectPolice />
-		</div>
-		<H1>{$LL.game.trailingSuspect[8]()}</H1>
-	{/if}
-</main>
+		{#if sceneIndex === '6'}
+			<div class="trailing-suspect__icons">
+				<SuspectPolice />
+				<SuspectPolice />
+				<SuspectPolice />
+			</div>
+			<H1>{$LL.game.trailingSuspect[7]({ sex })}</H1>
+		{/if}
+	</main>
+{/if}
 
 <style lang="scss">
 	main.trailing-suspect {
@@ -127,26 +138,28 @@
 		justify-content: center;
 		gap: 32px;
 		margin-bottom: 16px;
-
-		> svg {
-			opacity: 0;
-		}
 	}
 
 	@keyframes fadeAnimation {
 		0%,
 		100% {
-			transform: translateY(0);
 			opacity: 0;
 		}
+		25% {
+			transform: translateY(-4px);
+		}
 		50% {
-			transform: translateY(-16px);
 			opacity: 1;
+			transform: translateY(0);
+		}
+		75% {
+			transform: translateY(-4px);
 		}
 	}
 
 	:global(div.trailing-suspect__icons > svg) {
 		animation: fadeAnimation 2s infinite ease-in-out;
+		opacity: 0;
 	}
 
 	:global(div.trailing-suspect__icons > svg:nth-child(1)) {
