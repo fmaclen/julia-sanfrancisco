@@ -2,7 +2,7 @@
 
 Chase Julia and her accomplices across different countries, unraveling clues, solving puzzles, and expanding your geography knowledge in this exciting detective game.
 
-🕹️ [**Play it now**](https://julia.strictoaster.com) — 💻 [**Devlog on Discord**](https://discord.com/channels/532702198040100874/1108858794831790080)
+🕹️ [**Play it now**](https://julia.strictoaster.com) — 💻 Devlog on [**Discord**](https://discord.com/channels/532702198040100874/1108858794831790080) & [**Twitter**](https://twitter.com/fmaclen/)
 
 ![Collage of artwork from the game](https://github.com/fmaclen/julia-sanfrancisco/blob/main/static/open-graph.png?raw=true)
 

@@ -51,15 +51,22 @@
 				</div>
 
 				<div class="splash-nav__about">
-					<a class="metadata" target="_blank" href="https://github.com/fmaclen/julia-sanfrancisco/">
-						{$LL.splash.about()}
-					</a>
 					<a
 						class="metadata"
 						target="_blank"
 						href="https://github.com/fmaclen/julia-sanfrancisco/releases/"
 					>
 						v{PUBLIC_GAME_VERSION}
+					</a>
+					<a class="metadata" target="_blank" href="https://github.com/fmaclen/julia-sanfrancisco/">
+						{$LL.splash.about()}
+					</a>
+					<a
+						class="metadata"
+						target="_blank"
+						href="https://discord.com/channels/532702198040100874/1108858794831790080"
+					>
+						Discord
 					</a>
 					<a class="metadata" target="_blank" href="https://twitter.com/fmaclen/">Twitter</a>
 				</div>
@@ -87,7 +94,7 @@
 
 	div.splash-nav__about {
 		justify-content: space-between;
-		gap: 8px;
+		gap: 16px;
 	}
 
 	a.metadata {
