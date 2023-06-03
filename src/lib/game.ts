@@ -4,7 +4,8 @@ import type { Locales, Translation, TranslationFunctions } from '$i18n/i18n-type
 import { getArtworkPath, getRandomValue } from '$lib/helpers';
 import { getSuspectWarrantKeys, Suspect, type WarrantKeys } from './suspects';
 import { format } from 'date-fns';
-import { enUS, es } from 'date-fns/locale';
+import enUS from 'date-fns/locale/en-US/index';
+import es from 'date-fns/locale/es/index';
 import { writable } from 'svelte/store';
 import type { LocalizedString } from 'typesafe-i18n';
 
