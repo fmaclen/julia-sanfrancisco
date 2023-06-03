@@ -68,7 +68,7 @@
 
 	let isTrailingSuspect: boolean;
 	let trailingSceneInRoundSeen: boolean = false;
-	let trailingSuspectScene: keyof Translation['game']['trailingSuspect'] = '0';
+	let trailingSuspectScene: keyof Translation['game']['trailingSuspect'];
 
 	let hasWarrant: boolean;
 	let suspectCaught: boolean;
@@ -173,10 +173,10 @@
 
 			// Need to only run the transition to scene 5 and 6 when suspectCaught
 			if (trailingSuspectScene !== '5') {
-				await delay(SUSPECT_TRAIL_SCENE_DURATION);
-
-				const nextSuspectScene = (parseInt(trailingSuspectScene) + 1).toString() as keyof Translation['game']['trailingSuspect']; // prettier-ignore
+				const nextSuspectScene = (game.currentRoundIndex  - 1).toString() as keyof Translation['game']['trailingSuspect']; // prettier-ignore
 				trailingSuspectScene = nextSuspectScene;
+
+				await delay(SUSPECT_TRAIL_SCENE_DURATION);
 			}
 
 			isTrailingSuspect = false;
@@ -245,7 +245,7 @@
 		if (isPreviousRound) game.currentRoundIndex -= 1;
 
 		await clock.fastForward(4);
-		
+
 		// Must reset round after transition
 		showPostcard = true;
 		resetRound();
@@ -419,7 +419,6 @@
 						<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[0]} bind:isAnimating />
 						<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[1]} bind:isAnimating />
 						<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[2]} bind:isAnimating />
-						<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[3]} bind:isAnimating />
 					</TerminalGroup>
 				{/if}
 			{/if}
