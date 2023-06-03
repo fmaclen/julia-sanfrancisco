@@ -69,7 +69,7 @@
 				<SuspectSki />
 				<SuspectSki />
 			</div>
-			<H1>{$LL.game.trailingSuspect[4]({ sex })}</H1>
+			<H1>{$LL.game.trailingSuspect[4]()}</H1>
 		{/if}
 
 		{#if sceneIndex === '4'}
@@ -78,7 +78,7 @@
 				<SuspectKick />
 				<SuspectKick />
 			</div>
-			<H1>{$LL.game.trailingSuspect[5]()}</H1>
+			<H1>{$LL.game.trailingSuspect[5]({ sex })}</H1>
 		{/if}
 
 		{#if sceneIndex === '5'}
@@ -96,7 +96,7 @@
 				<SuspectPolice />
 				<SuspectPolice />
 			</div>
-			<H1>{$LL.game.trailingSuspect[7]({ sex })}</H1>
+			<H1>{$LL.game.trailingSuspect[7]()}</H1>
 		{/if}
 	</main>
 {/if}
