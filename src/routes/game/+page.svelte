@@ -20,7 +20,7 @@
 	import TerminalTitle from '$lib/components/TerminalTitle.svelte';
 	import Time from '$lib/components/Time.svelte';
 	import { gameStore, type Game, type Atlas, type Round, generateDecoyRound } from '$lib/game';
-	import { getRandomValue, redirectTo } from '$lib/helpers';
+	import { delay, getRandomValue, redirectTo } from '$lib/helpers';
 	import Back from '$lib/icons/Back.svg.svelte';
 	import Collapse from '$lib/icons/Collapse.svg.svelte';
 	import Continue from '$lib/icons/Continue.svg.svelte';
@@ -42,6 +42,8 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { fade, slide } from 'svelte/transition';
 	import type { LocalizedString } from 'typesafe-i18n';
+
+	const SUSPECT_TRAIL_SCENE_DURATION = 4000;
 
 	let playerRank: LocalizedString;
 
@@ -161,9 +163,6 @@
 		warrants = findSuspects(warrantSex, warrantHobby, warrantHair, warrantFeature, warrantVehicle);
 	}
 
-	// Utility function for promise-based setTimeout
-	const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 	async function getClue(index: number): Promise<void> {
 		showPlaces = false;
 		showDescription = false;
@@ -174,7 +173,7 @@
 
 			// Need to only run the transition to scene 5 and 6 when suspectCaught
 			if (trailingSuspectScene !== '5') {
-				await delay(4000);
+				await delay(SUSPECT_TRAIL_SCENE_DURATION);
 
 				const nextSuspectScene = (parseInt(trailingSuspectScene) + 1).toString() as keyof Translation['game']['trailingSuspect']; // prettier-ignore
 				trailingSuspectScene = nextSuspectScene;
@@ -194,10 +193,10 @@
 	async function setSuspectCaughtScene() {
 		isTrailingSuspect = true;
 
-		await delay(4000);
+		await delay(SUSPECT_TRAIL_SCENE_DURATION);
 		trailingSuspectScene = '6';
 
-		await delay(4000);
+		await delay(SUSPECT_TRAIL_SCENE_DURATION);
 		isTrailingSuspect = false;
 		trailingSceneInRoundSeen = true;
 	}
@@ -227,15 +226,12 @@
 		const isPreviousRound =
 			currentRoundIndex > 0 && rounds[currentRoundIndex - 1].atlas.city === currentAtlas.city;
 
-		if (isCurrentRound) currentRound = rounds[currentRoundIndex];
-		if (isNextRound) game.currentRoundIndex += 1;
-		if (isPreviousRound) game.currentRoundIndex -= 1;
-
 		// Decoy rounds are used to throw the player off the trail
 		const isDecoyRound = !isCurrentRound && !isPreviousRound && !isNextRound;
 
 		// There should always be a way to return to the round where the suspect trail was lost
 		const anchorAtlas = rounds[currentRoundIndex].atlas;
+
 		if (isDecoyRound) {
 			currentRound = generateDecoyRound($LL, currentAtlas, anchorAtlas);
 			game.roundDecoy = currentRound;
@@ -244,11 +240,15 @@
 			game.roundDecoy = null;
 		}
 
+		if (isCurrentRound) currentRound = rounds[currentRoundIndex];
+		if (isNextRound) game.currentRoundIndex += 1;
+		if (isPreviousRound) game.currentRoundIndex -= 1;
+
+		await clock.fastForward(4);
+		
 		// Must reset round after transition
 		showPostcard = true;
 		resetRound();
-
-		await clock.fastForward(4);
 	}
 
 	function updateScore(): void {
