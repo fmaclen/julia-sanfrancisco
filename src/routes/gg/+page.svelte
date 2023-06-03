@@ -1,20 +1,20 @@
 <script lang="ts">
 	import LL from '$i18n/i18n-svelte';
+	import Artwork from '$lib/components/Artwork.svelte';
 	import ButtonIcon from '$lib/components/ButtonIcon.svelte';
 	import Footer from '$lib/components/Footer.svelte';
+	import H1 from '$lib/components/H1.svelte';
+	import Header from '$lib/components/Header.svelte';
 	import Main from '$lib/components/Main.svelte';
 	import type { TerminalRow } from '$lib/components/Terminal';
 	import TerminalGroup from '$lib/components/TerminalGroup.svelte';
 	import TerminalRows from '$lib/components/TerminalRows.svelte';
+	import Time from '$lib/components/Time.svelte';
 	import TrailingSuspect from '$lib/components/TrailingSuspect.svelte';
 	import { gameStore, getFormattedTime, type Atlas, SUSPECT_TRAIL_SCENE_DURATION } from '$lib/game';
 	import { delay, redirectTo } from '$lib/helpers';
 	import Continue from '$lib/icons/Continue.svg.svelte';
 	import { getCasesUntilPromotion, getRank, playerStore, type Player } from '$lib/player';
-	import Artwork from '../../lib/components/Artwork.svelte';
-	import H1 from '../../lib/components/H1.svelte';
-	import Header from '../../lib/components/Header.svelte';
-	import Time from '../../lib/components/Time.svelte';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 
@@ -171,48 +171,50 @@
 		<Artwork isDisabled={true} src={currentRoundAtlas.artwork} />
 
 		<Footer slot="footer">
-			<TerminalGroup>
-				{#if suspectGotAway}
-					<TerminalRows lines={outcomeSuspectGotAway[0]} bind:isAnimating />
-				{/if}
+			{#if !showDangerScene && !showCaptureScene}
+				<TerminalGroup>
+					{#if suspectGotAway}
+						<TerminalRows lines={outcomeSuspectGotAway[0]} bind:isAnimating />
+					{/if}
 
-				{#if hasOutroScenePlayed}
-					{#if suspectCaughtWithWarrant}
-						<TerminalRows lines={outcomeSuspectCaughtWithWarrant[0]} />
-						{#if currentStepIndex > 0}
-							<TerminalRows lines={outcomeSuspectCaughtWithWarrant[1]} bind:isAnimating />
+					{#if hasOutroScenePlayed}
+						{#if suspectCaughtWithWarrant}
+							<TerminalRows lines={outcomeSuspectCaughtWithWarrant[0]} />
+							{#if currentStepIndex > 0}
+								<TerminalRows lines={outcomeSuspectCaughtWithWarrant[1]} bind:isAnimating />
+							{/if}
+						{/if}
+
+						{#if suspectCaughtWithWrongWarrant}
+							<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[0]} />
+							{#if currentStepIndex > 0}
+								<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[1]} bind:isAnimating />
+							{/if}
+						{/if}
+
+						{#if suspectCaughtWithoutWarrant}
+							<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[0]} />
+							{#if currentStepIndex > 0}
+								<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[1]} bind:isAnimating />
+							{/if}
 						{/if}
 					{/if}
 
-					{#if suspectCaughtWithWrongWarrant}
-						<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[0]} />
-						{#if currentStepIndex > 0}
-							<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[1]} bind:isAnimating />
-						{/if}
+					{#if $playerStore && currentStepIndex == maxStepIndex}
+						{@const playerRankIndex = getRank($playerStore.score)}
+						<TerminalRows
+							lines={[
+								{
+									text: $LL.game.outcome.ready({
+										name: $playerStore.name,
+										rank: $LL.player.ranks[playerRankIndex]()
+									})
+								}
+							]}
+						/>
 					{/if}
-
-					{#if suspectCaughtWithoutWarrant}
-						<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[0]} />
-						{#if currentStepIndex > 0}
-							<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[1]} bind:isAnimating />
-						{/if}
-					{/if}
-				{/if}
-
-				{#if $playerStore && currentStepIndex == maxStepIndex && !isAnimating}
-					{@const playerRankIndex = getRank($playerStore.score)}
-					<TerminalRows
-						lines={[
-							{
-								text: $LL.game.outcome.ready({
-									name: $playerStore.name,
-									rank: $LL.player.ranks[playerRankIndex]()
-								})
-							}
-						]}
-					/>
-				{/if}
-			</TerminalGroup>
+				</TerminalGroup>
+			{/if}
 
 			{#if suspectGotAway || hasOutroScenePlayed}
 				<nav class="game-nav" transition:fade>

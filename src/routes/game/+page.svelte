@@ -18,6 +18,7 @@
 	import TerminalRows from '$lib/components/TerminalRows.svelte';
 	import TerminalTitle from '$lib/components/TerminalTitle.svelte';
 	import Time from '$lib/components/Time.svelte';
+	import TrailingSuspect from '$lib/components/TrailingSuspect.svelte';
 	import {
 		gameStore,
 		type Game,
@@ -44,7 +45,6 @@
 		WarrantVehicle,
 		findSuspects
 	} from '$lib/suspects';
-	import TrailingSuspect from '../../lib/components/TrailingSuspect.svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { fade, slide } from 'svelte/transition';
 
