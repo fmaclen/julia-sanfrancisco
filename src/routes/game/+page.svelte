@@ -18,7 +18,14 @@
 	import TerminalRows from '$lib/components/TerminalRows.svelte';
 	import TerminalTitle from '$lib/components/TerminalTitle.svelte';
 	import Time from '$lib/components/Time.svelte';
-	import { gameStore, type Game, type Atlas, type Round, generateDecoyRound } from '$lib/game';
+	import {
+		gameStore,
+		type Game,
+		type Atlas,
+		type Round,
+		generateDecoyRound,
+		getFormattedTime
+	} from '$lib/game';
 	import { delay, getRandomValue, redirectTo } from '$lib/helpers';
 	import Back from '$lib/icons/Back.svg.svelte';
 	import Collapse from '$lib/icons/Collapse.svg.svelte';
@@ -262,7 +269,7 @@
 
 		// Game loop
 		gameLoop = setInterval(() => {
-			currentTimeFormatted = clock.getFormattedTime();
+			currentTimeFormatted = getFormattedTime(clock.currentTime, $playerStore.locale);
 			isWalking = clock.isWalking;
 			isFlying = clock.isFlying;
 			isSleeping = clock.isSleeping;

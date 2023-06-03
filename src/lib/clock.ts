@@ -42,14 +42,6 @@ export default class Clock {
 		this.timerId = setInterval(() => this.advanceTime(oneMinuteInSeconds), 1500);
 	};
 
-	public getFormattedTime = (): string => {
-		// Format the time as "Monday 9:00 am" / "Lunes 9:00 am"
-		const formattedTime = format(this.currentTime, 'EEEE h:mm aaa', { locale: this.locale });
-
-		// Capitalize the first letter
-		return formattedTime.charAt(0).toUpperCase() + formattedTime.slice(1);
-	};
-
 	public fastForward = (hours: number): Promise<boolean> => {
 		return new Promise((resolve, reject) => {
 			this.stop();

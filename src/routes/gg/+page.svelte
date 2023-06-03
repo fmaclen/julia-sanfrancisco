@@ -8,14 +8,21 @@
 	import TerminalGroup from '$lib/components/TerminalGroup.svelte';
 	import TerminalRows from '$lib/components/TerminalRows.svelte';
 	import TrailingSuspect from '$lib/components/TrailingSuspect.svelte';
-	import { gameStore } from '$lib/game';
+	import { gameStore, getFormattedTime } from '$lib/game';
 	import { delay, redirectTo } from '$lib/helpers';
 	import Continue from '$lib/icons/Continue.svg.svelte';
 	import { getCasesUntilPromotion, getRank, playerStore, type Player } from '$lib/player';
+	import { DELAY_IN_MS } from '../../lib/clock';
+	import H1 from '../../lib/components/H1.svelte';
+	import Header from '../../lib/components/Header.svelte';
+	import Time from '../../lib/components/Time.svelte';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 
-	let sceneIndex: keyof Translation['game']['trailingSuspect'];
+	let isAnimating: boolean = false;
+	let currentStepIndex: number;
+	let maxStepIndex: number;
+
 	let showDangerScene: boolean;
 	let showCaptureScene: boolean;
 	let hasOutroScenePlayed: boolean;
@@ -39,9 +46,6 @@
 		const suspectWarrant = $LL.suspects[$gameStore.warrants[0]].name();
 
 		const playerCases = getCasesUntilPromotion($playerStore.score);
-		const playerName = $playerStore.name;
-		const playerRankIndex = getRank($playerStore.score);
-		const playerRank = $LL.player.ranks[playerRankIndex]();
 
 		suspectCaught = $gameStore.suspect.caught;
 		hasWarrant = $gameStore.warrants.length === 1;
@@ -57,8 +61,7 @@
 				{ text: $LL.game.outcome.caughtWithWarrant[2]() },
 				{ text: $LL.game.outcome.caughtWithWarrant[3]() },
 				{ text: $LL.game.outcome.caughtWithWarrant[4]({ cases: playerCases }) }
-			],
-			[{ text: $LL.game.outcome.ready({ rank: playerRank, name: playerName }) }]
+			]
 		];
 
 		outcomeSuspectCaughtWithWrongWarrant = [
@@ -70,8 +73,7 @@
 			[
 				{ text: $LL.game.outcome.caughtWithWrongWarrant[2]() },
 				{ text: $LL.game.outcome.caughtWithWrongWarrant[3]() }
-			],
-			[{ text: $LL.game.outcome.ready({ rank: playerRank, name: playerName }) }]
+			]
 		];
 
 		outcomeSuspectCaughtWithoutWarrant = [
@@ -80,8 +82,7 @@
 				{ text: $LL.game.outcome.caughtWithoutWarrant[0]({ suspect }) },
 				{ text: $LL.game.outcome.caughtWithoutWarrant[1]() }
 			],
-			[{ text: $LL.game.outcome.caughtWithoutWarrant[2]() }],
-			[{ text: $LL.game.outcome.ready({ rank: playerRank, name: playerName }) }]
+			[{ text: $LL.game.outcome.caughtWithoutWarrant[2]() }]
 		];
 
 		outcomeSuspectGotAway = [
@@ -89,37 +90,50 @@
 				{ text: $LL.game.outcome.title(), isTitle: true },
 				{ text: $LL.game.outcome.gotAway[0]() },
 				{ text: $LL.game.outcome.gotAway[1]({ suspect }) }
-			],
-			[{ text: $LL.game.outcome.ready({ rank: playerRank, name: playerName }) }]
+			]
 		];
 	}
 
 	$: suspectGotAway = !suspectCaught;
 	$: suspectCaughtWithWarrant = suspectCaught && hasCorrectWarrant;
-	$: suspectCaughtWithWrongWarrant = suspectCaught && hasWarrant && !hasCorrectWarrant;
 	$: suspectCaughtWithoutWarrant = suspectCaught && !hasWarrant;
+	$: suspectCaughtWithWrongWarrant = suspectCaught && hasWarrant && !hasCorrectWarrant;
+
+	$: {
+		currentStepIndex = 0;
+		maxStepIndex = suspectGotAway ? 0 : 1;
+	}
 
 	async function playOutroScene(): Promise<void> {
 		showDangerScene = true;
-		await delay(4000);
+		await delay(100);
+		// await delay(4000);
 
 		showDangerScene = false;
 		showCaptureScene = true;
-		await delay(4000);
+		await delay(100);
+		// await delay(4000);
 
 		showCaptureScene = false;
 		hasOutroScenePlayed = true;
 	}
 
-	function updateScore(): void {
-		redirectTo('/headquarters/');
+	function nextStep(): void {
+		if (currentStepIndex < maxStepIndex) {
+			currentStepIndex += 1;
+		} else {
+			// No more steps, go to headquarters
+			redirectTo('/headquarters/');
 
-		if (!suspectCaughtWithWarrant) return; // No points for you!
+			// No points for you!
+			if (!suspectCaughtWithWarrant) return;
 
-		playerStore.update((player: Player | null) => {
-			player ? (player.score += 1) : null;
-			return player;
-		});
+			// Save score to player store
+			playerStore.update((player: Player | null) => {
+				player ? (player.score += 1) : null;
+				return player;
+			});
+		}
 	}
 
 	onMount(() => {
@@ -132,8 +146,21 @@
 	});
 </script>
 
-<Main>
-	{#if $gameStore}
+{#if $gameStore}
+	<Main>
+		<Header slot="header">
+			{#if hasOutroScenePlayed}
+				<H1>{$gameStore.rounds[0].atlas.city}</H1>
+
+				{#if $gameStore.currentTime && $playerStore}
+					<Time
+						isClockTicking={false}
+						currentTime={getFormattedTime(new Date($gameStore.currentTime), $playerStore.locale)}
+					/>
+				{/if}
+			{/if}
+		</Header>
+
 		{#if showDangerScene}
 			<TrailingSuspect sceneIndex={'5'} sex={$gameStore.suspect.warrantKeys.sex} />
 		{/if}
@@ -142,47 +169,69 @@
 			<TrailingSuspect sceneIndex={'6'} sex={$gameStore.suspect.warrantKeys.sex} />
 		{/if}
 
-		{#if hasOutroScenePlayed}
-			{#if suspectCaughtWithWarrant}
+		<Footer slot="footer">
+			{#if hasOutroScenePlayed}
 				<TerminalGroup>
-					<TerminalRows lines={outcomeSuspectCaughtWithWarrant[0]} />
-					<TerminalRows lines={outcomeSuspectCaughtWithWarrant[1]} />
-					<TerminalRows lines={outcomeSuspectCaughtWithWarrant[2]} />
-					<TerminalRows lines={outcomeSuspectCaughtWithWarrant[3]} />
+					{#if suspectCaughtWithWarrant}
+						<TerminalRows lines={outcomeSuspectCaughtWithWarrant[0]} />
+						{#if currentStepIndex > 0}
+							<TerminalRows lines={outcomeSuspectCaughtWithWarrant[1]} bind:isAnimating />
+						{/if}
+					{/if}
+
+					{#if suspectCaughtWithWrongWarrant}
+						<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[0]} />
+						{#if currentStepIndex > 0}
+							<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[1]} bind:isAnimating />
+						{/if}
+					{/if}
+
+					{#if suspectCaughtWithoutWarrant}
+						<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[0]} />
+						{#if currentStepIndex > 0}
+							<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[1]} bind:isAnimating />
+						{/if}
+					{/if}
+
+					{#if suspectGotAway}
+						<TerminalRows lines={outcomeSuspectGotAway[0]} bind:isAnimating />
+					{/if}
+
+					{#if $playerStore && currentStepIndex == maxStepIndex && !isAnimating}
+						{@const DELAY_IN_MS = 1500}
+						{@const playerRankIndex = getRank($playerStore.score)}
+						<TerminalRows
+							lines={[
+								{
+									text: $LL.game.outcome.ready({
+										name: $playerStore.name,
+										rank: $LL.player.ranks[playerRankIndex]()
+									})
+								}
+							]}
+							delay={DELAY_IN_MS}
+						/>
+					{/if}
 				</TerminalGroup>
 			{/if}
 
-			{#if suspectCaughtWithWrongWarrant}
-				<TerminalGroup>
-					<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[0]} />
-					<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[1]} />
-					<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[2]} />
-				</TerminalGroup>
-			{/if}
-
-			{#if suspectCaughtWithoutWarrant}
-				<TerminalGroup>
-					<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[0]} />
-					<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[1]} />
-					<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[2]} />
-				</TerminalGroup>
-			{/if}
-
-			{#if suspectGotAway}
-				<TerminalGroup>
-					<TerminalRows lines={outcomeSuspectGotAway[0]} />
-					<TerminalRows lines={outcomeSuspectGotAway[1]} />
-					<TerminalRows lines={outcomeSuspectGotAway[2]} />
-				</TerminalGroup>
-			{/if}
-
-			<Footer slot="footer">
+			{#if hasOutroScenePlayed}
 				<nav class="game-nav" transition:fade>
-					<ButtonIcon on:click={updateScore} title={$LL.components.buttons.continue()}>
-						<Continue />
-					</ButtonIcon>
+					{#if !isAnimating}
+						<ButtonIcon on:click={nextStep} title={$LL.components.buttons.continue()}>
+							<Continue />
+						</ButtonIcon>
+					{/if}
 				</nav>
-			</Footer>
-		{/if}
-	{/if}
-</Main>
+			{/if}
+		</Footer>
+	</Main>
+{/if}
+
+<style lang="scss">
+	nav.game-nav {
+		display: flex;
+		justify-content: space-between;
+		margin-inline: var(--layout-inline);
+	}
+</style>

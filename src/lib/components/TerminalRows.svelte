@@ -6,11 +6,12 @@
 
 	export let lines: TerminalRow[] = [];
 	export let isAnimating: boolean = false;
+	export let delay: number | undefined = 0;
 </script>
 
 <section
 	class="terminal-rows"
-	in:slide={{ duration: 500 }}
+	in:slide={{ duration: 500, delay }}
 	on:introstart={() => (isAnimating = true)}
 	on:introend={() => (isAnimating = false)}
 >

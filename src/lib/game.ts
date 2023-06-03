@@ -1,10 +1,10 @@
 import { browser } from '$app/environment';
 import en from '$i18n/en';
-import type { Translation, TranslationFunctions } from '$i18n/i18n-types';
-import { getArtworkPath, getRandomValue, redirectTo } from '$lib/helpers';
-import P from './components/P.svelte';
-import type { Player } from './player';
+import type { Locales, Translation, TranslationFunctions } from '$i18n/i18n-types';
+import { getArtworkPath, getRandomValue } from '$lib/helpers';
 import { getSuspectWarrantKeys, Suspect, type WarrantKeys } from './suspects';
+import { format } from 'date-fns';
+import { enUS, es } from 'date-fns/locale';
 import { writable } from 'svelte/store';
 import type { LocalizedString } from 'typesafe-i18n';
 
@@ -584,6 +584,16 @@ function getTranslationFromArray(localizedArray: LocalizedArray): string[] {
 	}
 
 	return newArray;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+export function getFormattedTime(time: Date, locale: Locales): string {
+	// Format the time as "Monday 9:00 am" / "Lunes 9:00 am"
+	const formattedTime = format(time, 'EEEE h:mm aaa', { locale: locale === 'en' ? enUS : es });
+
+	// Capitalize the first letter
+	return formattedTime.charAt(0).toUpperCase() + formattedTime.slice(1);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
