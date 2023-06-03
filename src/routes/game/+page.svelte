@@ -96,9 +96,10 @@
 
 		game.suspect.caught =
 			!isTimeUp && isLastRound && currentClueIndex === game.suspect.lastRoundHidingPlace;
-		isGameOver = game.suspect.caught || isTimeUp;
+
 		isFirstRound = game.currentRoundIndex === 0;
 		isLastRound = game.currentRoundIndex === game.rounds.length - 1;
+		isGameOver = game.suspect.caught || isTimeUp;
 	}
 
 	$: if (isGameOver) {
@@ -181,8 +182,8 @@
 			const nextSuspectScene = (
 				game.currentRoundIndex - 1
 			).toString() as keyof Translation['game']['trailingSuspect'];
-			trailingSuspectScene = nextSuspectScene;
 
+			trailingSuspectScene = nextSuspectScene;
 			await delay(SUSPECT_TRAIL_SCENE_DURATION);
 
 			isTrailingSuspect = false;
@@ -191,14 +192,17 @@
 
 		isArtworkHidden = true;
 		await delay(DELAY_IN_MS);
+
 		currentClueIndex = index;
 		if (currentRound) artworkPath = currentRound.scenes[index].place.artwork;
+
 		await clock.fastForward(2);
 	}
 
 	async function dismissClue(): Promise<void> {
 		isArtworkHidden = true;
 		await delay(DELAY_IN_MS);
+
 		resetRound();
 		isArtworkHidden = false; // Since clock is not ticking we need to manually show the artwork
 	}
@@ -208,7 +212,6 @@
 		clock.isFlying = true;
 		showDestinations = false;
 		showDescription = false;
-
 		isArtworkHidden = true;
 		await delay(DELAY_IN_MS);
 
@@ -258,7 +261,7 @@
 			return new Error('No player or game store');
 		}
 
-		// Set game state
+		// Create a local copy of the game state
 		game = $gameStore;
 
 		// Try to resume the game from where the player left off
