@@ -1,10 +1,14 @@
 import { browser } from '$app/environment';
 import en from '$i18n/en';
-import type { Translation, TranslationFunctions } from '$i18n/i18n-types';
+import type { Locales, Translation, TranslationFunctions } from '$i18n/i18n-types';
 import { getArtworkPath, getRandomValue } from '$lib/helpers';
 import { getSuspectWarrantKeys, Suspect, type WarrantKeys } from './suspects';
+import { format } from 'date-fns';
+import { enUS, es } from 'date-fns/locale';
 import { writable } from 'svelte/store';
 import type { LocalizedString } from 'typesafe-i18n';
+
+export const SUSPECT_TRAIL_SCENE_DURATION = 4000;
 
 enum Place {
 	AIRPORT,
@@ -119,6 +123,7 @@ interface LocalizedSuspect {
 	clues: string[];
 	warrantKeys: WarrantKeys;
 	lastRoundHidingPlace: number;
+	caught: boolean;
 }
 
 export interface Game {
@@ -128,6 +133,7 @@ export interface Game {
 	rounds: Round[];
 	stolenTreasure: string;
 	suspect: LocalizedSuspect;
+	warrants: Suspect[];
 }
 
 export function generateGame(LL: TranslationFunctions): Game {
@@ -139,9 +145,10 @@ export function generateGame(LL: TranslationFunctions): Game {
 		currentRoundIndex: 0,
 		currentTime: null,
 		roundDecoy: null,
+		warrants: [],
 		rounds,
-		stolenTreasure: getRandomValue(firstRound.atlas.objects),
-		suspect
+		suspect,
+		stolenTreasure: getRandomValue(firstRound.atlas.objects)
 	};
 }
 
@@ -422,7 +429,8 @@ function getLocalizedSuspects(LL: TranslationFunctions): LocalizedSuspect {
 		vehicle: LL.suspects[translationKey].vehicle(),
 		clues: getTranslationFromArray(LL.suspects[translationKey].clues),
 		warrantKeys: getSuspectWarrantKeys(suspect),
-		lastRoundHidingPlace: getRandomValue([0, 1, 2]) // Pick a random place to hide for the last round
+		lastRoundHidingPlace: getRandomValue([0, 1, 2]), // Pick a random place to hide for the last round
+		caught: false
 	};
 
 	return localizedSuspect;
@@ -578,6 +586,16 @@ function getTranslationFromArray(localizedArray: LocalizedArray): string[] {
 	}
 
 	return newArray;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+export function getFormattedTime(time: Date, locale: Locales): string {
+	// Format the time as "Monday 9:00 am" / "Lunes 9:00 am"
+	const formattedTime = format(time, 'EEEE h:mm aaa', { locale: locale === 'en' ? enUS : es });
+
+	// Capitalize the first letter
+	return formattedTime.charAt(0).toUpperCase() + formattedTime.slice(1);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

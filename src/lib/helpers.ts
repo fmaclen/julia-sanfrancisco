@@ -11,3 +11,7 @@ export function redirectTo(url: string) {
 export function getArtworkPath(name: string, folder: 'atlas' | 'places'): string {
 	return `/artwork/${folder}/${name.replace(' ', '-').replace(' ', '-').toLowerCase()}.png`;
 }
+
+export function delay(ms: number): Promise<void> {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}

@@ -76,6 +76,8 @@
 		--color-neutral-1000: #000;
 
 		--color-accent: #0bbc79;
+		--color-danger: #ea2c2c;
+		--color-capture: #1566b1;
 
 		--border-radius-l: 8px;
 		--border-radius-m: 6px;

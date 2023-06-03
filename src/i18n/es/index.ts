@@ -103,6 +103,16 @@ const es = {
 				1: '¡Acabamos de recibir la noticia de que {suspect} se te escapó porque tu investigación tardó demasiado!'
 			}
 		},
+		trailingSuspect: {
+			0: '¡Un {sex|{male:matón, female:matona}}!',
+			1: 'Debes estar en el camino correcto.',
+			2: 'El sospechoso parece estar cerca.',
+			3: 'Cada vez más cerca...',
+			4: '¡{sex|{male:Él, female:Ella}} acaba de ser vist{sex|{male:o, female:a}}!',
+			5: 'Su suerte está a punto de agotarse...{sex|{male:, female:}}',
+			6: 'Ahí {sex|{male:va él, female:va ella}}...',
+			7: 'Arrestando al sospechoso...'
+		},
 		actions: {
 			walk: 'Caminar a',
 			walking: 'Caminando',

@@ -1,5 +1,5 @@
 import type { Locales } from '../i18n/i18n-types';
-import { addDays, addHours, addSeconds, format, isAfter, startOfWeek } from 'date-fns';
+import { addDays, addHours, addSeconds, isAfter, startOfWeek } from 'date-fns';
 // Need to import the locales like this to avoid a bug during build process
 import enUS from 'date-fns/locale/en-US/index';
 import es from 'date-fns/locale/es/index';
@@ -40,14 +40,6 @@ export default class Clock {
 	public start = () => {
 		const oneMinuteInSeconds = 60;
 		this.timerId = setInterval(() => this.advanceTime(oneMinuteInSeconds), 1500);
-	};
-
-	public getFormattedTime = (): string => {
-		// Format the time as "Monday 9:00 am" / "Lunes 9:00 am"
-		const formattedTime = format(this.currentTime, 'EEEE h:mm aaa', { locale: this.locale });
-
-		// Capitalize the first letter
-		return formattedTime.charAt(0).toUpperCase() + formattedTime.slice(1);
 	};
 
 	public fastForward = (hours: number): Promise<boolean> => {
