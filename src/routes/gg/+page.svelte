@@ -8,11 +8,12 @@
 	import TerminalGroup from '$lib/components/TerminalGroup.svelte';
 	import TerminalRows from '$lib/components/TerminalRows.svelte';
 	import TrailingSuspect from '$lib/components/TrailingSuspect.svelte';
-	import { gameStore, getFormattedTime } from '$lib/game';
+	import { gameStore, getFormattedTime, type Atlas } from '$lib/game';
 	import { delay, redirectTo } from '$lib/helpers';
 	import Continue from '$lib/icons/Continue.svg.svelte';
 	import { getCasesUntilPromotion, getRank, playerStore, type Player } from '$lib/player';
 	import { DELAY_IN_MS } from '../../lib/clock';
+	import Artwork from '../../lib/components/Artwork.svelte';
 	import H1 from '../../lib/components/H1.svelte';
 	import Header from '../../lib/components/Header.svelte';
 	import Time from '../../lib/components/Time.svelte';
@@ -20,6 +21,7 @@
 	import { fade } from 'svelte/transition';
 
 	let isAnimating: boolean = false;
+	let currentRoundAtlas: Atlas;
 	let currentStepIndex: number;
 	let maxStepIndex: number;
 
@@ -47,6 +49,7 @@
 
 		const playerCases = getCasesUntilPromotion($playerStore.score);
 
+		currentRoundAtlas = $gameStore.rounds[5].atlas;
 		suspectCaught = $gameStore.suspect.caught;
 		hasWarrant = $gameStore.warrants.length === 1;
 		hasCorrectWarrant = hasWarrant && $gameStore.warrants[0] === $gameStore.suspect.key;
@@ -150,7 +153,7 @@
 	<Main>
 		<Header slot="header">
 			{#if hasOutroScenePlayed}
-				<H1>{$gameStore.rounds[0].atlas.city}</H1>
+				<H1>{currentRoundAtlas.city}</H1>
 
 				{#if $gameStore.currentTime && $playerStore}
 					<Time
@@ -168,6 +171,8 @@
 		{#if showCaptureScene}
 			<TrailingSuspect sceneIndex={'6'} sex={$gameStore.suspect.warrantKeys.sex} />
 		{/if}
+
+		<Artwork isDisabled={true} src={currentRoundAtlas.artwork} />
 
 		<Footer slot="footer">
 			{#if hasOutroScenePlayed}

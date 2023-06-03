@@ -269,7 +269,8 @@
 
 		// Game loop
 		gameLoop = setInterval(() => {
-			currentTimeFormatted = getFormattedTime(clock.currentTime, $playerStore.locale);
+			if ($playerStore)
+				currentTimeFormatted = getFormattedTime(clock.currentTime, $playerStore.locale);
 			isWalking = clock.isWalking;
 			isFlying = clock.isFlying;
 			isSleeping = clock.isSleeping;
