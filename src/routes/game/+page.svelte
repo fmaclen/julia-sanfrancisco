@@ -175,19 +175,19 @@
 			// Need to only run the transition to scene 5 and 6 when suspectCaught
 			if (trailingSuspectScene !== '5') {
 				await delay(4000);
-				trailingSuspectScene = (
-					parseInt(trailingSuspectScene) + 1
-				).toString() as keyof Translation['game']['trailingSuspect'];
+
+				const nextSuspectScene = (parseInt(trailingSuspectScene) + 1).toString() as keyof Translation['game']['trailingSuspect']; // prettier-ignore
+				trailingSuspectScene = nextSuspectScene;
 			}
+
 			isTrailingSuspect = false;
 			trailingSceneInRoundSeen = true;
 		}
 
-		transitionTo(() => {
-			currentClueIndex = index;
-			if (currentRound) artworkPath = currentRound.scenes[index].place.artwork;
-		});
-
+		isArtworkHidden = true;
+		await delay(DELAY_IN_MS);
+		currentClueIndex = index;
+		if (currentRound) artworkPath = currentRound.scenes[index].place.artwork;
 		await clock.fastForward(2);
 	}
 
@@ -204,55 +204,51 @@
 
 	$: if (suspectCaught) setSuspectCaughtScene();
 
-	function dismissClue(): void {
-		transitionTo(() => {
-			resetRound();
-			isArtworkHidden = false; // Since clock is not ticking we need to manually show the artwork
-		});
+	async function dismissClue(): Promise<void> {
+		isArtworkHidden = true;
+		await delay(DELAY_IN_MS);
+		resetRound();
+		isArtworkHidden = false; // Since clock is not ticking we need to manually show the artwork
 	}
 
 	async function setRound(currentAtlas: Atlas): Promise<void> {
 		isClockTicking = true;
+		clock.isFlying = true;
 		showDestinations = false;
 		showDescription = false;
-		clock.isFlying = true;
 
-		transitionTo(() => {
-			const { rounds, currentRoundIndex } = game;
+		isArtworkHidden = true;
+		await delay(DELAY_IN_MS);
 
-			const isCurrentRound = rounds[currentRoundIndex].atlas.city === currentAtlas.city;
-			const isNextRound = rounds[currentRoundIndex + 1].atlas.city === currentAtlas.city;
-			const isPreviousRound =
-				currentRoundIndex > 0 && rounds[currentRoundIndex - 1].atlas.city === currentAtlas.city;
+		const { rounds, currentRoundIndex } = game;
 
-			if (isCurrentRound) currentRound = rounds[currentRoundIndex];
-			if (isNextRound) game.currentRoundIndex += 1;
-			if (isPreviousRound) game.currentRoundIndex -= 1;
+		const isCurrentRound = rounds[currentRoundIndex].atlas.city === currentAtlas.city;
+		const isNextRound = rounds[currentRoundIndex + 1].atlas.city === currentAtlas.city;
+		const isPreviousRound =
+			currentRoundIndex > 0 && rounds[currentRoundIndex - 1].atlas.city === currentAtlas.city;
 
-			// Decoy rounds are used to throw the player off the trail
-			const isDecoyRound = !isCurrentRound && !isPreviousRound && !isNextRound;
+		if (isCurrentRound) currentRound = rounds[currentRoundIndex];
+		if (isNextRound) game.currentRoundIndex += 1;
+		if (isPreviousRound) game.currentRoundIndex -= 1;
 
-			// There should always be a way to return to the round where the suspect trail was lost
-			const anchorAtlas = rounds[currentRoundIndex].atlas;
-			if (isDecoyRound) {
-				currentRound = generateDecoyRound($LL, currentAtlas, anchorAtlas);
-				game.roundDecoy = currentRound;
-			} else {
-				trailingSceneInRoundSeen = false;
-				game.roundDecoy = null;
-			}
+		// Decoy rounds are used to throw the player off the trail
+		const isDecoyRound = !isCurrentRound && !isPreviousRound && !isNextRound;
 
-			// Must reset round after transition
-			showPostcard = true;
-			resetRound();
-		});
+		// There should always be a way to return to the round where the suspect trail was lost
+		const anchorAtlas = rounds[currentRoundIndex].atlas;
+		if (isDecoyRound) {
+			currentRound = generateDecoyRound($LL, currentAtlas, anchorAtlas);
+			game.roundDecoy = currentRound;
+		} else {
+			trailingSceneInRoundSeen = false;
+			game.roundDecoy = null;
+		}
+
+		// Must reset round after transition
+		showPostcard = true;
+		resetRound();
 
 		await clock.fastForward(4);
-	}
-
-	function transitionTo(callback: Function) {
-		isArtworkHidden = true;
-		setTimeout(() => callback(), DELAY_IN_MS);
 	}
 
 	function updateScore(): void {
