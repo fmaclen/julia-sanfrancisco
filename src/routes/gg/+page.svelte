@@ -1,6 +1,5 @@
 <script lang="ts">
 	import LL from '$i18n/i18n-svelte';
-	import type { Translation } from '$i18n/i18n-types';
 	import ButtonIcon from '$lib/components/ButtonIcon.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import Main from '$lib/components/Main.svelte';
@@ -8,11 +7,10 @@
 	import TerminalGroup from '$lib/components/TerminalGroup.svelte';
 	import TerminalRows from '$lib/components/TerminalRows.svelte';
 	import TrailingSuspect from '$lib/components/TrailingSuspect.svelte';
-	import { gameStore, getFormattedTime, type Atlas } from '$lib/game';
+	import { gameStore, getFormattedTime, type Atlas, SUSPECT_TRAIL_SCENE_DURATION } from '$lib/game';
 	import { delay, redirectTo } from '$lib/helpers';
 	import Continue from '$lib/icons/Continue.svg.svelte';
 	import { getCasesUntilPromotion, getRank, playerStore, type Player } from '$lib/player';
-	import { DELAY_IN_MS } from '../../lib/clock';
 	import Artwork from '../../lib/components/Artwork.svelte';
 	import H1 from '../../lib/components/H1.svelte';
 	import Header from '../../lib/components/Header.svelte';
@@ -109,13 +107,11 @@
 
 	async function playOutroScene(): Promise<void> {
 		showDangerScene = true;
-		await delay(100);
-		// await delay(4000);
+		await delay(SUSPECT_TRAIL_SCENE_DURATION);
 
 		showDangerScene = false;
 		showCaptureScene = true;
-		await delay(100);
-		// await delay(4000);
+		await delay(SUSPECT_TRAIL_SCENE_DURATION);
 
 		showCaptureScene = false;
 		hasOutroScenePlayed = true;
@@ -143,7 +139,7 @@
 		if ($playerStore === null || $gameStore === null) {
 			redirectTo('/headquarters/');
 			return new Error('No player or game store');
-		} else {
+		} else if (!suspectGotAway) {
 			playOutroScene();
 		}
 	});
@@ -152,7 +148,7 @@
 {#if $gameStore}
 	<Main>
 		<Header slot="header">
-			{#if hasOutroScenePlayed}
+			{#if suspectGotAway || hasOutroScenePlayed}
 				<H1>{currentRoundAtlas.city}</H1>
 
 				{#if $gameStore.currentTime && $playerStore}
@@ -175,8 +171,12 @@
 		<Artwork isDisabled={true} src={currentRoundAtlas.artwork} />
 
 		<Footer slot="footer">
-			{#if hasOutroScenePlayed}
-				<TerminalGroup>
+			<TerminalGroup>
+				{#if suspectGotAway}
+					<TerminalRows lines={outcomeSuspectGotAway[0]} bind:isAnimating />
+				{/if}
+
+				{#if hasOutroScenePlayed}
 					{#if suspectCaughtWithWarrant}
 						<TerminalRows lines={outcomeSuspectCaughtWithWarrant[0]} />
 						{#if currentStepIndex > 0}
@@ -197,36 +197,32 @@
 							<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[1]} bind:isAnimating />
 						{/if}
 					{/if}
+				{/if}
 
-					{#if suspectGotAway}
-						<TerminalRows lines={outcomeSuspectGotAway[0]} bind:isAnimating />
-					{/if}
+				{#if $playerStore && currentStepIndex == maxStepIndex && !isAnimating}
+					{@const playerRankIndex = getRank($playerStore.score)}
+					<TerminalRows
+						lines={[
+							{
+								text: $LL.game.outcome.ready({
+									name: $playerStore.name,
+									rank: $LL.player.ranks[playerRankIndex]()
+								})
+							}
+						]}
+					/>
+				{/if}
+			</TerminalGroup>
 
-					{#if $playerStore && currentStepIndex == maxStepIndex && !isAnimating}
-						{@const DELAY_IN_MS = 1500}
-						{@const playerRankIndex = getRank($playerStore.score)}
-						<TerminalRows
-							lines={[
-								{
-									text: $LL.game.outcome.ready({
-										name: $playerStore.name,
-										rank: $LL.player.ranks[playerRankIndex]()
-									})
-								}
-							]}
-							delay={DELAY_IN_MS}
-						/>
-					{/if}
-				</TerminalGroup>
-			{/if}
-
-			{#if hasOutroScenePlayed}
+			{#if suspectGotAway || hasOutroScenePlayed}
 				<nav class="game-nav" transition:fade>
-					{#if !isAnimating}
-						<ButtonIcon on:click={nextStep} title={$LL.components.buttons.continue()}>
-							<Continue />
-						</ButtonIcon>
-					{/if}
+					<ButtonIcon
+						on:click={nextStep}
+						disabled={isAnimating}
+						title={$LL.components.buttons.continue()}
+					>
+						<Continue />
+					</ButtonIcon>
 				</nav>
 			{/if}
 		</Footer>
@@ -238,5 +234,6 @@
 		display: flex;
 		justify-content: space-between;
 		margin-inline: var(--layout-inline);
+		margin-left: auto;
 	}
 </style>

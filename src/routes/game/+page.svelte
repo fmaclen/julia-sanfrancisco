@@ -24,17 +24,17 @@
 		type Atlas,
 		type Round,
 		generateDecoyRound,
-		getFormattedTime
+		getFormattedTime,
+		SUSPECT_TRAIL_SCENE_DURATION
 	} from '$lib/game';
 	import { delay, getRandomValue, redirectTo } from '$lib/helpers';
 	import Back from '$lib/icons/Back.svg.svelte';
 	import Collapse from '$lib/icons/Collapse.svg.svelte';
-	import Continue from '$lib/icons/Continue.svg.svelte';
 	import Expand from '$lib/icons/Expand.svg.svelte';
 	import IconFly from '$lib/icons/Fly.svg.svelte';
 	import IconMenu from '$lib/icons/Menu.svg.svelte';
 	import IconWalk from '$lib/icons/Walk.svg.svelte';
-	import { playerStore, type Player, getCasesUntilPromotion, getRank } from '$lib/player';
+	import { playerStore } from '$lib/player';
 	import {
 		Suspect,
 		WarrantSex,
@@ -47,8 +47,6 @@
 	import TrailingSuspect from '../../lib/components/TrailingSuspect.svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import { fade, slide } from 'svelte/transition';
-
-	const SUSPECT_TRAIL_SCENE_DURATION = 4000;
 
 	let game: Game;
 	let currentRound: Round;
@@ -177,10 +175,12 @@
 		showDescription = false;
 		clock.isWalking = true;
 
-		if (!trailingSceneInRoundSeen && !isFirstRound) {
+		if (!trailingSceneInRoundSeen && !isFirstRound && game.suspect.lastRoundHidingPlace !== index) {
 			isTrailingSuspect = true;
 
-			const nextSuspectScene = (game.currentRoundIndex  - 1).toString() as keyof Translation['game']['trailingSuspect']; // prettier-ignore
+			const nextSuspectScene = (
+				game.currentRoundIndex - 1
+			).toString() as keyof Translation['game']['trailingSuspect'];
 			trailingSuspectScene = nextSuspectScene;
 
 			await delay(SUSPECT_TRAIL_SCENE_DURATION);

@@ -8,6 +8,8 @@ import { enUS, es } from 'date-fns/locale';
 import { writable } from 'svelte/store';
 import type { LocalizedString } from 'typesafe-i18n';
 
+export const SUSPECT_TRAIL_SCENE_DURATION = 4000;
+
 enum Place {
 	AIRPORT,
 	BANK,

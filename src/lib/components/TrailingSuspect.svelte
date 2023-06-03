@@ -26,10 +26,10 @@
 {#if !isLoading}
 	<main
 		class="
-    trailing-suspect
-    {sceneIndex === '5' ? 'trailing-suspect--danger' : ''}
-    {sceneIndex === '6' ? 'trailing-suspect--capture' : ''}
-  "
+			trailing-suspect
+			{sceneIndex === '5' ? 'trailing-suspect--danger' : ''}
+			{sceneIndex === '6' ? 'trailing-suspect--capture' : ''}
+		"
 		transition:fade
 	>
 		{#if sceneIndex === '0'}
@@ -69,7 +69,7 @@
 				<SuspectSki />
 				<SuspectSki />
 			</div>
-			<H1>{$LL.game.trailingSuspect[4]()}</H1>
+			<H1>{$LL.game.trailingSuspect[4]({ sex })}</H1>
 		{/if}
 
 		{#if sceneIndex === '4'}
