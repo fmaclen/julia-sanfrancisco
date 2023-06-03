@@ -65,8 +65,8 @@
 	let isGameOver: boolean;
 
 	let isTrailingSuspect: boolean;
-	let trailingSceneInRoundSeen: boolean;
-	let trailingSuspectScene: keyof Translation['game']['trailingSuspect'] = '5';
+	let trailingSceneInRoundSeen: boolean = false;
+	let trailingSuspectScene: keyof Translation['game']['trailingSuspect'] = '0';
 
 	let hasWarrant: boolean;
 	let suspectCaught: boolean;
