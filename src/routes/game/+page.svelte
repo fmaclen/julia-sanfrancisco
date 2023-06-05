@@ -177,6 +177,7 @@
 		clock.isWalking = true;
 
 		if (!trailingSceneInRoundSeen && !isFirstRound && game.suspect.lastRoundHidingPlace !== index) {
+			isArtworkHidden = true;
 			isTrailingSuspect = true;
 
 			const nextSuspectScene = (
@@ -191,12 +192,11 @@
 		}
 
 		isArtworkHidden = true;
+		clock.fastForward(2);
 		await delay(DELAY_IN_MS);
 
 		currentClueIndex = index;
 		if (currentRound) artworkPath = currentRound.scenes[index].place.artwork;
-
-		await clock.fastForward(2);
 	}
 
 	async function dismissClue(): Promise<void> {
@@ -213,6 +213,7 @@
 		showDestinations = false;
 		showDescription = false;
 		isArtworkHidden = true;
+		clock.fastForward(4);
 		await delay(DELAY_IN_MS);
 
 		const { rounds, currentRoundIndex } = game;
@@ -239,8 +240,6 @@
 		if (isCurrentRound) currentRound = rounds[currentRoundIndex];
 		if (isNextRound) game.currentRoundIndex += 1;
 		if (isPreviousRound) game.currentRoundIndex -= 1;
-
-		await clock.fastForward(4);
 
 		// Must reset round after transition
 		showPostcard = true;

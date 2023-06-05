@@ -118,6 +118,11 @@
 		padding-inline: var(--layout-inline);
 		background-color: var(--color-neutral-900);
 
+		@media (max-width: 512px) {
+			border-bottom-left-radius: unset;
+			border-bottom-right-radius: unset;
+		}
+
 		&--danger {
 			background-color: var(--color-danger);
 		}
