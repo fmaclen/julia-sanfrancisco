@@ -80,6 +80,7 @@
 	let showWarrant = false;
 	let showSuspectDossier: keyof Translation['suspects'] | undefined;
 
+	let warrantWasComputed: boolean = false;
 	let warrantSex: WarrantSex | undefined;
 	let warrantHobby: WarrantHobby | undefined;
 	let warrantHair: WarrantHair | undefined;
@@ -163,6 +164,7 @@
 	}
 
 	function computeWarrant(): void {
+		warrantWasComputed = true;
 		game.warrants = findSuspects(
 			warrantSex,
 			warrantHobby,
@@ -286,6 +288,8 @@
 	onDestroy(() => {
 		clearInterval(gameLoop);
 	});
+
+	$: if (game?.warrants) console.log(game.warrants);
 </script>
 
 {#if !isLoading}
@@ -496,36 +500,52 @@
 								</TerminalFormSelect>
 							</TerminalForm>
 
-							{#if game.warrants.length > 1}
-								<TerminalRows
-									lines={[
-										{ text: $LL.warrants.possibleSuspects(), isTitle: true },
-										...game.warrants.map((suspect) => ({
-											text: $LL.suspects[suspect].name()
-										}))
-									]}
-								/>
-							{:else if game.warrants.length > 0}
-								<TerminalRows
-									lines={[
-										{ text: $LL.warrants.suspectMatch(), isTitle: true },
-										{
-											text: $LL.warrants.haveWarrant({
-												suspect: $LL.suspects[game.warrants[0]].name()
-											})
-										}
-									]}
-								/>
+							<ul class="terminal-group-buttons" in:slide>
+								<li class="terminal-group-buttons__li">
+									<Button
+										on:click={computeWarrant}
+										disabled={!canComputeWarrant}
+										transparent={true}
+									>
+										{$LL.warrants.compute()}
+									</Button>
+								</li>
+							</ul>
+
+							{#if warrantWasComputed}
+								{#if game.warrants.length > 1}
+									<TerminalRows
+										shouldAutoScroll={true}
+										lines={[
+											{ text: $LL.warrants.possibleSuspects(), isTitle: true },
+											...game.warrants.map((suspect) => ({
+												text: $LL.suspects[suspect].name()
+											}))
+										]}
+									/>
+								{:else if game.warrants.length > 0}
+									<TerminalRows
+										shouldAutoScroll={true}
+										lines={[
+											{ text: $LL.warrants.suspectMatch(), isTitle: true },
+											{
+												text: $LL.warrants.haveWarrant({
+													suspect: $LL.suspects[game.warrants[0]].name()
+												})
+											}
+										]}
+									/>
+								{:else}
+									<TerminalRows
+										shouldAutoScroll={true}
+										lines={[
+											{ text: $LL.warrants.noSuspectsFound(), isTitle: true },
+											{ text: $LL.warrants.noPossibleSuspects() }
+										]}
+									/>
+								{/if}
 							{/if}
 						{/if}
-
-						<ul class="terminal-group-buttons" in:slide>
-							<li class="terminal-group-buttons__li">
-								<Button on:click={computeWarrant} disabled={!canComputeWarrant} transparent={true}>
-									{$LL.warrants.compute()}
-								</Button>
-							</li>
-						</ul>
 					</TerminalGroup>
 				{/if}
 			{/if}
@@ -604,7 +624,10 @@
 		list-style: unset;
 		padding-inline: unset;
 		margin-block: unset;
-		margin-bottom: calc(var(--terminal-block) * -1);
+
+		&:last-child {
+			margin-bottom: calc(var(--terminal-block) * -1);
+		}
 	}
 
 	li.terminal-group-buttons__li {

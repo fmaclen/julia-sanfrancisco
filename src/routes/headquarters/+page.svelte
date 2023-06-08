@@ -145,11 +145,11 @@
 				{/if}
 
 				{#if showNewsFlash}
-					<TerminalRows lines={linesNewsFlash} bind:isAnimating />
+					<TerminalRows lines={linesNewsFlash} bind:isAnimating shouldAutoScroll={true} />
 				{/if}
 
 				{#if showAssignment}
-					<TerminalRows lines={linesAssignment} bind:isAnimating />
+					<TerminalRows lines={linesAssignment} bind:isAnimating shouldAutoScroll={true} />
 				{/if}
 			</TerminalGroup>
 		{/if}

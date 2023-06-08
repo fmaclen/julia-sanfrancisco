@@ -8,5 +8,9 @@
 		font-family: var(--font-family-mono);
 		color: var(--color-neutral-150);
 		margin: unset;
+
+		@media (max-width: 512px) {
+			font-size: 14px;
+		}
 	}
 </style>

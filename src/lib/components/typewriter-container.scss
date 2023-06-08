@@ -1,4 +1,7 @@
 section.typewriter-container {
+	--cursor-color: var(--color-neutral-50);
+	--cursor-width: 1px;
+
 	display: flex;
 	flex-direction: column;
 	gap: calc(var(--terminal-block) / 2);
@@ -9,8 +12,13 @@ section.typewriter-container {
 	padding-block: unset;
 	padding-block: var(--terminal-block);
 	padding-inline: var(--terminal-inline);
+	border-top: 1px dashed var(--color-neutral-500);
 
 	@media (max-width: 512px) {
 		font-size: 14px;
+	}
+
+	&:first-child {
+		border-top: unset;
 	}
 }
