@@ -20,6 +20,7 @@
 
 <style lang="scss">
 	div.artwork {
+		overflow: hidden;
 		position: absolute;
 		inset: 0;
 		z-index: 0;
