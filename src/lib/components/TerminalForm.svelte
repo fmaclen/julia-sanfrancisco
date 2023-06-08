@@ -1,4 +1,8 @@
-<section class="terminal-form">
+<script>
+	import { slide } from 'svelte/transition';
+</script>
+
+<section class="terminal-form" in:slide>
 	<slot />
 </section>
 
@@ -10,9 +14,10 @@
 		gap: var(--terminal-inline);
 		padding-block: var(--terminal-block);
 		padding-inline: var(--terminal-inline);
+		border-top: 1px dashed var(--color-neutral-500);
 
-		&:last-child {
-			padding-bottom: unset;
+		&:first-child {
+			border-top: unset;
 		}
 	}
 </style>

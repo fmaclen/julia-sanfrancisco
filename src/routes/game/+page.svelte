@@ -58,6 +58,7 @@
 	let currentTimeFormatted: string;
 
 	let isLoading = true;
+	let isAnimating: boolean;
 	let isWalking: boolean;
 	let isFlying: boolean;
 	let isSleeping: boolean;
@@ -79,6 +80,7 @@
 	let showWarrant = false;
 	let showSuspectDossier: keyof Translation['suspects'] | undefined;
 
+	let warrantWasComputed: boolean = false;
 	let warrantSex: WarrantSex | undefined;
 	let warrantHobby: WarrantHobby | undefined;
 	let warrantHair: WarrantHair | undefined;
@@ -162,6 +164,7 @@
 	}
 
 	function computeWarrant(): void {
+		warrantWasComputed = true;
 		game.warrants = findSuspects(
 			warrantSex,
 			warrantHobby,
@@ -289,6 +292,13 @@
 
 {#if !isLoading}
 	<Main>
+		<Artwork
+			isHighContrast={!showPostcard}
+			isHidden={isArtworkHidden}
+			isDisabled={isSleeping}
+			src={artworkPath}
+		/>
+
 		{#if isTrailingSuspect}
 			<TrailingSuspect sceneIndex={trailingSuspectScene} sex={game.suspect.warrantKeys.sex} />
 		{/if}
@@ -308,13 +318,6 @@
 				<Time {isClockTicking} currentTime={currentTimeFormatted} />
 			{/if}
 		</Header>
-
-		<Artwork
-			isHighContrast={!showPostcard}
-			isHidden={isArtworkHidden}
-			isDisabled={isSleeping}
-			src={artworkPath}
-		/>
 
 		<Footer slot="footer">
 			{#if !showPostcard}
@@ -366,8 +369,11 @@
 
 				{#if showOptions}
 					<Section>
+						<Button on:click={abandonGame}>{$LL.game.actions.abandon()}</Button>
+					</Section>
+
+					<Section>
 						<section class="button-group" in:slide>
-							<Button on:click={abandonGame}>{$LL.game.actions.abandon()}</Button>
 							<Button on:click={seeDossiers}>{$LL.warrants.suspectDossiers()}</Button>
 							<Button on:click={getWarrant}>{$LL.warrants.getWarrant()}</Button>
 						</section>
@@ -375,46 +381,69 @@
 				{/if}
 
 				{#if showDossiers}
-					<Section>
-						<section class="button-group" in:slide>
+					<TerminalGroup>
+						<TerminalRows
+							lines={[
+								{
+									text: `${$LL.warrants.worldPolice()}: ${$LL.warrants.suspectDossiers()}`,
+									isTitle: true
+								}
+							]}
+							bind:isAnimating
+						/>
+						<ul class="terminal-group-buttons" in:slide>
 							{#each Object.values(Suspect) as suspectKey}
-								<Button on:click={() => seeDossier(suspectKey)}>
-									{$LL.suspects[suspectKey].name()}
-								</Button>
+								<li class="terminal-group-buttons__li">
+									<Button on:click={() => seeDossier(suspectKey)} transparent={true}>
+										{$LL.suspects[suspectKey].name()}
+									</Button>
+								</li>
 							{/each}
-						</section>
-					</Section>
+						</ul>
+					</TerminalGroup>
 				{/if}
 
 				{#if showSuspectDossier}
 					{@const suspect = $LL.suspects[showSuspectDossier]}
 					{@const warrants = $LL.warrants}
 					<TerminalGroup>
-						<TerminalForm>
-							<TerminalTitle>{warrants.labels.name()}</TerminalTitle>
-							<TerminalParagraph>{suspect.name()}</TerminalParagraph>
+						<TerminalRows
+							lines={[
+								{
+									text: `${$LL.warrants.worldPolice()}: ${$LL.warrants.suspectDossiers()}`,
+									isTitle: true
+								}
+							]}
+							bind:isAnimating
+						/>
 
-							<TerminalTitle>{warrants.labels.sex()}</TerminalTitle>
-							<TerminalParagraph>{suspect.sex()}</TerminalParagraph>
+						{#if !isAnimating}
+							<TerminalForm>
+								<TerminalTitle>{warrants.labels.name()}</TerminalTitle>
+								<TerminalParagraph>{suspect.name()}</TerminalParagraph>
 
-							<TerminalTitle>{warrants.labels.occupation()}</TerminalTitle>
-							<TerminalParagraph>{suspect.occupation()}</TerminalParagraph>
+								<TerminalTitle>{warrants.labels.sex()}</TerminalTitle>
+								<TerminalParagraph>{suspect.sex()}</TerminalParagraph>
 
-							<TerminalTitle>{warrants.labels.hobby()}</TerminalTitle>
-							<TerminalParagraph>{suspect.hobby()}</TerminalParagraph>
+								<TerminalTitle>{warrants.labels.occupation()}</TerminalTitle>
+								<TerminalParagraph>{suspect.occupation()}</TerminalParagraph>
 
-							<TerminalTitle>{warrants.labels.hair()}</TerminalTitle>
-							<TerminalParagraph>{suspect.hair()}</TerminalParagraph>
+								<TerminalTitle>{warrants.labels.hobby()}</TerminalTitle>
+								<TerminalParagraph>{suspect.hobby()}</TerminalParagraph>
 
-							<TerminalTitle>{warrants.labels.vehicle()}</TerminalTitle>
-							<TerminalParagraph>{suspect.vehicle()}</TerminalParagraph>
+								<TerminalTitle>{warrants.labels.hair()}</TerminalTitle>
+								<TerminalParagraph>{suspect.hair()}</TerminalParagraph>
 
-							<TerminalTitle>{warrants.labels.feature()}</TerminalTitle>
-							<TerminalParagraph>{suspect.feature()}</TerminalParagraph>
+								<TerminalTitle>{warrants.labels.vehicle()}</TerminalTitle>
+								<TerminalParagraph>{suspect.vehicle()}</TerminalParagraph>
 
-							<TerminalTitle>{warrants.labels.other()}</TerminalTitle>
-							<TerminalParagraph>{suspect.other()}</TerminalParagraph>
-						</TerminalForm>
+								<TerminalTitle>{warrants.labels.feature()}</TerminalTitle>
+								<TerminalParagraph>{suspect.feature()}</TerminalParagraph>
+
+								<TerminalTitle>{warrants.labels.other()}</TerminalTitle>
+								<TerminalParagraph>{suspect.other()}</TerminalParagraph>
+							</TerminalForm>
+						{/if}
 					</TerminalGroup>
 				{/if}
 
@@ -422,76 +451,100 @@
 					<TerminalGroup>
 						<TerminalRows
 							lines={[
-								{ text: 'World Police: Warrants', isTitle: true },
+								{
+									text: `${$LL.warrants.worldPolice()}: ${$LL.warrants.warrants()}`,
+									isTitle: true
+								},
 								{ text: $LL.warrants.provideDetails() }
 							]}
+							bind:isAnimating
 						/>
 
-						<TerminalForm>
-							<TerminalTitle>{$LL.warrants.labels.sex()}</TerminalTitle>
-							<TerminalFormSelect bind:value={warrantSex}>
-								{#each Object.values(WarrantSex) as sex}
-									<option value={sex}>{$LL.warrants.sex[sex]()}</option>
-								{/each}
-							</TerminalFormSelect>
+						{#if !isAnimating}
+							<TerminalForm>
+								<TerminalTitle>{$LL.warrants.labels.sex()}</TerminalTitle>
+								<TerminalFormSelect bind:value={warrantSex}>
+									{#each Object.values(WarrantSex) as sex}
+										<option value={sex}>{$LL.warrants.sex[sex]()}</option>
+									{/each}
+								</TerminalFormSelect>
 
-							<TerminalTitle>{$LL.warrants.labels.hobby()}</TerminalTitle>
-							<TerminalFormSelect bind:value={warrantHobby}>
-								{#each Object.values(WarrantHobby) as hobby}
-									<option value={hobby}>{$LL.warrants.hobby[hobby]()}</option>
-								{/each}
-							</TerminalFormSelect>
+								<TerminalTitle>{$LL.warrants.labels.hobby()}</TerminalTitle>
+								<TerminalFormSelect bind:value={warrantHobby}>
+									{#each Object.values(WarrantHobby) as hobby}
+										<option value={hobby}>{$LL.warrants.hobby[hobby]()}</option>
+									{/each}
+								</TerminalFormSelect>
 
-							<TerminalTitle>{$LL.warrants.labels.hair()}</TerminalTitle>
-							<TerminalFormSelect bind:value={warrantHair}>
-								{#each Object.values(WarrantHair) as hair}
-									<option value={hair}>{$LL.warrants.hair[hair]()}</option>
-								{/each}
-							</TerminalFormSelect>
+								<TerminalTitle>{$LL.warrants.labels.hair()}</TerminalTitle>
+								<TerminalFormSelect bind:value={warrantHair}>
+									{#each Object.values(WarrantHair) as hair}
+										<option value={hair}>{$LL.warrants.hair[hair]()}</option>
+									{/each}
+								</TerminalFormSelect>
 
-							<TerminalTitle>{$LL.warrants.labels.feature()}</TerminalTitle>
-							<TerminalFormSelect bind:value={warrantFeature}>
-								{#each Object.values(WarrantFeature) as feature}
-									<option value={feature}>{$LL.warrants.feature[feature]()}</option>
-								{/each}
-							</TerminalFormSelect>
+								<TerminalTitle>{$LL.warrants.labels.feature()}</TerminalTitle>
+								<TerminalFormSelect bind:value={warrantFeature}>
+									{#each Object.values(WarrantFeature) as feature}
+										<option value={feature}>{$LL.warrants.feature[feature]()}</option>
+									{/each}
+								</TerminalFormSelect>
 
-							<TerminalTitle>{$LL.warrants.labels.vehicle()}</TerminalTitle>
-							<TerminalFormSelect bind:value={warrantVehicle}>
-								{#each Object.values(WarrantVehicle) as vehicle}
-									<option value={vehicle}>{$LL.warrants.vehicle[vehicle]()}</option>
-								{/each}
-							</TerminalFormSelect>
-						</TerminalForm>
+								<TerminalTitle>{$LL.warrants.labels.vehicle()}</TerminalTitle>
+								<TerminalFormSelect bind:value={warrantVehicle}>
+									{#each Object.values(WarrantVehicle) as vehicle}
+										<option value={vehicle}>{$LL.warrants.vehicle[vehicle]()}</option>
+									{/each}
+								</TerminalFormSelect>
+							</TerminalForm>
 
-						{#if game.warrants.length > 1}
-							<TerminalRows
-								lines={[
-									{ text: $LL.warrants.possibleSuspects(), isTitle: true },
-									...game.warrants.map((suspect) => ({
-										text: $LL.suspects[suspect].name()
-									}))
-								]}
-							/>
-						{:else if game.warrants.length > 0}
-							<TerminalRows
-								lines={[
-									{ text: $LL.warrants.suspectMatch(), isTitle: true },
-									{
-										text: $LL.warrants.haveWarrant({
-											suspect: $LL.suspects[game.warrants[0]].name()
-										})
-									}
-								]}
-							/>
+							<ul class="terminal-group-buttons" in:slide>
+								<li class="terminal-group-buttons__li">
+									<Button
+										on:click={computeWarrant}
+										disabled={!canComputeWarrant}
+										transparent={true}
+									>
+										{$LL.warrants.compute()}
+									</Button>
+								</li>
+							</ul>
+
+							{#if warrantWasComputed}
+								{#if game.warrants.length > 1}
+									<TerminalRows
+										shouldAutoScroll={true}
+										lines={[
+											{ text: $LL.warrants.possibleSuspects(), isTitle: true },
+											...game.warrants.map((suspect) => ({
+												text: $LL.suspects[suspect].name()
+											}))
+										]}
+									/>
+								{:else if game.warrants.length > 0}
+									<TerminalRows
+										shouldAutoScroll={true}
+										lines={[
+											{ text: $LL.warrants.suspectMatch(), isTitle: true },
+											{
+												text: $LL.warrants.haveWarrant({
+													suspect: $LL.suspects[game.warrants[0]].name()
+												})
+											}
+										]}
+									/>
+								{:else}
+									<TerminalRows
+										shouldAutoScroll={true}
+										lines={[
+											{ text: $LL.warrants.noSuspectsFound(), isTitle: true },
+											{ text: $LL.warrants.noPossibleSuspects() }
+										]}
+									/>
+								{/if}
+							{/if}
 						{/if}
 					</TerminalGroup>
-
-					<Section>
-						<Button on:click={computeWarrant} disabled={!canComputeWarrant}>
-							{$LL.warrants.compute()}
-						</Button>
-					</Section>
 				{/if}
 			{/if}
 
@@ -514,11 +567,11 @@
 							<Back />
 						</ButtonIcon>
 					{:else if showPostcard}
-						<ButtonIcon on:click={togglePostcard} title="Hide postcard">
+						<ButtonIcon on:click={togglePostcard} title={$LL.game.actions.hidePostcard()}>
 							<Expand />
 						</ButtonIcon>
 					{:else}
-						<ButtonIcon on:click={togglePostcard} title="Show postcard">
+						<ButtonIcon on:click={togglePostcard} title={$LL.game.actions.showPostcard()}>
 							<Collapse />
 						</ButtonIcon>
 						<ButtonIcon
@@ -563,5 +616,15 @@
 		gap: 4px;
 		max-height: 50dvh;
 		overflow-y: auto;
+	}
+
+	ul.terminal-group-buttons {
+		list-style: unset;
+		padding-inline: unset;
+		margin-block: unset;
+	}
+
+	li.terminal-group-buttons__li {
+		border-top: 1px dashed var(--color-neutral-500);
 	}
 </style>

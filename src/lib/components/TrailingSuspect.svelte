@@ -1,15 +1,15 @@
 <script lang="ts">
 	import LL from '$i18n/i18n-svelte';
+	import type { Translation } from '$i18n/i18n-types';
 	import H1 from '$lib/components/H1.svelte';
-	import type { Translation } from '../../i18n/i18n-types';
-	import SuspectFingerprint from '../icons/SuspectFingerprint.svg.svelte';
-	import SuspectHacker from '../icons/SuspectHacker.svg.svelte';
-	import SuspectKick from '../icons/SuspectKick.svg.svelte';
-	import SuspectPolice from '../icons/SuspectPolice.svg.svelte';
-	import SuspectRappel from '../icons/SuspectRappel.svg.svelte';
-	import SuspectRun from '../icons/SuspectRun.svg.svelte';
-	import SuspectSki from '../icons/SuspectSki.svg.svelte';
-	import type { WarrantSex } from '../suspects';
+	import SuspectFingerprint from '$lib/icons/SuspectFingerprint.svg.svelte';
+	import SuspectHacker from '$lib/icons/SuspectHacker.svg.svelte';
+	import SuspectKick from '$lib/icons/SuspectKick.svg.svelte';
+	import SuspectPolice from '$lib/icons/SuspectPolice.svg.svelte';
+	import SuspectRappel from '$lib/icons/SuspectRappel.svg.svelte';
+	import SuspectRun from '$lib/icons/SuspectRun.svg.svelte';
+	import SuspectSki from '$lib/icons/SuspectSki.svg.svelte';
+	import type { WarrantSex } from '$lib/suspects';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 

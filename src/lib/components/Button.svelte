@@ -3,10 +3,16 @@
 	export let disabled: boolean = false;
 	export let active: boolean = false;
 	export let compact: boolean = false;
+	export let transparent: boolean = false;
 </script>
 
 <button
-	class="button {active ? 'button--active' : ''} {compact ? 'button--compact' : ''}"
+	class="
+		button
+		{active ? 'button--active' : ''}
+		{compact ? 'button--compact' : ''}
+		{transparent ? 'button--transparent' : ''}
+	"
 	{disabled}
 	{title}
 	on:click
@@ -41,6 +47,14 @@
 			width: max-content;
 			font-size: 1.5em;
 			padding: 0.5em;
+		}
+
+		&--transparent:disabled,
+		&--transparent {
+			background-color: transparent;
+			backdrop-filter: unset;
+			-webkit-backdrop-filter: unset;
+			border-radius: unset;
 		}
 	}
 </style>

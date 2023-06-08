@@ -76,7 +76,7 @@ const en = {
 	},
 	game: {
 		outcome: {
-			title: 'World Police: Incoming message',
+			incomingMessage: 'Incoming message',
 			ready: 'Ready for your next case, {rank:string} {name:string}?',
 			caughtWithWarrant: {
 				0: 'Thaks to your help, the {city:string} police have apprehended {suspect:string}.',
@@ -119,7 +119,9 @@ const en = {
 			sleeping: 'Sleeping',
 			options: 'Options',
 			abandon: 'Abandon game',
-			confirm: 'Are you sure you want to abandon this game?'
+			confirm: 'Are you sure you want to abandon this game?',
+			showPostcard: 'Show postcard',
+			hidePostcard: 'Hide postcard'
 		}
 	},
 	suspects: {
@@ -183,6 +185,8 @@ const en = {
 			transit: 'Public transit',
 			jet: 'Jet'
 		},
+		worldPolice: 'World Police',
+		warrants: 'Warrants',
 		dossiers: 'Dossiers',
 		suspectDossiers: 'Suspect dossiers',
 		getWarrant: 'Get warrant',

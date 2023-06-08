@@ -78,7 +78,7 @@ const es = {
 	},
 	game: {
 		outcome: {
-			title: 'Policía Mundial: Mensaje entrante',
+			incomingMessage: 'Mensaje entrante',
 			ready: 'Listo para tu próximo caso, {rank} {name}?',
 			caughtWithWarrant: {
 				0: 'Gracias a tu ayuda, la policía de {city} ha aprehendido a {suspect}.',
@@ -121,7 +121,9 @@ const es = {
 			sleeping: 'Durmiendo',
 			options: 'Opciones',
 			abandon: 'Abandonar partida',
-			confirm: 'Estás a punto de abandonar este juego. ¿Estás seguro?'
+			confirm: 'Estás a punto de abandonar este juego. ¿Estás seguro?',
+			showPostcard: 'Mostrar postal',
+			hidePostcard: 'Ocultar postal'
 		}
 	},
 	suspects: {
@@ -185,6 +187,8 @@ const es = {
 			transit: 'Transporte público',
 			jet: 'Jet'
 		},
+		worldPolice: 'Policía Mundial',
+		warrants: 'Ordenes de detención',
 		dossiers: 'Expedientes',
 		suspectDossiers: 'Expedientes de sospechosos',
 		getWarrant: 'Obtener orden de detención',

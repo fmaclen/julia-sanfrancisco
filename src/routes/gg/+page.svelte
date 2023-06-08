@@ -6,11 +6,11 @@
 	import H1 from '$lib/components/H1.svelte';
 	import Header from '$lib/components/Header.svelte';
 	import Main from '$lib/components/Main.svelte';
-	import type { TerminalRow } from '$lib/components/Terminal';
 	import TerminalGroup from '$lib/components/TerminalGroup.svelte';
 	import TerminalRows from '$lib/components/TerminalRows.svelte';
 	import Time from '$lib/components/Time.svelte';
 	import TrailingSuspect from '$lib/components/TrailingSuspect.svelte';
+	import type { TerminalRow } from '$lib/components/terminal';
 	import { gameStore, getFormattedTime, type Atlas, SUSPECT_TRAIL_SCENE_DURATION } from '$lib/game';
 	import { delay, redirectTo } from '$lib/helpers';
 	import Continue from '$lib/icons/Continue.svg.svelte';
@@ -54,7 +54,10 @@
 
 		outcomeSuspectCaughtWithWarrant = [
 			[
-				{ text: $LL.game.outcome.title(), isTitle: true },
+				{
+					text: `${$LL.warrants.worldPolice()}: ${$LL.game.outcome.incomingMessage()}`,
+					isTitle: true
+				},
 				{ text: $LL.game.outcome.caughtWithWarrant[0]({ city, suspect }) },
 				{ text: $LL.game.outcome.caughtWithWarrant[1]({ suspect, stolenTreasure: $gameStore.stolenTreasure, city }) } // prettier-ignore
 			],
@@ -67,7 +70,10 @@
 
 		outcomeSuspectCaughtWithWrongWarrant = [
 			[
-				{ text: $LL.game.outcome.title(), isTitle: true },
+				{
+					text: `${$LL.warrants.worldPolice()}: ${$LL.game.outcome.incomingMessage()}`,
+					isTitle: true
+				},
 				{ text: $LL.game.outcome.caughtWithWrongWarrant[0]({ suspect }) },
 				{ text: $LL.game.outcome.caughtWithWrongWarrant[1]({ suspect: suspectWarrant }) }
 			],
@@ -79,7 +85,10 @@
 
 		outcomeSuspectCaughtWithoutWarrant = [
 			[
-				{ text: $LL.game.outcome.title(), isTitle: true },
+				{
+					text: `${$LL.warrants.worldPolice()}: ${$LL.game.outcome.incomingMessage()}`,
+					isTitle: true
+				},
 				{ text: $LL.game.outcome.caughtWithoutWarrant[0]({ suspect }) },
 				{ text: $LL.game.outcome.caughtWithoutWarrant[1]() }
 			],
@@ -88,7 +97,10 @@
 
 		outcomeSuspectGotAway = [
 			[
-				{ text: $LL.game.outcome.title(), isTitle: true },
+				{
+					text: `${$LL.warrants.worldPolice()}: ${$LL.game.outcome.incomingMessage()}`,
+					isTitle: true
+				},
 				{ text: $LL.game.outcome.gotAway[0]() },
 				{ text: $LL.game.outcome.gotAway[1]({ suspect }) }
 			]
@@ -200,7 +212,7 @@
 						{/if}
 					{/if}
 
-					{#if $playerStore && currentStepIndex == maxStepIndex}
+					{#if $playerStore && currentStepIndex == maxStepIndex && !isAnimating}
 						{@const playerRankIndex = getRank($playerStore.score)}
 						<TerminalRows
 							lines={[
