@@ -294,6 +294,13 @@
 
 {#if !isLoading}
 	<Main>
+		<Artwork
+			isHighContrast={!showPostcard}
+			isHidden={isArtworkHidden}
+			isDisabled={isSleeping}
+			src={artworkPath}
+		/>
+
 		{#if isTrailingSuspect}
 			<TrailingSuspect sceneIndex={trailingSuspectScene} sex={game.suspect.warrantKeys.sex} />
 		{/if}
@@ -313,13 +320,6 @@
 				<Time {isClockTicking} currentTime={currentTimeFormatted} />
 			{/if}
 		</Header>
-
-		<Artwork
-			isHighContrast={!showPostcard}
-			isHidden={isArtworkHidden}
-			isDisabled={isSleeping}
-			src={artworkPath}
-		/>
 
 		<Footer slot="footer">
 			{#if !showPostcard}
@@ -624,10 +624,6 @@
 		list-style: unset;
 		padding-inline: unset;
 		margin-block: unset;
-
-		&:last-child {
-			margin-bottom: calc(var(--terminal-block) * -1);
-		}
 	}
 
 	li.terminal-group-buttons__li {

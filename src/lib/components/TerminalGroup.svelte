@@ -7,9 +7,7 @@
 		@import '$lib/components/mixins.scss';
 		@include plate;
 
-		// HACK: ideally the parent grid would be the one to set the height
-		max-height: 380px;
-		padding-inline: unset;
+		max-height: 65vh;
 		overflow-y: auto;
 
 		--terminal-block: 24px;
