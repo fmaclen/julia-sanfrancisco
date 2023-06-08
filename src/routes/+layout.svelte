@@ -101,6 +101,13 @@
 		margin: unset;
 		color: var(--color-neutral-100);
 		background-color: var(--color-neutral-1000);
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100dvw;
+		min-width: 320px;
+		height: 100dvh;
 	}
 
 	div.layout {

@@ -20,7 +20,7 @@
 
 <style lang="scss">
 	div.artwork {
-		position: fixed;
+		position: absolute;
 		inset: 0;
 		z-index: 0;
 		opacity: 1;
