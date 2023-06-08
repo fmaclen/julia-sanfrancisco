@@ -78,7 +78,7 @@ const es = {
 	},
 	game: {
 		outcome: {
-			title: 'Policía Mundial: Mensaje entrante',
+			incomingMessage: 'Mensaje entrante',
 			ready: 'Listo para tu próximo caso, {rank} {name}?',
 			caughtWithWarrant: {
 				0: 'Gracias a tu ayuda, la policía de {city} ha aprehendido a {suspect}.',

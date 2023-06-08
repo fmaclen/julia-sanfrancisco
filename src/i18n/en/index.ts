@@ -76,7 +76,7 @@ const en = {
 	},
 	game: {
 		outcome: {
-			title: 'World Police: Incoming message',
+			incomingMessage: 'Incoming message',
 			ready: 'Ready for your next case, {rank:string} {name:string}?',
 			caughtWithWarrant: {
 				0: 'Thaks to your help, the {city:string} police have apprehended {suspect:string}.',

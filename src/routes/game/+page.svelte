@@ -383,7 +383,7 @@
 						<TerminalRows
 							lines={[
 								{
-									text: `${$LL.warrants.worldPolice()} ${$LL.warrants.suspectDossiers()}`,
+									text: `${$LL.warrants.worldPolice()}: ${$LL.warrants.suspectDossiers()}`,
 									isTitle: true
 								}
 							]}
@@ -408,7 +408,7 @@
 						<TerminalRows
 							lines={[
 								{
-									text: `${$LL.warrants.worldPolice()} ${$LL.warrants.suspectDossiers()}`,
+									text: `${$LL.warrants.worldPolice()}: ${$LL.warrants.suspectDossiers()}`,
 									isTitle: true
 								}
 							]}
@@ -449,7 +449,10 @@
 					<TerminalGroup>
 						<TerminalRows
 							lines={[
-								{ text: `${$LL.warrants.worldPolice()} ${$LL.warrants.warrants()}`, isTitle: true },
+								{
+									text: `${$LL.warrants.worldPolice()}: ${$LL.warrants.warrants()}`,
+									isTitle: true
+								},
 								{ text: $LL.warrants.provideDetails() }
 							]}
 							bind:isAnimating

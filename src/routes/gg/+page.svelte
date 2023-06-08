@@ -54,7 +54,10 @@
 
 		outcomeSuspectCaughtWithWarrant = [
 			[
-				{ text: $LL.game.outcome.title(), isTitle: true },
+				{
+					text: `${$LL.warrants.worldPolice()}: ${$LL.game.outcome.incomingMessage()}`,
+					isTitle: true
+				},
 				{ text: $LL.game.outcome.caughtWithWarrant[0]({ city, suspect }) },
 				{ text: $LL.game.outcome.caughtWithWarrant[1]({ suspect, stolenTreasure: $gameStore.stolenTreasure, city }) } // prettier-ignore
 			],
@@ -67,7 +70,10 @@
 
 		outcomeSuspectCaughtWithWrongWarrant = [
 			[
-				{ text: $LL.game.outcome.title(), isTitle: true },
+				{
+					text: `${$LL.warrants.worldPolice()}: ${$LL.game.outcome.incomingMessage()}`,
+					isTitle: true
+				},
 				{ text: $LL.game.outcome.caughtWithWrongWarrant[0]({ suspect }) },
 				{ text: $LL.game.outcome.caughtWithWrongWarrant[1]({ suspect: suspectWarrant }) }
 			],
@@ -79,7 +85,10 @@
 
 		outcomeSuspectCaughtWithoutWarrant = [
 			[
-				{ text: $LL.game.outcome.title(), isTitle: true },
+				{
+					text: `${$LL.warrants.worldPolice()}: ${$LL.game.outcome.incomingMessage()}`,
+					isTitle: true
+				},
 				{ text: $LL.game.outcome.caughtWithoutWarrant[0]({ suspect }) },
 				{ text: $LL.game.outcome.caughtWithoutWarrant[1]() }
 			],
@@ -88,7 +97,10 @@
 
 		outcomeSuspectGotAway = [
 			[
-				{ text: $LL.game.outcome.title(), isTitle: true },
+				{
+					text: `${$LL.warrants.worldPolice()}: ${$LL.game.outcome.incomingMessage()}`,
+					isTitle: true
+				},
 				{ text: $LL.game.outcome.gotAway[0]() },
 				{ text: $LL.game.outcome.gotAway[1]({ suspect }) }
 			]
