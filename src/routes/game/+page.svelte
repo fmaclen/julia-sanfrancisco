@@ -288,8 +288,6 @@
 	onDestroy(() => {
 		clearInterval(gameLoop);
 	});
-
-	$: if (game?.warrants) console.log(game.warrants);
 </script>
 
 {#if !isLoading}

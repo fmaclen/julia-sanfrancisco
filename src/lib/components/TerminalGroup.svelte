@@ -7,7 +7,7 @@
 		@import '$lib/components/mixins.scss';
 		@include plate;
 
-		max-height: 65vh;
+		max-height: 400px;
 		overflow-y: auto;
 
 		--terminal-block: 24px;
