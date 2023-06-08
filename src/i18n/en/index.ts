@@ -119,7 +119,9 @@ const en = {
 			sleeping: 'Sleeping',
 			options: 'Options',
 			abandon: 'Abandon game',
-			confirm: 'Are you sure you want to abandon this game?'
+			confirm: 'Are you sure you want to abandon this game?',
+			showPostcard: 'Show postcard',
+			hidePostcard: 'Hide postcard'
 		}
 	},
 	suspects: {
@@ -183,6 +185,8 @@ const en = {
 			transit: 'Public transit',
 			jet: 'Jet'
 		},
+		worldPolice: 'World Police',
+		warrants: 'Warrants',
 		dossiers: 'Dossiers',
 		suspectDossiers: 'Suspect dossiers',
 		getWarrant: 'Get warrant',
