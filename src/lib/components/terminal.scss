@@ -1,0 +1,16 @@
+section.typewriter-container {
+	display: flex;
+	flex-direction: column;
+	gap: calc(var(--terminal-block) / 2);
+	font-size: 16px;
+	list-style: none;
+	margin-block: unset;
+	box-sizing: border-box;
+	padding-block: unset;
+	padding-block: var(--terminal-block);
+	padding-inline: var(--terminal-inline);
+
+	@media (max-width: 512px) {
+		font-size: 14px;
+	}
+}

@@ -1,20 +1,20 @@
 <script lang="ts">
-	import type { TerminalRow } from './Terminal';
 	import TerminalParagraph from './TerminalParagraph.svelte';
 	import TerminalTitle from './TerminalTitle.svelte';
-	import { slide } from 'svelte/transition';
+	import type { TerminalRow } from './terminal';
+	import './terminal.scss';
+	import { onMount } from 'svelte';
+	import Typewriter from 'svelte-typewriter';
 
 	export let lines: TerminalRow[] = [];
-	export let isAnimating: boolean = false;
-	export let delay: number | undefined = 0;
+	export let isAnimating: boolean = true;
+
+	onMount(() => {
+		isAnimating = true;
+	});
 </script>
 
-<section
-	class="terminal-rows"
-	in:slide={{ duration: 500, delay }}
-	on:introstart={() => (isAnimating = true)}
-	on:introend={() => (isAnimating = false)}
->
+<Typewriter element="section" mode="cascade" on:done={() => (isAnimating = false)}>
 	{#each lines as line}
 		{#if line.isTitle}
 			<TerminalTitle>{line.text}</TerminalTitle>
@@ -22,23 +22,4 @@
 			<TerminalParagraph>{line.text}</TerminalParagraph>
 		{/if}
 	{/each}
-</section>
-
-<style lang="scss">
-	section.terminal-rows {
-		display: flex;
-		flex-direction: column;
-		gap: calc(var(--terminal-block) / 2);
-		font-size: 16px;
-		list-style: none;
-		margin-block: unset;
-		box-sizing: border-box;
-		padding-block: unset;
-		padding-block: var(--terminal-block);
-		padding-inline: var(--terminal-inline);
-
-		@media (max-width: 512px) {
-			font-size: 14px;
-		}
-	}
-</style>
+</Typewriter>

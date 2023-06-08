@@ -19,7 +19,7 @@
 		margin-inline: var(--layout-inline);
 		padding-block: var(--terminal-block);
 
-		> :global(section.terminal-rows),
+		> :global(section.typewriter-container),
 		> :global(section.terminal-form) {
 			border-top: 1px dashed var(--color-neutral-500);
 

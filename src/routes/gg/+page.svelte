@@ -6,11 +6,11 @@
 	import H1 from '$lib/components/H1.svelte';
 	import Header from '$lib/components/Header.svelte';
 	import Main from '$lib/components/Main.svelte';
-	import type { TerminalRow } from '$lib/components/Terminal';
 	import TerminalGroup from '$lib/components/TerminalGroup.svelte';
 	import TerminalRows from '$lib/components/TerminalRows.svelte';
 	import Time from '$lib/components/Time.svelte';
 	import TrailingSuspect from '$lib/components/TrailingSuspect.svelte';
+	import type { TerminalRow } from '$lib/components/terminal';
 	import { gameStore, getFormattedTime, type Atlas, SUSPECT_TRAIL_SCENE_DURATION } from '$lib/game';
 	import { delay, redirectTo } from '$lib/helpers';
 	import Continue from '$lib/icons/Continue.svg.svelte';

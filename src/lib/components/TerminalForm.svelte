@@ -1,4 +1,8 @@
-<section class="terminal-form">
+<script>
+	import { slide } from 'svelte/transition';
+</script>
+
+<section class="terminal-form" in:slide>
 	<slot />
 </section>
 
