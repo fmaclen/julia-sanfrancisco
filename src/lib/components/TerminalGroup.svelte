@@ -8,7 +8,7 @@
 		@include plate;
 
 		// HACK: ideally the parent grid would be the one to set the height
-		max-height: 50dvh;
+		max-height: 380px;
 		padding-inline: unset;
 		overflow-y: auto;
 
