@@ -7,6 +7,10 @@ on:
 
 jobs:
   build_and_deploy:
+    name: Build & deploy
+    permissions:
+      contents: write
+
     runs-on: ubuntu-latest
 
     steps:
@@ -21,10 +25,22 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Generate typesafe-i18n files
+        run: npx typesafe-i18n --no-watch
+
+      - name: Semantic Release
+        id: release
+        run: |
+          version=$(npx semantic-release --branches main | grep 'Published release' | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build
         run: npm run build
         env:
-          GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
+          PUBLIC_PLAUSIBLE_DOMAIN: ${{ secrets.PUBLIC_PLAUSIBLE_DOMAIN }}
+          PUBLIC_GAME_VERSION: ${{ steps.release.outputs.version }}
 
       - name: Deploy to S3
         uses: jakejarvis/s3-sync-action@master

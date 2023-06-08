@@ -16,7 +16,10 @@ const config = {
 			fallback: null,
 			precompress: false,
 			strict: true
-		})
+		}),
+		alias: {
+			$i18n: 'src/i18n'
+		}
 	}
 };
 

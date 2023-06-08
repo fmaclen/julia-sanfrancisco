@@ -1,4 +1,8 @@
-import { addDays, addHours, addSeconds, format, isAfter, startOfWeek } from 'date-fns';
+import type { Locales } from '$i18n/i18n-types';
+import { addDays, addHours, addSeconds, isAfter, startOfWeek } from 'date-fns';
+// Need to import the locales like this to avoid a bug during build process
+import enUS from 'date-fns/locale/en-US/index';
+import es from 'date-fns/locale/es/index';
 
 export const DELAY_IN_MS = 500;
 const FPS = 60;
@@ -9,15 +13,17 @@ export default class Clock {
 	currentTime: Date;
 	timerId: NodeJS.Timer | null;
 	tickRate: number;
+	locale: Locale;
 
 	isWalking: boolean;
 	isFlying: boolean;
 	isSleeping: boolean;
 	isTimeUp: boolean;
 
-	constructor() {
+	constructor(locale: Locales) {
 		this.timerId = null;
 		this.tickRate = DELAY_IN_MS / FPS;
+		this.locale = locale === 'en' ? enUS : es;
 
 		this.isWalking = false;
 		this.isFlying = false;
@@ -34,10 +40,6 @@ export default class Clock {
 	public start = () => {
 		const oneMinuteInSeconds = 60;
 		this.timerId = setInterval(() => this.advanceTime(oneMinuteInSeconds), 1500);
-	};
-
-	public getCurrentTime = (): string => {
-		return format(this.currentTime, 'EEEE h:mm aaa');
 	};
 
 	public fastForward = (hours: number): Promise<boolean> => {

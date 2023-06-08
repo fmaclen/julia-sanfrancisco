@@ -1,56 +1,177 @@
 <script lang="ts">
-	import { ATLASES, getRandomAtlas, type Atlas } from '$lib/atlases';
+	import LL from '$i18n/i18n-svelte';
+	import type { Translation } from '$i18n/i18n-types';
 	import Clock, { DELAY_IN_MS } from '$lib/clock';
+	import Artwork from '$lib/components/Artwork.svelte';
 	import Button from '$lib/components/Button.svelte';
-	import ButtonLink from '$lib/components/ButtonLink.svelte';
+	import ButtonIcon from '$lib/components/ButtonIcon.svelte';
+	import Footer from '$lib/components/Footer.svelte';
 	import H1 from '$lib/components/H1.svelte';
 	import Header from '$lib/components/Header.svelte';
 	import Main from '$lib/components/Main.svelte';
-	import Nav from '$lib/components/Nav.svelte';
 	import P from '$lib/components/P.svelte';
 	import Section from '$lib/components/Section.svelte';
-	import { getArtworkPath, getRandomValue, redirectTo } from '$lib/helpers';
-	import { playerStore, type Player } from '$lib/player';
-	import { getRounds, getDecoyRound, type Round } from '$lib/rounds';
-	import { SUSPECTS, type Suspect } from '$lib/suspects';
-	import { onMount } from 'svelte';
+	import TerminalForm from '$lib/components/TerminalForm.svelte';
+	import TerminalFormSelect from '$lib/components/TerminalFormSelect.svelte';
+	import TerminalGroup from '$lib/components/TerminalGroup.svelte';
+	import TerminalParagraph from '$lib/components/TerminalParagraph.svelte';
+	import TerminalRows from '$lib/components/TerminalRows.svelte';
+	import TerminalTitle from '$lib/components/TerminalTitle.svelte';
+	import Time from '$lib/components/Time.svelte';
+	import TrailingSuspect from '$lib/components/TrailingSuspect.svelte';
+	import {
+		gameStore,
+		type Game,
+		type Atlas,
+		type Round,
+		generateDecoyRound,
+		getFormattedTime,
+		SUSPECT_TRAIL_SCENE_DURATION
+	} from '$lib/game';
+	import { delay, getRandomValue, redirectTo } from '$lib/helpers';
+	import Back from '$lib/icons/Back.svg.svelte';
+	import Collapse from '$lib/icons/Collapse.svg.svelte';
+	import Expand from '$lib/icons/Expand.svg.svelte';
+	import IconFly from '$lib/icons/Fly.svg.svelte';
+	import IconMenu from '$lib/icons/Menu.svg.svelte';
+	import IconWalk from '$lib/icons/Walk.svg.svelte';
+	import { playerStore } from '$lib/player';
+	import {
+		Suspect,
+		WarrantSex,
+		WarrantHobby,
+		WarrantHair,
+		WarrantFeature,
+		WarrantVehicle,
+		findSuspects
+	} from '$lib/suspects';
+	import { onDestroy, onMount } from 'svelte';
+	import { fade, slide } from 'svelte/transition';
 
-	// If there is no user profile, redirect to the player page
-	if ($playerStore === null) redirectTo('/player/');
+	let game: Game;
+	let currentRound: Round;
+	let currentClueIndex: number | null = null;
+	let artworkPath: string;
 
-	interface Game {
-		stolenTreasure: string;
-		suspect: Suspect;
-		rounds: Round[];
+	let gameLoop: NodeJS.Timer;
+	let clock = new Clock($playerStore?.locale ?? 'en');
+	let currentTimeFormatted: string;
+
+	let isLoading = true;
+	let isAnimating: boolean;
+	let isWalking: boolean;
+	let isFlying: boolean;
+	let isSleeping: boolean;
+	let isTimeUp: boolean;
+	let isFirstRound: boolean;
+	let isLastRound: boolean;
+	let isGameOver: boolean;
+
+	let isTrailingSuspect: boolean;
+	let trailingSceneInRoundSeen: boolean = false;
+	let trailingSuspectScene: keyof Translation['game']['trailingSuspect'];
+
+	let showPostcard = true;
+	let showPlaces = false;
+	let showDestinations = false;
+	let showOptions = false;
+	let showDescription = true;
+	let showDossiers = false;
+	let showWarrant = false;
+	let showSuspectDossier: keyof Translation['suspects'] | undefined;
+
+	let warrantWasComputed: boolean = false;
+	let warrantSex: WarrantSex | undefined;
+	let warrantHobby: WarrantHobby | undefined;
+	let warrantHair: WarrantHair | undefined;
+	let warrantFeature: WarrantFeature | undefined;
+	let warrantVehicle: WarrantVehicle | undefined;
+
+	$: isClockTicking = isSleeping || isWalking || isFlying;
+	$: isArtworkHidden = isClockTicking && !isSleeping;
+	$: isClueVisible = currentClueIndex !== null && !isWalking && !isSleeping;
+	$: canComputeWarrant = warrantSex || warrantHobby || warrantHair || warrantFeature || warrantVehicle; // prettier-ignore
+
+	$: if (game) {
+		currentRound = game.roundDecoy ? game.roundDecoy : game.rounds[game.currentRoundIndex];
+		if (currentClueIndex === null) artworkPath = currentRound.atlas.artwork;
+
+		game.suspect.caught =
+			!isTimeUp && isLastRound && currentClueIndex === game.suspect.lastRoundHidingPlace;
+
+		isFirstRound = game.currentRoundIndex === 0;
+		isLastRound = game.currentRoundIndex === game.rounds.length - 1;
+		isGameOver = game.suspect.caught || isTimeUp;
 	}
 
-	const atlasesInRound = [...ATLASES];
-	const startingDestination: Atlas = getRandomAtlas();
-	const suspect = getRandomValue(SUSPECTS);
-
-	const game: Game = {
-		stolenTreasure: getRandomValue(startingDestination.objects),
-		suspect,
-		rounds: getRounds(startingDestination, atlasesInRound, suspect)
-	};
-	const { rounds } = game;
+	$: if (isGameOver) {
+		gameStore.set(game); // Save the game state to localStorage
+		redirectTo('/gg/');
+	}
 
 	function resetRound(): void {
+		currentClueIndex = null;
+		artworkPath = currentRound.atlas.artwork;
+		game.currentTime = clock.currentTime;
+
 		showDescription = true;
 		showPlaces = false;
+		showOptions = false;
 		showDestinations = false;
-		currentClueIndex = null;
-		artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
+		showDossiers = false;
+		showWarrant = false;
+		showSuspectDossier = undefined;
+
+		gameStore.set(game); // Save the game state to localStorage
 	}
 
 	function flyTo(): void {
-		resetRound();
-		showDestinations = true;
+		if (!showDestinations) resetRound();
+		showDescription = !showDescription;
+		showDestinations = !showDestinations;
 	}
 
 	function walkTo(): void {
-		resetRound();
-		showPlaces = true;
+		if (!showPlaces) resetRound();
+		showDescription = !showDescription;
+		showPlaces = !showPlaces;
+	}
+
+	function toggleOptions(): void {
+		if (!showOptions) resetRound();
+		showDescription = !showDescription;
+		showOptions = !showOptions;
+	}
+
+	function togglePostcard(): void {
+		showPostcard = !showPostcard;
+	}
+
+	function seeDossiers(): void {
+		showOptions = false;
+		showSuspectDossier = undefined;
+		showDossiers = true;
+	}
+
+	function seeDossier(suspect: Suspect): void {
+		showDossiers = false;
+		showSuspectDossier = suspect;
+	}
+
+	function getWarrant(): void {
+		showOptions = false;
+		showWarrant = true;
+	}
+
+	function computeWarrant(): void {
+		warrantWasComputed = true;
+		game.warrants = findSuspects(
+			warrantSex,
+			warrantHobby,
+			warrantHair,
+			warrantFeature,
+			warrantVehicle
+		);
 	}
 
 	async function getClue(index: number): Promise<void> {
@@ -58,203 +179,452 @@
 		showDescription = false;
 		clock.isWalking = true;
 
-		transitionTo(() => {
-			currentClueIndex = index;
-			artworkPath = getArtworkPath(currentRound.scenes[index].place, 'places');
-		});
+		if (!trailingSceneInRoundSeen && !isFirstRound && game.suspect.lastRoundHidingPlace !== index) {
+			isArtworkHidden = true;
+			isTrailingSuspect = true;
 
-		await clock.fastForward(2);
+			const nextSuspectScene = (
+				game.currentRoundIndex - 1
+			).toString() as keyof Translation['game']['trailingSuspect'];
+
+			trailingSuspectScene = nextSuspectScene;
+			await delay(SUSPECT_TRAIL_SCENE_DURATION);
+
+			isTrailingSuspect = false;
+			trailingSceneInRoundSeen = true;
+		}
+
+		isArtworkHidden = true;
+		clock.fastForward(2);
+		await delay(DELAY_IN_MS);
+
+		currentClueIndex = index;
+		if (currentRound) artworkPath = currentRound.scenes[index].place.artwork;
 	}
 
-	function dismissClue(): void {
-		transitionTo(() => {
-			resetRound();
-			isArtworkHidden = false;
-		});
+	async function dismissClue(): Promise<void> {
+		isArtworkHidden = true;
+		await delay(DELAY_IN_MS);
+
+		resetRound();
+		isArtworkHidden = false; // Since clock is not ticking we need to manually show the artwork
 	}
 
-	async function setRound(destination: Atlas): Promise<void> {
+	async function setRound(currentAtlas: Atlas): Promise<void> {
+		isClockTicking = true;
+		clock.isFlying = true;
 		showDestinations = false;
 		showDescription = false;
-		clock.isFlying = true;
+		isArtworkHidden = true;
+		clock.fastForward(4);
+		await delay(DELAY_IN_MS);
 
-		transitionTo(() => {
-			const isPreviousRoundAtlas =
-				currentRoundIndex !== 0 && rounds[currentRoundIndex - 1].atlas === destination;
-			const isCurrentRound = rounds[currentRoundIndex].atlas === destination;
-			const isNextRoundAtlas = rounds[currentRoundIndex + 1].atlas === destination;
-			const isDecoyRound = !isCurrentRound && !isPreviousRoundAtlas && !isNextRoundAtlas;
+		const { rounds, currentRoundIndex } = game;
 
-			if (isCurrentRound) currentRound = rounds[currentRoundIndex];
-			if (isPreviousRoundAtlas) currentRoundIndex -= 1;
-			if (isNextRoundAtlas) currentRoundIndex += 1;
+		const isCurrentRound = rounds[currentRoundIndex].atlas.city === currentAtlas.city;
+		const isNextRound = rounds[currentRoundIndex + 1].atlas.city === currentAtlas.city;
+		const isPreviousRound =
+			currentRoundIndex > 0 && rounds[currentRoundIndex - 1].atlas.city === currentAtlas.city;
 
-			// There should always be a way to return to the
-			const anchorDestination = rounds[currentRoundIndex].atlas;
-			if (isDecoyRound) {
-				currentRound = getDecoyRound(destination, anchorDestination);
-			}
-		});
+		// Decoy rounds are used to throw the player off the trail
+		const isDecoyRound = !isCurrentRound && !isPreviousRound && !isNextRound;
 
-		await clock.fastForward(4);
+		// There should always be a way to return to the round where the suspect trail was lost
+		const anchorAtlas = rounds[currentRoundIndex].atlas;
+
+		if (isDecoyRound) {
+			currentRound = generateDecoyRound($LL, currentAtlas, anchorAtlas);
+			game.roundDecoy = currentRound;
+		} else {
+			trailingSceneInRoundSeen = false;
+			game.roundDecoy = null;
+		}
+
+		if (isCurrentRound) currentRound = rounds[currentRoundIndex];
+		if (isNextRound) game.currentRoundIndex += 1;
+		if (isPreviousRound) game.currentRoundIndex -= 1;
+
+		// Must reset round after transition
+		showPostcard = true;
 		resetRound();
 	}
 
-	function transitionTo(callback: Function) {
-		isArtworkHidden = true;
-
-		setTimeout(() => {
-			callback();
-		}, DELAY_IN_MS);
-	}
-
-	function updateScore(): void {
-		redirectTo('/player/');
-
-		playerStore.update((player: Player | null) => {
-			player ? (player.score += 1) : null;
-			return player;
-		});
+	function abandonGame(): void {
+		if (confirm($LL.game.actions.confirm())) {
+			gameStore.set(null);
+			redirectTo('/');
+		}
 	}
 
 	onMount(() => {
+		// Can't start the game without $playerStore and $gameStore
+		if ($playerStore === null || $gameStore === null) {
+			redirectTo('/headquarters/');
+			return new Error('No player or game store');
+		}
+
+		// Create a local copy of the game state
+		game = $gameStore;
+
+		// Try to resume the game from where the player left off
+		if (game.currentTime) clock.currentTime = new Date(game.currentTime);
+
+		// Start game loop
 		clock.start();
 
-		setInterval(() => {
-			currentTime = clock.getCurrentTime();
+		// Game loop
+		gameLoop = setInterval(() => {
+			if ($playerStore)
+				currentTimeFormatted = getFormattedTime(clock.currentTime, $playerStore.locale);
 			isWalking = clock.isWalking;
 			isFlying = clock.isFlying;
 			isSleeping = clock.isSleeping;
 			isTimeUp = clock.isTimeUp;
 		}, clock.tickRate);
+
+		isLoading = false;
 	});
 
-	let currentRoundIndex = 0;
-	let currentClueIndex: number | null = null;
-
-	let clock = new Clock();
-	let currentTime: string;
-
-	let isWalking: boolean;
-	let isFlying: boolean;
-	let isSleeping: boolean;
-	let isTimeUp: boolean;
-
-	let showPlaces = false;
-	let showDestinations = false;
-	let showDescription = true;
-
-	$: currentRound = rounds[currentRoundIndex];
-	$: artworkPath = getArtworkPath(currentRound.atlas.city, 'atlas');
-
-	$: isClockTicking = isSleeping || isWalking || isFlying;
-	$: isArtworkHidden = isClockTicking && !isSleeping;
-	$: isClueVisible = currentClueIndex !== null && !isWalking && !isSleeping;
-	$: isGameWon = !isTimeUp && currentRoundIndex === rounds.length - 1;
+	onDestroy(() => {
+		clearInterval(gameLoop);
+	});
 </script>
 
-<Main>
-	<div
-		class="artwork {isArtworkHidden ? 'artwork--hidden' : ''} {isSleeping
-			? 'artwork--disabled'
-			: ''}"
-	>
-		<img class="artwork__img" src={artworkPath} alt="Illustration of scene" />
-	</div>
+{#if !isLoading}
+	<Main>
+		<Artwork
+			isHighContrast={!showPostcard}
+			isHidden={isArtworkHidden}
+			isDisabled={isSleeping}
+			src={artworkPath}
+		/>
 
-	<Header>
-		<H1>
-			{isSleeping
-				? 'Sleeping...'
-				: isFlying
-				? 'Flying...'
-				: isWalking
-				? 'Walking...'
-				: currentRound.atlas.city}
-		</H1>
-		<time class="time {isClockTicking ? 'time--active' : ''}">{currentTime}</time>
-	</Header>
-
-	<Section>
-		{#if showDescription}
-			<P>
-				{getRandomValue(currentRound.atlas.descriptions)}
-			</P>
-		{/if}
-	</Section>
-
-	<Section align="bottom">
-		{#if showPlaces}
-			{#each currentRound.scenes as scene, index}
-				<Button active={currentClueIndex === index} on:click={() => getClue(index)}>
-					{scene.place}
-				</Button>
-			{/each}
+		{#if isTrailingSuspect}
+			<TrailingSuspect sceneIndex={trailingSuspectScene} sex={game.suspect.warrantKeys.sex} />
 		{/if}
 
-		{#if isClueVisible && currentClueIndex !== null}
-			<P>
-				<strong>{currentRound.scenes[currentClueIndex].witness}</strong>
-				<br />
-				{currentRound.scenes[currentClueIndex].clue}
-			</P>
-		{/if}
+		<Header slot="header">
+			<H1>
+				{isSleeping
+					? $LL.game.actions.sleeping() + '...'
+					: isFlying
+					? $LL.game.actions.flying() + '...'
+					: isWalking
+					? $LL.game.actions.walking() + '...'
+					: currentRound.atlas.city}
+			</H1>
 
-		{#if showDestinations}
-			{#each Array.from(currentRound.destinations) as destination}
-				<Button on:click={() => setRound(destination)}>
-					{destination.city}
-				</Button>
-			{/each}
-		{/if}
-	</Section>
+			{#if isClockTicking || !showPostcard}
+				<Time {isClockTicking} currentTime={currentTimeFormatted} />
+			{/if}
+		</Header>
 
-	<Nav>
-		{#if isGameWon}
-			<Button on:click={updateScore}>Continue</Button>
-		{:else if isClueVisible}
-			<Button on:click={dismissClue}>Dismiss</Button>
-		{:else if !isClockTicking}
-			<Button active={isWalking} on:click={walkTo}>Walk to</Button>
-			<Button active={isFlying} on:click={flyTo}>Fly to</Button>
-			<Button disabled={true}>Get warrant</Button>
-			<ButtonLink href="/">Quit</ButtonLink>
-		{/if}
-	</Nav>
-</Main>
+		<Footer slot="footer">
+			{#if !showPostcard}
+				{#if !isTimeUp && !isSleeping && !isClockTicking && showDescription}
+					<Section>
+						<section class="paragraph-group" in:fade>
+							<P>{getRandomValue(currentRound.atlas.descriptions)}</P>
+						</section>
+					</Section>
+				{/if}
+
+				{#if showPlaces}
+					<Section>
+						<section class="button-group" in:slide>
+							{#each currentRound.scenes as scene, index}
+								<Button active={currentClueIndex === index} on:click={() => getClue(index)}>
+									{scene.place.name}
+								</Button>
+							{/each}
+						</section>
+					</Section>
+				{/if}
+
+				{#if isClueVisible && currentClueIndex !== null}
+					{@const suspectClue = currentRound.scenes[currentClueIndex].suspectClue}
+					<Section>
+						<section class="paragraph-group">
+							<P><strong>{currentRound.scenes[currentClueIndex].witness}</strong></P>
+							<P>{currentRound.scenes[currentClueIndex].clue}</P>
+
+							{#if suspectClue}
+								<P>{suspectClue}</P>
+							{/if}
+						</section>
+					</Section>
+				{/if}
+
+				{#if showDestinations}
+					<Section>
+						<section class="button-group" in:slide>
+							{#each Array.from(currentRound.destinations) as destination}
+								<Button on:click={() => setRound(destination)}>
+									{destination.city}
+								</Button>
+							{/each}
+						</section>
+					</Section>
+				{/if}
+
+				{#if showOptions}
+					<Section>
+						<Button on:click={abandonGame}>{$LL.game.actions.abandon()}</Button>
+					</Section>
+
+					<Section>
+						<section class="button-group" in:slide>
+							<Button on:click={seeDossiers}>{$LL.warrants.suspectDossiers()}</Button>
+							<Button on:click={getWarrant}>{$LL.warrants.getWarrant()}</Button>
+						</section>
+					</Section>
+				{/if}
+
+				{#if showDossiers}
+					<TerminalGroup>
+						<TerminalRows
+							lines={[
+								{
+									text: `${$LL.warrants.worldPolice()}: ${$LL.warrants.suspectDossiers()}`,
+									isTitle: true
+								}
+							]}
+							bind:isAnimating
+						/>
+						<ul class="terminal-group-buttons" in:slide>
+							{#each Object.values(Suspect) as suspectKey}
+								<li class="terminal-group-buttons__li">
+									<Button on:click={() => seeDossier(suspectKey)} transparent={true}>
+										{$LL.suspects[suspectKey].name()}
+									</Button>
+								</li>
+							{/each}
+						</ul>
+					</TerminalGroup>
+				{/if}
+
+				{#if showSuspectDossier}
+					{@const suspect = $LL.suspects[showSuspectDossier]}
+					{@const warrants = $LL.warrants}
+					<TerminalGroup>
+						<TerminalRows
+							lines={[
+								{
+									text: `${$LL.warrants.worldPolice()}: ${$LL.warrants.suspectDossiers()}`,
+									isTitle: true
+								}
+							]}
+							bind:isAnimating
+						/>
+
+						{#if !isAnimating}
+							<TerminalForm>
+								<TerminalTitle>{warrants.labels.name()}</TerminalTitle>
+								<TerminalParagraph>{suspect.name()}</TerminalParagraph>
+
+								<TerminalTitle>{warrants.labels.sex()}</TerminalTitle>
+								<TerminalParagraph>{suspect.sex()}</TerminalParagraph>
+
+								<TerminalTitle>{warrants.labels.occupation()}</TerminalTitle>
+								<TerminalParagraph>{suspect.occupation()}</TerminalParagraph>
+
+								<TerminalTitle>{warrants.labels.hobby()}</TerminalTitle>
+								<TerminalParagraph>{suspect.hobby()}</TerminalParagraph>
+
+								<TerminalTitle>{warrants.labels.hair()}</TerminalTitle>
+								<TerminalParagraph>{suspect.hair()}</TerminalParagraph>
+
+								<TerminalTitle>{warrants.labels.vehicle()}</TerminalTitle>
+								<TerminalParagraph>{suspect.vehicle()}</TerminalParagraph>
+
+								<TerminalTitle>{warrants.labels.feature()}</TerminalTitle>
+								<TerminalParagraph>{suspect.feature()}</TerminalParagraph>
+
+								<TerminalTitle>{warrants.labels.other()}</TerminalTitle>
+								<TerminalParagraph>{suspect.other()}</TerminalParagraph>
+							</TerminalForm>
+						{/if}
+					</TerminalGroup>
+				{/if}
+
+				{#if showWarrant}
+					<TerminalGroup>
+						<TerminalRows
+							lines={[
+								{
+									text: `${$LL.warrants.worldPolice()}: ${$LL.warrants.warrants()}`,
+									isTitle: true
+								},
+								{ text: $LL.warrants.provideDetails() }
+							]}
+							bind:isAnimating
+						/>
+
+						{#if !isAnimating}
+							<TerminalForm>
+								<TerminalTitle>{$LL.warrants.labels.sex()}</TerminalTitle>
+								<TerminalFormSelect bind:value={warrantSex}>
+									{#each Object.values(WarrantSex) as sex}
+										<option value={sex}>{$LL.warrants.sex[sex]()}</option>
+									{/each}
+								</TerminalFormSelect>
+
+								<TerminalTitle>{$LL.warrants.labels.hobby()}</TerminalTitle>
+								<TerminalFormSelect bind:value={warrantHobby}>
+									{#each Object.values(WarrantHobby) as hobby}
+										<option value={hobby}>{$LL.warrants.hobby[hobby]()}</option>
+									{/each}
+								</TerminalFormSelect>
+
+								<TerminalTitle>{$LL.warrants.labels.hair()}</TerminalTitle>
+								<TerminalFormSelect bind:value={warrantHair}>
+									{#each Object.values(WarrantHair) as hair}
+										<option value={hair}>{$LL.warrants.hair[hair]()}</option>
+									{/each}
+								</TerminalFormSelect>
+
+								<TerminalTitle>{$LL.warrants.labels.feature()}</TerminalTitle>
+								<TerminalFormSelect bind:value={warrantFeature}>
+									{#each Object.values(WarrantFeature) as feature}
+										<option value={feature}>{$LL.warrants.feature[feature]()}</option>
+									{/each}
+								</TerminalFormSelect>
+
+								<TerminalTitle>{$LL.warrants.labels.vehicle()}</TerminalTitle>
+								<TerminalFormSelect bind:value={warrantVehicle}>
+									{#each Object.values(WarrantVehicle) as vehicle}
+										<option value={vehicle}>{$LL.warrants.vehicle[vehicle]()}</option>
+									{/each}
+								</TerminalFormSelect>
+							</TerminalForm>
+
+							<ul class="terminal-group-buttons" in:slide>
+								<li class="terminal-group-buttons__li">
+									<Button
+										on:click={computeWarrant}
+										disabled={!canComputeWarrant}
+										transparent={true}
+									>
+										{$LL.warrants.compute()}
+									</Button>
+								</li>
+							</ul>
+
+							{#if warrantWasComputed}
+								{#if game.warrants.length > 1}
+									<TerminalRows
+										shouldAutoScroll={true}
+										lines={[
+											{ text: $LL.warrants.possibleSuspects(), isTitle: true },
+											...game.warrants.map((suspect) => ({
+												text: $LL.suspects[suspect].name()
+											}))
+										]}
+									/>
+								{:else if game.warrants.length > 0}
+									<TerminalRows
+										shouldAutoScroll={true}
+										lines={[
+											{ text: $LL.warrants.suspectMatch(), isTitle: true },
+											{
+												text: $LL.warrants.haveWarrant({
+													suspect: $LL.suspects[game.warrants[0]].name()
+												})
+											}
+										]}
+									/>
+								{:else}
+									<TerminalRows
+										shouldAutoScroll={true}
+										lines={[
+											{ text: $LL.warrants.noSuspectsFound(), isTitle: true },
+											{ text: $LL.warrants.noPossibleSuspects() }
+										]}
+									/>
+								{/if}
+							{/if}
+						{/if}
+					</TerminalGroup>
+				{/if}
+			{/if}
+
+			{#if !isClockTicking}
+				<nav class="game-nav" transition:fade>
+					{#if isClueVisible}
+						<ButtonIcon on:click={dismissClue} title={$LL.components.buttons.goBack()}>
+							<Back />
+						</ButtonIcon>
+					{:else if showDossiers}
+						<ButtonIcon on:click={toggleOptions} title={$LL.components.buttons.goBack()}>
+							<Back />
+						</ButtonIcon>
+					{:else if showSuspectDossier}
+						<ButtonIcon on:click={seeDossiers} title={$LL.components.buttons.goBack()}>
+							<Back />
+						</ButtonIcon>
+					{:else if showWarrant}
+						<ButtonIcon on:click={toggleOptions} title={$LL.components.buttons.goBack()}>
+							<Back />
+						</ButtonIcon>
+					{:else if showPostcard}
+						<ButtonIcon on:click={togglePostcard} title={$LL.game.actions.hidePostcard()}>
+							<Expand />
+						</ButtonIcon>
+					{:else}
+						<ButtonIcon on:click={togglePostcard} title={$LL.game.actions.showPostcard()}>
+							<Collapse />
+						</ButtonIcon>
+						<ButtonIcon
+							on:click={walkTo}
+							active={isWalking || showPlaces}
+							title={$LL.game.actions.walk()}
+						>
+							<IconWalk />
+						</ButtonIcon>
+						<ButtonIcon
+							on:click={flyTo}
+							active={isFlying || showDestinations}
+							title={$LL.game.actions.fly()}
+						>
+							<IconFly />
+						</ButtonIcon>
+						<ButtonIcon
+							on:click={toggleOptions}
+							title={$LL.game.actions.options()}
+							active={showOptions}
+						>
+							<IconMenu />
+						</ButtonIcon>
+					{/if}
+				</nav>
+			{/if}
+		</Footer>
+	</Main>
+{/if}
 
 <style lang="scss">
-	time.time {
-		opacity: 0.33;
-		transition: opacity 250ms;
-
-		&--active {
-			opacity: 1;
-		}
+	nav.game-nav {
+		display: flex;
+		justify-content: space-between;
+		margin-inline: var(--layout-inline);
 	}
 
-	div.artwork {
-		position: absolute;
-		z-index: -1;
-		top: 0;
-		left: 0;
+	section.button-group {
+		display: flex;
+		flex-direction: column;
 		width: 100%;
-		height: 100%;
-		opacity: 1;
-		transition: filter 1500ms, opacity 500ms;
-
-		&--hidden {
-			opacity: 0;
-		}
-
-		&--disabled {
-			filter: grayscale(100%) blur(4px);
-		}
+		gap: 4px;
+		max-height: 50dvh;
+		overflow-y: auto;
 	}
 
-	img.artwork__img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
+	ul.terminal-group-buttons {
+		list-style: unset;
+		padding-inline: unset;
+		margin-block: unset;
+	}
+
+	li.terminal-group-buttons__li {
+		border-top: 1px dashed var(--color-neutral-500);
 	}
 </style>
