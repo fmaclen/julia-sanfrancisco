@@ -381,7 +381,12 @@
 				{#if showDossiers}
 					<TerminalGroup>
 						<TerminalRows
-							lines={[{ text: 'World Police: Suspect dossiers', isTitle: true }]}
+							lines={[
+								{
+									text: `${$LL.warrants.worldPolice()} ${$LL.warrants.suspectDossiers()}`,
+									isTitle: true
+								}
+							]}
 							bind:isAnimating
 						/>
 						<ul class="terminal-group-buttons" in:slide>
@@ -401,7 +406,12 @@
 					{@const warrants = $LL.warrants}
 					<TerminalGroup>
 						<TerminalRows
-							lines={[{ text: 'World Police: Suspect dossier', isTitle: true }]}
+							lines={[
+								{
+									text: `${$LL.warrants.worldPolice()} ${$LL.warrants.suspectDossiers()}`,
+									isTitle: true
+								}
+							]}
 							bind:isAnimating
 						/>
 
@@ -439,7 +449,7 @@
 					<TerminalGroup>
 						<TerminalRows
 							lines={[
-								{ text: 'World Police: Warrants', isTitle: true },
+								{ text: `${$LL.warrants.worldPolice()} ${$LL.warrants.warrants()}`, isTitle: true },
 								{ text: $LL.warrants.provideDetails() }
 							]}
 							bind:isAnimating
@@ -536,11 +546,11 @@
 							<Back />
 						</ButtonIcon>
 					{:else if showPostcard}
-						<ButtonIcon on:click={togglePostcard} title="Hide postcard">
+						<ButtonIcon on:click={togglePostcard} title={$LL.game.actions.hidePostcard()}>
 							<Expand />
 						</ButtonIcon>
 					{:else}
-						<ButtonIcon on:click={togglePostcard} title="Show postcard">
+						<ButtonIcon on:click={togglePostcard} title={$LL.game.actions.showPostcard()}>
 							<Collapse />
 						</ButtonIcon>
 						<ButtonIcon

@@ -200,7 +200,7 @@
 						{/if}
 					{/if}
 
-					{#if $playerStore && currentStepIndex == maxStepIndex}
+					{#if $playerStore && currentStepIndex == maxStepIndex && !isAnimating}
 						{@const playerRankIndex = getRank($playerStore.score)}
 						<TerminalRows
 							lines={[
