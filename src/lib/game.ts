@@ -28,64 +28,64 @@ enum Place {
 
 enum Witness {
 	// Airport
-	BAGGAGE_CLERK,
-	FLIGHT_ATTENDANT,
-	PILOT,
+	BAGGAGE_CLERK = 'baggageClerk',
+	FLIGHT_ATTENDANT = 'flightAttendant',
+	PILOT = 'pilot',
 
 	// Bank
-	BANK_GUARD,
-	TELLER,
-	VICE_PRESIDENT,
+	BANK_GUARD = 'bankGuard',
+	TELLER = 'teller',
+	VICE_PRESIDENT = 'vicePresident',
 
 	// Foreign Ministry
-	AMBASSADOR,
-	ATTACHE,
-	UNDER_SECRETARY,
+	AMBASSADOR = 'ambassador',
+	ATTACHE = 'attache',
+	UNDER_SECRETARY = 'underSecretary',
 
 	// Harbor
-	CUSTOMS_OFFICER,
-	HARBOR_MASTER,
-	SAILOR,
+	CUSTOMS_OFFICER = 'customsOfficer',
+	HARBOR_MASTER = 'harborMaster',
+	SAILOR = 'sailor',
 
 	// Hotel
-	BELLHOP,
-	HOUSE_DETECTIVE,
-	HOTEL_MANAGER,
+	BELLHOP = 'bellhop',
+	HOUSE_DETECTIVE = 'houseDetective',
+	HOTEL_MANAGER = 'hotelManager',
 
 	// Library
-	ARCHIVIST,
-	CIRCULATION_CLERK,
-	REFERENCE_LIBRARIAN,
+	ARCHIVIST = 'archivist',
+	CIRCULATION_CLERK = 'circulationClerk',
+	REFERENCE_LIBRARIAN = 'referenceLibrarian',
 
 	// Marketplace
-	HAWKER,
-	STREET_MERCHANT,
-	URCHIN,
+	HAWKER = 'hawker',
+	STREET_MERCHANT = 'streetMerchant',
+	URCHIN = 'urchin',
 
 	// Museum
-	CURATOR,
-	DOCENT,
-	MUSEUM_GUARD,
+	CURATOR = 'curator',
+	DOCENT = 'docent',
+	MUSEUM_GUARD = 'museumGuard',
 
 	// Palace
-	PALACE_GUARD,
-	PRIVY_COUNCILLOR,
-	SOLDIER,
+	PALACE_GUARD = 'palaceGuard',
+	PRIVY_COUNCILLOR = 'privyCouncillor',
+	SOLDIER = 'soldier',
 
 	// Riverfront
-	SAILORS_PARROT,
-	STEVEDORE,
-	TUGBOAT_CAPTAIN,
+	SAILORS_PARROT = 'sailorsParrot',
+	STEVEDORE = 'stevedore',
+	TUGBOAT_CAPTAIN = 'tugboatCaptain',
 
 	// Sport Club
-	BARTENDER,
-	TENNIS_PRO,
-	WAITER,
+	BARTENDER = 'bartender',
+	TENNIS_PRO = 'tennisPro',
+	WAITER = 'waiter',
 
 	// Stock Exchange
-	ANALYST,
-	MESSENGER,
-	TRADER
+	ANALYST = 'analyst',
+	MESSENGER = 'messenger',
+	TRADER = 'trader'
 }
 
 interface Scene {

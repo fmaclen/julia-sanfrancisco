@@ -314,64 +314,64 @@ const en = {
 		},
 		witnesses: {
 			// Airport
-			0: 'Baggage clerk',
-			1: 'Flight attendant',
-			2: 'Pilot',
+			baggageClerk: 'Baggage clerk',
+			flightAttendant: 'Flight attendant',
+			pilot: 'Pilot',
 
 			// Bank
-			3: 'Bank guard',
-			4: 'Teller',
-			5: 'Vice president',
+			bankGuard: 'Bank guard',
+			teller: 'Teller',
+			vicePresident: 'Vice president',
 
 			// Foreign ministry
-			6: 'Ambassador',
-			7: 'Attache',
-			8: 'Under secretary',
+			ambassador: 'Ambassador',
+			attache: 'Attache',
+			underSecretary: 'Under secretary',
 
 			// Harbor
-			9: 'Customs officer',
-			10: 'Harbor master',
-			11: 'Sailor',
+			customsOfficer: 'Customs officer',
+			harborMaster: 'Harbor master',
+			sailor: 'Sailor',
 
 			// Hotel
-			12: 'Bellhop',
-			13: 'House detective',
-			14: 'Hotel manager',
+			bellhop: 'Bellhop',
+			houseDetective: 'House detective',
+			hotelManager: 'Hotel manager',
 
 			// Library
-			15: 'Archivist',
-			16: 'Circulation clerk',
-			17: 'Reference librarian',
+			archivist: 'Archivist',
+			circulationClerk: 'Circulation clerk',
+			referenceLibrarian: 'Reference librarian',
 
 			// Marketplace
-			18: 'Hawker',
-			19: 'Street merchant',
-			20: 'Urchin',
+			hawker: 'Hawker',
+			streetMerchant: 'Street merchant',
+			urchin: 'Urchin',
 
 			// Museum
-			21: 'Curator',
-			22: 'Docent',
-			23: 'Museum guard',
+			curator: 'Curator',
+			docent: 'Docent',
+			museumGuard: 'Museum guard',
 
 			// Palace
-			24: 'Palace guard',
-			25: 'Privy councillor',
-			26: 'Soldier',
+			palaceGuard: 'Palace guard',
+			privyCouncillor: 'Privy councillor',
+			soldier: 'Soldier',
 
 			// Riverfront
-			27: "Sailor's parrot",
-			28: 'Stevedore',
-			29: 'Tugboat captain',
+			sailorsParrot: "Sailor's parrot",
+			stevedore: 'Stevedore',
+			tugboatCaptain: 'Tugboat captain',
 
 			// Sport Club
-			30: 'Bartender',
-			31: 'Tennis pro',
-			32: 'Waiter',
+			bartender: 'Bartender',
+			tennisPro: 'Tennis pro',
+			waiter: 'Waiter',
 
 			// Stock Exchange
-			33: 'Analyst',
-			34: 'Messenger',
-			35: 'Trader'
+			analyst: 'Analyst',
+			messenger: 'Messenger',
+			trader: 'Trader'
 		}
 	},
 	player: {
