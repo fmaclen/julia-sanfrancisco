@@ -90,7 +90,7 @@ enum Witness {
 
 interface Scene {
 	place: LocalizedPlace;
-	witness: string;
+	witness: LocalizedWitness;
 	clue: string;
 	suspectClue?: string;
 }
@@ -156,12 +156,12 @@ export function generateGame(LL: TranslationFunctions): Game {
 interface LocalizedPlace {
 	place: Place;
 	name: string;
-	artwork: string;
 }
 
 interface LocalizedWitness {
 	witness: Witness;
 	name: string;
+	artwork: string;
 }
 
 function generateRounds(LL: TranslationFunctions, suspect: LocalizedSuspect): Round[] {
@@ -286,8 +286,8 @@ function generateScenes(params: ScenesParams): Scene[] {
 		scenes.push({
 			clue,
 			suspectClue,
-			place: place,
-			witness: witness.name
+			place,
+			witness
 		});
 	}
 
@@ -474,10 +474,7 @@ function getLocalizedPlaces(LL: TranslationFunctions): LocalizedPlace[] {
 
 		places.push({
 			place: parseInt(placeKey),
-			name: LL.scenes.places[translationKey](),
-
-			// HACK: We are using the English name of the `place` to get the artwork.
-			artwork: getArtworkPath(en.scenes.places[translationKey], 'places')
+			name: LL.scenes.places[translationKey]()
 		});
 	}
 
@@ -534,17 +531,15 @@ function getLocalizedWitnesses(LL: TranslationFunctions, place: Place): Localize
 
 	if (possibleWitnesses.length === 0) throw new Error('No witnesses found for this place.');
 
-	const witnessKeys = Object.keys(LL.scenes.witnesses);
 	const witnessesInPlace: LocalizedWitness[] = [];
 
-	for (const witnessKey of witnessKeys) {
-		const translationKey = witnessKey as keyof Translation['scenes']['witnesses'];
-		const witnessIndex = witnessKey as keyof typeof Witness;
-		const witness = Witness[witnessIndex];
-
-		if (possibleWitnesses.map((key) => Witness[key]).includes(witness.toString())) {
-			witnessesInPlace.push({ witness, name: LL.scenes.witnesses[translationKey]() });
-		}
+	for (const possibleWitness of possibleWitnesses) {
+		const witnessKey = possibleWitness as keyof Translation['scenes']['witnesses'];
+		witnessesInPlace.push({
+			witness: possibleWitness,
+			name: LL.scenes.witnesses[witnessKey](),
+			artwork: getArtworkPath(witnessKey, 'witnesses')
+		});
 	}
 
 	return getRandomValue(witnessesInPlace);
