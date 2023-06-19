@@ -199,7 +199,7 @@
 		await delay(DELAY_IN_MS);
 
 		currentClueIndex = index;
-		if (currentRound) artworkPath = currentRound.scenes[index].place.artwork;
+		if (currentRound) artworkPath = currentRound.scenes[index].witness.artwork;
 	}
 
 	async function dismissClue(): Promise<void> {
@@ -345,7 +345,7 @@
 					{@const suspectClue = currentRound.scenes[currentClueIndex].suspectClue}
 					<Section>
 						<section class="paragraph-group">
-							<P><strong>{currentRound.scenes[currentClueIndex].witness}</strong></P>
+							<P><strong>{currentRound.scenes[currentClueIndex].witness.name}</strong></P>
 							<P>{currentRound.scenes[currentClueIndex].clue}</P>
 
 							{#if suspectClue}

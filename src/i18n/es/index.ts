@@ -316,64 +316,64 @@ const es = {
 		},
 		witnesses: {
 			// Aeropuerto
-			0: 'Empleado de equipaje',
-			1: 'Azafata',
-			2: 'Piloto',
+			baggageClerk: 'Empleado de equipaje',
+			flightAttendant: 'Azafata',
+			pilot: 'Piloto',
 
 			// Banco
-			3: 'Guardia de banco',
-			4: 'Cajero',
-			5: 'Vicepresidente',
+			bankGuard: 'Guardia de banco',
+			teller: 'Cajero',
+			vicePresident: 'Vicepresidente',
 
 			// Ministerio de Relaciones Exteriores
-			6: 'Embajador',
-			7: 'Agregado',
-			8: 'Subsecretario',
+			ambassador: 'Embajador',
+			attache: 'Agregado',
+			underSecretary: 'Subsecretario',
 
 			// Puerto
-			9: 'Oficial de aduanas',
-			10: 'Capitán de puerto',
-			11: 'Marinero',
+			customsOfficer: 'Oficial de aduanas',
+			harborMaster: 'Capitán de puerto',
+			sailor: 'Marinero',
 
 			// Hotel
-			12: 'Botones',
-			13: 'Detective del hotel',
-			14: 'Gerente del hotel',
+			bellhop: 'Botones',
+			houseDetective: 'Detective del hotel',
+			hotelManager: 'Gerente del hotel',
 
 			// Biblioteca
-			15: 'Archivero',
-			16: 'Cajero de circulación',
-			17: 'Bibliotecario de referencia',
+			archivist: 'Archivero',
+			circulationClerk: 'Cajero de circulación',
+			referenceLibrarian: 'Bibliotecario de referencia',
 
 			// Mercado
-			18: 'Vendedor ambulante',
-			19: 'Comerciante callejero',
-			20: 'Pillo',
+			hawker: 'Vendedor ambulante',
+			streetMerchant: 'Comerciante callejero',
+			urchin: 'Pillo',
 
 			// Museo
-			21: 'Curador',
-			22: 'Guía',
-			23: 'Guardia de museo',
+			curator: 'Curador',
+			docent: 'Guía',
+			museumGuard: 'Guardia de museo',
 
 			// Palacio
-			24: 'Guardia de palacio',
-			25: 'Consejero privado',
-			26: 'Soldado',
+			palaceGuard: 'Guardia de palacio',
+			privyCouncillor: 'Consejero privado',
+			soldier: 'Soldado',
 
 			// Malecón
-			27: 'Loro del marinero',
-			28: 'Estibador',
-			29: 'Capitán de remolcador',
+			sailorsParrot: 'Loro del marinero',
+			stevedore: 'Estibador',
+			tugboatCaptain: 'Capitán de remolcador',
 
 			// Club deportivo
-			30: 'Barman',
-			31: 'Profesional de tenis',
-			32: 'Camarero',
+			bartender: 'Barman',
+			tennisPro: 'Profesional de tenis',
+			waiter: 'Camarero',
 
 			// Bolsa de valores
-			33: 'Analista',
-			34: 'Mensajero',
-			35: 'Operador'
+			analyst: 'Analista',
+			messenger: 'Mensajero',
+			trader: 'Operador'
 		}
 	},
 	player: {

@@ -28,69 +28,69 @@ enum Place {
 
 enum Witness {
 	// Airport
-	BAGGAGE_CLERK,
-	FLIGHT_ATTENDANT,
-	PILOT,
+	BAGGAGE_CLERK = 'baggageClerk',
+	FLIGHT_ATTENDANT = 'flightAttendant',
+	PILOT = 'pilot',
 
 	// Bank
-	BANK_GUARD,
-	TELLER,
-	VICE_PRESIDENT,
+	BANK_GUARD = 'bankGuard',
+	TELLER = 'teller',
+	VICE_PRESIDENT = 'vicePresident',
 
 	// Foreign Ministry
-	AMBASSADOR,
-	ATTACHE,
-	UNDER_SECRETARY,
+	AMBASSADOR = 'ambassador',
+	ATTACHE = 'attache',
+	UNDER_SECRETARY = 'underSecretary',
 
 	// Harbor
-	CUSTOMS_OFFICER,
-	HARBOR_MASTER,
-	SAILOR,
+	CUSTOMS_OFFICER = 'customsOfficer',
+	HARBOR_MASTER = 'harborMaster',
+	SAILOR = 'sailor',
 
 	// Hotel
-	BELLHOP,
-	HOUSE_DETECTIVE,
-	HOTEL_MANAGER,
+	BELLHOP = 'bellhop',
+	HOUSE_DETECTIVE = 'houseDetective',
+	HOTEL_MANAGER = 'hotelManager',
 
 	// Library
-	ARCHIVIST,
-	CIRCULATION_CLERK,
-	REFERENCE_LIBRARIAN,
+	ARCHIVIST = 'archivist',
+	CIRCULATION_CLERK = 'circulationClerk',
+	REFERENCE_LIBRARIAN = 'referenceLibrarian',
 
 	// Marketplace
-	HAWKER,
-	STREET_MERCHANT,
-	URCHIN,
+	HAWKER = 'hawker',
+	STREET_MERCHANT = 'streetMerchant',
+	URCHIN = 'urchin',
 
 	// Museum
-	CURATOR,
-	DOCENT,
-	MUSEUM_GUARD,
+	CURATOR = 'curator',
+	DOCENT = 'docent',
+	MUSEUM_GUARD = 'museumGuard',
 
 	// Palace
-	PALACE_GUARD,
-	PRIVY_COUNCILLOR,
-	SOLDIER,
+	PALACE_GUARD = 'palaceGuard',
+	PRIVY_COUNCILLOR = 'privyCouncillor',
+	SOLDIER = 'soldier',
 
 	// Riverfront
-	SAILORS_PARROT,
-	STEVEDORE,
-	TUGBOAT_CAPTAIN,
+	SAILORS_PARROT = 'sailorsParrot',
+	STEVEDORE = 'stevedore',
+	TUGBOAT_CAPTAIN = 'tugboatCaptain',
 
 	// Sport Club
-	BARTENDER,
-	TENNIS_PRO,
-	WAITER,
+	BARTENDER = 'bartender',
+	TENNIS_PRO = 'tennisPro',
+	WAITER = 'waiter',
 
 	// Stock Exchange
-	ANALYST,
-	MESSENGER,
-	TRADER
+	ANALYST = 'analyst',
+	MESSENGER = 'messenger',
+	TRADER = 'trader'
 }
 
 interface Scene {
 	place: LocalizedPlace;
-	witness: string;
+	witness: LocalizedWitness;
 	clue: string;
 	suspectClue?: string;
 }
@@ -156,12 +156,12 @@ export function generateGame(LL: TranslationFunctions): Game {
 interface LocalizedPlace {
 	place: Place;
 	name: string;
-	artwork: string;
 }
 
 interface LocalizedWitness {
 	witness: Witness;
 	name: string;
+	artwork: string;
 }
 
 function generateRounds(LL: TranslationFunctions, suspect: LocalizedSuspect): Round[] {
@@ -286,8 +286,8 @@ function generateScenes(params: ScenesParams): Scene[] {
 		scenes.push({
 			clue,
 			suspectClue,
-			place: place,
-			witness: witness.name
+			place,
+			witness
 		});
 	}
 
@@ -474,10 +474,7 @@ function getLocalizedPlaces(LL: TranslationFunctions): LocalizedPlace[] {
 
 		places.push({
 			place: parseInt(placeKey),
-			name: LL.scenes.places[translationKey](),
-
-			// HACK: We are using the English name of the `place` to get the artwork.
-			artwork: getArtworkPath(en.scenes.places[translationKey], 'places')
+			name: LL.scenes.places[translationKey]()
 		});
 	}
 
@@ -534,17 +531,15 @@ function getLocalizedWitnesses(LL: TranslationFunctions, place: Place): Localize
 
 	if (possibleWitnesses.length === 0) throw new Error('No witnesses found for this place.');
 
-	const witnessKeys = Object.keys(LL.scenes.witnesses);
 	const witnessesInPlace: LocalizedWitness[] = [];
 
-	for (const witnessKey of witnessKeys) {
-		const translationKey = witnessKey as keyof Translation['scenes']['witnesses'];
-		const witnessIndex = witnessKey as keyof typeof Witness;
-		const witness = Witness[witnessIndex];
-
-		if (possibleWitnesses.map((key) => Witness[key]).includes(witness.toString())) {
-			witnessesInPlace.push({ witness, name: LL.scenes.witnesses[translationKey]() });
-		}
+	for (const possibleWitness of possibleWitnesses) {
+		const witnessKey = possibleWitness as keyof Translation['scenes']['witnesses'];
+		witnessesInPlace.push({
+			witness: possibleWitness,
+			name: LL.scenes.witnesses[witnessKey](),
+			artwork: getArtworkPath(witnessKey, 'witnesses')
+		});
 	}
 
 	return getRandomValue(witnessesInPlace);
