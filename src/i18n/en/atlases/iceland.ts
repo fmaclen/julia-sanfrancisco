@@ -1,5 +1,5 @@
 export const iceland = {
-	city: 'Reykjavík',
+	city: 'Reykjavik',
 	descriptions: {
 		0: 'Reykjavík, the capital of Iceland, is known for its colorful buildings and beautiful harbors.',
 		1: 'With a population of over 120,000, Reykjavík is the largest city in Iceland, containing nearly a third of the country’s population.',
