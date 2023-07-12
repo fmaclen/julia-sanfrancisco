@@ -38,8 +38,6 @@ Follow the [current progress here](https://github.com/fmaclen/julia-sanfrancisco
 
 The game is currently open for contributions. If you want to help, please join the [Discord server](https://discord.com/channels/532702198040100874/1108858794831790080) and/or check the [issues](https://github.com/fmaclen/julia-sanfrancisco/issues) for tasks that need to be done.
 
-💵 **I will consider paying for meaninful contributions**, [message me](mailto:hello@fernando.is).
-
 ### Environment setup
 
 To run the development environment locally:
