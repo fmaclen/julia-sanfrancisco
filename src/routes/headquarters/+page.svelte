@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LL, { locale } from '$i18n/i18n-svelte';
+	import LL, { locale } from '../../i18n/i18n-svelte';
 	import Artwork from '$lib/components/Artwork.svelte';
 	import ButtonIcon from '$lib/components/ButtonIcon.svelte';
 	import Footer from '$lib/components/Footer.svelte';

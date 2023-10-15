@@ -1,6 +1,6 @@
 import { browser } from '$app/environment';
-import en from '$i18n/en';
-import type { Locales, Translation, TranslationFunctions } from '$i18n/i18n-types';
+import en from '../i18n/en';
+import type { Locales, Translation, TranslationFunctions } from '../i18n/i18n-types';
 import { getArtworkPath, getRandomValue } from '$lib/helpers';
 import { getSuspectWarrantKeys, Suspect, type WarrantKeys } from './suspects';
 import { format } from 'date-fns';

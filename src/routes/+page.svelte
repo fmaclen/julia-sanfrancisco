@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { PUBLIC_GAME_VERSION } from '$env/static/public';
-	import LL, { locale } from '$i18n/i18n-svelte';
+	import LL, { locale } from '../i18n/i18n-svelte';
 	import Artwork from '$lib/components/Artwork.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import ButtonLink from '$lib/components/ButtonLink.svelte';

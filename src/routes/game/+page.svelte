@@ -1,6 +1,6 @@
 <script lang="ts">
-	import LL from '$i18n/i18n-svelte';
-	import type { Translation } from '$i18n/i18n-types';
+	import LL from '../../i18n/i18n-svelte';
+	import type { Translation } from '../../i18n/i18n-types';
 	import Clock, { DELAY_IN_MS } from '$lib/clock';
 	import Artwork from '$lib/components/Artwork.svelte';
 	import Button from '$lib/components/Button.svelte';

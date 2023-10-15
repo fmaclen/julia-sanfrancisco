@@ -1,6 +1,6 @@
 <script lang="ts">
-	import LL from '$i18n/i18n-svelte';
-	import type { Translation } from '$i18n/i18n-types';
+	import LL from '../../i18n/i18n-svelte';
+	import type { Translation } from '../../i18n/i18n-types';
 	import H1 from '$lib/components/H1.svelte';
 	import SuspectFingerprint from '$lib/icons/SuspectFingerprint.svg.svelte';
 	import SuspectHacker from '$lib/icons/SuspectHacker.svg.svelte';

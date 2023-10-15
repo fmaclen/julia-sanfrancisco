@@ -15,9 +15,6 @@ const config = {
 				exclude: ['<all>']
 			}
 		}),
-		alias: {
-			$i18n: 'src/i18n'
-		}
 	}
 };
 
