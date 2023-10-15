@@ -1,11 +1,12 @@
-// See https://kit.svelte.dev/docs/types#app
-// for information about these interfaces
+// REF https://kit.svelte.dev/docs/adapter-cloudflare#deployment
+
 declare global {
 	namespace App {
-		// interface Error {}
-		// interface Locals {}
-		// interface PageData {}
-		// interface Platform {}
+		interface Platform {
+			env?: {
+				PUBLIC_PLAUSIBLE_DOMAIN: PublicPlausibleDomain;
+			};
+		}
 	}
 }
 
