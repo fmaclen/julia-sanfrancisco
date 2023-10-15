@@ -5,7 +5,7 @@
 	"scripts": {
 		"start": "concurrently \"typesafe-i18n\" \"npm run dev\"",
 		"dev": "vite dev --host",
-		"build": "vite build",
+		"build": "typesafe-i18n --no-watch && vite build",
 		"preview": "vite preview",
 		"test": "playwright test",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
