@@ -1,12 +1,11 @@
 <script lang="ts">
-	// import { PUBLIC_PLAUSIBLE_DOMAIN } from '$env/static/public';
+	// import { VITE_PUBLIC_PLAUSIBLE_DOMAIN } from '$env/static/public';
 	import type { Locales } from '$i18n/i18n-types';
 	import { playerStore, applyLocale } from '$lib/player';
 	import { onMount } from 'svelte';
 	import { detectLocale, navigatorDetector } from 'typesafe-i18n/detectors';
 	
 	const PUBLIC_PLAUSIBLE_DOMAIN = import.meta.env.VITE_PUBLIC_PLAUSIBLE_DOMAIN
-
 	onMount(() => {
 		const locale: Locales =
 			$playerStore?.locale ?? detectLocale('en', ['en', 'es'], navigatorDetector);
