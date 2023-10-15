@@ -1,4 +1,4 @@
-import type { Translation } from '../../i18n/i18n-types';
+import type { Translation } from '$i18n/i18n-types';
 import en from '../en';
 import { argentina } from './atlases/argentina';
 import { australia } from './atlases/australia';

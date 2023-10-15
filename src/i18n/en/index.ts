@@ -1,4 +1,4 @@
-import type { BaseTranslation } from '../../i18n/i18n-types';
+import type { BaseTranslation } from '$i18n/i18n-types';
 import { argentina } from './atlases/argentina';
 import { australia } from './atlases/australia';
 import { brazil } from './atlases/brazil';
