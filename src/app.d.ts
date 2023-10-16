@@ -2,8 +2,8 @@ declare global {
 	namespace App {
 		interface Platform {
 			env?: {
-				PUBLIC_PLAUSIBLE_DOMAIN: KVNamespace;
-				PUBLIC_GAME_VERSION: KVNamespace;
+				PUBLIC_PLAUSIBLE_DOMAIN: string;
+				PUBLIC_GAME_VERSION: string;
 			};
 		}
 	}
