@@ -3,7 +3,7 @@ name: Build & deploy to S3
 on:
   push:
     branches:
-      - main
+      - deploy-to-cloudflare
 
 jobs:
   build_and_deploy:
@@ -42,13 +42,10 @@ jobs:
           PUBLIC_PLAUSIBLE_DOMAIN: ${{ secrets.PUBLIC_PLAUSIBLE_DOMAIN }}
           PUBLIC_GAME_VERSION: ${{ steps.release.outputs.version }}
 
-      - name: Deploy to S3
-        uses: jakejarvis/s3-sync-action@master
+      - name: Deploy to CloudFlare Pages
+        uses: cloudflare/wrangler-action@v3
         with:
-          args: --acl public-read --follow-symlinks --delete
-        env:
-          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          SOURCE_DIR: 'build'
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          workingDirectory: .svelte-kit/cloudflare
+          command: pages deploy --project-name=julia-sanfrancisco
