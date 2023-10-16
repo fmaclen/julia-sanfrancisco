@@ -48,5 +48,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          workingDirectory: .svelte-kit/cloudflare
           command: pages deploy --project-name=julia-sanfrancisco
