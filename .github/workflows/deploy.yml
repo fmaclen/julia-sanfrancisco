@@ -3,8 +3,7 @@ name: Build & deploy
 on:
   push:
     branches:
-      # - main
-      - deploy-to-cloudflare
+      - main
 
 jobs:
   build_and_deploy:
@@ -29,13 +28,13 @@ jobs:
       - name: Generate typesafe-i18n files
         run: npx typesafe-i18n --no-watch
 
-      # - name: Semantic Release
-      #   id: release
-      #   run: |
-      #     version=$(npx semantic-release --branches main | grep 'Published release' | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
-      #     echo "version=$version" >> "$GITHUB_OUTPUT"
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Semantic Release
+        id: release
+        run: |
+          version=$(npx semantic-release --branches main | grep 'Published release' | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build
         run: npm run build
