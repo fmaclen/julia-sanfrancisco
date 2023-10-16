@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-static';
+import cloudFlare from '@sveltejs/adapter-cloudflare';
 import { vitePreprocess } from '@sveltejs/kit/vite';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -8,14 +8,12 @@ const config = {
 	preprocess: vitePreprocess(),
 
 	kit: {
-		adapter: adapter({
-			// default options are shown. On some platforms
-			// these options are set automatically — see below
-			pages: 'build',
-			assets: 'build',
-			fallback: null,
-			precompress: false,
-			strict: true
+		adapter: cloudFlare({
+			// REF https://github.com/sveltejs/kit/blob/fd6eb9b152001a537f4277a9e597aa24405a51af/documentation/docs/25-build-and-deploy/60-adapter-cloudflare.md#usage
+			routes: {
+				include: ['/*'],
+				exclude: ['<all>']
+			}
 		}),
 		alias: {
 			$i18n: 'src/i18n'
