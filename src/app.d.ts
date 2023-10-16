@@ -1,12 +1,10 @@
+// See https://kit.svelte.dev/docs/types#app
+// for information about these interfaces
 declare global {
 	namespace App {
-		interface Platform {
-			env?: {
-				PUBLIC_PLAUSIBLE_DOMAIN: string;
-				PUBLIC_GAME_VERSION: string;
-			};
-		}
+		// interface Error {}
+		// interface Locals {}
+		// interface PageData {}
+		// interface Platform {}
 	}
 }
-
-export {};
