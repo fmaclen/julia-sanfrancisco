@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { PUBLIC_PLAUSIBLE_DOMAIN } from '$env/static/public';
+	// import { PUBLIC_PLAUSIBLE_DOMAIN } from '$env/static/public';
+	const PUBLIC_PLAUSIBLE_DOMAIN = process.env.PUBLIC_PLAUSIBLE_DOMAIN;
+
 	import type { Locales } from '$i18n/i18n-types';
 	import { playerStore, applyLocale } from '$lib/player';
 	import { onMount } from 'svelte';
