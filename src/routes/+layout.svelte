@@ -27,7 +27,7 @@
 	/>
 	<!-- Open Graph / Facebook -->
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content="https://julia.strictoaster.com/" />
+	<meta property="og:url" content="https://julia.fernando.is/" />
 	<meta
 		property="og:title"
 		content="Julia Sanfrancisco: An AI spin on the classic 'Where in the World is Carmen Sandiego?'"
@@ -36,10 +36,10 @@
 		property="og:description"
 		content="Chase Julia and her accomplices across different countries, unraveling clues, solving puzzles, and expanding your geography knowledge in this exciting detective game."
 	/>
-	<meta property="og:image" content="https://julia.strictoaster.com/open-graph.png" />
+	<meta property="og:image" content="https://julia.fernando.is/open-graph.png" />
 	<!-- Twitter -->
 	<meta property="twitter:card" content="summary_large_image" />
-	<meta property="twitter:url" content="httpsjulia.strictoaster.com/" />
+	<meta property="twitter:url" content="httpsjulia.fernando.is/" />
 	<meta
 		property="twitter:title"
 		content="Julia Sanfrancisco: An AI spin on the classic 'Where in the World is Carmen Sandiego?'"
@@ -48,7 +48,7 @@
 		property="twitter:description"
 		content="Chase Julia and her accomplices across different countries, unraveling clues, solving puzzles, and expanding your geography knowledge in this exciting detective game."
 	/>
-	<meta property="twitter:image" content="https://julia.strictoaster.com/open-graph.png" />
+	<meta property="twitter:image" content="https://julia.fernando.is/open-graph.png" />
 
 	{#if PUBLIC_PLAUSIBLE_DOMAIN}
 		<script defer data-domain={PUBLIC_PLAUSIBLE_DOMAIN} src="https://plausible.io/js/script.js">

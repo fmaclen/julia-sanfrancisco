@@ -44,6 +44,6 @@
 		"type": "git",
 		"url": "git+https://github.com/fmaclen/julia-sanfrancisco.git"
 	},
-	"homepage": "https://julia.strictoaster.com/",
+	"homepage": "https://julia.fernando.is/",
 	"type": "module"
 }
