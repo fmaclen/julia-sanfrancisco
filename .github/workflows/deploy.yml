@@ -48,4 +48,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          command: pages publish .svelte-kit/cloudflare --project-name julia-sanfrancisco
+          command: pages deploy .svelte-kit/cloudflare --project-name julia-sanfrancisco
