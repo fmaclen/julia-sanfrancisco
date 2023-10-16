@@ -1,2 +1,2 @@
 name = "julia-sanfrancisco"
-main = ".svelte-kit/cloudflare"
+cwd = ".svelte-kit/cloudflare"
