@@ -51,7 +51,7 @@
 	<meta property="twitter:image" content="https://julia.fernando.is/open-graph.png" />
 
 	{#if PUBLIC_PLAUSIBLE_DOMAIN}
-		<script defer data-domain={PUBLIC_PLAUSIBLE_DOMAIN} src="https://plausible.io/js/script.js">
+		<script defer data-domain={PUBLIC_PLAUSIBLE_DOMAIN} src="https://management.fernando.is/js/script.js">
 		</script>
 	{/if}
 </svelte:head>
