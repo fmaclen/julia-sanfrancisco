@@ -10,7 +10,7 @@
 	import Main from '$lib/components/Main.svelte';
 	import P from '$lib/components/P.svelte';
 	import Section from '$lib/components/Section.svelte';
-	import { applyLocale, playerStore } from '$lib/player';
+	import { applyLocale } from '$lib/player';
 
 	let isMounted = $derived(false);
 
@@ -40,15 +40,11 @@
 				<nav class="splash-nav">
 					<div class="splash-nav__new-game">
 						<ButtonLink href="/headquarters/">{$LL.splash.newGame()}</ButtonLink>
-						<Button
-							compact={true}
-							disabled={$locale === 'en'}
-							onclick={() => applyLocale('en', playerStore)}>🇺🇸</Button
+						<Button compact={true} disabled={$locale === 'en'} onclick={() => applyLocale('en')}
+							>🇺🇸</Button
 						>
-						<Button
-							compact={true}
-							disabled={$locale === 'es'}
-							onclick={() => applyLocale('es', playerStore)}>🇪🇸</Button
+						<Button compact={true} disabled={$locale === 'es'} onclick={() => applyLocale('es')}
+							>🇪🇸</Button
 						>
 					</div>
 

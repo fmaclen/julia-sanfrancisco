@@ -1,20 +1,23 @@
 <script lang="ts">
 	import { PUBLIC_PLAUSIBLE_DOMAIN } from '$env/static/public';
 	import type { Locales } from '$i18n/i18n-types';
-	import { playerStore, applyLocale } from '$lib/player';
+	import { applyLocale } from '$lib/player';
+	import { playerState } from '$lib/state/player.svelte';
 	import { untrack } from 'svelte';
-	import { detectLocale, navigatorDetector } from 'typesafe-i18n/detectors';
+	import { detectLocale, type LocaleDetector } from 'typesafe-i18n/detectors';
 	interface Props {
 		children?: import('svelte').Snippet;
 	}
 
 	let { children }: Props = $props();
+	const browserLocaleDetector: LocaleDetector = () =>
+		typeof navigator === 'undefined' ? [] : Array.from(navigator.languages);
 
 	$effect(() => {
 		untrack(() => {
 			const locale: Locales =
-				$playerStore?.locale ?? detectLocale('en', ['en', 'es'], navigatorDetector);
-			applyLocale(locale, playerStore);
+				playerState.player?.locale ?? detectLocale('en', ['en', 'es'], browserLocaleDetector);
+			applyLocale(locale);
 		});
 	});
 </script>

@@ -1,4 +1,3 @@
-import { browser } from '$app/environment';
 import en from '$i18n/en';
 import es from '$i18n/es';
 import type { Locales, Translation, TranslationFunctions } from '$i18n/i18n-types';
@@ -6,7 +5,6 @@ import { getAllowedPlacesForAtlasKey, type AtlasKey } from '$lib/atlas-places';
 import { getArtworkPath, getRandomValue } from '$lib/helpers';
 import { Place } from './places';
 import { getSuspectWarrantKeys, Suspect, type WarrantKeys } from './suspects';
-import { writable } from 'svelte/store';
 import type { LocalizedString } from 'typesafe-i18n';
 
 export { Place } from './places';
@@ -102,7 +100,7 @@ export interface Round {
 	destinations: Atlas[]; // Would have used a Set<Atlas>, but we can't save that object type to localStorage
 }
 
-interface LocalizedSuspect {
+export interface LocalizedSuspect {
 	key: Suspect;
 	name: string;
 	hobby: string;
@@ -603,21 +601,3 @@ export function getFormattedTime(elapsedMinutes: number, locale: Locales): strin
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
-const gameLocalStorage: string | null = browser ? window.localStorage.getItem('game') : null;
-
-let game: Game | null = null;
-export const gameStore = writable<Game | null>(null);
-
-// Read existing game from localStorage
-if (gameLocalStorage) {
-	game = JSON.parse(gameLocalStorage) as Game;
-	gameStore.set(game);
-}
-
-// Write game to localStorage
-gameStore.subscribe((value) => {
-	if (browser) {
-		window.localStorage.setItem('game', JSON.stringify(value));
-	}
-});

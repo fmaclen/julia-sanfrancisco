@@ -13,14 +13,15 @@
 	import TerminalTitle from '$lib/components/TerminalTitle.svelte';
 	import Time from '$lib/components/Time.svelte';
 	import type { TerminalRow } from '$lib/components/Terminal';
-	import { gameStore, generateGame } from '$lib/game';
+	import { generateGame } from '$lib/game';
 	import { getRandomValue, redirectTo } from '$lib/helpers';
 	import Continue from '$lib/icons/Continue.svg.svelte';
 	import { getRank } from '$lib/player';
-	import { playerStore } from '$lib/player';
+	import { playerState } from '$lib/state/player.svelte';
+	import { sessionState } from '$lib/state/session.svelte';
 
-	// Headquarters always starts a new game
-	gameStore.set(null);
+	sessionState.game = null;
+	sessionState.save();
 
 	enum Step {
 		UNKNOWN_PLAYER,
@@ -31,23 +32,25 @@
 
 	let isMounted = $derived(false);
 	let isAnimating = $state(false);
-	let step: Step = $state($playerStore ? Step.KNOWN_PLAYER : Step.UNKNOWN_PLAYER);
+	let step: Step = $state(playerState.player ? Step.KNOWN_PLAYER : Step.UNKNOWN_PLAYER);
 	let playerName: string = $state('');
 	let playerRank: string = $derived(
-		$playerStore ? $LL.player.ranks[getRank($playerStore.score)]() : ''
+		playerState.player ? $LL.player.ranks[getRank(playerState.player.score)]() : ''
 	);
 
 	function setPlayer() {
-		playerStore.set({ name: playerName, score: 0, locale: $locale });
+		playerState.player = { name: playerName, score: 0, locale: $locale };
+		playerState.save();
 		step = Step.KNOWN_PLAYER;
 	}
 
 	function nextStep() {
-		if (!$playerStore) {
+		if (!playerState.player) {
 			setPlayer();
-		} else if (!$gameStore) {
+		} else if (!sessionState.game) {
 			const newGame = generateGame($LL);
-			gameStore.set(newGame);
+			sessionState.game = newGame;
+			sessionState.save();
 			step = Step.NEWS_FLASH;
 		} else if (step === Step.KNOWN_PLAYER) {
 			step = Step.NEWS_FLASH;
@@ -70,32 +73,32 @@
 		{ text: $LL.headquarters.id.yourName(), isTitle: true }
 	]);
 	let linesKnownPlayer: TerminalRow[] = $derived.by(() => {
-		if (!$playerStore) return [];
+		if (!playerState.player) return [];
 
 		return [
 			{ id: Step.KNOWN_PLAYER, text: $LL.headquarters.id.acmeSystems(), isTitle: true },
-			{ text: $LL.headquarters.id.indentified({ name: $playerStore.name }) },
+			{ text: $LL.headquarters.id.indentified({ name: playerState.player.name }) },
 			{ text: $LL.headquarters.id.rank({ rank: playerRank.toLowerCase() }) }
 		];
 	});
 	let linesNewsFlash: TerminalRow[] = $derived.by(() => {
-		if (!$gameStore) return [];
+		if (!sessionState.game) return [];
 
 		return [
 			{ id: Step.NEWS_FLASH, text: $LL.headquarters.newsflash.title(), isTitle: true },
-			{ text: $LL.headquarters.newsflash.lines[0]({ city: $gameStore.rounds[0].atlas.city }) }, // prettier-ignore
-			{ text: $LL.headquarters.newsflash.lines[1]({ treasure: $gameStore.stolenTreasure }) }, // prettier-ignore
-			{ text: $LL.headquarters.newsflash.lines[2]({ sex: $gameStore.suspect.warrantKeys.sex }) } // prettier-ignore
+			{ text: $LL.headquarters.newsflash.lines[0]({ city: sessionState.game.rounds[0].atlas.city }) }, // prettier-ignore
+			{ text: $LL.headquarters.newsflash.lines[1]({ treasure: sessionState.game.stolenTreasure }) }, // prettier-ignore
+			{ text: $LL.headquarters.newsflash.lines[2]({ sex: sessionState.game.suspect.warrantKeys.sex }) } // prettier-ignore
 		];
 	});
 	let linesAssignment: TerminalRow[] = $derived.by(() => {
-		if (!$playerStore || !$gameStore) return [];
+		if (!playerState.player || !sessionState.game) return [];
 
 		return [
 			{ id: Step.ASSIGNMENT, text: $LL.headquarters.assignment.title(), isTitle: true },
-			{ text: $LL.headquarters.assignment.lines[0]({ city: $gameStore.rounds[0].atlas.city, sex: $gameStore.suspect.warrantKeys.sex }) }, // prettier-ignore
+			{ text: $LL.headquarters.assignment.lines[0]({ city: sessionState.game.rounds[0].atlas.city, sex: sessionState.game.suspect.warrantKeys.sex }) }, // prettier-ignore
 			{ text: $LL.headquarters.assignment.lines[1]() },
-			{ text: $LL.headquarters.assignment.lines[2]({ rank: playerRank, name: $playerStore.name }) } // prettier-ignore
+			{ text: $LL.headquarters.assignment.lines[2]({ rank: playerRank, name: playerState.player.name }) } // prettier-ignore
 		];
 	});
 
