@@ -1,15 +1,20 @@
 <script lang="ts">
-	export let href: string;
-	export let target: string = '';
-	export let isActive: boolean = false;
+	interface Props {
+		href: string;
+		target?: string;
+		isActive?: boolean;
+		children?: import('svelte').Snippet;
+	}
+
+	let { href, target = '', isActive = false, children }: Props = $props();
 </script>
 
 <a class="a {isActive ? 'a--active' : ''}" {target} {href}>
-	<slot />
+	{@render children?.()}
 </a>
 
 <style lang="scss">
-	@import '$lib/components/mixins.scss';
+	@use '$lib/components/mixins.scss' as *;
 
 	a.a {
 		@include plate;

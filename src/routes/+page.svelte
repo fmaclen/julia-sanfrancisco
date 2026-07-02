@@ -11,68 +11,75 @@
 	import P from '$lib/components/P.svelte';
 	import Section from '$lib/components/Section.svelte';
 	import { applyLocale, playerStore } from '$lib/player';
-	import { onMount } from 'svelte';
 
-	let isLoading = true;
+	let isMounted = $derived(false);
 
-	onMount(() => {
-		isLoading = false;
+	$effect(() => {
+		isMounted = true;
 	});
 </script>
 
 <Main>
-	<Header slot="header">
-		<H1 hero={true}>{$LL.splash.title()}</H1>
-	</Header>
+	{#snippet header()}
+		<Header>
+			<H1 hero={true}>{$LL.splash.title()}</H1>
+		</Header>
+	{/snippet}
 
 	<Artwork src="/artwork/splash.png" />
 
-	<Footer slot="footer">
-		{#if !isLoading}
-			<Section>
-				<P>
-					{$LL.splash.introduction()}
-				</P>
-			</Section>
+	{#snippet footer()}
+		<Footer>
+			{#if isMounted}
+				<Section>
+					<P>
+						{$LL.splash.introduction()}
+					</P>
+				</Section>
 
-			<nav class="splash-nav">
-				<div class="splash-nav__new-game">
-					<ButtonLink href="/headquarters/">{$LL.splash.newGame()}</ButtonLink>
-					<Button
-						compact={true}
-						disabled={$locale === 'en'}
-						on:click={() => applyLocale('en', playerStore)}>🇺🇸</Button
-					>
-					<Button
-						compact={true}
-						disabled={$locale === 'es'}
-						on:click={() => applyLocale('es', playerStore)}>🇪🇸</Button
-					>
-				</div>
+				<nav class="splash-nav">
+					<div class="splash-nav__new-game">
+						<ButtonLink href="/headquarters/">{$LL.splash.newGame()}</ButtonLink>
+						<Button
+							compact={true}
+							disabled={$locale === 'en'}
+							onclick={() => applyLocale('en', playerStore)}>🇺🇸</Button
+						>
+						<Button
+							compact={true}
+							disabled={$locale === 'es'}
+							onclick={() => applyLocale('es', playerStore)}>🇪🇸</Button
+						>
+					</div>
 
-				<div class="splash-nav__about">
-					<a
-						class="metadata"
-						target="_blank"
-						href="https://github.com/fmaclen/julia-sanfrancisco/releases/"
-					>
-						v{PUBLIC_GAME_VERSION}
-					</a>
-					<a class="metadata" target="_blank" href="https://github.com/fmaclen/julia-sanfrancisco/">
-						{$LL.splash.about()}
-					</a>
-					<a
-						class="metadata"
-						target="_blank"
-						href="https://discord.com/channels/532702198040100874/1108858794831790080"
-					>
-						Discord
-					</a>
-					<a class="metadata" target="_blank" href="https://twitter.com/fmaclen/">Twitter</a>
-				</div>
-			</nav>
-		{/if}
-	</Footer>
+					<div class="splash-nav__about">
+						<a
+							class="metadata"
+							target="_blank"
+							href="https://github.com/fmaclen/julia-sanfrancisco/releases/"
+						>
+							v{PUBLIC_GAME_VERSION}
+						</a>
+						<a
+							class="metadata"
+							target="_blank"
+							href="https://github.com/fmaclen/julia-sanfrancisco/"
+						>
+							{$LL.splash.about()}
+						</a>
+						<a
+							class="metadata"
+							target="_blank"
+							href="https://discord.com/channels/532702198040100874/1108858794831790080"
+						>
+							Discord
+						</a>
+						<a class="metadata" target="_blank" href="https://twitter.com/fmaclen/">Twitter</a>
+					</div>
+				</nav>
+			{/if}
+		</Footer>
+	{/snippet}
 </Main>
 
 <style lang="scss">

@@ -1,9 +1,14 @@
 <script lang="ts">
-	export let hero: boolean = false;
+	interface Props {
+		hero?: boolean;
+		children?: import('svelte').Snippet;
+	}
+
+	let { hero = false, children }: Props = $props();
 </script>
 
 <h1 class="h1 {hero ? 'h1--hero' : ''}">
-	<slot />
+	{@render children?.()}
 </h1>
 
 <style lang="scss">

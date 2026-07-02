@@ -10,27 +10,30 @@
 	import SuspectRun from '$lib/icons/SuspectRun.svg.svelte';
 	import SuspectSki from '$lib/icons/SuspectSki.svg.svelte';
 	import type { WarrantSex } from '$lib/suspects';
-	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 
-	export let sex: WarrantSex;
-	export let sceneIndex: keyof Translation['game']['trailingSuspect'];
+	interface Props {
+		sex: WarrantSex;
+		sceneIndex: keyof Translation['game']['trailingSuspect'];
+	}
 
-	let isLoading: boolean = true;
+	let { sex, sceneIndex }: Props = $props();
 
-	onMount(() => {
-		isLoading = false;
+	let isMounted: boolean = $derived(false);
+
+	$effect(() => {
+		isMounted = true;
 	});
 </script>
 
-{#if !isLoading}
+{#if isMounted}
 	<main
 		class="
 			trailing-suspect
 			{sceneIndex === '5' ? 'trailing-suspect--danger' : ''}
 			{sceneIndex === '6' ? 'trailing-suspect--capture' : ''}
 		"
-		transition:fade
+		transition:fade|global
 	>
 		{#if sceneIndex === '0'}
 			<div class="trailing-suspect__icons">

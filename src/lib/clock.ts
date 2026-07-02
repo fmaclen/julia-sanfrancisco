@@ -11,7 +11,7 @@ export default class Clock {
 	startTime: Date;
 	endTime: Date;
 	currentTime: Date;
-	timerId: NodeJS.Timer | null;
+	timerId: ReturnType<typeof setInterval> | null;
 	tickRate: number;
 	locale: Locale;
 
@@ -43,7 +43,7 @@ export default class Clock {
 	};
 
 	public fastForward = (hours: number): Promise<boolean> => {
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve) => {
 			this.stop();
 
 			const ONE_HOUR_IN_SECONDS = 3600;

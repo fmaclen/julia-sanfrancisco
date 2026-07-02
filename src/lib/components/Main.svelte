@@ -1,12 +1,22 @@
+<script lang="ts">
+	interface Props {
+		header?: import('svelte').Snippet;
+		children?: import('svelte').Snippet;
+		footer?: import('svelte').Snippet;
+	}
+
+	let { header, children, footer }: Props = $props();
+</script>
+
 <main class="main">
 	<div class="main__container main__container--header">
-		<slot name="header" />
+		{@render header?.()}
 	</div>
 
-	<slot />
+	{@render children?.()}
 
 	<div class="main__container main__container--footer">
-		<slot name="footer" />
+		{@render footer?.()}
 	</div>
 </main>
 

@@ -2,13 +2,20 @@
 	import { PUBLIC_PLAUSIBLE_DOMAIN } from '$env/static/public';
 	import type { Locales } from '$i18n/i18n-types';
 	import { playerStore, applyLocale } from '$lib/player';
-	import { onMount } from 'svelte';
+	import { untrack } from 'svelte';
 	import { detectLocale, navigatorDetector } from 'typesafe-i18n/detectors';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
 
-	onMount(() => {
-		const locale: Locales =
-			$playerStore?.locale ?? detectLocale('en', ['en', 'es'], navigatorDetector);
-		applyLocale(locale, playerStore);
+	let { children }: Props = $props();
+
+	$effect(() => {
+		untrack(() => {
+			const locale: Locales =
+				$playerStore?.locale ?? detectLocale('en', ['en', 'es'], navigatorDetector);
+			applyLocale(locale, playerStore);
+		});
 	});
 </script>
 
@@ -51,13 +58,17 @@
 	<meta property="twitter:image" content="https://julia.fernando.is/open-graph.png" />
 
 	{#if PUBLIC_PLAUSIBLE_DOMAIN}
-		<script defer data-domain={PUBLIC_PLAUSIBLE_DOMAIN} src="https://management.fernando.is/js/script.js">
+		<script
+			defer
+			data-domain={PUBLIC_PLAUSIBLE_DOMAIN}
+			src="https://management.fernando.is/js/script.js"
+		>
 		</script>
 	{/if}
 </svelte:head>
 
 <div class="layout">
-	<slot />
+	{@render children?.()}
 </div>
 
 <style lang="scss">

@@ -1,9 +1,23 @@
 <script lang="ts">
-	export let title: string | undefined = undefined;
-	export let disabled: boolean = false;
-	export let active: boolean = false;
-	export let compact: boolean = false;
-	export let transparent: boolean = false;
+	interface Props {
+		title?: string | undefined;
+		disabled?: boolean;
+		active?: boolean;
+		compact?: boolean;
+		transparent?: boolean;
+		onclick?: (event: MouseEvent) => void;
+		children?: import('svelte').Snippet;
+	}
+
+	let {
+		title = undefined,
+		disabled = false,
+		active = false,
+		compact = false,
+		transparent = false,
+		onclick,
+		children
+	}: Props = $props();
 </script>
 
 <button
@@ -15,13 +29,13 @@
 	"
 	{disabled}
 	{title}
-	on:click
+	{onclick}
 >
-	<slot />
+	{@render children?.()}
 </button>
 
 <style lang="scss">
-	@import '$lib/components/mixins.scss';
+	@use '$lib/components/mixins.scss' as *;
 
 	button.button {
 		@include plate;

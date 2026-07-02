@@ -1,11 +1,12 @@
 import { browser } from '$app/environment';
+import { goto } from '$app/navigation';
 
 export function getRandomValue<T>(array: T[]): T {
 	return array[Math.floor(Math.random() * array.length)];
 }
 
 export function redirectTo(url: string) {
-	if (browser) window.location.href = url;
+	if (browser) void goto(url);
 }
 
 export function getArtworkPath(name: string, folder: 'atlas' | 'witnesses'): string {

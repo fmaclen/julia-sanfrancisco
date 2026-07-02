@@ -1,13 +1,19 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 
-	export let title: string;
-	export let disabled: boolean = false;
-	export let active: boolean = false;
+	interface Props {
+		title: string;
+		disabled?: boolean;
+		active?: boolean;
+		onclick?: (event: MouseEvent) => void;
+		children?: import('svelte').Snippet;
+	}
+
+	let { title, disabled = false, active = false, onclick, children }: Props = $props();
 </script>
 
-<button class="button {active ? 'button--active' : ''}" {disabled} {title} on:click in:fade>
-	<slot />
+<button class="button {active ? 'button--active' : ''}" {disabled} {title} {onclick} in:fade|global>
+	{@render children?.()}
 </button>
 
 <style lang="scss">

@@ -340,9 +340,9 @@ function generateClues(params: ScenesParams, place: LocalizedPlace): string[] {
 
 		for (let i = 0; i < clueKeys.length; i++) {
 			const clueKey = i.toString();
-			const clue = (LL.clues[type] as Record<string, (_: any) => LocalizedString>)[clueKey](
-				wildcards
-			);
+			const clue = (LL.clues[type] as Record<string, (_: typeof wildcards) => LocalizedString>)[
+				clueKey
+			](wildcards);
 			localizedClues.push(clue);
 		}
 

@@ -1,14 +1,18 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 
-	export let src: string;
-	export let isHidden: boolean = false;
-	export let isDisabled: boolean = false;
-	export let isHighContrast: boolean = true;
+	interface Props {
+		src: string;
+		isHidden?: boolean;
+		isDisabled?: boolean;
+		isHighContrast?: boolean;
+	}
+
+	let { src, isHidden = false, isDisabled = false, isHighContrast = true }: Props = $props();
 </script>
 
 <div
-	in:fade
+	in:fade|global
 	class="artwork
 		{isHidden ? 'artwork--hidden' : ''}
 		{isDisabled ? 'artwork--disabled' : ''}
@@ -25,7 +29,9 @@
 		inset: 0;
 		z-index: 0;
 		opacity: 1;
-		transition: filter 1500ms, opacity 500ms;
+		transition:
+			filter 1500ms,
+			opacity 500ms;
 
 		&::after,
 		&::before {
@@ -36,7 +42,9 @@
 			left: 0;
 			right: 0;
 			opacity: 0.65;
-			transition: height 1000ms, opacity 1000ms;
+			transition:
+				height 1000ms,
+				opacity 1000ms;
 		}
 
 		// Top gradient
