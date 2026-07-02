@@ -1,7 +1,9 @@
 import { expect, test, type Page } from '@playwright/test';
 
 const settle = async (page: Page) => {
-	await page.waitForFunction(() => document.querySelectorAll('main').length === 1);
+	await page.waitForFunction(() => document.querySelectorAll('main').length === 1, undefined, {
+		timeout: 600
+	});
 	await page.waitForTimeout(300);
 };
 
