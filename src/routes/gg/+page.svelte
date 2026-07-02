@@ -207,28 +207,50 @@
 				{#if !showDangerScene && !showCaptureScene}
 					<TerminalGroup>
 						{#if suspectGotAway}
-							<TerminalRows lines={outcomeSuspectGotAway[0]} shouldAutoScroll={true} bind:isAnimating />
+							<TerminalRows
+								lines={outcomeSuspectGotAway[0]}
+								shouldAutoScroll={true}
+								bind:isAnimating
+							/>
 						{/if}
 
 						{#if hasOutroScenePlayed}
 							{#if suspectCaughtWithWarrant}
 								<TerminalRows lines={outcomeSuspectCaughtWithWarrant[0]} shouldAutoScroll={true} />
 								{#if currentStepIndex > 0}
-									<TerminalRows lines={outcomeSuspectCaughtWithWarrant[1]} shouldAutoScroll={true} bind:isAnimating />
+									<TerminalRows
+										lines={outcomeSuspectCaughtWithWarrant[1]}
+										shouldAutoScroll={true}
+										bind:isAnimating
+									/>
 								{/if}
 							{/if}
 
 							{#if suspectCaughtWithWrongWarrant}
-								<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[0]} shouldAutoScroll={true} />
+								<TerminalRows
+									lines={outcomeSuspectCaughtWithWrongWarrant[0]}
+									shouldAutoScroll={true}
+								/>
 								{#if currentStepIndex > 0}
-									<TerminalRows lines={outcomeSuspectCaughtWithWrongWarrant[1]} shouldAutoScroll={true} bind:isAnimating />
+									<TerminalRows
+										lines={outcomeSuspectCaughtWithWrongWarrant[1]}
+										shouldAutoScroll={true}
+										bind:isAnimating
+									/>
 								{/if}
 							{/if}
 
 							{#if suspectCaughtWithoutWarrant}
-								<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[0]} shouldAutoScroll={true} />
+								<TerminalRows
+									lines={outcomeSuspectCaughtWithoutWarrant[0]}
+									shouldAutoScroll={true}
+								/>
 								{#if currentStepIndex > 0}
-									<TerminalRows lines={outcomeSuspectCaughtWithoutWarrant[1]} shouldAutoScroll={true} bind:isAnimating />
+									<TerminalRows
+										lines={outcomeSuspectCaughtWithoutWarrant[1]}
+										shouldAutoScroll={true}
+										bind:isAnimating
+									/>
 								{/if}
 							{/if}
 						{/if}
