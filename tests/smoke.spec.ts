@@ -117,3 +117,50 @@ test('full gameplay smoke', async ({ page }) => {
 		});
 	});
 });
+
+test('victory outcome terminal follows the typewriter', async ({ page }) => {
+	test.setTimeout(120_000);
+
+	await page.goto('/');
+	await page.locator('a[href*="headquarters"]').first().click();
+	await page.waitForSelector('input', { timeout: 15_000 });
+	await page.fill('input', 'Winston');
+	for (let i = 0; i < 6; i++) {
+		if (page.url().includes('/game')) break;
+		const nav = page.locator('footer button:not([disabled]), nav button:not([disabled])').last();
+		try {
+			await nav.click({ timeout: 20_000 });
+		} catch {
+			break;
+		}
+		await page.waitForTimeout(400);
+	}
+	await page.waitForURL('**/game/**', { timeout: 30_000 });
+	await settle(page);
+
+	await page.evaluate(() => {
+		const envelope = JSON.parse(window.localStorage.getItem('game') ?? '{}');
+		envelope.data.suspect.caught = true;
+		envelope.data.warrants = [envelope.data.suspect.key];
+		window.localStorage.setItem('game', JSON.stringify(envelope));
+	});
+	await page.goto('/gg/');
+	await page.addStyleTag({
+		content: 'section.terminal-group { max-height: 220px !important; }'
+	});
+
+	const terminal = page.locator('section.terminal-group');
+	await expect(terminal).toBeVisible({ timeout: 20_000 });
+	await expect(terminal).toContainText(/thanks to your help/i, { timeout: 20_000 });
+
+	await page.locator('nav button:not([disabled])').last().click({ timeout: 30_000 });
+	await expect(terminal).toContainText(/promotion/i, { timeout: 20_000 });
+
+	await expect
+		.poll(
+			() =>
+				terminal.evaluate((g) => g.scrollHeight > g.clientHeight && g.scrollTop + g.clientHeight >= g.scrollHeight - 40), // prettier-ignore
+			{ timeout: 15_000 }
+		)
+		.toBe(true);
+});

@@ -79,8 +79,8 @@ const en = {
 			incomingMessage: 'Incoming message',
 			ready: 'Ready for your next case, {rank:string} {name:string}?',
 			caughtWithWarrant: {
-				0: 'Thaks to your help, the {city:string} police have apprehended {suspect:string}.',
-				1: '{suspect:string} had the loot, {stolenTreasure:string}, wich will be returned to the grateful residents of {city:string}.',
+				0: 'Thanks to your help, the {city:string} police have apprehended {suspect:string}.',
+				1: '{suspect:string} had the loot, {stolenTreasure:string}, which will be returned to the grateful residents of {city:string}.',
 				2: 'We here at the World Police thank you for your good work on this case.',
 				3: 'Your success will be noted on your record.',
 				4: '{cases:number} more case{{cases:s}} until your next promotion.'
