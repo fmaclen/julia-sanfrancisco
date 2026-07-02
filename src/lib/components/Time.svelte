@@ -13,7 +13,7 @@
 <time
 	class="time {isClockTicking ? 'time--active' : ''}"
 	in:fly|global={{ y: -24, duration: 750 }}
-	out:fade={{ duration: 1750 }}
+	out:fade={{ duration: 250 }}
 >
 	{currentTime}
 </time>

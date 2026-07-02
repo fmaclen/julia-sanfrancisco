@@ -135,6 +135,14 @@
 		height: 100dvh;
 		max-height: 1024px;
 
+		display: grid;
+
+		> :global(*) {
+			grid-area: 1 / 1;
+			min-width: 0;
+			min-height: 0;
+		}
+
 		@media (max-width: 512px) {
 			--layout-inline: 24px;
 			--layout-block: 32px;
