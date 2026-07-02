@@ -50,7 +50,7 @@
 	}: Props = $props();
 </script>
 
-<nav class="game-nav" transition:fade|global>
+<nav class="game-nav" transition:fade>
 	{#if isClueVisible}
 		<ButtonIcon onclick={onDismissClue} title={LL.components.buttons.goBack()}>
 			<Back />

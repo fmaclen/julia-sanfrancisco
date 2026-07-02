@@ -250,7 +250,7 @@
 				{/if}
 
 				{#if suspectGotAway || hasOutroScenePlayed}
-					<nav class="game-nav" transition:fade|global>
+					<nav class="game-nav" transition:fade>
 						<ButtonIcon
 							onclick={nextStep}
 							disabled={isAnimating}

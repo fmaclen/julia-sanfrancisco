@@ -33,7 +33,7 @@
 			{sceneIndex === '5' ? 'trailing-suspect--danger' : ''}
 			{sceneIndex === '6' ? 'trailing-suspect--capture' : ''}
 		"
-		transition:fade|global
+		transition:fade
 	>
 		{#if sceneIndex === '0'}
 			<div class="trailing-suspect__icons">
