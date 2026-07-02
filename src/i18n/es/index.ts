@@ -386,6 +386,9 @@ const es = {
 			5: 'Super investigador'
 		}
 	},
+	time: {
+		days: ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo']
+	},
 	components: {
 		startTime: 'Lunes 9:00am',
 		loading: 'Cargando',

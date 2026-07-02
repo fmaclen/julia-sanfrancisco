@@ -47,15 +47,15 @@ To run the development environment locally:
 - Then run:
 
 ```bash
-npm install
+bun install
 
-npm run start
+bun run start
 ```
 
 To create a production version of the game:
 
 ```bash
-npm run build
+bun run build
 ```
 
 ## References

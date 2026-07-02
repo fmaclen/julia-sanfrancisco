@@ -1,7 +1,11 @@
 <script lang="ts">
-	export let value: string = '';
-	export let disabled: boolean = false;
-	export let placeholder: string | undefined = undefined;
+	interface Props {
+		value?: string;
+		disabled?: boolean;
+		placeholder?: string | undefined;
+	}
+
+	let { value = $bindable(''), disabled = false, placeholder = undefined }: Props = $props();
 </script>
 
 <input class="terminal-form__input" type="text" name="name" {placeholder} {disabled} bind:value />

@@ -1,47 +1,153 @@
 <script lang="ts">
 	import TerminalParagraph from './TerminalParagraph.svelte';
 	import TerminalTitle from './TerminalTitle.svelte';
-	import type { TerminalRow } from './terminal';
+	import type { TerminalRow } from './Terminal';
 	import './typewriter-container.scss';
-	import { onMount, onDestroy } from 'svelte';
-	import Typewriter from 'svelte-typewriter';
+	import { untrack } from 'svelte';
 
-	export let lines: TerminalRow[] = [];
-	export let isAnimating: boolean = true;
-	export let shouldAutoScroll: boolean = false;
+	const TYPEWRITER_INTERVAL_IN_MS = 30;
 
-	let scrollToRef: HTMLDivElement;
-	let intervalId: any;
+	interface Props {
+		lines?: TerminalRow[];
+		isAnimating?: boolean;
+		shouldAutoScroll?: boolean;
+	}
 
-	onMount(() => {
+	let { lines = [], isAnimating = $bindable(true), shouldAutoScroll = false }: Props = $props();
+
+	let scrollToRef: HTMLDivElement | undefined = $state();
+	let visibleCharacters = $state(0);
+	let animationIntervalId: ReturnType<typeof setInterval> | undefined;
+	let scrollIntervalId: ReturnType<typeof setInterval> | undefined;
+	let totalCharacters = $derived(lines.reduce((total, line) => total + line.text.length, 0));
+
+	function clearAnimationInterval(): void {
+		if (animationIntervalId) clearInterval(animationIntervalId);
+		animationIntervalId = undefined;
+	}
+
+	function clearScrollInterval(): void {
+		if (scrollIntervalId) clearInterval(scrollIntervalId);
+		scrollIntervalId = undefined;
+	}
+
+	function getLineStart(index: number): number {
+		return lines.slice(0, index).reduce((total, line) => total + line.text.length, 0);
+	}
+
+	function getVisibleText(line: TerminalRow, index: number): string {
+		const lineStart = getLineStart(index);
+		const lineCharacters = Math.max(0, Math.min(line.text.length, visibleCharacters - lineStart));
+
+		return line.text.slice(0, lineCharacters);
+	}
+
+	function getLineClass(line: TerminalRow, index: number): string {
+		const lineStart = getLineStart(index);
+		const lineEnd = lineStart + line.text.length;
+
+		if (isAnimating && visibleCharacters >= lineStart && visibleCharacters < lineEnd)
+			return 'typing';
+		if (visibleCharacters >= lineEnd) return 'finished-typing';
+
+		return '';
+	}
+
+	function shouldRenderLine(index: number): boolean {
+		return visibleCharacters >= getLineStart(index);
+	}
+
+	function startAnimation(): void {
+		clearAnimationInterval();
+		visibleCharacters = 0;
 		isAnimating = true;
 
-		if (!shouldAutoScroll) return;
+		if (totalCharacters === 0) {
+			isAnimating = false;
+			return;
+		}
 
-		intervalId = setInterval(() => {
-			if (isAnimating && scrollToRef) scrollToRef.scrollIntoView();
-		}, 100);
-	});
+		animationIntervalId = setInterval(() => {
+			visibleCharacters += 1;
 
-	onDestroy(() => {
-		if (shouldAutoScroll) clearInterval(intervalId);
-	});
-
-	$: if (shouldAutoScroll && !isAnimating) {
-		clearInterval(intervalId);
+			if (visibleCharacters >= totalCharacters) {
+				visibleCharacters = totalCharacters;
+				isAnimating = false;
+				clearAnimationInterval();
+			}
+		}, TYPEWRITER_INTERVAL_IN_MS);
 	}
+
+	$effect(() => {
+		return untrack(() => {
+			if (shouldAutoScroll) {
+				scrollIntervalId = setInterval(() => {
+					if (isAnimating && scrollToRef) scrollToRef.scrollIntoView();
+				}, 100);
+			}
+
+			return () => {
+				clearAnimationInterval();
+				clearScrollInterval();
+			};
+		});
+	});
+
+	$effect(() => {
+		lines;
+		startAnimation();
+
+		return clearAnimationInterval;
+	});
+
+	$effect(() => {
+		if (shouldAutoScroll && !isAnimating) clearScrollInterval();
+	});
 </script>
 
-<Typewriter element="section" mode="cascade" on:done={() => (isAnimating = false)}>
-	{#each lines as line}
-		{#if line.isTitle}
-			<TerminalTitle>{line.text}</TerminalTitle>
-		{:else}
-			<TerminalParagraph>{line.text}</TerminalParagraph>
+<section class="typewriter-container cursor">
+	{#each lines as line, index}
+		{#if shouldRenderLine(index)}
+			{#if line.isTitle}
+				<TerminalTitle class={getLineClass(line, index)}
+					>{getVisibleText(line, index)}</TerminalTitle
+				>
+			{:else}
+				<TerminalParagraph class={getLineClass(line, index)}
+					>{getVisibleText(line, index)}</TerminalParagraph
+				>
+			{/if}
 		{/if}
 	{/each}
-</Typewriter>
+</section>
 
 {#if shouldAutoScroll}
-	<div class="typewriter-scroll-anchor" bind:this={scrollToRef} />
+	<div class="typewriter-scroll-anchor" bind:this={scrollToRef}></div>
 {/if}
+
+<style>
+	@keyframes cursorFade {
+		0%,
+		100% {
+			opacity: 1;
+		}
+
+		50% {
+			opacity: 0;
+		}
+	}
+
+	section.typewriter-container.cursor :global(.typing::after) {
+		content: '';
+		width: var(--cursor-width, 1ch);
+		height: 2ch;
+		display: inline-block;
+		vertical-align: text-top;
+		background-color: var(--cursor-color, #000000);
+		animation: cursorFade 1.25s infinite;
+	}
+
+	section.typewriter-container :global(.finished-typing::after) {
+		content: none;
+	}
+</style>

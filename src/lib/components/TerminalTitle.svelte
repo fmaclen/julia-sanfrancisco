@@ -1,5 +1,14 @@
-<h3 class="terminal-rows__h3">
-	<slot />
+<script lang="ts">
+	interface Props {
+		class?: string;
+		children?: import('svelte').Snippet;
+	}
+
+	let { class: className = '', children }: Props = $props();
+</script>
+
+<h3 class="terminal-rows__h3 {className}">
+	{@render children?.()}
 </h3>
 
 <style lang="scss">

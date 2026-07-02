@@ -1,20 +1,18 @@
 <script lang="ts">
 	import LL from '$i18n/i18n-svelte';
 
-	export let value: string | undefined = undefined;
+	interface Props {
+		value?: string | undefined;
+		children?: import('svelte').Snippet;
+	}
+
+	let { value = $bindable(), children }: Props = $props();
 
 	let unknown: string = $LL.warrants.labels.unknown();
-	let selectedOption: string = unknown;
-
-	function handleOptionChange(event: Event) {
-		const target = event.target as HTMLSelectElement;
-		selectedOption = target.value;
-	}
 </script>
 
 <select
 	name="sex"
-	on:change={handleOptionChange}
 	bind:value
 	class="
 		terminal-form__select
@@ -22,7 +20,7 @@
 	"
 >
 	<option selected value={undefined}>{unknown}</option>
-	<slot />
+	{@render children?.()}
 </select>
 
 <style lang="scss">

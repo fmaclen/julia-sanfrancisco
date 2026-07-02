@@ -1,9 +1,14 @@
-<script>
+<script lang="ts">
 	import { slide } from 'svelte/transition';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 </script>
 
-<section class="terminal-form" in:slide>
-	<slot />
+<section class="terminal-form" in:slide|global>
+	{@render children?.()}
 </section>
 
 <style lang="scss">

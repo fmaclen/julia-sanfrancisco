@@ -1,14 +1,26 @@
 <script lang="ts">
 	import { PUBLIC_PLAUSIBLE_DOMAIN } from '$env/static/public';
+	import { page } from '$app/state';
 	import type { Locales } from '$i18n/i18n-types';
-	import { playerStore, applyLocale } from '$lib/player';
-	import { onMount } from 'svelte';
-	import { detectLocale, navigatorDetector } from 'typesafe-i18n/detectors';
+	import { applyLocale } from '$lib/player';
+	import { playerState } from '$lib/state/player.svelte';
+	import { untrack } from 'svelte';
+	import { fade } from 'svelte/transition';
+	import { detectLocale, type LocaleDetector } from 'typesafe-i18n/detectors';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
 
-	onMount(() => {
-		const locale: Locales =
-			$playerStore?.locale ?? detectLocale('en', ['en', 'es'], navigatorDetector);
-		applyLocale(locale, playerStore);
+	let { children }: Props = $props();
+	const browserLocaleDetector: LocaleDetector = () =>
+		typeof navigator === 'undefined' ? [] : Array.from(navigator.languages);
+
+	$effect(() => {
+		untrack(() => {
+			const locale: Locales =
+				playerState.player?.locale ?? detectLocale('en', ['en', 'es'], browserLocaleDetector);
+			applyLocale(locale);
+		});
 	});
 </script>
 
@@ -51,13 +63,21 @@
 	<meta property="twitter:image" content="https://julia.fernando.is/open-graph.png" />
 
 	{#if PUBLIC_PLAUSIBLE_DOMAIN}
-		<script defer data-domain={PUBLIC_PLAUSIBLE_DOMAIN} src="https://management.fernando.is/js/script.js">
+		<script
+			defer
+			data-domain={PUBLIC_PLAUSIBLE_DOMAIN}
+			src="https://management.fernando.is/js/script.js"
+		>
 		</script>
 	{/if}
 </svelte:head>
 
 <div class="layout">
-	<slot />
+	{#key page.url.pathname}
+		<div class="page" in:fade={{ duration: 300, delay: 100 }} out:fade={{ duration: 250 }}>
+			{@render children?.()}
+		</div>
+	{/key}
 </div>
 
 <style lang="scss">
@@ -121,9 +141,23 @@
 		height: 100dvh;
 		max-height: 1024px;
 
+		display: grid;
+
+		> :global(*) {
+			grid-area: 1 / 1;
+			min-width: 0;
+			min-height: 0;
+		}
+
 		@media (max-width: 512px) {
 			--layout-inline: 24px;
 			--layout-block: 32px;
 		}
+	}
+
+	div.page {
+		display: grid;
+		width: 100%;
+		height: 100%;
 	}
 </style>

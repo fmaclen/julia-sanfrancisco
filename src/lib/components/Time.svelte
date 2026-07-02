@@ -2,14 +2,18 @@
 	import LL from '$i18n/i18n-svelte';
 	import { fly, fade } from 'svelte/transition';
 
-	export let currentTime: string = $LL.components.startTime();
-	export let isClockTicking: boolean = false;
+	interface Props {
+		currentTime?: string;
+		isClockTicking?: boolean;
+	}
+
+	let { currentTime = $LL.components.startTime(), isClockTicking = false }: Props = $props();
 </script>
 
 <time
 	class="time {isClockTicking ? 'time--active' : ''}"
-	in:fly={{ y: -24, duration: 750 }}
-	out:fade={{ duration: 1750 }}
+	in:fly|global={{ y: -24, duration: 750 }}
+	out:fade={{ duration: 250 }}
 >
 	{currentTime}
 </time>

@@ -3,7 +3,7 @@ export const juliaSanfrancisco = {
 	sex: 'Female',
 	occupation: 'Cybersecurity espionage specialist',
 	hobby: 'Tennis',
-	hair: 'Auburn',
+	hair: 'Auburn brown',
 	vehicle: '1953 Kaiser convertible',
 	feature: 'Never appears in public without her emerald necklace',
 	other: 'She knows where to find good mangos',

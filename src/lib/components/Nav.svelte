@@ -1,10 +1,16 @@
+<script lang="ts">
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
+</script>
+
 <nav class="nav">
-	<slot />
+	{@render children?.()}
 </nav>
 
 <style lang="scss">
-	@import '$lib/components/mixins.scss';
-
 	nav.nav {
 		display: flex;
 		height: max-content;

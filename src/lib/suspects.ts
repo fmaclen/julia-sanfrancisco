@@ -98,8 +98,8 @@ export function getSuspectWarrantKeys(suspect: Suspect): WarrantKeys {
 		case Suspect.JULIA_SANFRANCISCO:
 			return {
 				sex: WarrantSex.FEMALE,
-				hobby: WarrantHobby.CYCLING,
-				hair: WarrantHair.BLOND,
+				hobby: WarrantHobby.TENNIS,
+				hair: WarrantHair.BROWN,
 				feature: WarrantFeature.NECKLACE,
 				vehicle: WarrantVehicle.CONVERTIBLE
 			};
@@ -123,7 +123,7 @@ export function getSuspectWarrantKeys(suspect: Suspect): WarrantKeys {
 			return {
 				sex: WarrantSex.MALE,
 				hobby: WarrantHobby.GOLF,
-				hair: WarrantHair.BLACK,
+				hair: WarrantHair.BLOND,
 				feature: WarrantFeature.TATTOO,
 				vehicle: WarrantVehicle.JET
 			};

@@ -2,7 +2,7 @@ import { browser } from '$app/environment';
 import { setLocale } from '$i18n/i18n-svelte';
 import type { Locales } from '$i18n/i18n-types';
 import { loadLocale } from '$i18n/i18n-util.sync';
-import { writable, type Writable } from 'svelte/store';
+import { playerState } from '$lib/state/player.svelte';
 
 export interface Player {
 	name: string;
@@ -28,47 +28,25 @@ export function getRank(score: number | undefined) {
 	else return Rank.SUPER_SLEUTH;
 }
 
-const playerLocalStorage: string | null = browser ? window.localStorage.getItem('player') : null;
-
-let player: Player | null = null;
-export const playerStore = writable<Player | null>(null);
-
-// Read existing player from localStorage
-if (playerLocalStorage) {
-	player = JSON.parse(playerLocalStorage) as Player;
-	playerStore.set(player);
-}
-
-// Write player to localStorage
-playerStore.subscribe((value) => {
-	if (browser) {
-		window.localStorage.setItem('player', JSON.stringify(value));
-	}
-});
-
 export function getCasesUntilPromotion(score: number): number {
 	let cases: number;
 	score += 1; // Add 1 to score to account for the current case
 
-	if (score < 3) cases = 4 - score;
-	else if (score < 6) cases = 7 - score;
-	else if (score < 9) cases = 10 - score;
-	else if (score < 13) cases = 14 - score;
+	if (score < 4) cases = 4 - score;
+	else if (score < 7) cases = 7 - score;
+	else if (score < 10) cases = 10 - score;
+	else if (score < 14) cases = 14 - score;
 	else return 0;
 
 	return cases;
 }
 
-export function applyLocale(locale: Locales, playerStore: Writable<Player | null>) {
+export function applyLocale(locale: Locales) {
 	loadLocale(locale);
 	setLocale(locale);
 
-	if (playerLocalStorage) {
-		player = JSON.parse(playerLocalStorage) as Player;
-
-		if (!player) return;
-
-		player.locale = locale;
-		playerStore.set(player);
+	if (browser && playerState.player) {
+		playerState.player.locale = locale;
+		playerState.save();
 	}
 }

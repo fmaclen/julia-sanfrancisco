@@ -3,7 +3,7 @@ export const juliaSanfrancisco = {
 	sex: 'Mujer',
 	occupation: 'Especialista en espionaje y seguridad informática',
 	hobby: 'Tenis',
-	hair: 'Castaño rojizo',
+	hair: 'Marrón castaño rojizo',
 	vehicle: 'Convertible Kaiser de 1953',
 	feature: 'Nunca aparece en público sin su collar de esmeraldas',
 	other: 'Sabe donde encontrar buenos mangos',

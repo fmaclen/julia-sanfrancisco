@@ -1,10 +1,19 @@
+<script lang="ts">
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
+</script>
+
 <section class="terminal-group">
-	<slot />
+	{@render children?.()}
 </section>
 
 <style lang="scss">
+	@use '$lib/components/mixins.scss' as *;
+
 	section.terminal-group {
-		@import '$lib/components/mixins.scss';
 		@include plate;
 
 		max-height: 400px;

@@ -1,30 +1,15 @@
-import { browser } from '$app/environment';
 import en from '$i18n/en';
+import es from '$i18n/es';
 import type { Locales, Translation, TranslationFunctions } from '$i18n/i18n-types';
+import { getAllowedPlacesForAtlasKey, type AtlasKey } from '$lib/atlas-places';
 import { getArtworkPath, getRandomValue } from '$lib/helpers';
+import { Place } from './places';
 import { getSuspectWarrantKeys, Suspect, type WarrantKeys } from './suspects';
-import { format } from 'date-fns';
-import enUS from 'date-fns/locale/en-US/index';
-import es from 'date-fns/locale/es/index';
-import { writable } from 'svelte/store';
 import type { LocalizedString } from 'typesafe-i18n';
 
-export const SUSPECT_TRAIL_SCENE_DURATION = 4000;
+export { Place } from './places';
 
-enum Place {
-	AIRPORT,
-	BANK,
-	FOREIGN_MINISTRY,
-	HARBOR,
-	HOTEL,
-	LIBRARY,
-	MARKETPLACE,
-	MUSEUM,
-	PALACE,
-	RIVERFRONT,
-	SPORT_CLUB,
-	STOCK_EXCHANGE
-}
+export const SUSPECT_TRAIL_SCENE_DURATION = 4000;
 
 enum Witness {
 	// Airport
@@ -88,7 +73,7 @@ enum Witness {
 	TRADER = 'trader'
 }
 
-interface Scene {
+export interface Scene {
 	place: LocalizedPlace;
 	witness: LocalizedWitness;
 	clue: string;
@@ -96,6 +81,7 @@ interface Scene {
 }
 
 export interface Atlas {
+	key: AtlasKey;
 	city: string;
 	descriptions: string[];
 	currency: string;
@@ -114,7 +100,7 @@ export interface Round {
 	destinations: Atlas[]; // Would have used a Set<Atlas>, but we can't save that object type to localStorage
 }
 
-interface LocalizedSuspect {
+export interface LocalizedSuspect {
 	key: Suspect;
 	name: string;
 	hobby: string;
@@ -129,7 +115,7 @@ interface LocalizedSuspect {
 
 export interface Game {
 	currentRoundIndex: number;
-	currentTime: Date | null;
+	elapsedMinutes: number;
 	roundDecoy: Round | null;
 	rounds: Round[];
 	stolenTreasure: string;
@@ -144,7 +130,7 @@ export function generateGame(LL: TranslationFunctions): Game {
 
 	return {
 		currentRoundIndex: 0,
-		currentTime: null,
+		elapsedMinutes: 0,
 		roundDecoy: null,
 		warrants: [],
 		rounds,
@@ -153,7 +139,7 @@ export function generateGame(LL: TranslationFunctions): Game {
 	};
 }
 
-interface LocalizedPlace {
+export interface LocalizedPlace {
 	place: Place;
 	name: string;
 }
@@ -198,7 +184,13 @@ function generateRounds(LL: TranslationFunctions, suspect: LocalizedSuspect): Ro
 		rounds.push({
 			atlas: roundAtlas,
 			destinations: Array.from(destinations),
-			scenes: generateScenes({ LL, nextRoundAtlas, suspect, isRoundFinal })
+			scenes: generateScenes({
+				LL,
+				atlasKey: roundAtlas.key,
+				nextRoundAtlas,
+				suspect,
+				isRoundFinal
+			})
 		});
 	}
 
@@ -224,7 +216,7 @@ export function generateDecoyRound(
 	return {
 		atlas: currentAtlas,
 		destinations: Array.from(destinations),
-		scenes: generateScenes({ LL, isRoundDecoy: true })
+		scenes: generateScenes({ LL, atlasKey: currentAtlas.key, isRoundDecoy: true })
 	};
 }
 
@@ -232,6 +224,7 @@ export function generateDecoyRound(
 
 interface ScenesParams {
 	LL: TranslationFunctions;
+	atlasKey?: AtlasKey;
 	nextRoundAtlas?: Atlas;
 	suspect?: LocalizedSuspect;
 	isRoundFinal?: boolean;
@@ -241,10 +234,10 @@ interface ScenesParams {
 function generateScenes(params: ScenesParams): Scene[] {
 	const NUMBER_OF_SCENES = 3;
 
-	const { LL } = params;
+	const { LL, atlasKey } = params;
 
 	const scenes: Scene[] = [];
-	const places = getLocalizedPlaces(LL);
+	const places = getLocalizedPlaces(LL, atlasKey);
 	const placesSet = new Set<LocalizedPlace>();
 	const cluesSet = new Set<string>();
 
@@ -340,9 +333,9 @@ function generateClues(params: ScenesParams, place: LocalizedPlace): string[] {
 
 		for (let i = 0; i < clueKeys.length; i++) {
 			const clueKey = i.toString();
-			const clue = (LL.clues[type] as Record<string, (_: any) => LocalizedString>)[clueKey](
-				wildcards
-			);
+			const clue = (LL.clues[type] as Record<string, (_: typeof wildcards) => LocalizedString>)[
+				clueKey
+			](wildcards);
 			localizedClues.push(clue);
 		}
 
@@ -458,22 +451,27 @@ function getLocalizedAtlases(LL: TranslationFunctions): Atlas[] {
 			topics: getTranslationFromArray(LL.atlases[translationKey].topics),
 
 			// HACK: We are using the English name of the `city` to get the artwork.
-			artwork: getArtworkPath(en.atlases[translationKey].city, 'atlas')
+			artwork: getArtworkPath(en.atlases[translationKey].city, 'atlas'),
+			key: translationKey
 		});
 	}
 
 	return atlases;
 }
 
-function getLocalizedPlaces(LL: TranslationFunctions): LocalizedPlace[] {
+function getLocalizedPlaces(LL: TranslationFunctions, atlasKey?: AtlasKey): LocalizedPlace[] {
 	const placeKeys = Object.keys(LL.scenes.places);
 	const places: LocalizedPlace[] = [];
+	const allowedPlaces = atlasKey ? new Set(getAllowedPlacesForAtlasKey(atlasKey)) : null;
 
 	for (const placeKey of placeKeys) {
 		const translationKey = placeKey as keyof Translation['scenes']['places'];
+		const place = parseInt(placeKey) as Place;
+
+		if (allowedPlaces && !allowedPlaces.has(place)) continue;
 
 		places.push({
-			place: parseInt(placeKey),
+			place,
 			name: LL.scenes.places[translationKey]()
 		});
 	}
@@ -586,30 +584,20 @@ function getTranslationFromArray(localizedArray: LocalizedArray): string[] {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-export function getFormattedTime(time: Date, locale: Locales): string {
-	// Format the time as "Monday 9:00 am" / "Lunes 9:00 am"
-	const formattedTime = format(time, 'EEEE h:mm aaa', { locale: locale === 'en' ? enUS : es });
+export function getFormattedTime(elapsedMinutes: number, locale: Locales): string {
+	const dayMinutes = 1440;
+	const startMinutes = 9 * 60;
+	const totalMinutes = startMinutes + Math.max(0, Math.floor(elapsedMinutes));
+	const minutesInDay = totalMinutes % dayMinutes;
+	const dayIndex = Math.floor(totalMinutes / dayMinutes) % 7;
+	const hour24 = Math.floor(minutesInDay / 60);
+	const hour12 = hour24 % 12 || 12;
+	const minutes = (minutesInDay % 60).toString().padStart(2, '0');
+	const period = hour24 < 12 ? 'am' : 'pm';
+	const translations = locale === 'en' ? en : es;
+	const dayName = translations.time.days[dayIndex];
 
-	// Capitalize the first letter
-	return formattedTime.charAt(0).toUpperCase() + formattedTime.slice(1);
+	return `${dayName.charAt(0).toUpperCase()}${dayName.slice(1)} ${hour12}:${minutes} ${period}`;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
-const gameLocalStorage: string | null = browser ? window.localStorage.getItem('game') : null;
-
-let game: Game | null = null;
-export const gameStore = writable<Game | null>(null);
-
-// Read existing game from localStorage
-if (gameLocalStorage) {
-	game = JSON.parse(gameLocalStorage) as Game;
-	gameStore.set(game);
-}
-
-// Write game to localStorage
-gameStore.subscribe((value) => {
-	if (browser) {
-		window.localStorage.setItem('game', JSON.stringify(value));
-	}
-});
