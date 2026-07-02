@@ -50,10 +50,10 @@ export function getCasesUntilPromotion(score: number): number {
 	let cases: number;
 	score += 1; // Add 1 to score to account for the current case
 
-	if (score < 3) cases = 4 - score;
-	else if (score < 6) cases = 7 - score;
-	else if (score < 9) cases = 10 - score;
-	else if (score < 13) cases = 14 - score;
+	if (score < 4) cases = 4 - score;
+	else if (score < 7) cases = 7 - score;
+	else if (score < 10) cases = 10 - score;
+	else if (score < 14) cases = 14 - score;
 	else return 0;
 
 	return cases;

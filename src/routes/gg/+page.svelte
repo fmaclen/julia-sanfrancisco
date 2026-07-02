@@ -35,6 +35,11 @@
 	let hasCorrectWarrant: boolean = $derived(
 		$gameStore ? hasWarrant && $gameStore.warrants[0] === $gameStore.suspect.key : false
 	);
+	let warrantSuspectName: string | undefined = $derived.by(() => {
+		if (!$gameStore || !$LL || $gameStore.warrants.length === 0) return undefined;
+
+		return $LL.suspects[$gameStore.warrants[0]].name();
+	});
 	let suspectCaughtWithWarrant: boolean = $derived(suspectCaught && hasCorrectWarrant);
 	let suspectCaughtWithWrongWarrant: boolean = $derived(
 		suspectCaught && hasWarrant && !hasCorrectWarrant
@@ -66,10 +71,9 @@
 		];
 	});
 	let outcomeSuspectCaughtWithWrongWarrant: TerminalRow[][] = $derived.by(() => {
-		if (!$playerStore || !$gameStore || !$LL) return [];
+		if (!$playerStore || !$gameStore || !$LL || !warrantSuspectName) return [];
 
 		const suspect = $gameStore.suspect.name;
-		const suspectWarrant = $LL.suspects[$gameStore.warrants[0]].name();
 
 		return [
 			[
@@ -78,7 +82,7 @@
 					isTitle: true
 				},
 				{ text: $LL.game.outcome.caughtWithWrongWarrant[0]({ suspect }) },
-				{ text: $LL.game.outcome.caughtWithWrongWarrant[1]({ suspect: suspectWarrant }) }
+				{ text: $LL.game.outcome.caughtWithWrongWarrant[1]({ suspect: warrantSuspectName }) }
 			],
 			[
 				{ text: $LL.game.outcome.caughtWithWrongWarrant[2]() },

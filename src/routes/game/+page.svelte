@@ -243,7 +243,9 @@
 		const { rounds, currentRoundIndex } = game;
 
 		const isCurrentRound = rounds[currentRoundIndex].atlas.city === currentAtlas.city;
-		const isNextRound = rounds[currentRoundIndex + 1].atlas.city === currentAtlas.city;
+		const isNextRound =
+			currentRoundIndex < rounds.length - 1 &&
+			rounds[currentRoundIndex + 1].atlas.city === currentAtlas.city;
 		const isPreviousRound =
 			currentRoundIndex > 0 && rounds[currentRoundIndex - 1].atlas.city === currentAtlas.city;
 

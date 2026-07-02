@@ -1,7 +1,9 @@
 import { browser } from '$app/environment';
 import en from '$i18n/en';
 import type { Locales, Translation, TranslationFunctions } from '$i18n/i18n-types';
+import { getAllowedPlacesForAtlasKey, type AtlasKey } from '$lib/atlas-places';
 import { getArtworkPath, getRandomValue } from '$lib/helpers';
+import { Place } from './places';
 import { getSuspectWarrantKeys, Suspect, type WarrantKeys } from './suspects';
 import { format } from 'date-fns';
 import enUS from 'date-fns/locale/en-US/index';
@@ -9,22 +11,9 @@ import es from 'date-fns/locale/es/index';
 import { writable } from 'svelte/store';
 import type { LocalizedString } from 'typesafe-i18n';
 
-export const SUSPECT_TRAIL_SCENE_DURATION = 4000;
+export { Place } from './places';
 
-enum Place {
-	AIRPORT,
-	BANK,
-	FOREIGN_MINISTRY,
-	HARBOR,
-	HOTEL,
-	LIBRARY,
-	MARKETPLACE,
-	MUSEUM,
-	PALACE,
-	RIVERFRONT,
-	SPORT_CLUB,
-	STOCK_EXCHANGE
-}
+export const SUSPECT_TRAIL_SCENE_DURATION = 4000;
 
 enum Witness {
 	// Airport
@@ -88,7 +77,7 @@ enum Witness {
 	TRADER = 'trader'
 }
 
-interface Scene {
+export interface Scene {
 	place: LocalizedPlace;
 	witness: LocalizedWitness;
 	clue: string;
@@ -96,6 +85,7 @@ interface Scene {
 }
 
 export interface Atlas {
+	key: AtlasKey;
 	city: string;
 	descriptions: string[];
 	currency: string;
@@ -153,7 +143,7 @@ export function generateGame(LL: TranslationFunctions): Game {
 	};
 }
 
-interface LocalizedPlace {
+export interface LocalizedPlace {
 	place: Place;
 	name: string;
 }
@@ -198,7 +188,13 @@ function generateRounds(LL: TranslationFunctions, suspect: LocalizedSuspect): Ro
 		rounds.push({
 			atlas: roundAtlas,
 			destinations: Array.from(destinations),
-			scenes: generateScenes({ LL, nextRoundAtlas, suspect, isRoundFinal })
+			scenes: generateScenes({
+				LL,
+				atlasKey: roundAtlas.key,
+				nextRoundAtlas,
+				suspect,
+				isRoundFinal
+			})
 		});
 	}
 
@@ -224,7 +220,7 @@ export function generateDecoyRound(
 	return {
 		atlas: currentAtlas,
 		destinations: Array.from(destinations),
-		scenes: generateScenes({ LL, isRoundDecoy: true })
+		scenes: generateScenes({ LL, atlasKey: currentAtlas.key, isRoundDecoy: true })
 	};
 }
 
@@ -232,6 +228,7 @@ export function generateDecoyRound(
 
 interface ScenesParams {
 	LL: TranslationFunctions;
+	atlasKey?: AtlasKey;
 	nextRoundAtlas?: Atlas;
 	suspect?: LocalizedSuspect;
 	isRoundFinal?: boolean;
@@ -241,10 +238,10 @@ interface ScenesParams {
 function generateScenes(params: ScenesParams): Scene[] {
 	const NUMBER_OF_SCENES = 3;
 
-	const { LL } = params;
+	const { LL, atlasKey } = params;
 
 	const scenes: Scene[] = [];
-	const places = getLocalizedPlaces(LL);
+	const places = getLocalizedPlaces(LL, atlasKey);
 	const placesSet = new Set<LocalizedPlace>();
 	const cluesSet = new Set<string>();
 
@@ -458,22 +455,27 @@ function getLocalizedAtlases(LL: TranslationFunctions): Atlas[] {
 			topics: getTranslationFromArray(LL.atlases[translationKey].topics),
 
 			// HACK: We are using the English name of the `city` to get the artwork.
-			artwork: getArtworkPath(en.atlases[translationKey].city, 'atlas')
+			artwork: getArtworkPath(en.atlases[translationKey].city, 'atlas'),
+			key: translationKey
 		});
 	}
 
 	return atlases;
 }
 
-function getLocalizedPlaces(LL: TranslationFunctions): LocalizedPlace[] {
+function getLocalizedPlaces(LL: TranslationFunctions, atlasKey?: AtlasKey): LocalizedPlace[] {
 	const placeKeys = Object.keys(LL.scenes.places);
 	const places: LocalizedPlace[] = [];
+	const allowedPlaces = atlasKey ? new Set(getAllowedPlacesForAtlasKey(atlasKey)) : null;
 
 	for (const placeKey of placeKeys) {
 		const translationKey = placeKey as keyof Translation['scenes']['places'];
+		const place = parseInt(placeKey) as Place;
+
+		if (allowedPlaces && !allowedPlaces.has(place)) continue;
 
 		places.push({
-			place: parseInt(placeKey),
+			place,
 			name: LL.scenes.places[translationKey]()
 		});
 	}
