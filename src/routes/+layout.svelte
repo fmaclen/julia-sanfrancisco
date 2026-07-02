@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { PUBLIC_PLAUSIBLE_DOMAIN } from '$env/static/public';
+	import { page } from '$app/state';
 	import type { Locales } from '$i18n/i18n-types';
 	import { applyLocale } from '$lib/player';
 	import { playerState } from '$lib/state/player.svelte';
 	import { untrack } from 'svelte';
+	import { fade } from 'svelte/transition';
 	import { detectLocale, type LocaleDetector } from 'typesafe-i18n/detectors';
 	interface Props {
 		children?: import('svelte').Snippet;
@@ -71,7 +73,11 @@
 </svelte:head>
 
 <div class="layout">
-	{@render children?.()}
+	{#key page.url.pathname}
+		<div class="page" in:fade={{ duration: 300, delay: 100 }} out:fade={{ duration: 250 }}>
+			{@render children?.()}
+		</div>
+	{/key}
 </div>
 
 <style lang="scss">
@@ -147,5 +153,11 @@
 			--layout-inline: 24px;
 			--layout-block: 32px;
 		}
+	}
+
+	div.page {
+		display: grid;
+		width: 100%;
+		height: 100%;
 	}
 </style>
