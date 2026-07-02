@@ -11,7 +11,7 @@ export default defineConfig({
 		screenshot: 'only-on-failure'
 	},
 	webServer: {
-		command: 'npx typesafe-i18n --no-watch && npm run build && npm run preview',
+		command: 'bunx typesafe-i18n --no-watch && bun run build && bun run preview',
 		port: 4173,
 		reuseExistingServer: !process.env.CI,
 		timeout: 240_000
