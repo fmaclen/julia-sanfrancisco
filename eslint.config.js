@@ -29,7 +29,7 @@ export default tseslint.config(
 	})),
 	...svelte.configs['flat/recommended'],
 	{
-		files: ['**/*.svelte'],
+		files: ['**/*.svelte', '**/*.svelte.ts'],
 		languageOptions: {
 			parserOptions: {
 				parser: tseslint.parser
@@ -43,7 +43,7 @@ export default tseslint.config(
 	...svelte.configs['flat/prettier'],
 	{
 		languageOptions: {
-			ecmaVersion: 2020,
+			ecmaVersion: 'latest',
 			sourceType: 'module',
 			globals: {
 				...globals.browser,

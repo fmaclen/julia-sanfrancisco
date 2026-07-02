@@ -1,7 +1,7 @@
 <script lang="ts">
 	import LL from '$i18n/i18n-svelte';
 	import type { Translation } from '$i18n/i18n-types';
-	import Clock, { DELAY_IN_MS } from '$lib/clock';
+	import Clock, { DELAY_IN_MS } from '$lib/clock.svelte';
 	import Artwork from '$lib/components/Artwork.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import ButtonIcon from '$lib/components/ButtonIcon.svelte';
@@ -55,14 +55,16 @@
 	let currentClueIndex: number | null = $state(null);
 	let artworkPath: string = $derived(currentRound ? currentRound.atlas.artwork : '');
 
-	let clock = new Clock($playerStore?.locale ?? 'en');
-	let currentTimeFormatted: string = $state('');
+	let clock = new Clock();
+	let currentTimeFormatted: string = $derived(
+		$playerStore ? getFormattedTime(clock.elapsedMinutes, $playerStore.locale) : ''
+	);
 
 	let isAnimating: boolean = $state(false);
-	let isWalking: boolean = $state(false);
-	let isFlying: boolean = $state(false);
-	let isSleeping: boolean = $state(false);
-	let isTimeUp: boolean = $state(false);
+	let isWalking: boolean = $derived(clock.isWalking);
+	let isFlying: boolean = $derived(clock.isFlying);
+	let isSleeping: boolean = $derived(clock.isSleeping);
+	let isTimeUp: boolean = $derived(clock.isTimeUp);
 	let isFirstRound: boolean = $derived(game ? game.currentRoundIndex === 0 : false);
 	let isLastRound: boolean = $derived(
 		game ? game.currentRoundIndex === game.rounds.length - 1 : false
@@ -113,27 +115,32 @@
 				return;
 			}
 
-			if (game.currentTime) clock.currentTime = new Date(game.currentTime);
+			clock.restore(game.elapsedMinutes);
+			game.elapsedMinutes = clock.elapsedMinutes;
+			delete (game as Game & { currentTime?: unknown }).currentTime;
 
 			clock.start();
 
-			const gameLoop = setInterval(() => {
-				if ($playerStore)
-					currentTimeFormatted = getFormattedTime(clock.currentTime, $playerStore.locale);
-				isWalking = clock.isWalking;
-				isFlying = clock.isFlying;
-				isSleeping = clock.isSleeping;
-				isTimeUp = clock.isTimeUp;
-			}, clock.tickRate);
+			const handleVisibilityChange = () => {
+				if (document.hidden) {
+					clock.pause();
+				} else {
+					clock.resume();
+				}
+			};
+			document.addEventListener('visibilitychange', handleVisibilityChange);
 
-			return () => clearInterval(gameLoop);
+			return () => {
+				document.removeEventListener('visibilitychange', handleVisibilityChange);
+				clock.stop();
+			};
 		});
 	});
 
 	function resetRound(): void {
 		currentClueIndex = null;
 		artworkPath = currentRound.atlas.artwork;
-		game.currentTime = clock.currentTime;
+		game.elapsedMinutes = clock.elapsedMinutes;
 
 		showDescription = true;
 		showPlaces = false;
@@ -216,8 +223,7 @@
 		}
 
 		isArtworkHidden = true;
-		clock.fastForward(2);
-		await delay(DELAY_IN_MS);
+		await clock.fastForward(2);
 
 		currentClueIndex = index;
 		if (currentRound) artworkPath = currentRound.scenes[index].witness.artwork;
@@ -237,8 +243,7 @@
 		showDestinations = false;
 		showDescription = false;
 		isArtworkHidden = true;
-		clock.fastForward(4);
-		await delay(DELAY_IN_MS);
+		await clock.fastForward(4);
 
 		const { rounds, currentRoundIndex } = game;
 

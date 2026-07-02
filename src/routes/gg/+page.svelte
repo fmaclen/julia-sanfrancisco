@@ -172,10 +172,10 @@
 				{#if suspectGotAway || hasOutroScenePlayed}
 					<H1>{currentRoundAtlas.city}</H1>
 
-					{#if $gameStore.currentTime && $playerStore}
+					{#if typeof $gameStore.elapsedMinutes === 'number' && $playerStore}
 						<Time
 							isClockTicking={false}
-							currentTime={getFormattedTime(new Date($gameStore.currentTime), $playerStore.locale)}
+							currentTime={getFormattedTime($gameStore.elapsedMinutes, $playerStore.locale)}
 						/>
 					{/if}
 				{/if}

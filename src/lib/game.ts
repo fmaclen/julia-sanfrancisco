@@ -1,13 +1,11 @@
 import { browser } from '$app/environment';
 import en from '$i18n/en';
+import es from '$i18n/es';
 import type { Locales, Translation, TranslationFunctions } from '$i18n/i18n-types';
 import { getAllowedPlacesForAtlasKey, type AtlasKey } from '$lib/atlas-places';
 import { getArtworkPath, getRandomValue } from '$lib/helpers';
 import { Place } from './places';
 import { getSuspectWarrantKeys, Suspect, type WarrantKeys } from './suspects';
-import { format } from 'date-fns';
-import enUS from 'date-fns/locale/en-US/index';
-import es from 'date-fns/locale/es/index';
 import { writable } from 'svelte/store';
 import type { LocalizedString } from 'typesafe-i18n';
 
@@ -119,7 +117,7 @@ interface LocalizedSuspect {
 
 export interface Game {
 	currentRoundIndex: number;
-	currentTime: Date | null;
+	elapsedMinutes: number;
 	roundDecoy: Round | null;
 	rounds: Round[];
 	stolenTreasure: string;
@@ -134,7 +132,7 @@ export function generateGame(LL: TranslationFunctions): Game {
 
 	return {
 		currentRoundIndex: 0,
-		currentTime: null,
+		elapsedMinutes: 0,
 		roundDecoy: null,
 		warrants: [],
 		rounds,
@@ -588,12 +586,20 @@ function getTranslationFromArray(localizedArray: LocalizedArray): string[] {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-export function getFormattedTime(time: Date, locale: Locales): string {
-	// Format the time as "Monday 9:00 am" / "Lunes 9:00 am"
-	const formattedTime = format(time, 'EEEE h:mm aaa', { locale: locale === 'en' ? enUS : es });
+export function getFormattedTime(elapsedMinutes: number, locale: Locales): string {
+	const dayMinutes = 1440;
+	const startMinutes = 9 * 60;
+	const totalMinutes = startMinutes + Math.max(0, Math.floor(elapsedMinutes));
+	const minutesInDay = totalMinutes % dayMinutes;
+	const dayIndex = Math.floor(totalMinutes / dayMinutes) % 7;
+	const hour24 = Math.floor(minutesInDay / 60);
+	const hour12 = hour24 % 12 || 12;
+	const minutes = (minutesInDay % 60).toString().padStart(2, '0');
+	const period = hour24 < 12 ? 'am' : 'pm';
+	const translations = locale === 'en' ? en : es;
+	const dayName = translations.time.days[dayIndex];
 
-	// Capitalize the first letter
-	return formattedTime.charAt(0).toUpperCase() + formattedTime.slice(1);
+	return `${dayName.charAt(0).toUpperCase()}${dayName.slice(1)} ${hour12}:${minutes} ${period}`;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

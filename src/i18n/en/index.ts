@@ -384,6 +384,9 @@ const en = {
 			5: 'Super sleuth'
 		}
 	},
+	time: {
+		days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+	},
 	components: {
 		startTime: 'Monday 9:00am',
 		loading: 'Loading',
