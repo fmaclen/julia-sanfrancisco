@@ -9,6 +9,7 @@ import {
 	type Round
 } from '$lib/game';
 import { delay, redirectTo } from '$lib/helpers';
+import { playSfx } from '$lib/sfx';
 import {
 	findSuspects,
 	Suspect,
@@ -48,6 +49,7 @@ export default class GamePageState {
 	suspectCaught = $derived(
 		!this.isTimeUp &&
 			this.isLastRound &&
+			!this.game?.roundDecoy &&
 			this.currentClueIndex === this.game?.suspect.lastRoundHidingPlace
 	);
 	isGameOver: boolean = $derived(this.suspectCaught || this.isTimeUp);
@@ -174,6 +176,7 @@ export default class GamePageState {
 	};
 
 	computeWarrant = (): void => {
+		playSfx('warrant');
 		this.warrantWasComputed = true;
 		this.game.warrants = findSuspects(
 			this.warrantSex,
@@ -189,6 +192,9 @@ export default class GamePageState {
 		this.showDescription = false;
 		this.clock.isWalking = true;
 
+		const isFinalCatch =
+			this.isLastRound && !this.game.roundDecoy && this.game.suspect.lastRoundHidingPlace === index;
+
 		if (
 			!this.trailingSceneInRoundSeen &&
 			!this.isFirstRound &&
@@ -196,6 +202,7 @@ export default class GamePageState {
 		) {
 			this.isArtworkHidden = true;
 			this.isTrailingSuspect = true;
+			playSfx('alert');
 			this.trailingSuspectScene = (
 				this.game.currentRoundIndex - 1
 			).toString() as keyof Translation['game']['trailingSuspect'];
@@ -206,13 +213,24 @@ export default class GamePageState {
 		}
 
 		this.isArtworkHidden = true;
+		playSfx('walk');
 		await this.clock.fastForward(2);
+		await this.clock.waitForWake();
 
+		if (isFinalCatch && !this.isTimeUp) {
+			this.game.suspect.caught = true;
+			sessionState.save();
+			redirectTo('/gg/');
+			return;
+		}
+
+		playSfx('clue');
 		this.currentClueIndex = index;
 		if (this.currentRound) this.artworkPath = this.currentRound.scenes[index].witness.artwork;
 	};
 
 	dismissClue = async (): Promise<void> => {
+		playSfx('back');
 		this.isArtworkHidden = true;
 		await delay(DELAY_IN_MS);
 
@@ -226,6 +244,7 @@ export default class GamePageState {
 		this.showDestinations = false;
 		this.showDescription = false;
 		this.isArtworkHidden = true;
+		playSfx('fly');
 		await this.clock.fastForward(4);
 
 		const { rounds, currentRoundIndex } = this.game;

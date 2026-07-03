@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { playSfx } from '$lib/sfx';
+
 	interface Props {
 		href: string;
 		target?: string;
@@ -9,7 +11,7 @@
 	let { href, target = '', isActive = false, children }: Props = $props();
 </script>
 
-<a class="a {isActive ? 'a--active' : ''}" {target} {href}>
+<a class="a {isActive ? 'a--active' : ''}" {target} {href} onclick={() => playSfx('click')}>
 	{@render children?.()}
 </a>
 

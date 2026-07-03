@@ -2,7 +2,11 @@
 	import { PUBLIC_PLAUSIBLE_DOMAIN } from '$env/static/public';
 	import { page } from '$app/state';
 	import type { Locales } from '$i18n/i18n-types';
+	import ButtonIcon from '$lib/components/ButtonIcon.svelte';
+	import SoundOff from '$lib/icons/SoundOff.svg.svelte';
+	import SoundOn from '$lib/icons/SoundOn.svg.svelte';
 	import { applyLocale } from '$lib/player';
+	import { isSfxMuted, playSfx, setSfxMuted } from '$lib/sfx';
 	import { playerState } from '$lib/state/player.svelte';
 	import { untrack } from 'svelte';
 	import { fade } from 'svelte/transition';
@@ -12,6 +16,13 @@
 	}
 
 	let { children }: Props = $props();
+	let muted = $derived(isSfxMuted());
+
+	function toggleMuted(): void {
+		muted = !muted;
+		setSfxMuted(muted);
+		if (!muted) playSfx('confirm');
+	}
 	const browserLocaleDetector: LocaleDetector = () =>
 		typeof navigator === 'undefined' ? [] : Array.from(navigator.languages);
 
@@ -78,6 +89,16 @@
 			{@render children?.()}
 		</div>
 	{/key}
+
+	<aside class="sound-toggle">
+		<ButtonIcon silent onclick={toggleMuted} title={muted ? 'Unmute' : 'Mute'}>
+			{#if muted}
+				<SoundOff />
+			{:else}
+				<SoundOn />
+			{/if}
+		</ButtonIcon>
+	</aside>
 </div>
 
 <style lang="scss">
@@ -159,5 +180,27 @@
 		display: grid;
 		width: 100%;
 		height: 100%;
+	}
+
+	aside.sound-toggle {
+		justify-self: end;
+		align-self: start;
+		width: max-content;
+		height: max-content;
+		margin-top: 56px;
+		margin-right: var(--layout-inline);
+		z-index: 10;
+		opacity: 0.5;
+		transition: opacity 250ms;
+
+		&:hover {
+			opacity: 1;
+		}
+
+		:global(svg) {
+			display: block;
+			width: 20px;
+			height: 20px;
+		}
 	}
 </style>

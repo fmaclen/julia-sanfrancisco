@@ -18,6 +18,7 @@
 		width: 80%; // Looks prettier at this width 🤷‍♂️
 		box-sizing: border-box;
 		color: var(--color-neutral-150);
+		text-wrap: balance;
 
 		&:first-child {
 			margin-top: 0;

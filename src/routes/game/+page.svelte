@@ -17,6 +17,7 @@
 	import Time from '$lib/components/Time.svelte';
 	import TrailingSuspect from '$lib/components/TrailingSuspect.svelte';
 	import { getRandomValue } from '$lib/helpers';
+	import { playSfx } from '$lib/sfx';
 	import GamePageState from '$lib/state/game-page.svelte';
 	import { untrack } from 'svelte';
 	import { fade, slide } from 'svelte/transition';
@@ -29,6 +30,10 @@
 
 	$effect(() => {
 		return untrack(() => gamePage.startClock());
+	});
+
+	$effect(() => {
+		if (gamePage.isSleeping) playSfx('sleep', gamePage.clock.sleepDurationMs);
 	});
 </script>
 

@@ -14,6 +14,7 @@ export default class Clock {
 	isWalking = $state(false);
 	isFlying = $state(false);
 	isSleeping = $state(false);
+	sleepDurationMs = $state(0);
 	isTimeUp = $derived(this.elapsedMinutes >= DEADLINE_MINUTES);
 
 	#timerId: ReturnType<typeof setInterval> | null = null;
@@ -44,6 +45,17 @@ export default class Clock {
 
 	public restore = (elapsedMinutes: unknown) => {
 		this.elapsedMinutes = this.#normalizeElapsedMinutes(elapsedMinutes);
+	};
+
+	public waitForWake = (): Promise<void> => {
+		return new Promise((resolve) => {
+			if (!this.isSleeping) {
+				resolve();
+				return;
+			}
+
+			this.#pendingFastForwards.push(() => resolve());
+		});
 	};
 
 	public fastForward = (hours: number): Promise<boolean> => {
@@ -128,6 +140,7 @@ export default class Clock {
 			this.isFlying = false;
 
 			if (!this.isTimeUp && this.#shouldSleep()) {
+				this.#resolveFastForwards();
 				this.#startSleep();
 				return;
 			}
@@ -141,9 +154,13 @@ export default class Clock {
 	#startSleep = () => {
 		this.isWalking = false;
 		this.isFlying = false;
-		this.isSleeping = true;
 
 		const minutesUntilWake = this.#minutesUntilWake();
+		const sleepMinutes = Math.min(minutesUntilWake, DEADLINE_MINUTES - this.elapsedMinutes);
+		this.sleepDurationMs = Math.round(
+			(sleepMinutes / FAST_FORWARD_MINUTES_PER_TICK) * TICK_INTERVAL_MS
+		);
+		this.isSleeping = true;
 		this.#targetMinutes = Math.min(DEADLINE_MINUTES, this.elapsedMinutes + minutesUntilWake);
 		this.#ensureTicker();
 	};
