@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { playSfx } from '$lib/sfx';
+
 	interface Props {
 		title?: string | undefined;
 		disabled?: boolean;
@@ -29,7 +31,10 @@
 	"
 	{disabled}
 	{title}
-	{onclick}
+	onclick={(event) => {
+		playSfx('click');
+		onclick?.(event);
+	}}
 >
 	{@render children?.()}
 </button>

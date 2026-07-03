@@ -15,6 +15,7 @@
 	import { delay, redirectTo } from '$lib/helpers';
 	import Continue from '$lib/icons/Continue.svg.svelte';
 	import { getCasesUntilPromotion, getRank } from '$lib/player';
+	import { playSfx } from '$lib/sfx';
 	import { playerState } from '$lib/state/player.svelte';
 	import { sessionState } from '$lib/state/session.svelte';
 	import { untrack } from 'svelte';
@@ -134,14 +135,17 @@
 
 	async function playOutroScene(): Promise<void> {
 		showDangerScene = true;
+		playSfx('alert');
 		await delay(SUSPECT_TRAIL_SCENE_DURATION);
 
 		showDangerScene = false;
 		showCaptureScene = true;
+		playSfx('arrest');
 		await delay(SUSPECT_TRAIL_SCENE_DURATION);
 
 		showCaptureScene = false;
 		hasOutroScenePlayed = true;
+		playSfx(suspectCaughtWithWarrant ? 'victory' : 'gameover');
 	}
 
 	function nextStep(): void {
@@ -168,6 +172,8 @@
 				redirectTo('/headquarters/');
 			} else if (!suspectGotAway) {
 				void playOutroScene();
+			} else {
+				playSfx('gameover');
 			}
 		});
 	});

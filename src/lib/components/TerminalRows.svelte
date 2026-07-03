@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { playSfx } from '$lib/sfx';
 	import TerminalParagraph from './TerminalParagraph.svelte';
 	import TerminalTitle from './TerminalTitle.svelte';
 	import type { TerminalRow } from './Terminal';
@@ -69,6 +70,7 @@
 
 		animationIntervalId = setInterval(() => {
 			visibleCharacters += 1;
+			if (visibleCharacters % 3 === 0) playSfx('type');
 
 			if (visibleCharacters >= totalCharacters) {
 				visibleCharacters = totalCharacters;
