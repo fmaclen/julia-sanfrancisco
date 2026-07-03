@@ -6,7 +6,7 @@
 	import SoundOff from '$lib/icons/SoundOff.svg.svelte';
 	import SoundOn from '$lib/icons/SoundOn.svg.svelte';
 	import { applyLocale } from '$lib/player';
-	import { isSfxMuted, playSfx, setSfxMuted } from '$lib/sfx';
+	import { isSfxMuted, playSfx, setSfxMuted, unlockSfx } from '$lib/sfx';
 	import { playerState } from '$lib/state/player.svelte';
 	import { untrack } from 'svelte';
 	import { fade } from 'svelte/transition';
@@ -34,6 +34,8 @@
 		});
 	});
 </script>
+
+<svelte:window onkeydown={unlockSfx} onpointerdown={unlockSfx} />
 
 <svelte:head>
 	<!-- Primary Meta Tags -->

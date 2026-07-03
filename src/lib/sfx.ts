@@ -257,6 +257,19 @@ export function playSfx(name: SfxName, durationMs?: number): void {
 	}
 }
 
+export function unlockSfx(): void {
+	try {
+		if (readMuted()) return;
+
+		const context = getAudioContext();
+		if (context === null || context.state === 'running') return;
+
+		void context.resume().catch(() => undefined);
+	} catch {
+		return;
+	}
+}
+
 export function setSfxMuted(muted: boolean): void {
 	mutedCache = muted;
 
