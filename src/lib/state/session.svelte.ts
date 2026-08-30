@@ -76,7 +76,8 @@ function isAtlas(value: unknown): value is Atlas {
 		isStringArray(value.sights) &&
 		isStringArray(value.objects) &&
 		isStringArray(value.topics) &&
-		typeof value.artwork === 'string'
+		isStringArray(value.artworks) &&
+		value.artworks.length > 0
 	);
 }
 

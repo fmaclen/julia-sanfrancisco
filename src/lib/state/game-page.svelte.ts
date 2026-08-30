@@ -8,7 +8,7 @@ import {
 	type Game,
 	type Round
 } from '$lib/game';
-import { delay, redirectTo } from '$lib/helpers';
+import { delay, getRandomValue, redirectTo } from '$lib/helpers';
 import { playSfx } from '$lib/sfx';
 import {
 	findSuspects,
@@ -30,7 +30,14 @@ export default class GamePageState {
 			: (null as unknown as Round)
 	);
 	currentClueIndex: number | null = $state(null);
-	artworkPath: string = $derived(this.currentRound ? this.currentRound.atlas.artwork : '');
+
+	// Which `atlas.descriptions[i]` is showing for the current round. Chosen once
+	// per round in `resetRound()` so the description and its matching artwork
+	// (`atlas.artworks[i]`) stay in sync instead of re-randomizing independently.
+	descriptionIndex: number = $state(0);
+	artworkPath: string = $derived(
+		this.currentRound ? this.currentRound.atlas.artworks[this.descriptionIndex] : ''
+	);
 
 	clock = new Clock();
 	currentTimeFormatted: string = $derived(
@@ -123,7 +130,10 @@ export default class GamePageState {
 
 	resetRound = (): void => {
 		this.currentClueIndex = null;
-		this.artworkPath = this.currentRound.atlas.artwork;
+		this.descriptionIndex = getRandomValue(
+			this.currentRound.atlas.descriptions.map((_, index) => index)
+		);
+		this.artworkPath = this.currentRound.atlas.artworks[this.descriptionIndex];
 		this.game.elapsedMinutes = this.clock.elapsedMinutes;
 
 		this.showDescription = true;

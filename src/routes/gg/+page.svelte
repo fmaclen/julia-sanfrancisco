@@ -206,7 +206,7 @@
 			<TrailingSuspect sceneIndex="6" sex={game.suspect.warrantKeys.sex} />
 		{/if}
 
-		<Artwork isDisabled={true} src={currentRoundAtlas.artwork} />
+		<Artwork isDisabled={true} src={currentRoundAtlas.artworks[0]} />
 
 		{#snippet footer()}
 			<Footer>

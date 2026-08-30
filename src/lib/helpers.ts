@@ -9,13 +9,19 @@ export function redirectTo(url: string) {
 	if (browser) void goto(url);
 }
 
-export function getArtworkPath(name: string, folder: 'atlas' | 'witnesses'): string {
+export function getArtworkPath(
+	name: string,
+	folder: 'atlas' | 'witnesses',
+	index?: number
+): string {
 	const normalized = name.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, (match, index) => {
 		if (+match === 0) return ''; // or if (/\s+/.test(match)) for white spaces
 		return index === 0 ? match.toLowerCase() : match.toUpperCase();
 	});
 
-	return `/artwork/${folder}/${normalized}.png`;
+	const suffix = index !== undefined ? `_${index}` : '';
+
+	return `/artwork/${folder}/${normalized}${suffix}.png`;
 }
 
 export function delay(ms: number): Promise<void> {

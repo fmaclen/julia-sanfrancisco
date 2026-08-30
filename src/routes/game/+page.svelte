@@ -16,7 +16,6 @@
 	import Section from '$lib/components/Section.svelte';
 	import Time from '$lib/components/Time.svelte';
 	import TrailingSuspect from '$lib/components/TrailingSuspect.svelte';
-	import { getRandomValue } from '$lib/helpers';
 	import { playSfx } from '$lib/sfx';
 	import GamePageState from '$lib/state/game-page.svelte';
 	import { untrack } from 'svelte';
@@ -80,7 +79,7 @@
 					{#if !gamePage.isTimeUp && !gamePage.isSleeping && !gamePage.isClockTicking && gamePage.showDescription}
 						<Section>
 							<section class="paragraph-group" in:fade|global>
-								<P>{getRandomValue(gamePage.currentRound.atlas.descriptions)}</P>
+								<P>{gamePage.currentRound.atlas.descriptions[gamePage.descriptionIndex]}</P>
 							</section>
 						</Section>
 					{/if}

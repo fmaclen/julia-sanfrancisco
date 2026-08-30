@@ -91,7 +91,7 @@ export interface Atlas {
 	sights: string[];
 	objects: string[];
 	topics: string[];
-	artwork: string;
+	artworks: string[]; // One artwork per `descriptions` entry, same index.
 }
 
 export interface Round {
@@ -438,10 +438,14 @@ function getLocalizedAtlases(LL: TranslationFunctions): Atlas[] {
 
 	for (const atlasKey of atlaseKeys) {
 		const translationKey = atlasKey as keyof Translation['atlases'];
+		const descriptions = getTranslationFromArray(LL.atlases[translationKey].descriptions);
+
+		// HACK: We are using the English name of the `city` to get the artwork.
+		const englishCity = en.atlases[translationKey].city;
 
 		atlases.push({
 			city: LL.atlases[translationKey].city(),
-			descriptions: getTranslationFromArray(LL.atlases[translationKey].descriptions),
+			descriptions,
 			currency: LL.atlases[translationKey].currency(),
 			language: LL.atlases[translationKey].language(),
 			flag: LL.atlases[translationKey].flag(),
@@ -450,8 +454,10 @@ function getLocalizedAtlases(LL: TranslationFunctions): Atlas[] {
 			objects: getTranslationFromArray(LL.atlases[translationKey].objects),
 			topics: getTranslationFromArray(LL.atlases[translationKey].topics),
 
-			// HACK: We are using the English name of the `city` to get the artwork.
-			artwork: getArtworkPath(en.atlases[translationKey].city, 'atlas'),
+			// One artwork per description, e.g. `baghdad_0.png`, `baghdad_1.png`, ...
+			artworks: descriptions.map((_, index) =>
+				getArtworkPath(englishCity, 'atlas', index)
+			),
 			key: translationKey
 		});
 	}
