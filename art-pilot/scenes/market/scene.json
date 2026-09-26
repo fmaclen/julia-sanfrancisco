@@ -1,0 +1,20 @@
+{
+ "role": "Street merchant",
+ "paintings": {
+  "mediterranean": {
+   "seat": 822,
+   "pose": "tea",
+   "look": "camera"
+  },
+  "east-asia": {
+   "seat": 935,
+   "pose": "neck",
+   "look": "aside"
+  },
+  "africa": {
+   "pose": "arms-crossed",
+   "look": "camera",
+   "seat": 830
+  }
+ }
+}

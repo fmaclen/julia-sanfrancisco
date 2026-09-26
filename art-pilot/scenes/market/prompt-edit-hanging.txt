@@ -1,0 +1,12 @@
+ref: painting-{theme}.png
+
+Edit this image. Keep everything else exactly as it is: the same camera, pixel-art style, palette, light and pixel size, the same merchant in the same pose, the table, the goods, the scales and card reader, the canopies and their legs, the flower stall, the crates and the pickup. Change only the produce hanging from the front edge of the merchant's white canopy.
+
+Take all of it down and hang it again unevenly, the way a real stall ends up, not like a shop display:
+- a tight, overlapping bunch just to the left of the merchant's head, about one to two head-widths away: two strings of garlic of different lengths, a short string of dried red chillies and a net bag of oranges, a couple of them sharing one hook;
+- a single net bag of onions just to the right of his head, about one and a half head-widths away, on a longer cord so it hangs lower than the rest, a little crooked;
+- a smaller bunch of two chilli strings and one garlic string close to the canopy's right front leg;
+- nothing near the canopy's left front leg.
+Leave the space directly above his head clear.
+
+No blur anywhere, no readable text.

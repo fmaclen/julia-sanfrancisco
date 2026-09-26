@@ -1,0 +1,800 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  @font-face { font-family: 'Op'; src: url(fonts/PixelOperator.ttf); }
+  @font-face { font-family: 'Op8'; src: url(fonts/PixelOperator8.ttf); }
+  @font-face { font-family: 'OpB'; src: url(fonts/PixelOperator-Bold.ttf); }
+
+  /* Wireframe scale, locked. Type, three levels: the city (or a cutscene line) in Op8 16/16 uppercase,
+     one per screen; panel and speaker titles in Op Bold 16/20; everything else Op 16/20.
+     Spacing: s1..s4, measured from the ink, not the line box: every text box is trimmed to cap height and
+     baseline, so padding is the space you see. Pixel Operator caps are 9px, Pixel Operator 8 caps 14px, so
+     heights are chosen to centre them on whole pixels: buttons 45 (16 above and below the caps inside a 2px
+     edge), the bottom slot 57, map labels 33, the top bar 55. Every light surface (plate, panel, bubble, button)
+     has the same 2px outline, and padding is measured from the inside of it.
+     One layout everywhere: every panel full width inside the UI column.
+     Phones: the column is the screen. Desktop: 2x zoom (1920x1080 is 960x540 logical) and a centred
+     480-wide column. Scene art, the map and cutscenes always fill the whole window behind it. */
+  :root {
+    --s1: 4px; --s2: 8px; --s3: 16px; --s4: 24px; --hit: 45px; --slot: 57px; --top: 55px; --column: 480px;
+    --card: #e6e6e6; --ink: #141414; --mute: #6e6e6e; --rule: #bdbdbd; --off: #a4a4a4;
+    --ph: #4a4a4a; --ph-ink: #5e5e5e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #000; }
+  body { font: 16px/20px 'Op', monospace; -webkit-font-smoothing: none; color: var(--ink); }
+  button, input { font: inherit; color: inherit; }
+  svg { display: block; flex: none; }
+  .i16 { width: 16px; height: 16px; }
+  p, h2, .city, .h1, .k, figcaption, .t { text-box: trim-both cap alphabetic; }
+  /* Every run of text wraps to even line lengths, never a long line over a stub */
+  p, h1, h2, h3, li, figcaption, .h1, .t { text-wrap: balance; }
+
+  .screen { position: relative; overflow: hidden; display: grid; grid-template-rows: auto minmax(0, 1fr) auto;
+            gap: var(--s2); padding: var(--s2); }
+  .screen > :not(.abs) { position: relative; z-index: 1; }
+  .abs { position: absolute !important; }
+  .vp { position: relative; overflow: hidden; background: #0b0b0b; }
+  .vp > .screen { position: absolute; top: 0; }
+
+  /* Scene placeholder: hatch plus a caption naming the art that goes there */
+  .bg { inset: 0; background: repeating-linear-gradient(135deg, #272727 0 2px, #1d1d1d 2px 10px); }
+  .bg > span { position: absolute; left: 0; right: 0; text-align: center; color: var(--ph-ink); }
+  .bg.dim::after, .bg.night::after { content: ''; position: absolute; inset: 0; background: rgba(0, 0, 0, .45); }
+  .bg.night::after { background: rgba(0, 0, 0, .7); }
+
+  /* Top bar: city plate sized to its text (a label, not a panel); menu key at the far edge, same height */
+  .top { display: flex; align-items: stretch; gap: var(--s2); min-height: var(--top); }
+  .plate { background: var(--card); border: 2px solid var(--ink); padding: 10px var(--s3); display: grid; grid-template-columns: auto; column-gap: var(--s3); align-content: center; }
+  .plate .city { margin-left: -1px; } /* Pixel Operator 8 starts 1px further in than Pixel Operator */
+  .plate .city, .plate .time { grid-column: 1; }
+  .city, .h1 { font: 16px/16px 'Op8'; text-transform: uppercase; }
+  .time { margin-top: var(--s2); color: var(--mute); display: flex; gap: var(--s1); align-items: center; }
+  .plate .vr { grid-row: 1 / 3; grid-column: 2; align-self: stretch; width: 2px; background: var(--rule); }
+  .plate .mi { grid-row: 1 / 3; grid-column: 3; color: var(--mute); }
+  .plate.with-menu { grid-template-columns: auto 2px 16px; }
+
+  .stage { display: flex; flex-direction: column; justify-content: flex-end; gap: var(--s2); min-height: 0; }
+  .stage.start { justify-content: flex-start; }
+
+  /* Panel: the one container every sheet, list and document uses */
+  .panel { background: var(--card); border: 2px solid var(--ink); padding: var(--s3); display: flex; flex-direction: column; gap: var(--s3); min-height: 0; }
+  .scroll { overflow: auto; }
+  .scroll::-webkit-scrollbar { width: 4px; } .scroll::-webkit-scrollbar-thumb { background: var(--mute); } .scroll::-webkit-scrollbar-track { background: var(--rule); }
+  .hd { display: flex; align-items: baseline; gap: var(--s2); }
+  .hd > :last-child:not(:first-child) { margin-left: auto; color: var(--mute); }
+  h2, .kw { font: 16px/20px 'OpB'; } .kw { font-weight: normal; }
+  .mute { color: var(--mute); }
+  .rule { height: 2px; background: var(--rule); margin: var(--s1) 0; flex: none; }
+  .sec { display: flex; flex-direction: column; gap: var(--s2); }
+  .sec.scroll > * { flex: none; }
+
+  /* One button, two skins (light, dark), four states (normal, hover, pressed, disabled). Size and content are free:
+     the sprite is a 9-slice, so a tab, a map label and a list row are the same button with different insides.
+     Dark means primary, selected or current. */
+  .btn { min-height: var(--hit); display: flex; align-items: center; gap: var(--s2); padding: 0 var(--s3);
+         border: 2px solid var(--ink); background: var(--card); color: var(--ink); text-align: left; flex: none; font-weight: normal; }
+  /* The dark fill sits a shade above the outline, so every surface shows the same 2px edge on any background */
+  .btn.dark { background: #2e2e2e; border-color: var(--ink); color: var(--card); }
+  .btn.hover { background: #cdcdcd; } .btn.dark.hover { background: #404040; }
+  .btn.pressed { background: #bdbdbd; box-shadow: inset 0 2px 0 #8a8a8a; } .btn.dark.pressed { background: #1f1f1f; box-shadow: inset 0 2px 0 #000; }
+  .btn:disabled, .btn.disabled { border-color: var(--off); color: var(--off); background: var(--card); }
+  .btn.dark:disabled, .btn.dark.disabled { background: #6a6a6a; border-color: var(--ink); color: #a4a4a4; }
+  .btn.focus { box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--ink); }
+  .btn.center { justify-content: center; }
+  .btn.tab { flex-direction: column; justify-content: center; gap: var(--s2); padding: 0; position: relative; }
+  .btn.menu { margin-left: auto; width: var(--top); padding: 0; justify-content: center; min-height: 0; }
+  .btn.menu + .btn.menu { margin-left: 0; }
+  .btn.chip { min-height: 33px; padding: 0 var(--s2); }
+  .btn .meta { margin-left: auto; color: var(--mute); display: flex; align-items: center; gap: var(--s1); }
+  .btn.dark .meta { color: var(--off); }
+  .btn.person { padding-left: var(--s1); }
+  .list { display: flex; flex-direction: column; gap: var(--s1); min-height: 0; }
+  .list.scroll { padding-right: var(--s2); }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s1); }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s1); }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); }
+
+  /* Bottom slot: four tabs in the game, one or two primary actions elsewhere. Always 57 high. */
+  .slot { display: grid; gap: var(--s2); }
+  .slot .btn { min-height: var(--slot); justify-content: center; }
+  .nav { grid-template-columns: repeat(4, 1fr); }
+  .badge { position: absolute; top: var(--s1); right: var(--s1); width: 8px; height: 8px; background: var(--ink); }
+
+  /* Form bits */
+  .field.empty { color: var(--off); }
+  .trait { flex-direction: column; align-items: flex-start; justify-content: center; gap: 7px; padding: 0 var(--s3); }
+  .trait-row { display: grid; grid-template-columns: 96px 1fr; } .trait-row .k { color: var(--mute); }
+  .trait .k, .fields .k { color: var(--mute); }
+  .fields { display: grid; grid-template-columns: 96px 1fr; gap: 12px 0; }
+  .names { display: grid; grid-template-columns: 1fr 1fr; gap: 12px var(--s2); }
+  .names span { display: flex; align-items: center; gap: var(--s1); }
+  .out { color: var(--off); text-decoration: line-through; }
+  .names .hit { background: #2e2e2e; color: var(--card); margin: calc(-1 * var(--s1)); padding: var(--s1); }
+  .bar { display: grid; gap: 2px; height: 8px; }
+  .bar i { background: var(--rule); } .bar i.f { background: var(--ink); }
+
+  /* Placeholders for character art */
+  .ph { background: var(--ph); color: var(--ph-ink); position: relative; flex: none; overflow: hidden; }
+  .ph svg { width: 100%; height: 100%; }
+  .mug { width: 80px; height: 80px; }
+  .mug.sm { width: 32px; height: 32px; }
+  .mug.md { width: 64px; height: 64px; }
+  .mug.lg { width: 128px; height: 128px; }
+  .mug .st { position: absolute; left: -4px; right: -4px; top: 30px; background: var(--card); border: 2px solid var(--ink); color: var(--ink);
+             font: 8px/12px 'Op8'; text-align: center; text-transform: uppercase; transform: rotate(-8deg); }
+  .who { display: flex; gap: var(--s3); align-items: center; }
+
+  /* Witness: standing figure in the scene, bubble with a tail pointing at the head */
+  .fig img { display: block; width: 100%; height: auto; image-rendering: pixelated; }
+  .bubble { position: relative; background: var(--card); border: 2px solid var(--ink); padding: var(--s3); display: flex; flex-direction: column; gap: var(--s3); }
+  .tail { position: absolute; width: 16px; height: 16px; }
+
+  /* Cutscene: the caption is a normal panel, centred */
+  .panel.caption { text-align: center; align-items: center; }
+  .panel.caption .bar { align-self: stretch; margin-top: var(--s2); }
+
+  /* Map */
+  .map { inset: 0; background: #1c1c1c; overflow: hidden; }
+  .map img { position: absolute; top: 0; image-rendering: pixelated; }
+  .pin { position: absolute; display: flex; align-items: center; gap: var(--s1); transform: translate(-4px, -4px); }
+  .pin { transform: translate(-4px, -16px); background: none; border: 0; padding: 0; font: inherit; }
+  .pin i { width: 8px; height: 8px; background: var(--card); outline: 2px solid #000; }
+  .pin .btn { gap: var(--s2); }
+  .pin .btn span { color: var(--off); }
+  .pin.cur i { width: 12px; height: 12px; background: #000; outline: 2px solid var(--card); }
+  .edge { position: absolute; gap: 2px; }
+  .cursor { position: absolute; width: 16px; height: 16px; color: #fff; }
+  .route { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+  /* Desktop spread: dossiers and warrant open as two facing pages, wider than the column */
+  .spread { position: absolute; display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); z-index: 1; }
+  .spread > .panel { min-height: 0; }
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); }
+  .tile { display: flex; align-items: center; gap: var(--s2); padding: var(--s1); }
+  .tile.out span { color: var(--off); text-decoration: line-through; } .tile.out .mug { opacity: .35; }
+  .tile.hit { background: var(--ink); color: var(--card); }
+  /* Landing page at /: always 1x, like any web page. Slim nav, the embedded game as the hero straddling a
+     two-tone band, then a one-line hook, how to play and about below. The game's own logo is the title. */
+  .landing { background: #0b0b0b; color: var(--card); }
+  .l-wrap { max-width: 1280px; margin: 0 auto; padding: 0 var(--s3); }
+  .l-nav { display: flex; justify-content: center; gap: var(--s2) var(--s4); padding: var(--s3) 0; color: #b0b0b0; flex-wrap: wrap; }
+  .l-hero { background: linear-gradient(#1c1c1c 50%, #0b0b0b 50%); }
+  .l-frame { display: block; width: 100%; border: 2px solid #3a3a3a; }
+  .l-hook { text-align: center; padding: var(--s4) 0; color: #b0b0b0; }
+  .l-sec { padding: var(--s4) 0; display: flex; flex-direction: column; gap: var(--s3); border-top: 2px solid #1c1c1c; }
+  .l-steps { display: grid; gap: var(--s3); }
+  .wide .l-steps { grid-template-columns: repeat(3, 1fr); }
+  .l-step { display: flex; flex-direction: column; gap: var(--s2); }
+  .l-step .shot { aspect-ratio: 16 / 9; background: repeating-linear-gradient(135deg, #272727 0 2px, #1d1d1d 2px 10px); display: grid; place-items: center; color: var(--ph-ink); }
+  .l-step p, .l-sec > p { color: #b0b0b0; }
+  .l-foot { padding: var(--s4) 0; color: #6a6a6a; display: flex; justify-content: space-between; gap: var(--s3); flex-wrap: wrap; border-top: 2px solid #1c1c1c; }
+
+  /* Kit sheet: every part and state on one page, the spec for the sprite sheet */
+  .kit { padding: var(--s4); color: var(--card); display: flex; flex-direction: column; gap: var(--s4); background: #1a1a1a; }
+  .kit section { display: flex; flex-direction: column; gap: var(--s2); }
+  .kit .lbl { color: #8a8a8a; }
+  .kit .panel, .kit .plate, .kit .bubble { color: var(--ink); }
+  .kit .rowk { display: flex; flex-wrap: wrap; gap: var(--s3); align-items: flex-end; }
+  .kit figure { display: flex; flex-direction: column; gap: var(--s1); }
+  .kit figcaption { color: #8a8a8a; }
+  .scrim { inset: 0; background: rgba(0, 0, 0, .6); z-index: 2; }
+  .float { z-index: 3; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+  const P = {
+    walk: ['......###.......','......###.......','......###.......','................','.....#####......','....#######.....','...##.###.##....','...#..###..#....','......###.......','.....##.##......','....##...##.....','....#.....##....','...##......#....','...#.......##...','................','................'],
+    fly: ['................','......##........','......###.......','.......###......','##......###.....','###.....####....','.##############.','.###############','.##############.','###.....####....','##......###.....','.......###......','......###.......','......##........','................','................'],
+    dossiers: ['................','................','.#####..........','#.....#########.','#..............#','#..............#','################','#..............#','#..............#','#..............#','#..............#','#..............#','#..............#','################','................','................'],
+    warrant: ['................','.##############.','.#............#.','.#.####.......#.','.#............#.','.#.######.....#.','.#............#.','.#.###........#.','.#............#.','.#............#.','.##############.','......####......','......####......','...##########...','................','................'],
+    menu: ['................','................','................','.##############.','.##############.','................','................','.##############.','.##############.','................','................','.##############.','.##############.','................','................','................'],
+    back: ['................','................','................','.........##.....','........##......','.......##.......','......##........','.....##.........','.....##.........','......##........','.......##.......','........##......','.........##.....','................','................','................'],
+    check: ['................','................','................','.............##.','............##..','...........##...','..........##....','.##......##.....','..##....##......','...##..##.......','....####........','.....##.........','................','................','................','................'],
+    place: ['.......##.......','.....######.....','...##########...','.##############.','................','..##.##..##.##..','..##.##..##.##..','..##.##..##.##..','..##.##..##.##..','..##.##..##.##..','..##.##..##.##..','................','################','################','................','................'],
+    ff: ['................','................','................','.#......#.......','.##.....##......','.###....###.....','.####...####....','.#####..#####...','.#####..#####...','.####...####....','.###....###.....','.##.....##......','.#......#.......','................','................','................'],
+  };
+  P.chev = P.back.map((r) => [...r].reverse().join(''));
+  P.full = ['................','.####......####.','.#............#.','.#............#.','.#............#.','................','................','................','................','................','................','.#............#.','.#............#.','.#............#.','.####......####.','................'];
+  const icon = (n, cls = 'i16') => `<svg class="${cls}" viewBox="0 0 16 16" shape-rendering="crispEdges">${P[n].flatMap((r, y) => [...r].map((c, x) => c === '#' ? `<rect x="${x}" y="${y}" width="1" height="1" fill="currentColor"/>` : '')).join('')}</svg>`;
+  const bust = `<svg viewBox="0 0 36 40" preserveAspectRatio="xMidYMax meet"><circle cx="18" cy="14" r="9" fill="#666"/><path d="M1 40 Q2 25 18 25 Q34 25 35 40 Z" fill="#666"/></svg>`;
+  // Knees-up figure: head at the top of the box, cut off by the bottom edge of the screen
+  const figure = `<svg viewBox="0 0 60 130" preserveAspectRatio="xMidYMax meet"><circle cx="30" cy="15" r="12" fill="currentColor"/>
+    <path d="M8 130 L6 60 Q6 34 30 34 Q54 34 54 60 L52 130 Z" fill="currentColor"/></svg>`;
+
+  // Pixel scale: the largest whole number that still leaves a small phone's worth of room (375 x 540),
+  // so a phone gets 1x, a 1080p screen 2x and a 1280 x 720 embed 1x, all crisp
+  const params = new URLSearchParams(location.search), key = params.get('s') || 'postcard', EMBED = params.has('embed');
+
+  // Skin test: ?skin=casefile|passport swaps the grey kit for sprites cut from a generated sheet. Every part is a
+  // 9-slice drawn at 2 logical pixels per art pixel; slice insets are in art pixels (top right bottom left).
+  const SKIN = params.get('skin');
+  if (SKIN === 'drawn') {
+    // Hand-drawn sprites at one art pixel per logical pixel. Frames carry a 2px drop shadow outside the box
+    // (border-image-outset), so the layout box and its 2px outline stay exactly where the wireframe put them.
+    const u = (n) => `url(../skin/drawn/${n}.png)`;
+    const card = (n) => `border: 0 solid transparent; border-image: ${u(n)} 5 7 7 5 fill / 5px 7px 7px 5px / 0 2px 2px 0 repeat; image-rendering: pixelated; box-shadow: none; background: none;`;
+    const css = `
+      :root { --ink: #2a1c14; --mute: #8a6a4a; --off: #a8987f; --card: #f4e4bc; }
+      .btn { ${card('manila')} color: var(--ink); padding: 0 18px; } /* the 2px edge is in the sprite now, so padding adds it back */
+      .btn.chip { padding: 0 10px; } .btn.tab, .btn.menu { padding: 0; } .btn.person { padding-left: 6px; }
+      .btn.hover { border-image-source: ${u('manila-hover')}; } .btn.pressed { border-image-source: ${u('manila-pressed')}; transform: translate(2px, 2px); }
+      .btn:disabled, .btn.disabled { border-image-source: ${u('manila-disabled')}; color: var(--off); }
+      .btn.dark { border-image-source: ${u('navy')}; color: #f4e4bc; } .btn.dark .meta, .btn.dark span span { color: #b7c0d8; }
+      .btn.dark.hover { border-image-source: ${u('navy-hover')}; } .btn.dark.pressed { border-image-source: ${u('navy-pressed')}; }
+      .btn.dark:disabled, .btn.dark.disabled { border-image-source: ${u('navy-disabled')}; color: #c3c7d3; }
+      .panel, .plate { border: 0 solid transparent; border-image: ${u('paper')} 9 11 7 5 fill / 9px 11px 7px 5px / 0 2px 2px 0 repeat; image-rendering: pixelated; background: none; }
+      .bubble { ${card('bubble')} }
+      .panel, .bubble { padding: 18px; } .plate { padding: 12px 18px; }
+      .rule { height: 2px; background: ${u('divider')} repeat-x; }
+      .bar { height: 6px; } .bar i { border: 0 solid transparent; border-image: ${u('seg-off')} 2 fill / 2px repeat; image-rendering: pixelated; background: none; }
+      .bar i.f { border-image-source: ${u('seg-on')}; }
+      .names .hit, .tile.hit { background: #2f3b5c; color: #f4e4bc; }
+      .tail polygon { display: none; }
+      .tail { background: no-repeat 0 0 / 100% 100%; image-rendering: pixelated; }
+      .tail.down { background-image: ${u('tail-down')}; width: 18px; height: 11px; }
+      .tail.downleft { background-image: ${u('tail-downleft')}; }
+      .kw { color: #a8322b; }
+      .tail.left { background-image: ${u('tail-left')}; width: 9px; height: 18px; }`;
+    document.head.insertAdjacentHTML('beforeend', `<style>${css}</style>`);
+  } else if (SKIN) {
+    const cfg = {
+      casefile: { btn: [7, 4, 4, 30], dark: [7, 4, 4, 30], panel: [5, 5, 5, 5], pad: 16, seg: [3, 3, 3, 3], frame: [6, 5, 5, 5], stamp: [5, 5, 5, 5], plate: 'panel' },
+      passport: { btn: [9, 9, 9, 9], dark: [8, 8, 8, 8], panel: [14, 14, 14, 14], pad: 28, seg: [2, 2, 2, 2], frame: [4, 4, 4, 4], stamp: [8, 8, 8, 8], plate: 'btn' },
+    }[SKIN];
+    const u = (n) => `url(../skin/${SKIN}/${n}.png)`;
+    const nine = (n, sl, fill = true) => `border: 0 solid transparent; border-image: ${u(n)} ${sl.join(' ')} ${fill ? 'fill' : ''} / ${sl.map((v) => v * 2 + 'px').join(' ')} / 0 repeat; image-rendering: pixelated; box-shadow: none;`;
+    const css = `
+      .btn { ${nine('light-normal', cfg.btn)} background: none; }
+      .btn.hover { border-image-source: ${u('light-hover')}; background: none; } .btn.pressed { border-image-source: ${u('light-pressed')}; background: none; }
+      .btn:disabled, .btn.disabled { border-image-source: ${u('light-disabled')}; background: none; }
+      .btn.dark { ${nine('dark-normal', cfg.dark)} background: none; }
+      .btn.dark.hover { border-image-source: ${u('dark-hover')}; } .btn.dark.pressed { border-image-source: ${u('dark-pressed')}; }
+      .btn.dark:disabled, .btn.dark.disabled { border-image-source: ${u('dark-disabled')}; background: none; }
+      .panel, .bubble { ${nine('panel', cfg.panel)} background: none; }
+      .plate { ${cfg.plate === 'btn' ? nine('light-normal', cfg.btn) : nine('panel', cfg.panel)} background: none; }
+      .panel, .bubble { padding: ${cfg.pad}px; }
+      .bar { height: 12px; } .bar i { ${nine('seg-off', cfg.seg)} background: none; } .bar i.f { border-image-source: ${u('seg-on')}; }
+      .mug { ${nine('portrait', cfg.frame, false)} }
+      .mug .st { ${nine('stamp', cfg.stamp)} background: none; color: #8a1c1c; }
+      .rule { height: 6px; ${nine('divider', [1, 1, 1, 1])} background: none; }
+      .badge { background: ${u('dot')} center / 12px 12px no-repeat; image-rendering: pixelated; }
+      .pin i { background: ${u('mapdot')} center / contain no-repeat; outline: 0; image-rendering: pixelated; }
+      .tail polygon { fill: none; }
+      .tail { background: center / 100% 100% no-repeat; image-rendering: pixelated; }
+      .tail.down { background-image: ${u('tail-down')}; margin-top: -2px; }
+      .tail.left { background-image: ${u('tail-left')}; margin-right: -2px; }`;
+    const size = (n) => new Promise((r) => { const i = new Image(); i.onload = () => r([i.width * 2, i.height * 2]); i.src = `../skin/${SKIN}/${n}.png`; });
+    document.head.insertAdjacentHTML('beforeend', `<style>${css}</style>`);
+    Promise.all([size('tail-down'), size('tail-left')]).then(([d, l]) => document.head.insertAdjacentHTML('beforeend',
+      `<style>.tail.down { width: ${d[0]}px; height: ${d[1]}px; } .tail.left { width: ${l[0]}px; height: ${l[1]}px; }</style>`));
+  }
+  const Z = key === 'landing' ? 1 : Math.max(1, Math.floor(Math.min(innerWidth / 375, innerHeight / 540)));
+  document.documentElement.style.zoom = Z;
+  // VW x VH is the whole window; W x H is the UI column inside it, centred at FX. Past phone width the
+  // column is 480 wide; on a phone it is the screen.
+  const VW = innerWidth / Z, VH = innerHeight / Z, DESK = VW >= 600;
+  const W = DESK ? 480 : VW, H = VH, FX = (VW - W) / 2, SPREAD = Math.min(736, VW - 16);
+  const TOP = 55, SLOT = 57; // matches --top and --slot
+
+  // Shared parts
+  const scene = (label, mod = '', y = 38, img = '') => (SKIN && !img ? (img = /interior|Museum/i.test(label) ? '../cairo-museum-tall.png' : 'cairo-day-wide.webp') : 0, `<div class="abs bg ${mod}">${img
+    ? `<img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover;image-rendering:pixelated">`
+    : `<span style="top:${y}%">${label}</span>`}</div>`);
+  // Embedded on the landing page, the game adds a full-screen key beside the menu key
+  const fullKey = () => EMBED ? `<button class="btn menu" aria-label="Full screen">${icon('full')}</button>` : '';
+  const topBar = (city, time, { ff = false, menu = '', menuIn = false } = {}) => `
+    <div class="plate ${menuIn ? 'with-menu' : ''}"><div class="city">${city}</div><div class="time">${time}${ff ? icon('ff') : ''}</div>${menuIn ? `<span class="vr"></span><span class="mi">${icon('menu')}</span>` : ''}</div>
+    ${fullKey()}${menuIn ? '' : `<button class="btn menu ${menu}" aria-label="Menu">${icon('menu')}</button>`}`;
+  const TABS = [['walk', 'Walk'], ['fly', 'Fly'], ['dossiers', 'Dossiers'], ['warrant', 'Warrant']];
+  const nav = ({ on = '', off = false, badge = false } = {}) => ({ slotCls: 'nav', slot: TABS.map(([k, l]) =>
+    `<button class="btn tab ${on === k ? 'dark' : ''}" ${off ? 'disabled' : ''}>${icon(k)}<span>${l}</span>${k === 'warrant' && badge ? '<i class="badge"></i>' : ''}</button>`).join('') });
+  const primary = (...labels) => ({ slotCls: labels.length > 1 ? 'row2' : '', slot: labels.map((l, i) =>
+    `<button class="btn center ${i === labels.length - 1 ? 'dark' : ''}">${l}</button>`).join('') });
+  const bar = (n, of = 12) => `<div class="bar" style="grid-template-columns:repeat(${of},1fr)">${Array.from({ length: of }, (_, i) => `<i class="${i < n ? 'f' : ''}"></i>`).join('')}</div>`;
+  const mug = (stamp = '', cls = '') => `<div class="ph mug ${cls}">${bust}${stamp ? `<span class="st">${stamp}</span>` : ''}</div>`;
+  const colFloat = (style, body) => `<section class="abs panel float" style="left:8px;right:8px;${style}">${body}</section>`;
+  // Cutscenes keep the shell: art fills the window, the caption sits in the column, Skip takes the bottom slot.
+  // The bar in the caption shows the auto-advance.
+  const cutscene = (art, head, line) => ({
+    bg: scene(`Cutscene: ${art}`, '', 40), top: '',
+    stage: `<section class="panel caption"><div class="h1">${head}</div>${line ? `<p>${line}</p>` : ''}${bar(5)}</section>`,
+    slot: `<button class="btn center">Skip${icon('chev')}</button>`,
+  });
+
+  // Map: equirectangular, lat 80..-58, height fills the window, current city centred. On desktop it
+  // spans the whole window behind the frame, so it is drawn in window coordinates.
+  const CITIES = { Cairo: [30.04, 31.24], Budapest: [47.5, 19.04], Lima: [-12.05, -77.04], Kathmandu: [27.72, 85.32], Bamako: [12.64, -8], Oslo: [59.91, 10.75] };
+  const MW = H * 320 / 123, mx = (lon) => (lon + 180) / 360 * MW, my = (lat) => (80 - lat) / 138 * H;
+  const OX = VW / 2 - mx(CITIES.Cairo[1]);
+  const at = (c) => [OX + mx(CITIES[c][1]), my(CITIES[c][0])];
+  function map({ dests, hover, flying }) {
+    const [cx, cy] = at('Cairo'), right = VW - 8, maxY = H - 112;
+    let out = `<div class="abs map"><img src="map-grey.png" style="left:${OX}px;width:${MW}px;height:${H}px">`;
+    const lines = (flying ? [hover] : dests).map((d) => { const [x, y] = at(d);
+      return `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="${d === hover ? '#e6e6e6' : '#707070'}" stroke-width="2" stroke-dasharray="4 4"/>`; });
+    out += `<svg class="route">${lines.join('')}</svg>`;
+    if (flying) {
+      const [sx, sy] = at(hover), t = .6, px = cx + (sx - cx) * t, py = cy + (sy - cy) * t;
+      out += `<div class="pin" style="left:${px - 12}px;top:${py - 12}px;transform:none;color:#e6e6e6">${icon('fly', '').replace('<svg', '<svg style="width:32px;height:32px;transform:rotate(-40deg)"')}</div>`;
+    }
+    out += `<div class="pin cur" style="left:${cx - 2}px;top:${cy - 2}px"><i></i><b class="btn chip dark">Cairo</b></div>`;
+    for (const d of dests) {
+      const [x, y] = at(d), yy = Math.min(y, maxY);
+      if (x < 8) out += `<button class="btn chip edge" style="left:8px;top:${yy}px">${icon('back')}${d}</button>`;
+      else if (x > right - 60) out += `<button class="btn chip edge" style="right:${VW - right}px;top:${yy}px">${d}${icon('chev')}</button>`;
+      else {
+        out += `<button class="pin" style="left:${x}px;top:${y}px"><i></i><b class="btn chip ${d === hover ? 'dark' : ''}">${d}${d === hover ? '<span>4 hours</span>' : ''}</b></button>`;
+        if (d === hover) out += `<svg class="cursor" style="left:${x + 40}px;top:${y + 8}px" viewBox="0 0 8 8" shape-rendering="crispEdges"><polygon points="0,0 0,7 2,5 4,8 5,7 3,4 6,4" fill="#fff" stroke="#000" stroke-width=".5"/></svg>`;
+      }
+    }
+    return out + '</div>';
+  }
+
+  // Data
+  const SUSPECTS = [
+    ['Julia Sanfrancisco', 'female', 'tennis', 'brown', 'necklace', 'convertible'],
+    ['Chris Lunchtime', 'male', 'gambler', 'black', 'glasses', 'motorcycle'],
+    ['Danielle Splash', 'female', 'hiking', 'brown', 'birthmark', 'hoverboard'],
+    ['Duchess Isabella', 'female', 'tennis', 'red', 'ring', 'exotic car'],
+    ['Hugh Mass', 'male', 'hiking', 'red', 'tattoo', 'convertible'],
+    ['Mark Fadenott', 'male', 'guitar', 'blond', 'ring', 'limousine'],
+    ['Rena Stone', 'female', 'cycling', 'brown', 'glasses', 'public transit'],
+    ['Simon Simonski', 'male', 'golf', 'blond', 'tattoo', 'jet'],
+    ['Sparkle Lily', 'female', 'gambler', 'blond', 'tattoo', 'limousine'],
+    ['Speedy Jake Z.', 'male', 'pickleball', 'black', 'scar', 'bicycle'],
+  ];
+  const KEYS = ['Sex', 'Hobby', 'Hair', 'Feature', 'Vehicle'];
+  function warrant(set, { issued = false } = {}) {
+    const match = SUSPECTS.filter((s) => KEYS.every((k, i) => !set[k] || set[k].toLowerCase() === s[i + 1]));
+    const n = match.length, isIn = (name) => match.some((s) => s[0] === name);
+    const status = n === 0 ? 'No match' : n === 1 ? '1 match' : `${n} of 10 match`;
+    const traits = `<div class="grid2">${KEYS.map((k) => `<button class="btn trait"><span class="k">${k}</span><span>${set[k] || '<span class="mute">Unknown</span>'}</span></button>`).join('')}
+      <button class="btn" style="justify-content:center" ${Object.keys(set).length ? '' : 'disabled'}>Clear all</button></div>`;
+    const action = issued ? `<div class="btn dark center">${icon('check')}Warrant issued</div>`
+      : `<button class="btn dark center" ${n === 1 ? '' : 'disabled'}>${n === 1 ? 'Get warrant for ' + match[0][0].split(' ')[0] : n === 0 ? 'No suspect fits' : 'Narrow it to one suspect'}</button>`;
+    const names = `<div class="names">${SUSPECTS.map(([name]) =>
+      `<span class="${!isIn(name) ? 'out' : n === 1 ? 'hit' : ''}">${n === 1 && isIn(name) && issued ? icon('check') : ''}${name}</span>`).join('')}</div>`;
+    if (DESK) return { stage: '', spread: [
+      `<section class="panel"><div class="hd"><h2>Warrant</h2></div>${traits}<div style="flex:1"></div>${action}</section>`,
+      `<section class="panel"><div class="hd"><h2>Suspects</h2><span>${status}</span></div><div class="tiles">${SUSPECTS.map(([name]) =>
+        `<div class="tile ${!isIn(name) ? 'out' : n === 1 ? 'hit' : ''}">${mug('', 'sm')}<span>${name}</span>${n === 1 && isIn(name) && issued ? icon('check') : ''}</div>`).join('')}</div></section>`] };
+    return { stage: `<section class="panel"><div class="hd"><h2>Warrant</h2><span>${status}</span></div>${traits}<div class="rule"></div>${names}${action}</section>` };
+  }
+
+  const DOSSIERS = {
+    'Simon Simonski': [['Occupation', 'Heir to the Simonski Aircraft Corporation'], ['Sex', 'Male'], ['Hobby', 'Golf'], ['Hair', 'Blond'], ['Vehicle', 'Private jet'], ['Feature', 'Mysterious Slavic tattoo on left shoulder'], ['Other', 'Insists he is Satoshi Nakamoto']],
+  };
+  function dossiers(sel) {
+    const list = `<section class="panel" style="flex:1 1 0"><div class="hd"><h2>Dossiers</h2><span>10 suspects</span></div><div class="list scroll">${SUSPECTS.map(([n]) =>
+      `<button class="btn person ${n === sel ? 'dark' : ''}">${mug('', 'sm')}<span>${n}</span></button>`).join('')}</div></section>`;
+    const profile = `<section class="panel scroll" style="flex:1 1 0"><div class="who">${mug('', 'md')}<h2>${sel}</h2></div>
+      <div class="fields">${DOSSIERS[sel].map(([k, v]) => `<span class="k">${k}</span><span>${v}</span>`).join('')}</div></section>`;
+    return DESK ? { stage: '', spread: [list, profile] } : { stage: list + profile };
+  }
+
+  const doc = (head, body) => `<section class="panel scroll"><div class="hd"><h2>${head[0]}</h2><span>${head[1] || ''}</span></div>${body}</section>`;
+  const CAIRO = () => topBar('Cairo', 'Tue 3:00 pm');
+
+  const S = {
+    title: () => ({
+      bg: scene('Title art: rooftops at night', '', 16), top: `${fullKey()}<button class="btn menu" aria-label="Menu">${icon('menu')}</button>`,
+      ...(() => {
+        const logo = `<div style="border:2px dashed #6a6a6a;padding:var(--s4);color:var(--card);text-align:center;background:rgba(0,0,0,.35)"><div class="h1">Julia<br><br>Sanfrancisco</div><div class="mute" style="margin-top:var(--s2)">logo</div></div>`;
+        return { stage: `<div style="flex:1;display:grid;place-items:center">${logo}</div>` };
+      })(),
+      ...primary('Continue case', 'New game'),
+    }),
+    landing: () => ({ sheet: `<div class="landing ${VW >= 900 ? 'wide' : ''}" style="width:${VW}px">
+      <div class="l-wrap"><nav class="l-nav"><span>How to play</span><span>About</span><span>Discord</span><span>GitHub</span><span>Español</span></nav></div>
+      <div class="l-hero"><div class="l-wrap"><img class="l-frame" src="shots/title-embed-${VW >= 900 ? 'xl' : 'xs'}.png" alt=""></div></div>
+      <div class="l-wrap">
+        <p class="l-hook">Chase a thief across 30 cities, one witness at a time. Free, in your browser.</p>
+        <section class="l-sec"><h2>How to play</h2><div class="l-steps">
+          <div class="l-step"><div class="shot">Scene: a witness</div><h2>Follow the trail</h2><p>Walk around each city and ask witnesses where the thief went next.</p></div>
+          <div class="l-step"><div class="shot">Scene: the map</div><h2>Fly before time runs out</h2><p>Pick the right city from the clues. Every trip costs hours, and the case closes Sunday at 5 pm.</p></div>
+          <div class="l-step"><div class="shot">Scene: the lineup</div><h2>Get a warrant</h2><p>Narrow the suspects down by what witnesses saw, then catch them at the hideout.</p></div>
+        </div></section>
+        <section class="l-sec"><h2>About</h2><p>Open source, in English and Spanish. Your case saves on this device, so you can close the tab and pick it up later.</p></section>
+        <footer class="l-foot"><span>v3.2 &middot; GitHub &middot; Discord</span><span>Designed &amp; developed by @fmaclen</span></footer>
+      </div>
+    </div>` }),
+    'hq-identify': () => ({
+      bg: scene('Headquarters interior'), top: topBar('Headquarters', 'Mon 9:00 am'),
+      stage: `<section class="panel"><div class="hd"><h2>ACME Systems</h2></div><p>Detective at keyboard, please identify yourself.</p>
+        <div class="sec" style="margin-top:var(--s2)"><span class="mute">Your name</span><div class="btn pressed field empty">Olivia Starling</div></div></section>`,
+      slot: `<button class="btn dark center" disabled>Continue</button>`,
+    }),
+    'hq-briefing': () => ({
+      bg: scene('Headquarters interior'), top: topBar('Headquarters', 'Mon 9:00 am'),
+      stage: doc(['ACME Systems'], `<p>You have been identified as Olivia Starling. Your current rank is Rookie.</p><div class="rule"></div>
+        <h2>Newsflash</h2><p>National treasure stolen from Moroni. The treasure has been identified as a vanilla pod. A woman has been reported at the scene of the crime.</p><div class="rule"></div>
+        <h2>Your assignment</h2><p>Track the thief from Moroni to her hideout and arrest her by Sunday 5 pm. Good luck, Rookie Olivia Starling.</p>`),
+      ...primary('Start case'),
+    }),
+    'menu-in-plate': () => ({ bg: scene('', '', 0, 'cairo-day-wide.webp'), top: topBar('Cairo', 'Tue 3:00 pm', { menuIn: true }), stage: '', ...nav() }),
+    postcard: () => ({
+      bg: scene('', '', 0, 'cairo-day-wide.webp'), top: CAIRO(),
+      stage: `<section class="panel"><p>Cairo, Egypt's sprawling capital on the Nile, where the Pyramids of Giza stand just outside the city.</p></section>`,
+      slot: `<button class="btn dark center">Investigate</button>`,
+    }),
+    'postcard-long': () => ({
+      bg: scene('City scene: London street'), top: topBar('London', 'Wed 11:00 am'),
+      stage: `<section class="panel"><p>London is famed for its iconic landmarks such as the Tower of London, Buckingham Palace, the British Museum, and the London Eye. Its extensive public transportation system, including the London Underground, serves millions of residents and tourists.</p></section>`,
+      slot: `<button class="btn dark center">Investigate</button>`,
+    }),
+    city: () => ({ bg: scene('', '', 0, 'cairo-day-wide.webp'), top: CAIRO(), stage: '', ...nav() }),
+    walk: () => ({
+      bg: scene('City scene: Cairo street'), top: CAIRO(),
+      stage: `<section class="panel"><div class="hd"><h2>Walk to</h2><span>2 hours</span></div><div class="list">
+        <button class="btn">${icon('place')}<span>Museum</span></button>
+        <button class="btn">${icon('place')}<span>Airport</span><span class="meta">${icon('check')}Visited</span></button>
+        <button class="btn">${icon('place')}<span>Foreign ministry</span></button></div></section>`,
+      ...nav({ on: 'walk' }),
+    }),
+    walking: () => ({ bg: scene('City scene: Cairo street'), top: topBar('Cairo', 'Tue 4:10 pm', { ff: true }), stage: `<section class="panel"><p>Walking to the Museum</p>${bar(7)}</section>`, ...nav({ off: true }) }),
+    closing: () => cutscene('henchwoman rappels past the window', 'A henchwoman!', 'You must be on the right track.'),
+    witness: () => {
+      // The witness is true pixel art, cut from the curator cutout at each device's height and shown at 1x, the
+      // same pixel size as the UI sprites: 285 tall on desktop, 304 on phones. Full body on the floor with a flat
+      // pixel shadow under the feet, which always clear the actions by 16px.
+      // Desktop: witness and a half-width bubble are centred as a group in the column, the witness standing in the
+      // middle of the space between the top bar and the actions; the bubble sits beside the face. Phones: the
+      // witness stands centred with a two-thirds bubble centred above, its tail pointing straight down at the head.
+      const fh = DESK ? 285 : 304, fw = DESK ? 110 : 117; // the cut images are exactly these sizes
+      const stageTop = 8 + TOP + 8, stageBottom = H - 8 - SLOT - 8;
+      const bw = DESK ? 232 : Math.round(W * 2 / 3), groupW = fw + 16 + bw;
+      const fx = DESK ? Math.round((W - groupW) / 2) : Math.round((W - fw) / 2);
+      // Feet 16px above the actions on both: at this size, that is the depth where the room makes him the right
+      // height (standing further back he read as a floor and a half tall)
+      const headTop = stageBottom - 16 - fh;
+      const headY = headTop + Math.round(fh * 0.09);
+      const tail = DESK
+        ? `<svg class="tail left" style="right:100%;margin-right:-2px" viewBox="0 0 8 8" shape-rendering="crispEdges"><polygon points="8,0 8,8 0,4" fill="#141414"/><polygon points="8,1 8,7 2,4" fill="#e6e6e6"/></svg>`
+        : `<svg class="tail down" style="top:100%;margin-top:-2px;left:${Math.round(bw / 2 - 9)}px;width:18px;height:11px" viewBox="0 0 18 11" shape-rendering="crispEdges"><polygon points="0,0 16,0 8,8" fill="#141414"/><polygon points="1,0 15,0 8,7" fill="#e6e6e6"/></svg>`;
+      const place = DESK ? `left:${fx + fw + 16}px;width:${bw}px` : `left:${Math.round((W - bw) / 2)}px;width:${bw}px`;
+      return {
+        bg: scene('', '', 0, 'museum.png'), top: topBar('Rio de Janeiro', 'Thu 2:00 pm'), stage: '',
+        // The contact shadow is drawn from the sprite's own soles (see curator-shadow-*.png), 8px of padding each side
+        extra: `<img class="abs" src="curator-shadow-${fh}.png" alt="" style="left:${fx - 8}px;top:${headTop}px;image-rendering:pixelated">
+          <div class="abs fig" style="left:${fx}px;top:${headTop}px;width:${fw}px"><img src="curator-px-${fh}.png" alt=""></div>
+          <div class="abs bubble" data-head="${headY}" data-head-top="${headTop}" style="${place}"><h2>Curator</h2>
+          <p>She was in a hurry to catch a plane with a <b class="kw">lion holding a sword</b> on its tail.</p>
+          <p>She had <b class="kw">brown hair</b>.</p>${tail}</div>`,
+        ...nav(),
+      };
+    },
+    office: () => {
+      // A staged scene: every layer is cut from one 1768 x 890 painting, so one scale and offset places them all.
+      // Back to front: the view through the window (?view= swaps it), the room, the seated witness, the desk.
+      // The painting fills the window's height and pans so the witness is centred; the witness is cut per device
+      // at 1 art px per logical px, and the desk hides everything below its top.
+      const s = VH / 890, pw = 1768 * s, seatX = 960, headY = 356;
+      const ox = Math.round(Math.min(0, Math.max(VW - pw, VW / 2 - seatX * s)));
+      const layer = (src) => `<img class="abs" src="stage/${src}" alt="" style="left:${ox}px;top:0;width:${pw}px;height:${VH}px;image-rendering:pixelated">`;
+      const fw = VH === 667 ? 141 : 114; // b-fig-667.png, b-fig-540.png
+      const figL = Math.round(ox + seatX * s - fw / 2), figT = Math.round(headY * s);
+      const bw = Math.round(W * 2 / 3);
+      const tail = `<svg class="tail down" style="top:100%;margin-top:-2px;left:${Math.round(bw / 2 - 9)}px;width:18px;height:11px" viewBox="0 0 18 11" shape-rendering="crispEdges"><polygon points="0,0 16,0 8,8" fill="#141414"/><polygon points="1,0 15,0 8,7" fill="#e6e6e6"/></svg>`;
+      return {
+        bg: `<div class="abs bg">${layer(`b-view-${params.get('view') || 'museum'}.png`)}${layer('b-room.png')}
+          <img class="abs" src="stage/b-fig-${VH}.png" alt="" style="left:${figL}px;top:${figT}px;image-rendering:pixelated">${layer('b-fore.png')}</div>`,
+        top: topBar('Paris', 'Thu 9:40 pm'), stage: '',
+        extra: `<div class="abs bubble" data-above data-head-top="${figT}" style="left:${Math.round((W - bw) / 2)}px;width:${bw}px"><h2>Curator</h2>
+          <p>She was in a hurry to catch a plane with a <b class="kw">lion holding a sword</b> on its tail.</p>
+          <p>She had <b class="kw">brown hair</b>.</p>${tail}</div>`,
+        ...nav(),
+      };
+    },
+    'office-c': () => {
+      // Same staging as office, in the daytime museum office, with the painting at its natural size (it fills the
+      // window's height) and the witness wherever the painting puts them. ?view= picks the witness and ?v= picks how
+      // the testimony is shown: scumm, torn, float, subtitle, side, box, notebook or dark
+      const who = params.get('view') || 'docent', v = params.get('v') || 'box';
+      const w = {
+        curator: { name: 'Curator', head: 311, ink: '#9fd3e6', lines: ['She was in a hurry to catch a plane with a <b class="kw">lion holding a sword</b> on its tail.', 'She had <b class="kw">brown hair</b>.'] },
+        docent: { name: 'Docent', head: 304, ink: '#f2c14e', lines: ['She asked me which way to the <b class="kw">harbour</b>, then left before I could answer.'] },
+        guard: { name: 'Museum guard', head: 310, ink: '#e89a7a', lines: ['She paid in <b class="kw">rupees</b>. Nobody pays in rupees here.'] },
+      }[who];
+      const s = VH / 890, pw = 1767 * s, seat = 935;
+      const ox = Math.round(Math.min(0, Math.max(VW - pw, VW / 2 - seat * s)));
+      const layer = (src) => `<img class="abs" src="stage/${src}" alt="" style="left:${ox}px;top:0;width:${pw}px;height:${VH}px;image-rendering:pixelated">`;
+      // Where things land, in the column's coordinates: the witness's head, and the top of the desk's plain front
+      const seatX = Math.round(ox + seat * s - FX), headT = Math.round(w.head * s), deskT = Math.round(600 * s);
+      const navTop = H - 8 - SLOT;
+      const text = w.lines.map((l) => `<p>${l}</p>`).join('');
+      const outline = (c, n = 2) => [[-n, 0], [n, 0], [0, -n], [0, n], [-n, -n], [n, n], [-n, n], [n, -n]].map(([x, y]) => `${x}px ${y}px 0 ${c}`).join(',');
+      // A torn paper edge along the top of a band, deterministic so every shot tears the same way
+      const torn = (width, fill) => { let r = 7, x = 0; const pts = [];
+        while (x < width) { r = (r * 9301 + 49297) % 233280; pts.push(`${x},${4 + (r / 233280) * 12}`); x += 6 + (r % 11); }
+        return `<svg class="abs" style="left:0;top:-15px;width:${width}px;height:16px" viewBox="0 0 ${width} 16" preserveAspectRatio="none" shape-rendering="crispEdges"><polygon points="0,16 ${pts.join(' ')} ${width},8 ${width},16" fill="${fill}"/></svg>`; };
+      const css = `<style>
+        .say p { margin: 0; } .say { display: flex; flex-direction: column; gap: 8px; }
+        .say.scumm { color: #d8a8f0; text-align: center; } .say.scumm .nm { color: #56c7c7; } .say.scumm .kw { color: #f4e27a; }
+        .say.torn { color: #e8dcc0; } .say.torn .nm { color: #c9a24a; } .say.torn .kw { color: #f2c14e; }
+        .say.float { color: ${w.ink}; text-align: center; text-shadow: ${outline('#000')}; } .say.float .kw { color: #fff; } .say.float .nm { font: 16px/20px 'OpB'; }
+        .say.subtitle { color: #f0e6d2; text-align: center; text-shadow: ${outline('#000')}; justify-content: center; }
+        .say.subtitle .nm { color: ${w.ink}; text-transform: uppercase; font: 8px/12px 'Op8'; letter-spacing: 1px; }
+        .say.subtitle { gap: 8px; } .say.subtitle p:not(.nm), .say.subtitle .kw { line-height: 17px; } .say.subtitle .nm { margin-bottom: 8px; }
+        .say.side { display: grid; grid-template-columns: auto minmax(0, max-content); column-gap: 12px; row-gap: 8px; justify-content: center; align-content: center;
+          color: #f0e6d2; text-shadow: ${outline('#000')}; }
+        .say.side .nm { grid-row: 1 / span 9; color: ${w.ink}; text-transform: uppercase; font: 8px/12px 'Op8'; letter-spacing: 1px; margin-top: 3px; }
+        .say.side p:not(.nm), .say.side .kw { line-height: 17px; } .say.side p:not(.nm) { grid-column: 2; } .say.side .kw { color: ${w.ink}; } .say.subtitle .kw { color: ${w.ink}; }
+        .say.box { background: rgba(26,18,13,.94); border: 2px solid #b8904a; box-shadow: 0 0 0 2px #000, inset 0 0 0 2px #000; color: #eadfc8; padding: 14px 16px 16px; }
+        .say.box .kw { color: #f2c14e; } .say.box .tab { position: absolute; left: 12px; top: -26px; background: rgba(26,18,13,.94); border: 2px solid #b8904a; border-bottom: 0;
+          box-shadow: -2px -2px 0 #000, 2px -2px 0 #000; color: #f2c14e; padding: 2px 10px 2px; font: 16px/20px 'OpB'; }
+        .say.box .more { position: absolute; right: 10px; bottom: 6px; width: 0; height: 0; border: 5px solid transparent; border-top: 6px solid #b8904a; border-bottom: 0; }
+        .say.box i.c { position: absolute; width: 6px; height: 6px; background: #b8904a; outline: 2px solid #000; }
+        .say.notebook { background-color: #bba683; color: #2a2733; padding: 18px 14px 12px 40px; transform: rotate(-1.2deg); box-shadow: 3px 4px 0 rgba(0,0,0,.45);
+          background-image: linear-gradient(90deg, transparent 30px, rgba(160,50,40,.55) 30px 32px, transparent 32px), repeating-linear-gradient(transparent 0 23px, rgba(50,70,110,.35) 23px 24px);
+          background-position: 0 0, 0 14px; gap: 0; }
+        .say.notebook p, .say.notebook .nh, .say.notebook .nh span, .say.notebook .kw { line-height: 24px; margin: 0; text-box: none; }
+        .say.notebook::before { content: ''; position: absolute; left: 8px; right: 8px; top: -7px; height: 14px;
+          background: radial-gradient(circle at 7px 7px, #bba683 0 2px, #1b1410 2.5px 4px, transparent 4.5px) repeat-x; background-size: 18px 14px; }
+        .say.notebook .nh { display: flex; justify-content: space-between; font: 16px/20px 'OpB'; } .say.notebook .nh span { font: 16px/20px 'Op'; color: #5b5260; }
+        .say.notebook .kw { font: 16px/20px 'Op'; box-shadow: inset 0 -2px 0 rgba(150,40,30,.85); }
+        .say.dark { background: rgba(28,20,15,.9); border: 2px solid #6b4f36; box-shadow: 0 0 0 2px #000; color: #e6dac4; padding: 12px 14px; }
+        .say.dark .nm { color: ${w.ink}; font: 16px/20px 'OpB'; } .say.dark .kw { color: ${w.ink}; }
+      </style>`;
+      const name = `<h2 class="nm">${w.name}</h2>`;
+      let bg = '', say = '';
+      if (v === 'scumm' || v === 'torn') {
+        // A black band over the desk's plain front, full window width, like the verb area in SCUMM games
+        bg = `<div class="abs" style="left:0;width:${VW}px;top:${deskT}px;bottom:0;background:#000">${v === 'torn' ? torn(VW, '#000') : ''}</div>`;
+        say = `<div class="abs say ${v}" style="left:16px;right:16px;top:${deskT + (v === 'torn' ? 8 : 12)}px">${v === 'scumm' ? `<p class="nm">${w.name}</p>` : name}${text}</div>`;
+      } else if (v === 'float') {
+        // Coloured text straight over the scene, centred above the speaker's head
+        const fw = Math.min(W - 24, 300), l = Math.round(Math.max(12, Math.min(W - 12 - fw, seatX - fw / 2)));
+        const lines = w.lines.map((l, i) => `<p>${i ? '' : `<b class="nm">${w.name}:</b> `}${l}</p>`).join('');
+        say = `<div class="abs say float" style="left:${l}px;width:${fw}px;bottom:${H - headT + 28}px">${lines}</div>`;
+      } else if (v === 'subtitle') {
+        bg = `<div class="abs" style="left:0;width:${VW}px;top:${deskT - 40}px;bottom:0;background:linear-gradient(transparent, rgba(0,0,0,.6) 60px)"></div>`;
+        // Anchored to the bottom like film subtitles: the last line keeps a fixed gap to the nav, longer quotes grow upward
+        say = `<div class="abs say subtitle" style="left:20px;right:20px;bottom:${H - navTop + 32}px"><p class="nm">${w.name}</p>${text}</div>`;
+      } else if (v === 'side') {
+        // Subtitles with the role in a column of its own, the lines hanging beside it
+        bg = `<div class="abs" style="left:0;width:${VW}px;top:${deskT - 40}px;bottom:0;background:linear-gradient(transparent, rgba(0,0,0,.6) 60px)"></div>`;
+        say = `<div class="abs say side" style="left:16px;right:16px;top:${deskT}px;bottom:${H - navTop + 8}px"><p class="nm">${w.name}</p>${text}</div>`;
+      } else if (v === 'box') {
+        const c = (x, y) => `<i class="c" style="${x}:-4px;${y}:-4px"></i>`;
+        say = `<div class="abs say box" style="left:8px;right:8px;bottom:${H - navTop + 8}px"><span class="tab">${w.name}</span>${text}<span class="more"></span>${c('left', 'top')}${c('right', 'top')}${c('left', 'bottom')}${c('right', 'bottom')}</div>`;
+      } else if (v === 'notebook') {
+        // The detective's notebook: paper tinted by the room's light, clue words underlined in red pencil
+        say = `<div class="abs say notebook" style="left:12px;right:12px;bottom:${H - navTop + 10}px"><div class="nh">${w.name}<span>Thu 2:40 pm</span></div>${text}</div>`;
+      } else {
+        // A dark bubble beside the head where there's room, otherwise above it, off to one side
+        const bw = Math.min(260, W - 24), side = W - seatX - 48 >= bw;
+        const l = side ? seatX + 48 : Math.round(Math.max(12, Math.min(W - 12 - bw, seatX - 40)));
+        const tail = side ? `<svg class="abs" style="left:-14px;top:18px;width:14px;height:14px" viewBox="0 0 14 14" shape-rendering="crispEdges"><polygon points="14,0 0,8 14,12" fill="#6b4f36"/><polygon points="14,3 5,8 14,10" fill="rgba(28,20,15,.9)"/></svg>`
+          : `<svg class="abs" style="left:${seatX - l - 7}px;top:100%;width:14px;height:12px" viewBox="0 0 14 12" shape-rendering="crispEdges"><polygon points="0,0 14,0 7,11" fill="#6b4f36"/><polygon points="3,0 11,0 7,7" fill="rgba(28,20,15,.9)"/></svg>`;
+        say = `<div class="abs say dark" style="left:${l}px;width:${bw}px;${side ? `top:${headT - 6}px` : `bottom:${H - headT + 14}px`}">${name}${text}${tail}</div>`;
+      }
+      return {
+        bg: `<div class="abs bg">${layer('c-view-museum.png')}${layer('c-room.png')}${layer(`c-fig-${who}.png`)}${layer('c-fore.png')}${bg}</div>`,
+        top: topBar('Paris', 'Thu 2:40 pm'), stage: '', extra: css + say, ...nav(),
+      };
+    },
+    market: () => {
+      // The market aisle: the painting at its natural size, panned per witness so the doorway shows where it can.
+      // ?view= picks the witness, ?city= the street seen through the doorway. Testimony as bottom-anchored subtitles
+      const who = params.get('view') || 'merchant', city = params.get('city') || 'cairo';
+      const w = {
+        merchant: { name: 'Street merchant', pan: 800, ink: '#e8b04a', lines: ['She asked for <b class="kw">saffron</b>. Said she needed it for a long trip.'] },
+        hawker: { name: 'Hawker', pan: 1270, ink: '#9fd3e6', lines: ['She paid for a basket of lemons with a <b class="kw">twenty-rupee note</b>.', 'Then she ran for the tram.'] },
+        urchin: { name: 'Urchin', pan: 800, ink: '#e89a7a', lines: ['She dropped this. A ticket with a <b class="kw">red and white flag</b> on it.'] },
+      }[who];
+      const s = VH / 890, pw = 1768 * s;
+      const ox = Math.round(Math.min(0, Math.max(VW - pw, VW / 2 - w.pan * s)));
+      const layer = (src) => `<img class="abs" src="stage/${src}" alt="" style="left:${ox}px;top:0;width:${pw}px;height:${VH}px;image-rendering:pixelated">`;
+      const navTop = H - 8 - SLOT;
+      const outline = [[-2, 0], [2, 0], [0, -2], [0, 2], [-2, -2], [2, 2], [-2, 2], [2, -2]].map(([x, y]) => `${x}px ${y}px 0 #000`).join(',');
+      const css = `<style>
+        .sub p { margin: 0; } .sub { display: flex; flex-direction: column; gap: 8px; color: #f0e6d2; text-align: center; text-shadow: ${outline}; }
+        .sub .nm { color: ${w.ink}; text-transform: uppercase; font: 8px/12px 'Op8'; letter-spacing: 1px; margin-bottom: 8px; }
+        .sub p:not(.nm), .sub .kw { line-height: 17px; } .sub .kw { color: ${w.ink}; }
+      </style>`;
+      const text = w.lines.map((l) => `<p>${l}</p>`).join('');
+      return {
+        bg: `<div class="abs bg">${layer(`m-view-${city}.png`)}${layer('m-room.png')}${layer(`m-fig-${who}.png`)}${layer('m-fore.png')}
+          <div class="abs" style="left:0;width:${VW}px;top:${navTop - 160}px;bottom:0;background:linear-gradient(transparent, rgba(0,0,0,.55) 100px)"></div></div>`,
+        top: topBar(city === 'cairo' ? 'Cairo' : 'Reykjavík', 'Tue 5:10 pm'), stage: '',
+        extra: `${css}<div class="abs sub" style="left:20px;right:20px;bottom:${H - navTop + 32}px"><p class="nm">${w.name}</p>${text}</div>`,
+        ...nav(),
+      };
+    },
+    shop: () => {
+      // The corner shop or the market stall: one flat painting at its natural size, panned so the witness is centred, with subtitles
+      const pic = {
+        stall: { src: 'stall-i.png', iw: 1672, ih: 941, seat: 715 },
+        stall2: { src: 'stall-j.png', iw: 1767, ih: 890, seat: 785 },
+        stall3: { src: 'stall-k.png', iw: 1767, ih: 890, seat: 785 },
+        stall4: { src: 'stall-l.png', iw: 1672, ih: 941, seat: 715 },
+        stall5: { src: 'stall-n.png', iw: 1768, ih: 890, seat: 820 },
+        stall6: { src: 'stall-o.png', iw: 1767, ih: 890, seat: 900 },
+        stall7: { src: 'stall-p.png', iw: 1767, ih: 890, seat: 900 },
+        stall8: { src: 'stall-r.png', iw: 1768, ih: 890, seat: 900 },
+      }[params.get('pic')] || { src: 'shop-a3.png', iw: 1774, ih: 887, seat: 780 };
+      // A scene painting from art-pilot/scenes: ?src=../../scenes/market/painting.png&iw=&ih=&seat=&role=
+      if (params.has('src')) Object.assign(pic, { src: params.get('src'), iw: +params.get('iw'), ih: +params.get('ih'), seat: +params.get('seat') });
+      // Subtitle copy size (?fs=, ?dfs= on desktop) and role size (?rs=); line height stays tight
+      const cs = +((DESK && params.get('dfs')) || (!DESK && params.get('fs')) || 16), rs = +(params.get('rs') || 8);
+      const fs = `font-size: ${cs}px; line-height: ${cs + 1 + (cs > 16 ? 1 : 0)}px;`;
+      const { iw, ih, seat } = pic, ink = '#e8b04a';
+      const s = VH / ih, pw = iw * s;
+      const ox = Math.round(Math.min(0, Math.max(VW - pw, VW / 2 - seat * s)));
+      const navTop = H - 8 - SLOT;
+      const outline = [[-2, 0], [2, 0], [0, -2], [0, 2], [-2, -2], [2, 2], [-2, 2], [2, -2]].map(([x, y]) => `${x}px ${y}px 0 #000`).join(',');
+      const css = `<style>
+        .sub p { margin: 0; } .sub { display: flex; flex-direction: column; gap: 8px; color: #f0e6d2; text-align: center; text-shadow: ${outline}; }
+        .sub .nm { color: ${ink}; text-transform: uppercase; font: ${rs}px/${rs + 4}px 'Op8'; letter-spacing: ${rs / 8}px; margin-bottom: 8px; }
+        .sub p:not(.nm), .sub .kw { ${fs} } .sub .kw { color: ${ink}; }
+      </style>`;
+      return {
+        bg: `<div class="abs bg"><img class="abs" src="${params.has('src') ? pic.src : 'stage/' + pic.src}" alt="" style="left:${ox}px;top:0;width:${pw}px;height:${VH}px;image-rendering:pixelated">
+          <div class="abs" style="left:0;width:${VW}px;top:${navTop - 160}px;bottom:0;background:linear-gradient(transparent, rgba(0,0,0,.55) 100px)"></div></div>`,
+        top: topBar(params.get('city') || 'Cairo', 'Tue 1:20 pm'), stage: '',
+        extra: `${css}<div class="abs sub" style="left:20px;right:20px;bottom:${H - navTop + 32}px"><p class="nm">${params.get('role') || 'Street merchant'}</p><p>She asked for <b class="kw">saffron</b>. Said she needed it for a long trip.</p></div>`,
+        ...nav(),
+      };
+    },
+    sleeping: () => ({ bg: scene('City scene: Cairo street', 'night'), top: topBar('Cairo', 'Wed 2:20 am', { ff: true }), stage: `<section class="panel"><div class="hd"><h2>Sleeping</h2><span>Back at 8:00 am</span></div>${bar(5)}</section>`, ...nav({ off: true }) }),
+    fly: () => ({
+      bg: map({ dests: ['Budapest', 'Lima', 'Kathmandu', 'Bamako', 'Oslo'], hover: DESK ? 'Budapest' : '' }), top: CAIRO(), stage: '',
+      ...nav({ on: 'fly' }),
+    }),
+    flying: () => ({ bg: map({ dests: [], hover: 'Budapest', flying: true }), top: topBar('Cairo', 'Tue 5:20 pm', { ff: true }), stage: `<section class="panel"><p>Flying to Budapest</p>${bar(5)}</section>`, ...nav({ off: true }) }),
+    dossiers: () => ({ bg: scene('', 'dim'), top: CAIRO(), ...dossiers('Simon Simonski'), ...nav({ on: 'dossiers' }) }),
+    warrant: () => ({ bg: scene('', 'dim'), top: CAIRO(), ...warrant({}), ...nav({ on: 'warrant' }) }),
+    'warrant-picker': () => ({
+      bg: scene('', 'dim'), top: CAIRO(), ...warrant({ Sex: 'Female', Hair: 'Brown' }),
+      overlay: `<div class="abs scrim"></div>${colFloat(`bottom:${8 + SLOT + 8}px`, `<div class="hd"><h2>Hobby</h2></div><div class="grid2">${['Unknown', 'Hiking', 'Tennis', 'Cycling', 'Guitar', 'Golf', 'Gambler', 'Pickleball']
+          .map((o, i) => `<button class="btn ${i === 0 ? 'dark' : ''}">${o}</button>`).join('')}</div>`)}`,
+      ...nav({ on: 'warrant' }),
+    }),
+    'warrant-several': () => ({ bg: scene('', 'dim'), top: CAIRO(), ...warrant({ Sex: 'Female', Hair: 'Brown' }), ...nav({ on: 'warrant' }) }),
+    'warrant-one': () => ({ bg: scene('', 'dim'), top: CAIRO(), ...warrant({ Sex: 'Female', Hobby: 'Tennis', Hair: 'Brown' }), ...nav({ on: 'warrant' }) }),
+    'warrant-issued': () => ({ bg: scene('', 'dim'), top: CAIRO(), ...warrant({ Sex: 'Female', Hobby: 'Tennis', Hair: 'Brown' }, { issued: true }), ...nav({ on: 'warrant', badge: true }) }),
+    'warrant-none': () => ({ bg: scene('', 'dim'), top: CAIRO(), ...warrant({ Sex: 'Female', Hair: 'Brown', Vehicle: 'Jet' }), ...nav({ on: 'warrant' }) }),
+    menu: () => ({
+      bg: scene('City scene: Cairo street'), top: topBar('Cairo', 'Tue 3:00 pm', { menu: 'dark' }), stage: '',
+      overlay: `<div class="abs scrim" style="top:${8 + TOP + 4}px"></div>${colFloat(`top:${8 + TOP + 8}px`, `
+        <button class="btn">Sound<span class="meta">On</span></button>
+        <button class="btn">Language<span class="meta">English</span></button>
+        <button class="btn">How to play</button>
+        <button class="btn">About<span class="meta">v3.2</span></button>
+        <div class="rule"></div><button class="btn">Abandon case</button>`)}`,
+      ...nav(),
+    }),
+    abandon: () => ({
+      bg: scene('City scene: Cairo street'), top: CAIRO(), stage: '',
+      overlay: `<div class="abs scrim"></div>${colFloat('top:40%', `<div class="hd"><h2>Abandon case?</h2></div><p>The suspect gets away and this case is closed. Your rank stays the same.</p>
+        <div class="row2" style="margin-top:var(--s2)"><button class="btn center">Abandon</button><button class="btn dark center">Keep playing</button></div>`)}`,
+      ...nav(),
+    }),
+    'there-she-goes': () => cutscene('the suspect runs across the rooftops', 'There she goes...'),
+    arresting: () => cutscene('police cuff the suspect', 'Arresting suspect...'),
+    win: () => ({
+      bg: scene('Hideout: final city scene', 'dim'), top: topBar('Kathmandu', 'Sat 4:00 pm'),
+      stage: doc(['World Police', 'Incoming message'], `<div class="who">${mug('Arrested')}<h2>Julia Sanfrancisco</h2></div>
+        <p>Thanks to your help, the Kathmandu police have apprehended Julia Sanfrancisco. She had the loot, a vanilla pod, which will be returned to the grateful residents of Moroni.</p>
+        <div class="rule"></div><div class="hd"><span>Next rank: Private eye</span><span>1 more case</span></div>${bar(2, 3)}`),
+      ...primary('Next case'),
+    }),
+    promotion: () => ({
+      bg: scene('Headquarters interior', 'dim'), top: topBar('Headquarters', 'Mon 9:00 am'),
+      stage: doc(['Promoted'], `<div class="who"><div class="ph" style="width:80px;height:80px;display:grid;place-items:center">badge</div><div class="sec"><span class="mute">Your new rank</span><h2>Sleuth</h2></div></div>
+        <p>The World Police recognise your work on the Moroni case.</p><div class="rule"></div>
+        <div class="hd"><span>Next rank: Private eye</span><span>3 more cases</span></div>${bar(0, 3)}`),
+      ...primary('Next case'),
+    }),
+    'wrong-warrant': () => ({
+      bg: scene('Hideout: final city scene', 'dim'), top: topBar('Kathmandu', 'Sat 4:00 pm'),
+      stage: doc(['World Police', 'Incoming message'], `<div class="who">${mug('Released')}<h2>Julia Sanfrancisco</h2></div>
+        <p>You trailed Julia Sanfrancisco correctly. Unfortunately, your warrant is for Rena Stone.</p><p>Be careful, we could all be sued for false arrest!</p>`),
+      ...primary('Next case'),
+    }),
+    'no-warrant': () => ({
+      bg: scene('Hideout: final city scene', 'dim'), top: topBar('Kathmandu', 'Sat 4:00 pm'),
+      stage: doc(['World Police', 'Incoming message'], `<div class="who">${mug('Escaped')}<h2>Julia Sanfrancisco</h2></div>
+        <p>You caught up with Julia Sanfrancisco. However, without a warrant we cannot make a legal arrest.</p><p>It looks like Julia's gang has gotten away with another caper!</p>`),
+      ...primary('Next case'),
+    }),
+    'out-of-time': () => ({
+      bg: scene('City scene: Budapest street', 'dim'), top: topBar('Budapest', 'Sun 5:00 pm'),
+      stage: doc(['World Police', 'Incoming message'], `<div class="who">${mug('Got away')}<h2>Julia Sanfrancisco</h2></div>
+        <p>Bad news... Julia Sanfrancisco slipped through your fingers because your investigation took too long!</p>`),
+      ...primary('Next case'),
+    }),
+  };
+
+  // The kit sheet: every part and state, laid out as the spec for the sprite sheet
+  const fig = (cap, html) => `<figure>${html}<figcaption>${cap}</figcaption></figure>`;
+  const sec = (title, html) => `<section><div class="lbl">${title}</div><div class="rowk">${html}</div></section>`;
+  const states = (skin) => ['normal', 'hover', 'pressed', 'disabled'].map((st) =>
+    fig(st, `<button class="btn center ${skin} ${st === 'normal' ? '' : st}" style="width:136px">Button</button>`)).join('');
+  S.kit = () => ({ sheet: `<div class="kit">
+    ${sec('Button, light skin', states('') + fig('focus', `<button class="btn center focus" style="width:136px">Button</button>`))}
+    ${sec('Button, dark skin (primary, selected, current)', states('dark'))}
+    ${sec('Same button, different insides', [
+      fig('icon + label', `<button class="btn">${icon('place')}Museum</button>`),
+      fig('label + meta', `<button class="btn" style="width:200px">Sound<span class="meta">On</span></button>`),
+      fig('portrait + name', `<button class="btn person">${mug('', 'sm')}Julia Sanfrancisco</button>`),
+      fig('label over value', `<button class="btn trait" style="width:160px"><span class="k">Hobby</span><span>Tennis</span></button>`),
+      fig('tab', `<button class="btn tab dark" style="width:88px;min-height:56px">${icon('fly')}Fly</button>`),
+      fig('map city, 32 tall', `<button class="btn chip">Budapest</button>`),
+      fig('edge arrow', `<button class="btn chip">${icon('back')}Lima</button>`),
+      fig('menu key', `<button class="btn menu" style="height:55px">${icon('menu')}</button>`),
+      fig('text field (pressed)', `<div class="btn pressed field empty" style="width:200px">Olivia Starling</div>`),
+    ].join(''))}
+    ${sec('Panel, one skin', [
+      fig('panel', `<section class="panel" style="width:240px"><h2>Walk to</h2><p>Panels hold every list, sheet, dialog and document.</p></section>`),
+      fig('plate (a panel)', `<div class="plate"><div class="city">Cairo</div><div class="time">Tue 3:00 pm</div></div>`),
+      fig('bubble tail, down', `<div class="bubble" style="width:160px;margin-bottom:16px"><h2>Curator</h2><svg class="tail down" style="top:100%;margin-top:-2px;left:24px" viewBox="0 0 8 8" shape-rendering="crispEdges"><polygon points="0,0 8,0 0,8" fill="#141414"/><polygon points="1,0 6,0 1,5" fill="#e6e6e6"/></svg></div>`),
+      fig('bubble tail, left', `<div class="bubble" style="width:160px;margin-left:16px"><h2>Curator</h2><svg class="tail left" style="right:100%;margin-right:-2px;top:12px" viewBox="0 0 8 8" shape-rendering="crispEdges"><polygon points="8,0 8,8 0,4" fill="#141414"/><polygon points="8,1 8,7 2,4" fill="#e6e6e6"/></svg></div>`),
+    ].join(''))}
+    ${sec('Bar, one skin (progress, rank, cutscene)', [
+      fig('12 segments', `<div style="width:200px">${bar(5)}</div>`), fig('3 segments', `<div style="width:120px">${bar(2, 3)}</div>`),
+    ].join(''))}
+    ${sec('Portrait frame and stamp', [fig('32', mug('', 'sm')), fig('64', mug('', 'md')), fig('80 + stamp', mug('Arrested'))].join(''))}
+    ${sec('Small bits', [
+      fig('divider', `<div class="rule" style="width:120px;background:var(--rule)"></div>`),
+      fig('tab dot', `<div style="width:8px;height:8px;background:var(--card)"></div>`),
+      fig('scrollbar', `<div style="display:flex;width:4px;height:48px;background:var(--rule)"><div style="height:20px;width:4px;background:var(--mute)"></div></div>`),
+      fig('city dot', `<div class="pin" style="position:static;transform:none"><i></i></div>`),
+      fig('current city dot', `<div class="pin cur" style="position:static;transform:none"><i></i></div>`),
+      fig('route', `<svg width="96" height="8"><line x1="0" y1="4" x2="96" y2="4" stroke="#e6e6e6" stroke-width="2" stroke-dasharray="4 4"/></svg>`),
+      fig('plane', `<div style="color:#e6e6e6">${icon('fly', '').replace('<svg', '<svg style="width:32px;height:32px"')}</div>`),
+    ].join(''))}
+    ${sec('Icons, 16 &times; 16', ['walk', 'fly', 'dossiers', 'warrant', 'menu', 'back', 'chev', 'check', 'place', 'ff', 'full'].map((n) => fig(n, `<div style="color:var(--card)">${icon(n)}</div>`)).join(''))}
+  </div>` });
+
+  const v = S[key]();
+  // The art layer (scene, map, cutscene) fills the window; the UI column sits on top, centred on desktop
+  // Scrims cover the whole window, so they live in the window layer, under the column's floating panels
+  const scrimTag = /<div class="abs scrim"[^>]*><\/div>/;
+  const scrim = (v.overlay || '').match(scrimTag)?.[0] || '';
+  v.overlay = (v.overlay || '').replace(scrimTag, '');
+  const ui = `
+        ${v.extra || ''}
+        <header class="top">${v.top}</header>
+        <main class="stage ${v.stageCls || ''}">${v.stage}</main>
+        <footer class="slot ${v.slotCls || ''}">${v.slot}</footer>
+        ${v.overlay || ''}`;
+  if (v.sheet) document.getElementById('app').innerHTML = v.sheet; else document.getElementById('app').innerHTML = `<div class="vp" style="width:${VW}px;height:${VH}px">${v.bg}
+    <div class="screen" style="left:${FX}px;width:${W}px;height:${H}px">${ui}</div>
+    ${scrim}
+    ${v.spread ? `<div class="spread" style="left:${(VW - SPREAD) / 2}px;width:${SPREAD}px;top:${8 + TOP + 8}px;bottom:${8 + SLOT + 8}px">${v.spread.join('')}</div>` : ''}</div>`;
+  // Bare text inside flex boxes can't be trimmed, so wrap it in a span that can
+  for (const el of document.querySelectorAll('.btn, .time, .meta, .names span, .hd, .tile')) {
+    for (const n of [...el.childNodes]) if (n.nodeType === 3 && n.textContent.trim()) { const t = document.createElement('span'); t.className = 't'; n.replaceWith(t); t.append(n); }
+  }
+  for (const el of document.querySelectorAll('.hd > span, .btn > span:not(.meta):not(.k)')) el.classList.add('t');
+  // Place the witness bubble: above the head on phones, centred in the stage beside the figure on desktop.
+  // Measure only once the pixel font has loaded; the fallback font sets taller text.
+  document.fonts.ready.then(() => { for (const b of document.querySelectorAll('.bubble[data-head-top]')) {
+    const h = b.offsetHeight, stageTop = 8 + TOP + 8, stageBottom = H - 8 - SLOT - 8;
+    if (DESK && !('above' in b.dataset)) {
+      const top = Math.round(Math.max(stageTop, Math.min(+b.dataset.head - 40, stageBottom - h)));
+      b.style.top = `${top}px`;
+      b.querySelector('.tail').style.top = `${Math.round(Math.max(8, Math.min(+b.dataset.head - top - 8, h - 32)))}px`;
+    } else {
+      // The tail drops 7px below the bubble; leave 16px between its tip and the top of the head
+      const reach = 7 + 16;
+      const top = Math.max(stageTop, +b.dataset.headTop - reach - h);
+      b.style.top = `${Math.round(top)}px`;
+    }
+  } });
+  // Scroll the selected row into view inside scrolling lists
+  for (const list of document.querySelectorAll('.list.scroll')) {
+    const on = list.querySelector('.dark');
+    if (on) list.scrollTop = on.offsetTop - list.offsetTop - 48;
+  }
+  window.SCREENS = Object.keys(S);
+</script>
+</body>
+</html>

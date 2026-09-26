@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '../app.css';
 	import { PUBLIC_PLAUSIBLE_DOMAIN } from '$env/static/public';
 	import { page } from '$app/state';
 	import type { Locales } from '$i18n/i18n-types';

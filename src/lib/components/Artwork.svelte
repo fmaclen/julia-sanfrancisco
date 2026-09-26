@@ -2,13 +2,20 @@
 	import { fade } from 'svelte/transition';
 
 	interface Props {
-		src: string;
+		src?: string;
 		isHidden?: boolean;
 		isDisabled?: boolean;
 		isHighContrast?: boolean;
+		children?: import('svelte').Snippet;
 	}
 
-	let { src, isHidden = false, isDisabled = false, isHighContrast = true }: Props = $props();
+	let {
+		src,
+		isHidden = false,
+		isDisabled = false,
+		isHighContrast = true,
+		children
+	}: Props = $props();
 </script>
 
 <div
@@ -19,7 +26,13 @@
 		{isHighContrast ? 'artwork--high-contrast' : ''}
 	"
 >
-	<img class="artwork__img" {src} alt="Illustration of scene" />
+	{#if children}
+		<div class="artwork__content">
+			{@render children()}
+		</div>
+	{:else}
+		<img class="artwork__img" {src} alt="Illustration of scene" />
+	{/if}
 </div>
 
 <style lang="scss">
@@ -120,17 +133,10 @@
 		}
 	}
 
-	img.artwork__img {
+	img.artwork__img,
+	div.artwork__content {
 		width: 100%;
 		height: 100%;
-		object-fit: cover;
-
-		image-rendering: -moz-crisp-edges;
-		image-rendering: -o-crisp-edges;
-		image-rendering: -webkit-optimize-contrast;
-		image-rendering: crisp-edges;
-		-ms-interpolation-mode: nearest-neighbor;
-
 		border-radius: 16px;
 
 		@media (max-width: 512px) {
@@ -138,5 +144,19 @@
 			border-bottom-right-radius: unset;
 			overflow: hidden;
 		}
+	}
+
+	div.artwork__content {
+		overflow: hidden;
+	}
+
+	img.artwork__img {
+		object-fit: cover;
+
+		image-rendering: -moz-crisp-edges;
+		image-rendering: -o-crisp-edges;
+		image-rendering: -webkit-optimize-contrast;
+		image-rendering: crisp-edges;
+		-ms-interpolation-mode: nearest-neighbor;
 	}
 </style>

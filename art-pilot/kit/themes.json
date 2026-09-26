@@ -1,0 +1,8 @@
+{
+  "mediterranean": ["Cairo", "Baghdad", "Istanbul", "Athens", "Rome", "San Marino"],
+  "latin-america": ["Mexico City", "Lima", "Buenos Aires", "Rio de Janeiro"],
+  "northern-europe": ["Reykjavik", "Oslo", "Paris", "London", "Budapest", "Moscow", "Montreal", "New York", "Sydney"],
+  "east-asia": ["Tokyo", "Beijing", "Bangkok", "Singapore"],
+  "south-asia": ["New Delhi", "Kathmandu", "Colombo"],
+  "africa": ["Bamako", "Kigali", "Moroni", "Port Moresby"]
+}

@@ -1,0 +1,67 @@
+/* Tailwind without its preflight reset, so existing screens keep their styles */
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+/* Pixel fonts only render crisp at whole multiples of their grid:
+   Pixel Operator is a 16px grid, Pixel Operator 8 and Press Start 2P are 8px grids. */
+@font-face {
+	font-family: 'Pixel Operator';
+	src: url('/fonts/pixel/PixelOperator.ttf');
+}
+@font-face {
+	font-family: 'Pixel Operator';
+	font-weight: 700;
+	src: url('/fonts/pixel/PixelOperator-Bold.ttf');
+}
+@font-face {
+	font-family: 'Pixel Operator 8';
+	src: url('/fonts/pixel/PixelOperator8.ttf');
+}
+@font-face {
+	font-family: 'Press Start 2P';
+	src: url('/fonts/pixel/PressStart2P.ttf');
+}
+
+@theme {
+	--font-pixel: 'Pixel Operator', monospace;
+	--font-pixel-small: 'Pixel Operator 8', monospace;
+	--font-pixel-title: 'Press Start 2P', monospace;
+
+	--color-ink: #f4ecd8;
+	--color-ink-dim: #a89c86;
+	--color-panel: #14111c;
+	--color-edge: #3d3554;
+	--color-highlight: #ffcf5a;
+	--color-alert: #ff7b6b;
+	--color-terminal: #7fe08a;
+	--color-terminal-dim: #4f8f5b;
+	--color-terminal-edge: #1f3a27;
+	--color-terminal-bg: #07100b;
+}
+
+/* Every run of text wraps to even line lengths, never a long line over a stub */
+@layer base {
+	p,
+	h1,
+	h2,
+	h3,
+	li,
+	figcaption {
+		text-wrap: balance;
+	}
+}
+
+@utility pixel-crisp {
+	-webkit-font-smoothing: none;
+	font-smooth: never;
+	text-rendering: optimizeSpeed;
+	image-rendering: pixelated;
+}
+
+/* Stepped two-tone border that keeps square corners, like a pixel-art frame */
+@utility pixel-frame {
+	box-shadow:
+		0 0 0 var(--frame, 4px) var(--frame-color, var(--color-edge)),
+		0 0 0 calc(var(--frame, 4px) * 2) #000;
+}

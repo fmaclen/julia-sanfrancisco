@@ -1,0 +1,10 @@
+{
+ "role": "Waiter",
+ "paintings": {
+  "northern-europe": {
+   "pose": "tea",
+   "look": "camera",
+   "seat": 880
+  }
+ }
+}

@@ -9,6 +9,7 @@
 	import Header from '$lib/components/Header.svelte';
 	import Main from '$lib/components/Main.svelte';
 	import P from '$lib/components/P.svelte';
+	import RooftopScene from '$lib/components/RooftopScene.svelte';
 	import Section from '$lib/components/Section.svelte';
 	import { applyLocale } from '$lib/player';
 
@@ -26,7 +27,9 @@
 		</Header>
 	{/snippet}
 
-	<Artwork src="/artwork/splash.png" />
+	<Artwork>
+		<RooftopScene timeOfDay="night" weather="clear" />
+	</Artwork>
 
 	{#snippet footer()}
 		<Footer>
