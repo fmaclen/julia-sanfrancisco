@@ -12,6 +12,7 @@ export default tseslint.config(
 			'build/**',
 			'.svelte-kit/**',
 			'package/**',
+			'.worktrees/**',
 			'package-lock.json',
 			'vite.config.js.timestamp-*',
 			'vite.config.ts.timestamp-*',
